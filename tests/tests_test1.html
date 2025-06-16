@@ -33,6 +33,14 @@
       font-weight: bold;
       text-align: center;
     }
+    .feedback {
+      color: #dc2626;
+      font-weight: bold;
+      margin-top: 0.5rem;
+    }
+    .correct-answer {
+      color: #16a34a;
+    }
   </style>
 </head>
 <body>
@@ -50,28 +58,31 @@
     <h2 style="text-align:center;">Test 1 - Derechos Humanos</h2>
 
     <form id="quizForm">
-      <div class="question">
+      <div class="question" id="q1Box">
         <p>1. ¿Qué artículo de la Constitución Española garantiza el derecho a la vida?</p>
         <label><input type="radio" name="q1" value="a"> Artículo 14</label><br>
         <label><input type="radio" name="q1" value="b"> Artículo 15</label><br>
         <label><input type="radio" name="q1" value="c"> Artículo 16</label><br>
         <label><input type="radio" name="q1" value="d"> Artículo 17</label>
+        <div class="feedback" id="fb1"></div>
       </div>
 
-      <div class="question">
+      <div class="question" id="q2Box">
         <p>2. ¿Cuál de los siguientes no es un derecho fundamental?</p>
         <label><input type="radio" name="q2" value="a"> Derecho a la libertad</label><br>
         <label><input type="radio" name="q2" value="b"> Derecho a la educación</label><br>
         <label><input type="radio" name="q2" value="c"> Derecho a la propiedad privada</label><br>
         <label><input type="radio" name="q2" value="d"> Derecho a la libertad de expresión</label>
+        <div class="feedback" id="fb2"></div>
       </div>
 
-      <div class="question">
+      <div class="question" id="q3Box">
         <p>3. ¿Cuál es el órgano encargado de proteger los derechos humanos en Europa?</p>
         <label><input type="radio" name="q3" value="a"> Parlamento Europeo</label><br>
         <label><input type="radio" name="q3" value="b"> Comisión Europea</label><br>
         <label><input type="radio" name="q3" value="c"> Tribunal Europeo de Derechos Humanos</label><br>
         <label><input type="radio" name="q3" value="d"> Consejo de la UE</label>
+        <div class="feedback" id="fb3"></div>
       </div>
 
       <div style="text-align:center;">
@@ -92,15 +103,23 @@
         q3: 'c'
       };
       let correctas = 0;
-      let total = 3;
       for (let key in respuestas) {
         const seleccionada = document.querySelector(`input[name="${key}"]:checked`);
-        if (seleccionada && seleccionada.value === respuestas[key]) {
+        const feedback = document.getElementById(`fb${key.slice(1)}`);
+        if (!seleccionada) {
+          feedback.textContent = '❗ No seleccionaste una respuesta.';
+          continue;
+        }
+        if (seleccionada.value === respuestas[key]) {
           correctas++;
+          feedback.innerHTML = '<span class="correct-answer">✔ Correcto</span>';
+        } else {
+          feedback.innerHTML = `❌ Incorrecto. La respuesta correcta es <span class="correct-answer">${respuestas[key].toUpperCase()}</span>.`;
         }
       }
-      document.getElementById('resultado').textContent = `Has acertado ${correctas} de ${total} preguntas.`;
+      document.getElementById('resultado').textContent = `Has acertado ${correctas} de 3 preguntas.`;
     }
   </script>
 </body>
 </html>
+
