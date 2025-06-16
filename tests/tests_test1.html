@@ -1,0 +1,106 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test 1 - Oposit.ai</title>
+  <link rel="stylesheet" href="../style.css">
+  <style>
+    .question {
+      margin-bottom: 2rem;
+      background: #fff;
+      padding: 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    button {
+      margin-top: 1rem;
+      padding: 0.5rem 1rem;
+      font-weight: bold;
+      background: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #1d4ed8;
+    }
+    .result {
+      margin-top: 2rem;
+      font-size: 1.25rem;
+      font-weight: bold;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Oposit.ai</h1>
+    <nav>
+      <a href="../index.html">Inicio</a>
+      <a href="../tests.html">Tests</a>
+      <a href="../consejos.html">Consejos</a>
+      <a href="../recursos.html">Recursos</a>
+    </nav>
+  </header>
+
+  <main>
+    <h2 style="text-align:center;">Test 1 - Derechos Humanos</h2>
+
+    <form id="quizForm">
+      <div class="question">
+        <p>1. ¿Qué artículo de la Constitución Española garantiza el derecho a la vida?</p>
+        <label><input type="radio" name="q1" value="a"> Artículo 14</label><br>
+        <label><input type="radio" name="q1" value="b"> Artículo 15</label><br>
+        <label><input type="radio" name="q1" value="c"> Artículo 16</label><br>
+        <label><input type="radio" name="q1" value="d"> Artículo 17</label>
+      </div>
+
+      <div class="question">
+        <p>2. ¿Cuál de los siguientes no es un derecho fundamental?</p>
+        <label><input type="radio" name="q2" value="a"> Derecho a la libertad</label><br>
+        <label><input type="radio" name="q2" value="b"> Derecho a la educación</label><br>
+        <label><input type="radio" name="q2" value="c"> Derecho a la propiedad privada</label><br>
+        <label><input type="radio" name="q2" value="d"> Derecho a la libertad de expresión</label>
+      </div>
+
+      <div class="question">
+        <p>3. ¿Cuál es el órgano encargado de proteger los derechos humanos en Europa?</p>
+        <label><input type="radio" name="q3" value="a"> Parlamento Europeo</label><br>
+        <label><input type="radio" name="q3" value="b"> Comisión Europea</label><br>
+        <label><input type="radio" name="q3" value="c"> Tribunal Europeo de Derechos Humanos</label><br>
+        <label><input type="radio" name="q3" value="d"> Consejo de la UE</label>
+      </div>
+
+      <div style="text-align:center;">
+        <button type="button" onclick="calcularResultado()">Enviar</button>
+      </div>
+    </form>
+
+    <div class="result" id="resultado"></div>
+  </main>
+
+  <footer>© 2025 Oposit.ai</footer>
+
+  <script>
+    function calcularResultado() {
+      const respuestas = {
+        q1: 'b',
+        q2: 'c',
+        q3: 'c'
+      };
+      let correctas = 0;
+      let total = 3;
+      for (let key in respuestas) {
+        const seleccionada = document.querySelector(`input[name="${key}"]:checked`);
+        if (seleccionada && seleccionada.value === respuestas[key]) {
+          correctas++;
+        }
+      }
+      document.getElementById('resultado').textContent = `Has acertado ${correctas} de ${total} preguntas.`;
+    }
+  </script>
+</body>
+</html>
