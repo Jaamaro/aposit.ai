@@ -1,0 +1,158 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test - Derechos Humanos</title>
+  <link rel="stylesheet" href="../style.css">
+  <style>
+    body { font-family: sans-serif; background: #f0fdf4; margin: 0; padding: 2rem; color: #1f2937; }
+    h2 { text-align: center; color: #065f46; }
+    .question { margin-bottom: 2rem; background: #fff; padding: 1.5rem; border-radius: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
+    .options { margin-top: 1rem; }
+    .option { display: block; margin-bottom: 0.5rem; }
+    button { margin-top: 2rem; padding: 0.75rem 1.5rem; background: #2563eb; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
+    button:hover { background: #1d4ed8; }
+    .result { font-weight: bold; font-size: 1.25rem; text-align: center; margin-top: 2rem; }
+    .justification { margin-top: 0.5rem; color: #374151; font-size: 0.95rem; }
+    .correct { color: green; }
+    .incorrect { color: red; }
+  </style>
+</head>
+<body>
+
+  <h2>Test de Derechos Humanos</h2>
+  <form id="testForm"></form>
+  <div class="result" id="testResult"></div>
+  <div style="text-align: center;">
+    <button onclick="reiniciarTest()">🔁 Repetir test</button>
+  </div>
+
+  <script>
+    const preguntasBanco = [
+      {
+        pregunta: "¿Qué artículo de la Constitución Española reconoce el derecho a la vida?",
+        opciones: ["a) Artículo 14", "b) Artículo 15", "c) Artículo 16", "d) Artículo 17"],
+        correcta: "b) Artículo 15",
+        justificacion: "El artículo 15 de la Constitución garantiza el derecho a la vida y a la integridad física y moral."
+      },
+      {
+        pregunta: "¿Cuál de los siguientes es un derecho fundamental?",
+        opciones: ["a) Derecho a la vivienda", "b) Derecho a un medio ambiente sano", "c) Derecho a la libertad ideológica", "d) Derecho al trabajo"],
+        correcta: "c) Derecho a la libertad ideológica",
+        justificacion: "La libertad ideológica está recogida como derecho fundamental en el artículo 16 de la Constitución."
+      },
+      {
+        pregunta: "¿Cuál es el objetivo principal de los derechos humanos?",
+        opciones: ["a) Promover el comercio", "b) Garantizar la seguridad jurídica", "c) Proteger la dignidad humana", "d) Controlar la inmigración"],
+        correcta: "c) Proteger la dignidad humana",
+        justificacion: "La base de los derechos humanos es la dignidad inherente a todos los seres humanos."
+      },
+      {
+        pregunta: "¿Qué organización internacional promueve los derechos humanos a nivel global?",
+        opciones: ["a) OTAN", "b) ONU", "c) FMI", "d) OMC"],
+        correcta: "b) ONU",
+        justificacion: "La ONU tiene organismos dedicados a la defensa de los derechos humanos como el Consejo de Derechos Humanos."
+      },
+      {
+        pregunta: "¿Qué documento proclama por primera vez los derechos humanos universales?",
+        opciones: ["a) Declaración de Independencia", "b) Carta de las Naciones Unidas", "c) Declaración Universal de Derechos Humanos", "d) Tratado de Versalles"],
+        correcta: "c) Declaración Universal de Derechos Humanos",
+        justificacion: "Fue adoptada por la Asamblea General de la ONU en 1948."
+      },
+      {
+        pregunta: "¿Qué tribunal protege los derechos humanos en Europa?",
+        opciones: ["a) Tribunal Supremo", "b) Tribunal de Justicia de la UE", "c) Tribunal Europeo de Derechos Humanos", "d) Tribunal Penal Internacional"],
+        correcta: "c) Tribunal Europeo de Derechos Humanos",
+        justificacion: "Con sede en Estrasburgo, protege los derechos reconocidos en el Convenio Europeo."
+      },
+      {
+        pregunta: "¿Qué característica NO es propia de los derechos humanos?",
+        opciones: ["a) Universales", "b) Inalienables", "c) Relativos", "d) Indivisibles"],
+        correcta: "c) Relativos",
+        justificacion: "Los derechos humanos son universales, inalienables, interdependientes e indivisibles."
+      },
+      {
+        pregunta: "¿Qué derecho protege la libertad de religión?",
+        opciones: ["a) Artículo 15", "b) Artículo 16", "c) Artículo 17", "d) Artículo 18"],
+        correcta: "b) Artículo 16",
+        justificacion: "El artículo 16 CE reconoce la libertad ideológica, religiosa y de culto."
+      },
+      {
+        pregunta: "¿Qué derecho está ligado al principio de igualdad?",
+        opciones: ["a) Derecho a la vida", "b) Derecho a la educación", "c) Derecho a no ser discriminado", "d) Derecho al voto"],
+        correcta: "c) Derecho a no ser discriminado",
+        justificacion: "Está recogido en el artículo 14, que prohíbe toda discriminación."
+      },
+      {
+        pregunta: "¿Qué significa que los derechos humanos son inalienables?",
+        opciones: ["a) Se pueden ceder voluntariamente", "b) Solo los tiene el Estado", "c) No pueden ser eliminados", "d) Se aplican solo con nacionalidad"],
+        correcta: "c) No pueden ser eliminados",
+        justificacion: "Nadie puede renunciar ni ser despojado de sus derechos humanos."
+      }
+    ];
+
+    function barajar(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+    }
+
+    function cargarTest() {
+      const seleccionadas = [...preguntasBanco];
+      barajar(seleccionadas);
+      const seleccion = seleccionadas.slice(0, 20 > seleccionadas.length ? seleccionadas.length : 20);
+      const testForm = document.getElementById('testForm');
+      testForm.innerHTML = '';
+      seleccion.forEach((preg, index) => {
+        const id = `q${index}`;
+        const opciones = [...preg.opciones];
+        barajar(opciones);
+        const opcionesHTML = opciones.map(op => `
+          <label class="option">
+            <input type="radio" name="${id}" value="${op}">
+            ${op}
+          </label>
+        `).join('');
+        testForm.innerHTML += `
+          <div class="question" id="${id}Box">
+            <p><strong>${index + 1}.</strong> ${preg.pregunta}</p>
+            <div class="options">${opcionesHTML}</div>
+            <div class="justification" id="j${id}"></div>
+          </div>
+        `;
+      });
+      testForm.innerHTML += '<div style="text-align:center;"><button type="button" onclick="corregir()">Enviar</button></div>';
+    }
+
+    function corregir() {
+      let correctas = 0;
+      const seleccionadas = document.querySelectorAll('.question');
+      seleccionadas.forEach((qBox, index) => {
+        const id = `q${index}`;
+        const inputs = qBox.querySelectorAll('input[type="radio"]');
+        const selected = [...inputs].find(i => i.checked);
+        const correct = preguntasBanco.find(p => p.pregunta === qBox.querySelector('p').innerText.slice(3)).correcta;
+        const justif = preguntasBanco.find(p => p.pregunta === qBox.querySelector('p').innerText.slice(3)).justificacion;
+        const justEl = document.getElementById(`j${id}`);
+        if (selected && selected.value === correct) {
+          correctas++;
+          justEl.innerHTML = `<span class="correct">✔ Correcto.</span> ${justif}`;
+        } else {
+          justEl.innerHTML = `<span class="incorrect">✖ Incorrecto.</span> ${justif}`;
+        }
+      });
+      document.getElementById('testResult').innerHTML = `✅ Has acertado ${correctas} de ${seleccionadas.length} preguntas.`;
+    }
+
+    function reiniciarTest() {
+      document.getElementById('testResult').innerHTML = '';
+      cargarTest();
+    }
+
+    window.onload = cargarTest;
+  </script>
+</body>
+</html>
