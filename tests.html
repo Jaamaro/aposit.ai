@@ -19,13 +19,18 @@
     .centered-table th {
       font-weight: bold;
     }
-    ul.checklist {
-      list-style: none;
-      padding-left: 0;
+    .btn-link {
+      display: inline-block;
+      margin-top: 2rem;
+      padding: 0.75rem 1.5rem;
+      background-color: #2563eb;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: bold;
     }
-    ul.checklist li::before {
-      content: "✔️ ";
-      color: #7c3aed;
+    .btn-link:hover {
+      background-color: #1d4ed8;
     }
   </style>
 </head>
@@ -44,10 +49,10 @@
 
     <h3>¿Qué incluirán nuestros tests?</h3>
     <ul class="checklist">
-      <li>Preguntas tipo test con 4 opciones</li>
-      <li>Corrección automática y puntuación</li>
-      <li>Estadísticas de progreso</li>
-      <li>Simulacros por tiempo real</li>
+      <li>✔️ Preguntas tipo test con 4 opciones</li>
+      <li>✔️ Corrección automática y puntuación</li>
+      <li>✔️ Estadísticas de progreso</li>
+      <li>✔️ Simulacros por tiempo real</li>
     </ul>
 
     <h3>Temas previstos:</h3>
@@ -74,9 +79,9 @@
       </tbody>
     </table>
 
-    <p style="margin-top: 2rem; text-align: center;">
-      🔒 Muy pronto podrás comenzar a practicar. ¡Gracias por tu paciencia!
-    </p>
+    <div style="text-align: center;">
+      <a href="tests/tests_test1.html" class="btn-link">📝 Realizar Test 1 - Derechos Humanos</a>
+    </div>
   </main>
   <footer>© 2025 Oposit.ai</footer>
 </body>
