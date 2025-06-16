@@ -1,88 +1,90 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tests - Oposit.ai</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tests | Oposit.ai</title>
+  <link rel="stylesheet" href="style.css" />
   <style>
-    .centered-table {
-      margin: 2rem auto;
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f3f4f6;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem;
+      margin: 0;
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    p {
+      max-width: 600px;
       text-align: center;
-      border-collapse: collapse;
+      margin-bottom: 2rem;
+      font-size: 1.1rem;
     }
-    .centered-table th,
-    .centered-table td {
-      padding: 0.75rem 1.5rem;
+
+    .button-container {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      width: 100%;
+      max-width: 500px;
     }
-    .centered-table th {
+
+    .oposit-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      border-radius: 20px;
+      font-size: 1.2rem;
       font-weight: bold;
-    }
-    .btn-link {
-      display: inline-block;
-      margin-top: 2rem;
-      padding: 0.75rem 1.5rem;
-      background-color: #2563eb;
       color: white;
       text-decoration: none;
-      border-radius: 8px;
-      font-weight: bold;
+      transition: transform 0.2s, background-color 0.3s;
     }
-    .btn-link:hover {
-      background-color: #1d4ed8;
+
+    .oposit-button:hover {
+      transform: scale(1.05);
+    }
+
+    .gc {
+      background-color: #2e7d32;
+    }
+
+    .gc:hover {
+      background-color: #1b5e20;
+    }
+
+    .pn {
+      background-color: #1e3a8a;
+    }
+
+    .pn:hover {
+      background-color: #0c2566;
+    }
+
+    .emoji {
+      margin-right: 0.75rem;
     }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Oposit.ai</h1>
-    <nav>
-      <a href="index.html">Inicio</a>
-      <a href="consejos.html">Consejos</a>
-      <a href="recursos.html">Recursos</a>
-    </nav>
-  </header>
-  <main>
-    <h2>Próximamente: Tests de Oposición</h2>
-    <p>Estamos trabajando en un sistema de tests interactivos para que puedas prepararte con preguntas reales, clasificadas por tema y nivel de dificultad.</p>
+  <h1>Selecciona tu oposición</h1>
+  <p>Elige la oposición para acceder a los tests específicos de cada cuerpo. Podrás practicar por temas, con tests aleatorios o simulacros reales.</p>
 
-    <h3>¿Qué incluirán nuestros tests?</h3>
-    <ul class="checklist">
-      <li>✔️ Preguntas tipo test con 4 opciones</li>
-      <li>✔️ Corrección automática y puntuación</li>
-      <li>✔️ Estadísticas de progreso</li>
-      <li>✔️ Simulacros por tiempo real</li>
-    </ul>
-
-    <h3>Temas previstos:</h3>
-    <table class="centered-table">
-      <thead>
-        <tr>
-          <th>Tema</th>
-          <th>Estado</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Derechos Humanos</td>
-          <td>En desarrollo</td>
-        </tr>
-        <tr>
-          <td>Igualdad</td>
-          <td>En desarrollo</td>
-        </tr>
-        <tr>
-          <td>Fuerzas y Cuerpos de Seguridad</td>
-          <td>Pendiente</td>
-        </tr>
-      </tbody>
-    </table>
-
-    <div style="text-align: center;">
-      <a href="tests/tests_test1.html" class="btn-link">📝 Realizar Test 1 - Derechos Humanos</a>
-    </div>
-  </main>
-  <footer>© 2025 Oposit.ai</footer>
+  <div class="button-container">
+    <a href="tests/guardia-civil.html" class="oposit-button gc">
+      <span class="emoji">🛡️</span> Entrar a Tests de Guardia Civil
+    </a>
+    <a href="tests/policia-nacional.html" class="oposit-button pn">
+      <span class="emoji">👮‍♂️</span> Entrar a Tests de Policía Nacional
+    </a>
+  </div>
 </body>
 </html>
