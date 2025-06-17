@@ -11,41 +11,92 @@
       margin: 0;
       padding: 2rem;
       background: linear-gradient(to right, #2e7d32, #1e3a8a);
-      color: white;
       min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card {
+      background-color: white;
+      color: #111827;
+      border-radius: 20px;
+      padding: 2rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      max-width: 600px;
+      width: 100%;
+      text-align: center;
     }
 
     h1 {
-      text-align: center;
       font-size: 2rem;
       margin-bottom: 1rem;
     }
 
     p {
-      text-align: center;
-      max-width: 600px;
-      margin: auto;
-      margin-bottom: 2rem;
       font-size: 1.1rem;
+      margin-bottom: 2rem;
       opacity: 0.9;
     }
 
     .button-container {
       display: flex;
       flex-direction: column;
-      gap: 1.5rem;
-      align-items: center;
-      justify-content: center;
-      max-width: 500px;
-      margin: auto;
+      gap: 1.2rem;
     }
 
     .oposit-button {
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 1.5rem;
-      border-radius: 20px;
-      font-size: 1.2rem;
+      padding: 1.2rem;
+      border-radius: 12px;
+      font-size: 1.1rem;
       font-weight: bold;
-      text-decoration: non
+      text-decoration: none;
+      color: white;
+      transition: transform 0.2s, background-color 0.3s;
+    }
+
+    .oposit-button:hover {
+      transform: scale(1.05);
+    }
+
+    .gc {
+      background-color: #388e3c;
+    }
+
+    .gc:hover {
+      background-color: #2e7d32;
+    }
+
+    .pn {
+      background-color: #283593;
+    }
+
+    .pn:hover {
+      background-color: #1a237e;
+    }
+
+    .emoji {
+      margin-right: 0.75rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Selecciona tu oposición</h1>
+    <p>Elige la oposición para acceder a los tests específicos de cada cuerpo. Podrás practicar por temas, con tests aleatorios o simulacros reales.</p>
+
+    <div class="button-container">
+      <a href="tests/guardia-civil.html" class="oposit-button gc">
+        <span class="emoji">🛡️</span> Entrar a Tests de Guardia Civil
+      </a>
+      <a href="tests/policia-nacional.html" class="oposit-button pn">
+        <span class="emoji">👮‍♂️</span> Entrar a Tests de Policía Nacional
+      </a>
+    </div>
+  </div>
+</body>
+</html>
