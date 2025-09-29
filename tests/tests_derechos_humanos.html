@@ -1,11 +1,12 @@
 <!DOCTYPE html>
+
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Test - Derechos Humanos</title>
-  <link rel="stylesheet" href="../style.css">
-  <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Test - Derechos Humanos</title>
+<link href="../style.css" rel="stylesheet"/>
+<style>
     body { font-family: sans-serif; background: #f0fdf4; margin: 0; padding: 2rem; color: #1f2937; }
     h2 { text-align: center; color: #065f46; }
     .question { margin-bottom: 2rem; background: #fff; padding: 1.5rem; border-radius: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
@@ -21,36 +22,27 @@
   </style>
 </head>
 <body>
-
-  <h2>Test de Derechos Humanos</h2>
-
-  <!-- Selector de número de preguntas -->
-  <div class="config">
-    <label for="numPreguntas"><strong>Número de preguntas:</strong></label>
-    <select id="numPreguntas">
-      <option value="10">10</option>
-      <option value="20" selected>20</option>
-      <option value="30">30</option>
-      <option value="40">40</option>
-      <option value="50">50</option>
-    </select>
-    <button type="button" onclick="iniciarCuestionario()">Comenzar</button>
-  </div>
-
-  <form id="testForm"></form>
-  <div class="result" id="testResult"></div>
-  <div style="text-align: center;">
-    <button type="button" onclick="reiniciarTest()">🔁 Repetir test</button>
-  </div>
-
-  <script>
+<h2>Test de Derechos Humanos</h2>
+<!-- Selector de número de preguntas -->
+<div class="config">
+<label for="numPreguntas"><strong>Número de preguntas:</strong></label>
+<select id="numPreguntas">
+<option value="10">10</option>
+<option selected="" value="20">20</option>
+<option value="30">30</option>
+<option value="40">40</option>
+<option value="50">50</option>
+</select>
+<button onclick="iniciarCuestionario()" type="button">Comenzar</button>
+</div>
+<form id="testForm"></form>
+<div class="result" id="testResult"></div>
+<div style="text-align: center;">
+<button onclick="reiniciarTest()" type="button">🔁 Repetir test</button>
+</div>
+<script>
     const preguntasBanco = [
             {
-        pregunta: "¿Qué artículo de la Constitución Española reconoce el derecho a la vida?",
-        opciones: ["a) Artículo 14", "b) Artículo 15", "c) Artículo 16", "d) Artículo 17"],
-        correcta: "b) Artículo 15",
-        justificacion: "El artículo 15 de la Constitución garantiza el derecho a la vida y a la integridad física y moral."
-      },
       {
         pregunta: "¿Cuál de los siguientes es un derecho fundamental?",
         opciones: ["a) Derecho a la vivienda", "b) Derecho a un medio ambiente sano", "c) Derecho a la libertad ideológica", "d) Derecho al trabajo"],
@@ -388,11 +380,6 @@
         justificacion: "Fue una conferencia mundial contra el racismo."
       },
       {
-        pregunta: "¿Qué artículo de la CE prohíbe la tortura y los tratos inhumanos?",
-        opciones: ["a) Artículo 14", "b) Artículo 15", "c) Artículo 16", "d) Artículo 17"],
-        correcta: "b) Artículo 15",
-        justificacion: "El artículo 15 CE garantiza el derecho a la vida y prohíbe la tortura."
-      },
       {
         pregunta: "La Declaración de los Derechos del Niño de la ONU fue proclamada en:",
         opciones: ["a) 1924", "b) 1959", "c) 1989", "d) 2000"],
@@ -460,11 +447,6 @@
         justificacion: "El artículo 22 reconoce la libertad de asociación con fines lícitos."
       },
       {
-        pregunta: "El derecho a la educación en la Constitución Española aparece en:",
-        opciones: ["a) Artículo 14", "b) Artículo 17", "c) Artículo 27", "d) Artículo 30"],
-        correcta: "c) Artículo 27",
-        justificacion: "El artículo 27 CE garantiza el derecho a la educación y la libertad de enseñanza."
-      },
       {
         pregunta: "¿Qué convención prohíbe todas las formas de discriminación racial?",
         opciones: ["a) CERD (1965)", "b) CEDAW (1979)", "c) PIDESC (1966)", "d) CAT (1984)"],
@@ -514,11 +496,6 @@
         justificacion: "La Conferencia Mundial de Viena reafirmó la indivisibilidad y universalidad."
       },
       {
-        pregunta: "¿Qué artículo de la CE regula la libertad ideológica, religiosa y de culto?",
-        opciones: ["a) Artículo 14", "b) Artículo 15", "c) Artículo 16", "d) Artículo 20"],
-        correcta: "c) Artículo 16",
-        justificacion: "El artículo 16 CE protege la libertad ideológica y religiosa."
-      },
       {
         pregunta: "La Corte Europea de DDHH pertenece a:",
         opciones: ["a) ONU", "b) Unión Europea", "c) Consejo de Europa", "d) OSCE"],
@@ -532,17 +509,7 @@
         justificacion: "El artículo 27 reconoce el derecho a participar en la vida cultural y disfrutar del progreso científico."
       },
       {
-        pregunta: "La prohibición de la esclavitud aparece en la CE en:",
-        opciones: ["a) Artículo 14", "b) Artículo 15", "c) Artículo 17", "d) No aparece expresamente"],
-        correcta: "d) No aparece expresamente",
-        justificacion: "La CE prohíbe tratos inhumanos en el art. 15, pero no menciona literalmente la esclavitud."
-      },
       {
-        pregunta: "¿Qué derecho protege el artículo 20 CE?",
-        opciones: ["a) Libertad de expresión y de información", "b) Derecho de reunión", "c) Derecho de sindicación", "d) Libertad de circulación"],
-        correcta: "a) Libertad de expresión y de información",
-        justificacion: "El artículo 20 CE regula la libertad de expresión, información y creación."
-      },
       {
         pregunta: "La Declaración sobre los Derechos de los Pueblos Indígenas fue adoptada en:",
         opciones: ["a) 1989", "b) 1993", "c) 2007", "d) 2015"],
@@ -556,11 +523,6 @@
         justificacion: "El principio de legalidad aparece en la DUDH, PIDCP y CE."
       },
       {
-        pregunta: "¿Qué derecho protege el artículo 23 CE?",
-        opciones: ["a) Derecho a la tutela judicial", "b) Derecho a participar en asuntos públicos", "c) Derecho a la educación", "d) Libertad de circulación"],
-        correcta: "b) Derecho a participar en asuntos públicos",
-        justificacion: "El artículo 23 CE reconoce el derecho de participación política."
-      },
       {
         pregunta: "¿Qué convención regula los derechos de los trabajadores migrantes?",
         opciones: ["a) PIDESC", "b) Convención de 1990", "c) CEDAW", "d) CERD"],
@@ -580,11 +542,6 @@
         justificacion: "La Carta adquirió carácter vinculante en 2009 con el Tratado de Lisboa."
       },
       {
-        pregunta: "¿Qué artículo de la CE regula la tutela judicial efectiva?",
-        opciones: ["a) Artículo 14", "b) Artículo 24", "c) Artículo 27", "d) Artículo 29"],
-        correcta: "b) Artículo 24",
-        justificacion: "El artículo 24 CE garantiza la tutela judicial efectiva."
-      },
       {
         pregunta: "La Declaración Americana de los Derechos y Deberes del Hombre se proclamó en:",
         opciones: ["a) 1945", "b) 1948", "c) 1950", "d) 1966"],
@@ -598,11 +555,6 @@
         justificacion: "El artículo 15 PIDESC protege la vida cultural y el acceso a los beneficios de la ciencia."
       },
       {
-        pregunta: "El artículo 13 CE reconoce:",
-        opciones: ["a) Derecho al honor", "b) Derechos de los extranjeros en España", "c) Libertad de asociación", "d) Derecho a la propiedad"],
-        correcta: "b) Derechos de los extranjeros en España",
-        justificacion: "El artículo 13 regula derechos y libertades de los extranjeros."
-      },
       {
         pregunta: "¿Qué principio impide juzgar a alguien dos veces por el mismo hecho?",
         opciones: ["a) Non-refoulement", "b) Ne bis in idem", "c) Habeas corpus", "d) Pro homine"],
@@ -610,11 +562,6 @@
         justificacion: "El principio 'ne bis in idem' impide ser juzgado dos veces por el mismo hecho."
       },
             {
-        pregunta: "¿Qué artículo de la CE garantiza el derecho a sindicarse libremente?",
-        opciones: ["a) Artículo 21", "b) Artículo 22", "c) Artículo 28", "d) Artículo 30"],
-        correcta: "c) Artículo 28",
-        justificacion: "El artículo 28 CE reconoce el derecho a la sindicación y a la huelga."
-      },
       {
         pregunta: "La Declaración de Teherán de 1968 fue la primera conferencia internacional de la ONU sobre:",
         opciones: ["a) Medio ambiente", "b) Derechos humanos", "c) Refugiados", "d) Igualdad de género"],
@@ -640,11 +587,6 @@
         justificacion: "Supervisa la aplicación de la Convención de 2006."
       },
       {
-        pregunta: "El habeas corpus en la CE se encuentra en:",
-        opciones: ["a) Artículo 15", "b) Artículo 16", "c) Artículo 17", "d) Artículo 18"],
-        correcta: "c) Artículo 17",
-        justificacion: "El artículo 17 CE regula la libertad personal y el procedimiento de habeas corpus."
-      },
       {
         pregunta: "¿Qué convención de 1951 es clave en la protección de refugiados?",
         opciones: ["a) Convención de Ginebra", "b) Convención de Viena", "c) Convención de Roma", "d) Convención de París"],
@@ -658,17 +600,7 @@
         justificacion: "El Protocolo de 1967 eliminó las limitaciones temporales y geográficas de la Convención de 1951."
       },
       {
-        pregunta: "¿Qué derecho regula el artículo 19 CE?",
-        opciones: ["a) Libertad de residencia y circulación en España", "b) Derecho de asociación", "c) Derecho de huelga", "d) Derecho de sufragio"],
-        correcta: "a) Libertad de residencia y circulación en España",
-        justificacion: "El artículo 19 CE regula la libertad de residencia y circulación dentro del territorio español."
-      },
       {
-        pregunta: "El principio de igualdad ante la ley aparece en la CE en:",
-        opciones: ["a) Artículo 14", "b) Artículo 16", "c) Artículo 18", "d) Artículo 20"],
-        correcta: "a) Artículo 14",
-        justificacion: "El artículo 14 CE establece la igualdad ante la ley sin discriminación."
-      },
       {
         pregunta: "La Carta Social Europea de 1961 protege principalmente:",
         opciones: ["a) Derechos civiles", "b) Derechos políticos", "c) Derechos sociales y económicos", "d) Derechos militares"],
@@ -682,11 +614,6 @@
         justificacion: "El Tratado de Maastricht (1992) introdujo la ciudadanía de la Unión Europea."
       },
       {
-        pregunta: "¿Qué derecho regula el artículo 25 CE?",
-        opciones: ["a) Principio de legalidad penal y penitenciaria", "b) Derecho a la huelga", "c) Derecho a la educación", "d) Libertad de expresión"],
-        correcta: "a) Principio de legalidad penal y penitenciaria",
-        justificacion: "El artículo 25 CE establece que nadie puede ser condenado por acciones no tipificadas como delito."
-      },
       {
         pregunta: "¿Qué convención internacional protege a las personas con discapacidad?",
         opciones: ["a) CEDAW", "b) CRPD", "c) CERD", "d) CAT"],
@@ -694,11 +621,6 @@
         justificacion: "La Convención sobre los Derechos de las Personas con Discapacidad (CRPD) fue adoptada en 2006."
       },
       {
-        pregunta: "El derecho de asilo en la CE está regulado en:",
-        opciones: ["a) Artículo 13", "b) Artículo 14", "c) Artículo 15", "d) Artículo 16"],
-        correcta: "a) Artículo 13",
-        justificacion: "El artículo 13 CE reconoce el derecho de asilo en España."
-      },
       {
         pregunta: "¿Qué significa el principio de no discriminación?",
         opciones: ["a) Todos los Estados son iguales", "b) Prohibición de trato diferenciado injustificado", "c) Soberanía nacional", "d) Separación de poderes"],
@@ -706,11 +628,6 @@
         justificacion: "El principio de no discriminación protege frente a desigualdades arbitrarias."
       },
       {
-        pregunta: "¿Qué derecho protege el artículo 8 del CEDH?",
-        opciones: ["a) Vida privada y familiar", "b) Derecho a la propiedad", "c) Libertad de circulación", "d) Derecho a la salud"],
-        correcta: "a) Vida privada y familiar",
-        justificacion: "El artículo 8 del CEDH protege la vida privada, familiar, domicilio y correspondencia."
-      },
       {
         pregunta: "La Declaración de los Derechos del Hombre y del Ciudadano de 1789 inspiró:",
         opciones: ["a) DUDH", "b) PIDESC", "c) CEDAW", "d) CRPD"],
@@ -718,17 +635,7 @@
         justificacion: "La Declaración francesa de 1789 influyó en la tradición de derechos humanos."
       },
       {
-        pregunta: "El artículo 3 del CEDH garantiza:",
-        opciones: ["a) Prohibición de la tortura", "b) Derecho al voto", "c) Derecho de propiedad", "d) Derecho a la nacionalidad"],
-        correcta: "a) Prohibición de la tortura",
-        justificacion: "El artículo 3 CEDH establece la prohibición absoluta de la tortura y tratos inhumanos."
-      },
       {
-        pregunta: "¿Qué artículo de la CE regula la inviolabilidad del domicilio?",
-        opciones: ["a) Artículo 17", "b) Artículo 18", "c) Artículo 19", "d) Artículo 20"],
-        correcta: "b) Artículo 18",
-        justificacion: "El artículo 18 CE regula el derecho a la intimidad y la inviolabilidad del domicilio."
-      },
       {
         pregunta: "¿Qué significa 'habeas data'?",
         opciones: ["a) Derecho a la propiedad intelectual", "b) Derecho a acceder y rectificar datos personales", "c) Libertad de circulación", "d) Derecho a la educación"],
@@ -742,11 +649,6 @@
         justificacion: "El Convenio de Oviedo regula los derechos humanos aplicados a la biomedicina."
       },
       {
-        pregunta: "¿Qué derecho protege el artículo 10 CE?",
-        opciones: ["a) Derecho al honor, a la intimidad y a la propia imagen", "b) Libertad de expresión", "c) Derecho a la educación", "d) Derecho a la salud"],
-        correcta: "a) Derecho al honor, a la intimidad y a la propia imagen",
-        justificacion: "El artículo 10 CE garantiza estos derechos de la personalidad."
-      },
       {
         pregunta: "¿Qué convención internacional de 1984 aborda específicamente la tortura?",
         opciones: ["a) CAT", "b) CEDAW", "c) CERD", "d) PIDCP"],
@@ -754,17 +656,7 @@
         justificacion: "La Convención contra la Tortura (CAT) fue adoptada en 1984."
       },
       {
-        pregunta: "El derecho a la huelga está regulado en la CE en:",
-        opciones: ["a) Artículo 27", "b) Artículo 28", "c) Artículo 29", "d) Artículo 30"],
-        correcta: "b) Artículo 28",
-        justificacion: "El artículo 28 CE reconoce el derecho de huelga de los trabajadores."
-      },
       {
-        pregunta: "¿Qué artículo de la CE garantiza la libertad de reunión pacífica?",
-        opciones: ["a) Artículo 19", "b) Artículo 20", "c) Artículo 21", "d) Artículo 22"],
-        correcta: "c) Artículo 21",
-        justificacion: "El artículo 21 CE reconoce el derecho de reunión pacífica y sin armas."
-      },
       {
         pregunta: "La Declaración de Alma-Ata de 1978 trató sobre:",
         opciones: ["a) Educación universal", "b) Salud primaria", "c) Vivienda", "d) Medio ambiente"],
@@ -772,23 +664,8 @@
         justificacion: "La Declaración de Alma-Ata impulsó la salud primaria universal."
       },
       {
-        pregunta: "¿Qué derecho regula el artículo 11 CE?",
-        opciones: ["a) Libertad religiosa", "b) Derecho de asociación", "c) Libertad de expresión", "d) Derecho al trabajo"],
-        correcta: "b) Derecho de asociación",
-        justificacion: "El artículo 22 CE reconoce el derecho de asociación."
-      },
       {
-        pregunta: "El artículo 14 del CEDH protege:",
-        opciones: ["a) Prohibición de discriminación", "b) Derecho a la educación", "c) Derecho a la salud", "d) Libertad de circulación"],
-        correcta: "a) Prohibición de discriminación",
-        justificacion: "El artículo 14 del CEDH garantiza la no discriminación en el goce de derechos."
-      },
             {
-        pregunta: "¿Qué derecho protege el artículo 5 CE?",
-        opciones: ["a) Unidad de la Nación", "b) Libertad personal", "c) Derecho al trabajo", "d) Ninguno, regula Fuerzas Armadas"],
-        correcta: "d) Ninguno, regula Fuerzas Armadas",
-        justificacion: "El artículo 5 CE se refiere a las Fuerzas Armadas, no a derechos fundamentales."
-      },
       {
         pregunta: "La Convención de Belém do Pará (1994) aborda:",
         opciones: ["a) Discriminación racial", "b) Eliminación de la violencia contra la mujer", "c) Derechos de refugiados", "d) Derechos de la infancia"],
@@ -796,11 +673,6 @@
         justificacion: "Es la convención interamericana para prevenir, sancionar y erradicar la violencia contra la mujer."
       },
       {
-        pregunta: "¿Qué derecho garantiza el artículo 6 CE?",
-        opciones: ["a) Derecho al voto", "b) Derecho de asociación política", "c) Libertad de expresión", "d) Derecho a la objeción de conciencia"],
-        correcta: "b) Derecho de asociación política",
-        justificacion: "El artículo 6 CE regula el papel de los partidos políticos."
-      },
       {
         pregunta: "La Carta Africana de Derechos Humanos y de los Pueblos se adoptó en:",
         opciones: ["a) 1948", "b) 1966", "c) 1981", "d) 1993"],
@@ -808,29 +680,9 @@
         justificacion: "La Carta Africana fue adoptada en Nairobi en 1981."
       },
       {
-        pregunta: "¿Qué protege el artículo 9 CE?",
-        opciones: ["a) Principio de legalidad y jerarquía normativa", "b) Libertad de culto", "c) Derecho a la propiedad", "d) Derecho al voto"],
-        correcta: "a) Principio de legalidad y jerarquía normativa",
-        justificacion: "El artículo 9 CE garantiza la sujeción de los poderes públicos a la Constitución y la ley."
-      },
       {
-        pregunta: "La Convención CEDAW fue adoptada en:",
-        opciones: ["a) 1948", "b) 1966", "c) 1979", "d) 1989"],
-        correcta: "c) 1979",
-        justificacion: "La Convención sobre la Eliminación de Todas las Formas de Discriminación contra la Mujer fue adoptada en 1979."
-      },
       {
-        pregunta: "El artículo 37 CE reconoce:",
-        opciones: ["a) Derecho a la negociación colectiva", "b) Derecho a la educación", "c) Derecho a la salud", "d) Derecho al sufragio"],
-        correcta: "a) Derecho a la negociación colectiva",
-        justificacion: "El artículo 37 CE garantiza la negociación colectiva laboral."
-      },
       {
-        pregunta: "¿Qué derecho regula el artículo 3 CE?",
-        opciones: ["a) Derecho a la propiedad", "b) Lengua oficial del Estado", "c) Libertad de circulación", "d) Derecho a la tutela judicial"],
-        correcta: "b) Lengua oficial del Estado",
-        justificacion: "El artículo 3 CE establece el castellano como lengua oficial del Estado."
-      },
       {
         pregunta: "La Declaración de Estocolmo de 1972 trató sobre:",
         opciones: ["a) Medio ambiente humano", "b) Salud pública", "c) Refugiados", "d) Educación"],
@@ -838,17 +690,7 @@
         justificacion: "Primera gran conferencia de la ONU sobre medio ambiente."
       },
       {
-        pregunta: "El artículo 32 CE regula:",
-        opciones: ["a) Derecho a la educación", "b) Derecho a contraer matrimonio", "c) Derecho de reunión", "d) Derecho a la propiedad"],
-        correcta: "b) Derecho a contraer matrimonio",
-        justificacion: "El artículo 32 CE regula el derecho al matrimonio en igualdad jurídica."
-      },
       {
-        pregunta: "¿Qué artículo del CEDH protege la libertad de pensamiento, conciencia y religión?",
-        opciones: ["a) Artículo 5", "b) Artículo 7", "c) Artículo 9", "d) Artículo 13"],
-        correcta: "c) Artículo 9",
-        justificacion: "El artículo 9 CEDH garantiza la libertad de pensamiento, conciencia y religión."
-      },
       {
         pregunta: "La Declaración de Durban (2001) abordó:",
         opciones: ["a) Cambio climático", "b) Racismo, discriminación racial y xenofobia", "c) Derechos de los niños", "d) Derechos digitales"],
@@ -856,11 +698,6 @@
         justificacion: "Conferencia Mundial contra el Racismo, celebrada en Durban en 2001."
       },
       {
-        pregunta: "El artículo 39 CE protege:",
-        opciones: ["a) Familia y menores", "b) Libertad de expresión", "c) Derecho de propiedad", "d) Derecho al voto"],
-        correcta: "a) Familia y menores",
-        justificacion: "El artículo 39 CE garantiza la protección social, económica y jurídica de la familia."
-      },
       {
         pregunta: "¿Qué tratado creó el Tribunal Penal Internacional (TPI)?",
         opciones: ["a) Tratado de Roma 1998", "b) Tratado de Viena 1969", "c) Tratado de Ámsterdam 1997", "d) Tratado de Lisboa 2007"],
@@ -868,11 +705,6 @@
         justificacion: "El Estatuto de Roma de 1998 creó el TPI en La Haya."
       },
       {
-        pregunta: "El artículo 7 CE establece:",
-        opciones: ["a) Papel de los sindicatos y asociaciones empresariales", "b) Derecho a la huelga", "c) Igualdad ante la ley", "d) Principio de legalidad"],
-        correcta: "a) Papel de los sindicatos y asociaciones empresariales",
-        justificacion: "El artículo 7 CE reconoce el papel de sindicatos y asociaciones empresariales."
-      },
       {
         pregunta: "La Convención sobre los Derechos del Niño fue adoptada en:",
         opciones: ["a) 1966", "b) 1979", "c) 1989", "d) 2000"],
@@ -880,11 +712,6 @@
         justificacion: "La Asamblea General de la ONU adoptó la Convención sobre los Derechos del Niño en 1989."
       },
       {
-        pregunta: "¿Qué derecho protege el artículo 35 CE?",
-        opciones: ["a) Derecho a la educación", "b) Derecho al trabajo", "c) Derecho a la propiedad", "d) Derecho de reunión"],
-        correcta: "b) Derecho al trabajo",
-        justificacion: "El artículo 35 CE reconoce el derecho y deber de trabajar."
-      },
       {
         pregunta: "La Declaración de Río de 1992 trató sobre:",
         opciones: ["a) Igualdad de género", "b) Medio ambiente y desarrollo sostenible", "c) Refugiados", "d) Salud"],
@@ -892,17 +719,7 @@
         justificacion: "La Cumbre de la Tierra en Río de Janeiro abordó desarrollo sostenible."
       },
       {
-        pregunta: "El artículo 31 CE establece:",
-        opciones: ["a) Derecho a la propiedad", "b) Principio de capacidad económica y justicia tributaria", "c) Derecho a la educación", "d) Libertad de culto"],
-        correcta: "b) Principio de capacidad económica y justicia tributaria",
-        justificacion: "El artículo 31 CE regula el deber de contribuir mediante un sistema tributario justo."
-      },
       {
-        pregunta: "¿Qué derecho protege el artículo 34 CE?",
-        opciones: ["a) Derecho a fundaciones", "b) Derecho al honor", "c) Derecho de reunión", "d) Derecho a la tutela judicial"],
-        correcta: "a) Derecho a fundaciones",
-        justificacion: "El artículo 34 CE reconoce el derecho de fundación para fines de interés general."
-      },
       {
         pregunta: "La Convención de Palermo (2000) trata sobre:",
         opciones: ["a) Trata de personas y delincuencia organizada transnacional", "b) Derechos del mar", "c) Protección de refugiados", "d) Igualdad salarial"],
@@ -910,17 +727,7 @@
         justificacion: "La Convención de Palermo aborda delincuencia organizada y trata de personas."
       },
       {
-        pregunta: "El artículo 36 CE regula:",
-        opciones: ["a) Colegios profesionales", "b) Derecho a la educación", "c) Derecho a la salud", "d) Derecho al voto"],
-        correcta: "a) Colegios profesionales",
-        justificacion: "El artículo 36 CE reconoce la regulación de colegios profesionales."
-      },
       {
-        pregunta: "¿Qué derecho protege el artículo 40 CE?",
-        opciones: ["a) Educación universitaria", "b) Salud pública", "c) Seguridad social y bienestar económico", "d) Medio ambiente sano"],
-        correcta: "c) Seguridad social y bienestar económico",
-        justificacion: "El artículo 40 CE ordena a los poderes públicos promover el bienestar económico y social."
-      },
       {
         pregunta: "La Declaración de París (1990) trató sobre:",
         opciones: ["a) Refugiados", "b) Igualdad de género", "c) Nuevos derechos en la Conferencia sobre Seguridad y Cooperación en Europa", "d) Medio ambiente"],
@@ -928,17 +735,7 @@
         justificacion: "La Declaración de París reafirmó los DDHH en el marco de la CSCE."
       },
       {
-        pregunta: "El artículo 41 CE regula:",
-        opciones: ["a) Sistema de seguridad social", "b) Derecho a la vivienda", "c) Derecho a la propiedad", "d) Libertad de culto"],
-        correcta: "a) Sistema de seguridad social",
-        justificacion: "El artículo 41 CE garantiza un régimen público de Seguridad Social."
-      },
       {
-        pregunta: "¿Qué protege el artículo 42 CE?",
-        opciones: ["a) Derecho a la vivienda", "b) Protección de los trabajadores españoles en el extranjero", "c) Derecho a la salud", "d) Derecho de asociación"],
-        correcta: "b) Protección de los trabajadores españoles en el extranjero",
-        justificacion: "El artículo 42 CE regula la protección de los trabajadores emigrantes."
-      },
       {
         pregunta: "La Declaración de El Cairo de 1990 abordó:",
         opciones: ["a) Medio ambiente", "b) Derechos humanos en el Islam", "c) Refugiados", "d) Igualdad de género"],
@@ -946,65 +743,15 @@
         justificacion: "La Declaración de El Cairo sobre los Derechos Humanos en el Islam fue adoptada en 1990."
       },
             {
-        pregunta: "El artículo 43 CE reconoce:",
-        opciones: ["a) Derecho a la vivienda", "b) Derecho a la protección de la salud", "c) Derecho a la libertad de expresión", "d) Derecho de asociación"],
-        correcta: "b) Derecho a la protección de la salud",
-        justificacion: "El artículo 43 CE reconoce el derecho a la protección de la salud y a la organización de la sanidad pública."
-      },
       {
-        pregunta: "¿Qué protege el artículo 44 CE?",
-        opciones: ["a) Acceso a la cultura y promoción de la ciencia", "b) Libertad de culto", "c) Libertad de circulación", "d) Derecho al trabajo"],
-        correcta: "a) Acceso a la cultura y promoción de la ciencia",
-        justificacion: "El artículo 44 CE fomenta el acceso a la cultura y promueve la investigación científica y técnica."
-      },
       {
-        pregunta: "El artículo 45 CE garantiza:",
-        opciones: ["a) Libertad ideológica", "b) Derecho al medio ambiente adecuado", "c) Derecho de reunión", "d) Derecho a la propiedad"],
-        correcta: "b) Derecho al medio ambiente adecuado",
-        justificacion: "El artículo 45 CE reconoce el derecho a un medio ambiente adecuado para el desarrollo de la persona."
-      },
       {
-        pregunta: "¿Qué derecho regula el artículo 46 CE?",
-        opciones: ["a) Protección del patrimonio cultural, histórico y artístico", "b) Derecho a la propiedad", "c) Libertad de circulación", "d) Derecho al voto"],
-        correcta: "a) Protección del patrimonio cultural, histórico y artístico",
-        justificacion: "El artículo 46 CE establece la obligación de conservar y promover el patrimonio cultural."
-      },
       {
-        pregunta: "El artículo 47 CE establece:",
-        opciones: ["a) Derecho a la vivienda digna y adecuada", "b) Derecho a la salud", "c) Derecho de asociación", "d) Derecho de huelga"],
-        correcta: "a) Derecho a la vivienda digna y adecuada",
-        justificacion: "El artículo 47 CE garantiza el derecho a una vivienda digna y adecuada."
-      },
       {
-        pregunta: "¿Qué protege el artículo 48 CE?",
-        opciones: ["a) Participación de la juventud en la vida política, social y cultural", "b) Derecho a la intimidad", "c) Derecho al trabajo", "d) Derecho a fundaciones"],
-        correcta: "a) Participación de la juventud en la vida política, social y cultural",
-        justificacion: "El artículo 48 CE fomenta la participación de los jóvenes en la sociedad."
-      },
       {
-        pregunta: "El artículo 49 CE regula:",
-        opciones: ["a) Integración y protección de las personas con discapacidad", "b) Derecho a la educación", "c) Derecho a la propiedad", "d) Libertad religiosa"],
-        correcta: "a) Integración y protección de las personas con discapacidad",
-        justificacion: "El artículo 49 CE garantiza la atención y rehabilitación de las personas con discapacidad."
-      },
       {
-        pregunta: "¿Qué derecho protege el artículo 50 CE?",
-        opciones: ["a) Derechos de la infancia", "b) Protección de la tercera edad", "c) Derecho al medio ambiente", "d) Derecho de propiedad"],
-        correcta: "b) Protección de la tercera edad",
-        justificacion: "El artículo 50 CE garantiza pensiones y bienestar de la tercera edad."
-      },
       {
-        pregunta: "El artículo 51 CE reconoce:",
-        opciones: ["a) Defensa de los consumidores y usuarios", "b) Derecho a la educación", "c) Libertad de circulación", "d) Derecho de reunión"],
-        correcta: "a) Defensa de los consumidores y usuarios",
-        justificacion: "El artículo 51 CE establece la defensa de los consumidores y usuarios."
-      },
       {
-        pregunta: "¿Qué protege el artículo 52 CE?",
-        opciones: ["a) Reconocimiento de las organizaciones profesionales", "b) Libertad de expresión", "c) Derecho a la salud", "d) Derecho al voto"],
-        correcta: "a) Reconocimiento de las organizaciones profesionales",
-        justificacion: "El artículo 52 CE regula las organizaciones profesionales que contribuyen al interés general."
-      },
       {
         pregunta: "La Declaración de Viena de 1989 trató sobre:",
         opciones: ["a) Fin de la Guerra Fría y reafirmación de los derechos humanos", "b) Medio ambiente", "c) Refugiados", "d) Derechos digitales"],
@@ -1012,17 +759,7 @@
         justificacion: "La Declaración de Viena de la CSCE en 1989 reafirmó los derechos humanos en Europa."
       },
       {
-        pregunta: "El artículo 53 CE regula:",
-        opciones: ["a) Protección y garantías de los derechos fundamentales", "b) Derecho de asociación", "c) Derecho a la salud", "d) Libertad religiosa"],
-        correcta: "a) Protección y garantías de los derechos fundamentales",
-        justificacion: "El artículo 53 CE establece el sistema de protección de los derechos fundamentales."
-      },
       {
-        pregunta: "¿Qué protege el artículo 54 CE?",
-        opciones: ["a) Figura del Defensor del Pueblo", "b) Derecho a la propiedad", "c) Derecho a la educación", "d) Libertad ideológica"],
-        correcta: "a) Figura del Defensor del Pueblo",
-        justificacion: "El artículo 54 CE regula el Defensor del Pueblo como alto comisionado de las Cortes."
-      },
       {
         pregunta: "La Declaración de Copenhague de 1993 trató sobre:",
         opciones: ["a) Desarrollo social", "b) Medio ambiente", "c) Igualdad de género", "d) Refugiados"],
@@ -1030,17 +767,7 @@
         justificacion: "La Declaración de Copenhague de 1993 se centró en el desarrollo social y derechos humanos."
       },
       {
-        pregunta: "El artículo 55 CE establece:",
-        opciones: ["a) Suspensión de derechos en estados de excepción y sitio", "b) Derecho a la propiedad", "c) Derecho de asociación", "d) Derecho a la huelga"],
-        correcta: "a) Suspensión de derechos en estados de excepción y sitio",
-        justificacion: "El artículo 55 CE regula la suspensión de ciertos derechos fundamentales."
-      },
       {
-        pregunta: "¿Qué derecho protege el artículo 56 CE?",
-        opciones: ["a) Derecho al honor", "b) Derechos de la Corona", "c) Derecho a la educación", "d) Derecho a la salud"],
-        correcta: "b) Derechos de la Corona",
-        justificacion: "El artículo 56 CE regula la figura del Rey como Jefe del Estado."
-      },
       {
         pregunta: "La Convención de 1954 regula:",
         opciones: ["a) Apatridia", "b) Derecho de asilo", "c) Protección de refugiados climáticos", "d) Derechos de los pueblos indígenas"],
@@ -1048,41 +775,11 @@
         justificacion: "La Convención de 1954 regula el estatuto de los apátridas."
       },
       {
-        pregunta: "El artículo 57 CE regula:",
-        opciones: ["a) Sucesión a la Corona", "b) Derecho de reunión", "c) Derecho a la huelga", "d) Derecho al medio ambiente"],
-        correcta: "a) Sucesión a la Corona",
-        justificacion: "El artículo 57 CE regula la sucesión en la Corona de España."
-      },
       {
-        pregunta: "¿Qué protege el artículo 58 CE?",
-        opciones: ["a) Regencia", "b) Inviolabilidad del Rey", "c) Deberes fiscales", "d) Derecho de asociación"],
-        correcta: "a) Regencia",
-        justificacion: "El artículo 58 CE regula la regencia en caso de incapacidad o minoría del Rey."
-      },
       {
-        pregunta: "El artículo 59 CE establece:",
-        opciones: ["a) Tutela del Rey menor", "b) Derecho a la salud", "c) Derecho a la educación", "d) Libertad ideológica"],
-        correcta: "a) Tutela del Rey menor",
-        justificacion: "El artículo 59 CE regula la tutela del Rey menor."
-      },
       {
-        pregunta: "¿Qué protege el artículo 60 CE?",
-        opciones: ["a) Guardia Real", "b) Derecho a la propiedad", "c) Derecho a la educación", "d) Libertad de reunión"],
-        correcta: "a) Guardia Real",
-        justificacion: "El artículo 60 CE establece la organización de la Guardia Real."
-      },
       {
-        pregunta: "El artículo 61 CE regula:",
-        opciones: ["a) Juramento del Rey al asumir la Corona", "b) Derecho a la huelga", "c) Derecho de asociación", "d) Derecho a la salud"],
-        correcta: "a) Juramento del Rey al asumir la Corona",
-        justificacion: "El artículo 61 CE regula el juramento del Rey y del Príncipe de Asturias."
-      },
       {
-        pregunta: "¿Qué protege el artículo 62 CE?",
-        opciones: ["a) Competencias del Rey", "b) Derecho al voto", "c) Derecho a la educación", "d) Libertad ideológica"],
-        correcta: "a) Competencias del Rey",
-        justificacion: "El artículo 62 CE establece las funciones del Rey en el Estado."
-      },
       {
         pregunta: "La Declaración de Estambul de 1996 trató sobre:",
         opciones: ["a) Vivienda y asentamientos humanos", "b) Medio ambiente", "c) Refugiados", "d) Igualdad de género"],
@@ -1090,23 +787,8 @@
         justificacion: "La Declaración de Estambul de 1996 trató sobre vivienda y desarrollo urbano sostenible."
       },
       {
-        pregunta: "El artículo 63 CE regula:",
-        opciones: ["a) Relaciones internacionales del Rey", "b) Derecho a la propiedad", "c) Derecho de reunión", "d) Derecho a la huelga"],
-        correcta: "a) Relaciones internacionales del Rey",
-        justificacion: "El artículo 63 CE establece las competencias del Rey en materia internacional."
-      },
       {
-        pregunta: "¿Qué protege el artículo 64 CE?",
-        opciones: ["a) Contrafirma de los actos del Rey", "b) Derecho a la educación", "c) Derecho a la salud", "d) Libertad religiosa"],
-        correcta: "a) Contrafirma de los actos del Rey",
-        justificacion: "El artículo 64 CE establece la contrafirma ministerial de los actos del Rey."
-      },
       {
-        pregunta: "El artículo 65 CE reconoce:",
-        opciones: ["a) Asignación presupuestaria de la Familia Real", "b) Derecho a la educación", "c) Derecho a la salud", "d) Derecho de asociación"],
-        correcta: "a) Asignación presupuestaria de la Familia Real",
-        justificacion: "El artículo 65 CE establece la asignación a la Casa Real en los Presupuestos Generales del Estado."
-      },
       {
         pregunta: "Artículo 21 DUDH",
         opciones: ["a) Participación en el gobierno de su país", "b) Trabajo", "c) Protección social", "d) Propiedad"],
@@ -1246,11 +928,6 @@
         justificacion: "El Tribunal Europeo de Derechos Humanos aplica el CEDH (Estrasburgo)."
       },
       {
-        pregunta: "Fecha de adopción del CEDH",
-        opciones: ["a) 1948", "b) 1950", "c) 1953", "d) 1966"],
-        correcta: "b) 1950",
-        justificacion: "Convenio adoptado el 4/11/1950; en vigor 1953."
-      },
       {
         pregunta: "Sede del TEDH",
         opciones: ["a) Ginebra", "b) Nueva York", "c) Estrasburgo", "d) La Haya"],
