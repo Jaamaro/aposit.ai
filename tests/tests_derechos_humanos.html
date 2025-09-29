@@ -1674,7 +1674,7 @@ function cargarTest() {
     barajar(opciones);
     const opcionesHTML = opciones.map(op => `
       <label class="option">
-        <input type="radio" name="${id}" value="${op}">
+        <input type="radio" name="${id}" value="${op}" data-correcta="${preg.correcta}" data-justificacion="${preg.justificacion}">
         ${op}
       </label>
     `).join('');
@@ -1696,17 +1696,16 @@ function corregir() {
     const id = `q${index}`;
     const inputs = qBox.querySelectorAll('input[type="radio"]');
     const selected = [...inputs].find(i => i.checked);
-    const pregTexto = qBox.querySelector('p').innerText.replace(/^\d+\.\s*/, '');
-    const pregData = preguntasBanco.find(p => p.pregunta === pregTexto);
-    if (!pregData) return;
-    const correct = pregData.correcta;
-    const justif = pregData.justificacion;
     const justEl = document.getElementById(`j${id}`);
-    if (selected && selected.value === correct) {
-      correctas++;
-      justEl.innerHTML = `<span class="correct">✔ Correcto.</span> ${justif}`;
-    } else {
-      justEl.innerHTML = `<span class="incorrect">✖ Incorrecto.</span> ${justif}`;
+    if (selected) {
+      const correcta = selected.getAttribute("data-correcta");
+      const justif = selected.getAttribute("data-justificacion");
+      if (selected.value === correcta) {
+        correctas++;
+        justEl.innerHTML = `<span class="correct">✔ Correcto.</span> ${justif}`;
+      } else {
+        justEl.innerHTML = `<span class="incorrect">✖ Incorrecto.</span> ${justif}`;
+      }
     }
   });
   document.getElementById('testResult').innerHTML = `✅ Has acertado ${correctas} de ${seleccionadas.length} preguntas.`;
