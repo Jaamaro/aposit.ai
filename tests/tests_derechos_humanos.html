@@ -41,7 +41,7 @@
 <button onclick="reiniciarTest()" type="button">🔁 Repetir test</button>
 </div>
 <script>
-    const preguntasBanco = [
+const preguntasBanco = [
 {
       {
         pregunta: "¿Cuál de los siguientes es un derecho fundamental?",
@@ -1655,72 +1655,69 @@
       }
 ];
 
-    function barajar(array) {
-      for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-      }
+function barajar(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+}
+
+function cargarTest() {
+  const seleccionadas = [...preguntasBanco];
+  barajar(seleccionadas);
+  const seleccion = seleccionadas.slice(0, 50 > seleccionadas.length ? seleccionadas.length : 50);
+  const testForm = document.getElementById('testForm');
+  testForm.innerHTML = '';
+  seleccion.forEach((preg, index) => {
+    const id = `q${index}`;
+    const opciones = [...preg.opciones];
+    barajar(opciones);
+    const opcionesHTML = opciones.map(op => `
+      <label class="option">
+        <input type="radio" name="${id}" value="${op}">
+        ${op}
+      </label>
+    `).join('');
+    testForm.innerHTML += `
+      <div class="question" id="${id}Box">
+        <p><strong>${index + 1}.</strong> ${preg.pregunta}</p>
+        <div class="options">${opcionesHTML}</div>
+        <div class="justification" id="j${id}"></div>
+      </div>
+    `;
+  });
+  testForm.innerHTML += '<div style="text-align:center;"><button type="button" onclick="corregir()">Enviar</button></div>';
+}
+
+function corregir() {
+  let correctas = 0;
+  const seleccionadas = document.querySelectorAll('.question');
+  seleccionadas.forEach((qBox, index) => {
+    const id = `q${index}`;
+    const inputs = qBox.querySelectorAll('input[type="radio"]');
+    const selected = [...inputs].find(i => i.checked);
+    const pregTexto = qBox.querySelector('p').innerText.replace(/^\d+\.\s*/, '');
+    const pregData = preguntasBanco.find(p => p.pregunta === pregTexto);
+    if (!pregData) return;
+    const correct = pregData.correcta;
+    const justif = pregData.justificacion;
+    const justEl = document.getElementById(`j${id}`);
+    if (selected && selected.value === correct) {
+      correctas++;
+      justEl.innerHTML = `<span class="correct">✔ Correcto.</span> ${justif}`;
+    } else {
+      justEl.innerHTML = `<span class="incorrect">✖ Incorrecto.</span> ${justif}`;
     }
+  });
+  document.getElementById('testResult').innerHTML = `✅ Has acertado ${correctas} de ${seleccionadas.length} preguntas.`;
+}
 
-    let seleccionActual = [];
+function reiniciarTest() {
+  document.getElementById('testResult').innerHTML = '';
+  cargarTest();
+}
 
-    function iniciarCuestionario() {
-      const num = parseInt(document.getElementById("numPreguntas").value);
-      const seleccionadas = [...preguntasBanco];
-      barajar(seleccionadas);
-      seleccionActual = seleccionadas.slice(0, Math.min(num, 50));
-      mostrarPreguntas(seleccionActual);
-    }
-
-    function mostrarPreguntas(lista) {
-      const testForm = document.getElementById('testForm');
-      testForm.innerHTML = '';
-      lista.forEach((preg, index) => {
-        const id = `q${index}`;
-        const opciones = [...preg.opciones];
-        barajar(opciones);
-        const opcionesHTML = opciones.map(op => `
-          <label class="option">
-            <input type="radio" name="${id}" value="${op}">
-            ${op}
-          </label>
-        `).join('');
-        testForm.innerHTML += `
-          <div class="question" id="${id}Box">
-            <p><strong>${index + 1}.</strong> ${preg.pregunta}</p>
-            <div class="options">${opcionesHTML}</div>
-            <div class="justification" id="j${id}"></div>
-          </div>
-        `;
-      });
-      testForm.innerHTML += '<div style="text-align:center;"><button type="button" onclick="corregir()">Enviar</button></div>';
-    }
-
-    function corregir() {
-      let correctas = 0;
-      seleccionActual.forEach((preg, index) => {
-        const id = `q${index}`;
-        const qBox = document.getElementById(`${id}Box`);
-        const inputs = qBox.querySelectorAll('input[type="radio"]');
-        const selected = [...inputs].find(i => i.checked);
-        const justEl = document.getElementById(`j${id}`);
-        if (selected && selected.value === preg.correcta) {
-          correctas++;
-          justEl.innerHTML = `<span class="correct">✔ Correcto.</span> ${preg.justificacion}`;
-        } else {
-          justEl.innerHTML = `<span class="incorrect">✖ Incorrecto.</span> ${preg.justificacion}`;
-        }
-      });
-      document.getElementById('testResult').innerHTML = `✅ Has acertado ${correctas} de ${seleccionActual.length} preguntas.`;
-    }
-
-    function reiniciarTest() {
-      document.getElementById('testResult').innerHTML = '';
-      iniciarCuestionario();
-    }
-
-    // carga inicial con 20 preguntas por defecto
-    window.onload = iniciarCuestionario;
-  </script>
+window.onload = cargarTest;
+</script>
 </body>
 </html>
