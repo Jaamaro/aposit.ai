@@ -45,8 +45,452 @@
 
   <script>
     const preguntasBanco = [
-      // aquí ya tienes tus 10 originales + las 50 añadidas
-      // no los repito para no saturar, los mantienes tal cual
+            {
+        pregunta: "¿Qué artículo de la Constitución Española reconoce el derecho a la vida?",
+        opciones: ["a) Artículo 14", "b) Artículo 15", "c) Artículo 16", "d) Artículo 17"],
+        correcta: "b) Artículo 15",
+        justificacion: "El artículo 15 de la Constitución garantiza el derecho a la vida y a la integridad física y moral."
+      },
+      {
+        pregunta: "¿Cuál de los siguientes es un derecho fundamental?",
+        opciones: ["a) Derecho a la vivienda", "b) Derecho a un medio ambiente sano", "c) Derecho a la libertad ideológica", "d) Derecho al trabajo"],
+        correcta: "c) Derecho a la libertad ideológica",
+        justificacion: "La libertad ideológica está recogida como derecho fundamental en el artículo 16 de la Constitución."
+      },
+      {
+        pregunta: "¿Cuál es el objetivo principal de los derechos humanos?",
+        opciones: ["a) Promover el comercio", "b) Garantizar la seguridad jurídica", "c) Proteger la dignidad humana", "d) Controlar la inmigración"],
+        correcta: "c) Proteger la dignidad humana",
+        justificacion: "La base de los derechos humanos es la dignidad inherente a todos los seres humanos."
+      },
+      {
+        pregunta: "¿Qué organización internacional promueve los derechos humanos a nivel global?",
+        opciones: ["a) OTAN", "b) ONU", "c) FMI", "d) OMC"],
+        correcta: "b) ONU",
+        justificacion: "La ONU tiene organismos dedicados a la defensa de los derechos humanos como el Consejo de Derechos Humanos."
+      },
+      {
+        pregunta: "¿Qué documento proclama por primera vez los derechos humanos universales?",
+        opciones: ["a) Declaración de Independencia", "b) Carta de las Naciones Unidas", "c) Declaración Universal de Derechos Humanos", "d) Tratado de Versalles"],
+        correcta: "c) Declaración Universal de Derechos Humanos",
+        justificacion: "Fue adoptada por la Asamblea General de la ONU en 1948."
+      },
+      {
+        pregunta: "¿Qué tribunal protege los derechos humanos en Europa?",
+        opciones: ["a) Tribunal Supremo", "b) Tribunal de Justicia de la UE", "c) Tribunal Europeo de Derechos Humanos", "d) Tribunal Penal Internacional"],
+        correcta: "c) Tribunal Europeo de Derechos Humanos",
+        justificacion: "Con sede en Estrasburgo, protege los derechos reconocidos en el Convenio Europeo."
+      },
+      {
+        pregunta: "¿Qué característica NO es propia de los derechos humanos?",
+        opciones: ["a) Universales", "b) Inalienables", "c) Relativos", "d) Indivisibles"],
+        correcta: "c) Relativos",
+        justificacion: "Los derechos humanos son universales, inalienables, interdependientes e indivisibles."
+      },
+      {
+        pregunta: "¿Qué derecho protege la libertad de religión?",
+        opciones: ["a) Artículo 15", "b) Artículo 16", "c) Artículo 17", "d) Artículo 18"],
+        correcta: "b) Artículo 16",
+        justificacion: "El artículo 16 CE reconoce la libertad ideológica, religiosa y de culto."
+      },
+      {
+        pregunta: "¿Qué derecho está ligado al principio de igualdad?",
+        opciones: ["a) Derecho a la vida", "b) Derecho a la educación", "c) Derecho a no ser discriminado", "d) Derecho al voto"],
+        correcta: "c) Derecho a no ser discriminado",
+        justificacion: "Está recogido en el artículo 14, que prohíbe toda discriminación."
+      },
+      {
+        pregunta: "¿Qué significa que los derechos humanos son inalienables?",
+        opciones: ["a) Se pueden ceder voluntariamente", "b) Solo los tiene el Estado", "c) No pueden ser eliminados", "d) Se aplican solo con nacionalidad"],
+        correcta: "c) No pueden ser eliminados",
+        justificacion: "Nadie puede renunciar ni ser despojado de sus derechos humanos."
+      },
+      {
+        pregunta: "¿Cuándo fue proclamada la Declaración Universal de los Derechos Humanos?",
+        opciones: ["a) 26 de agosto de 1789", "b) 10 de diciembre de 1948", "c) 16 de diciembre de 1966", "d) 15 de marzo de 2006"],
+        correcta: "b) 10 de diciembre de 1948",
+        justificacion: "La DUDH fue adoptada por la Asamblea General de la ONU el 10/12/1948."
+      },
+      {
+        pregunta: "Selecciona la INCORRECTA sobre la DUDH",
+        opciones: ["a) Tiene preámbulo y 30 artículos", "b) Es jurídicamente vinculante por sí misma para todos los Estados", "c) La adoptó la Asamblea General de la ONU", "d) Inspiró constituciones y tratados posteriores"],
+        correcta: "b) Es jurídicamente vinculante por sí misma para todos los Estados",
+        justificacion: "La DUDH no es un tratado; su fuerza es moral y de soft law, aunque ha influido en normas vinculantes."
+      },
+      {
+        pregunta: "¿Qué proclama el artículo 1 de la DUDH?",
+        opciones: ["a) Igualdad ante la ley", "b) Libertad de circulación", "c) Nacer libres e iguales en dignidad y derechos", "d) Derecho a la educación"],
+        correcta: "c) Nacer libres e iguales en dignidad y derechos",
+        justificacion: "Art. 1: libertad e igualdad en dignidad y derechos; trato fraternal."
+      },
+      {
+        pregunta: "¿Qué reconoce el artículo 3 de la DUDH?",
+        opciones: ["a) Derecho a un salario digno", "b) Derecho a la vida, libertad y seguridad", "c) Derecho al asilo", "d) Derecho a la propiedad"],
+        correcta: "b) Derecho a la vida, libertad y seguridad",
+        justificacion: "Art. 3: vida, libertad y seguridad personal."
+      },
+      {
+        pregunta: "Sobre la Carta Internacional de Derechos Humanos",
+        opciones: ["a) Incluye la DUDH", "b) Incluye el PIDCP", "c) Incluye el PIDESC", "d) Todas son correctas"],
+        correcta: "d) Todas son correctas",
+        justificacion: "La Carta Internacional agrupa DUDH, PIDCP y PIDESC."
+      },
+      {
+        pregunta: "¿En qué año se creó el Consejo de Derechos Humanos de la ONU?",
+        opciones: ["a) 1948", "b) 1979", "c) 2006", "d) 1989"],
+        correcta: "c) 2006",
+        justificacion: "La AGNU lo estableció el 15/03/2006 en sustitución de la Comisión de DDHH."
+      },
+      {
+        pregunta: "¿Dónde se ubica el sistema principal de la ONU para DDHH (CDH/OACNUDH)?",
+        opciones: ["a) Nueva York", "b) Ginebra", "c) París", "d) Estrasburgo"],
+        correcta: "b) Ginebra",
+        justificacion: "El CDH y la OACNUDH operan principalmente desde Ginebra."
+      },
+      {
+        pregunta: "Selecciona la INCORRECTA: ejemplos de derechos civiles y políticos",
+        opciones: ["a) Libertad de expresión", "b) Derecho a la vida", "c) Derecho a la seguridad social", "d) Participación política"],
+        correcta: "c) Derecho a la seguridad social",
+        justificacion: "La seguridad social es típico derecho social (DESC), no civil-político."
+      },
+      {
+        pregunta: "¿Qué regula el artículo 13 de la DUDH?",
+        opciones: ["a) Educación", "b) Libertad de circulación y residencia", "c) Trabajo", "d) Seguridad social"],
+        correcta: "b) Libertad de circulación y residencia",
+        justificacion: "Art. 13: circular, residir, salir de cualquier país y regresar."
+      },
+      {
+        pregunta: "Eleanor Roosevelt respecto a la DUDH",
+        opciones: ["a) Presidenta del Consejo de Seguridad", "b) Presidió la Comisión de DDHH que la elaboró", "c) Secretaria General de la ONU", "d) Autora única del texto"],
+        correcta: "b) Presidió la Comisión de DDHH que la elaboró",
+        justificacion: "Encabezó la Comisión de DDHH en el proceso de redacción."
+      },
+      {
+        pregunta: "Entrada en vigor del PIDCP",
+        opciones: ["a) 1948", "b) 1966", "c) 1976", "d) 1989"],
+        correcta: "c) 1976",
+        justificacion: "Adoptado en 1966; entró en vigor en 1976."
+      },
+      {
+        pregunta: "Selecciona la INCORRECTA sobre el Comité de DDHH (PIDCP)",
+        opciones: ["a) Vigila el PIDCP", "b) Son expertos independientes", "c) Puede imponer sanciones económicas", "d) Examina informes estatales"],
+        correcta: "c) Puede imponer sanciones económicas",
+        justificacion: "Emite observaciones y dictámenes; no impone sanciones."
+      },
+      {
+        pregunta: "Contenido del artículo 23 de la DUDH",
+        opciones: ["a) Sindicación y condiciones justas de trabajo", "b) Educación", "c) Asilo", "d) Nacionalidad"],
+        correcta: "a) Sindicación y condiciones justas de trabajo",
+        justificacion: "Art. 23: trabajo, condiciones equitativas, salario igual, sindicatos."
+      },
+      {
+        pregunta: "Artículo que reconoce el derecho a la educación en la DUDH",
+        opciones: ["a) 21", "b) 22", "c) 26", "d) 28"],
+        correcta: "c) 26",
+        justificacion: "Art. 26: educación (gratuita en primaria), fines y papel de los padres."
+      },
+      {
+        pregunta: "Asilo según la DUDH (elige la correcta)",
+        opciones: ["a) El asilo no existe en la DUDH", "b) Sólo para delitos comunes", "c) Derecho a buscar asilo con excepciones por delitos comunes o actos contra la ONU", "d) Garantía absoluta sin excepciones"],
+        correcta: "c) Derecho a buscar asilo con excepciones por delitos comunes o actos contra la ONU",
+        justificacion: "Art. 14: reconoce el asilo con límites."
+      },
+      {
+        pregunta: "El Comité DESC supervisa",
+        opciones: ["a) Carta de la ONU", "b) PIDESC", "c) Declaración de Viena", "d) Consejo de Seguridad"],
+        correcta: "b) PIDESC",
+        justificacion: "Órgano de expertos que vigila el Pacto de DESC."
+      },
+      {
+        pregunta: "Selecciona la INCORRECTA sobre el voto según DUDH",
+        opciones: ["a) Universal", "b) Igual", "c) Secreto", "d) Condicionado a religión"],
+        correcta: "d) Condicionado a religión",
+        justificacion: "Art. 21.3: elecciones auténticas por sufragio universal e igual y voto secreto."
+      },
+      {
+        pregunta: "El artículo 25 de la DUDH reconoce el derecho a",
+        opciones: ["a) Salud, bienestar, alimentación, vestido y vivienda", "b) Fundar sindicatos", "c) Salario igual por trabajo igual", "d) Recurso efectivo"],
+        correcta: "a) Salud, bienestar, alimentación, vestido y vivienda",
+        justificacion: "Art. 25: nivel de vida adecuado y protección social."
+      },
+      {
+        pregunta: "Nombramiento del Alto Comisionado de la ONU para DDHH",
+        opciones: ["a) Consejo de Seguridad", "b) Asamblea General a propuesta del Secretario General", "c) Consejo de DDHH", "d) Estados Parte de la DUDH"],
+        correcta: "b) Asamblea General a propuesta del Secretario General",
+        justificacion: "Procedimiento establecido por la AGNU."
+      },
+      {
+        pregunta: "Conferencia Mundial de Viena sobre DDHH",
+        opciones: ["a) 1948", "b) 1966", "c) 1976", "d) 1993"],
+        correcta: "d) 1993",
+        justificacion: "Declaración y Programa de Acción de Viena, 1993."
+      },
+            {
+        pregunta: "Artículo 4 de la DUDH prohíbe",
+        opciones: ["a) Esclavitud y servidumbre", "b) Servicio militar obligatorio", "c) Impuestos desproporcionados", "d) Censura previa"],
+        correcta: "a) Esclavitud y servidumbre",
+        justificacion: "Art. 4: prohibición absoluta de la esclavitud y la trata."
+      },
+      {
+        pregunta: "Igualdad ante la ley (selecciona la INCORRECTA)",
+        opciones: ["a) Todas las personas son iguales ante la ley", "b) Derecho a igual protección contra la discriminación", "c) Se limita a los nacionales", "d) Protege frente a provocación a la discriminación"],
+        correcta: "c) Se limita a los nacionales",
+        justificacion: "Art. 7: igualdad y protección sin distinción."
+      },
+      {
+        pregunta: "El artículo 12 de la DUDH protege frente a",
+        opciones: ["a) Ataques arbitrarios a la vida", "b) Injerencias arbitrarias en vida privada, familia, domicilio o correspondencia", "c) Pena de muerte", "d) Limitaciones a la asociación"],
+        correcta: "b) Injerencias arbitrarias en vida privada, familia, domicilio o correspondencia",
+        justificacion: "Art. 12: también protege la honra y reputación."
+      },
+      {
+        pregunta: "Artículo 18 DUDH",
+        opciones: ["a) Libertad de pensamiento, conciencia y religión", "b) Libertad de circulación", "c) Derecho de reunión", "d) Propiedad"],
+        correcta: "a) Libertad de pensamiento, conciencia y religión",
+        justificacion: "Art. 18: incluye manifestar la religión en público o privado."
+      },
+      {
+        pregunta: "Artículo 20 DUDH reconoce",
+        opciones: ["a) Participación en el gobierno", "b) Reunión y asociación pacíficas", "c) Seguridad social", "d) Nacionalidad"],
+        correcta: "b) Reunión y asociación pacíficas",
+        justificacion: "Art. 20.1 libertad de reunión/ asociación; 20.2 prohibición de obligación de asociarse."
+      },
+      {
+        pregunta: "Artículo 15 DUDH",
+        opciones: ["a) Nacionalidad", "b) Fundar una familia", "c) Vacaciones pagadas", "d) Propiedad intelectual"],
+        correcta: "a) Nacionalidad",
+        justificacion: "Art. 15: derecho a una nacionalidad y a no ser privado arbitrariamente de ella."
+      },
+      {
+        pregunta: "Propiedad en la DUDH (selecciona la INCORRECTA)",
+        opciones: ["a) Derecho a la propiedad", "b) Propiedad individual y colectiva", "c) Nadie será privado arbitrariamente", "d) La DUDH no reconoce la propiedad"],
+        correcta: "d) La DUDH no reconoce la propiedad",
+        justificacion: "Art. 17 reconoce la propiedad y prohíbe privaciones arbitrarias."
+      },
+      {
+        pregunta: "Artículo 19 DUDH regula",
+        opciones: ["a) Educación", "b) Opinión y expresión", "c) Igualdad salarial", "d) Elecciones"],
+        correcta: "b) Opinión y expresión",
+        justificacion: "Art. 19: incluye recibir y difundir informaciones e ideas."
+      },
+      {
+        pregunta: "Artículo 21 DUDH",
+        opciones: ["a) Participación en el gobierno de su país", "b) Trabajo", "c) Protección social", "d) Propiedad"],
+        correcta: "a) Participación en el gobierno de su país",
+        justificacion: "Art. 21: participación directa o a través de representantes; sufragio."
+      },
+      {
+        pregunta: "Artículo 22 DUDH (elige la correcta)",
+        opciones: ["a) No reconoce la seguridad social", "b) Reconoce seguridad social y realización progresiva de DESC", "c) Sólo derechos civiles", "d) Sólo en estados ricos"],
+        correcta: "b) Reconoce seguridad social y realización progresiva de DESC",
+        justificacion: "Art. 22: mediante esfuerzos nacionales y cooperación internacional."
+      },
+      {
+        pregunta: "Artículo 9 DUDH prohíbe",
+        opciones: ["a) Detención, prisión o destierro arbitrarios", "b) Discriminación racial", "c) Tortura", "d) Censura"],
+        correcta: "a) Detención, prisión o destierro arbitrarios",
+        justificacion: "Art. 9: garantía frente a privaciones arbitrarias de libertad."
+      },
+      {
+        pregunta: "Artículo 5 DUDH (selecciona la INCORRECTA)",
+        opciones: ["a) Prohíbe la tortura", "b) Prohíbe tratos crueles, inhumanos o degradantes", "c) Permite tratos crueles si son temporales", "d) Proscribe penas inhumanas"],
+        correcta: "c) Permite tratos crueles si son temporales",
+        justificacion: "La prohibición es absoluta, sin excepciones."
+      },
+      {
+        pregunta: "Artículo 6 DUDH reconoce",
+        opciones: ["a) Voto", "b) Educación", "c) Personalidad jurídica", "d) Sindicación"],
+        correcta: "c) Personalidad jurídica",
+        justificacion: "Art. 6: reconocimiento en todas partes como persona ante la ley."
+      },
+      {
+        pregunta: "Artículo 8 DUDH reconoce",
+        opciones: ["a) Recurso efectivo ante tribunales", "b) Asilo", "c) Circulación", "d) Trabajo"],
+        correcta: "a) Recurso efectivo ante tribunales",
+        justificacion: "Art. 8: tutela frente a violaciones de derechos fundamentales."
+      },
+      {
+        pregunta: "Artículo 10 DUDH garantiza",
+        opciones: ["a) Juicio público y justo ante tribunal independiente e imparcial", "b) Voto", "c) Vacaciones pagadas", "d) Libre circulación"],
+        correcta: "a) Juicio público y justo ante tribunal independiente e imparcial",
+        justificacion: "Art. 10: garantías judiciales básicas."
+      },
+      {
+        pregunta: "Artículo 11 DUDH establece",
+        opciones: ["a) Presunción de inocencia", "b) Derecho al voto", "c) Libertad de asociación", "d) Educación"],
+        correcta: "a) Presunción de inocencia",
+        justificacion: "Art. 11.1 presunción de inocencia y garantías penales."
+      },
+      {
+        pregunta: "Artículo 16 DUDH (selecciona la INCORRECTA)",
+        opciones: ["a) Derecho a contraer matrimonio", "b) Igualdad de derechos en el matrimonio y su disolución", "c) Consentimiento libre y pleno de los contrayentes", "d) Sólo los hombres pueden disolver el matrimonio"],
+        correcta: "d) Sólo los hombres pueden disolver el matrimonio",
+        justificacion: "Art. 16: igualdad de derechos para hombres y mujeres."
+      },
+      {
+        pregunta: "Artículo 24 DUDH reconoce",
+        opciones: ["a) Descanso, tiempo libre, limitación de jornada, vacaciones pagadas", "b) Educación", "c) Expresión", "d) Igualdad ante la ley"],
+        correcta: "a) Descanso, tiempo libre, limitación de jornada, vacaciones pagadas",
+        justificacion: "Art. 24: derechos vinculados al tiempo de trabajo y descanso."
+      },
+      {
+        pregunta: "Artículo 27 DUDH establece",
+        opciones: ["a) Participar en la vida cultural y en los beneficios del progreso científico", "b) Libre circulación", "c) Seguridad social", "d) Voto"],
+        correcta: "a) Participar en la vida cultural y en los beneficios del progreso científico",
+        justificacion: "Art. 27: participación cultural y derechos de autor morales y materiales."
+      },
+      {
+        pregunta: "Artículo 28 DUDH",
+        opciones: ["a) Derecho a un orden social e internacional que permita el pleno goce de los derechos", "b) Derecho a portar armas", "c) Derecho a la objeción de conciencia", "d) Derecho a la libertad de empresa"],
+        correcta: "a) Derecho a un orden social e internacional que permita el pleno goce de los derechos",
+        justificacion: "Art. 28: marco social e internacional adecuado."
+      },
+      {
+        pregunta: "Artículo 29 DUDH",
+        opciones: ["a) Deberes respecto a la comunidad y límites legales a los derechos por moral, orden público y bienestar general", "b) Deber fiscal", "c) Servicio militar obligatorio", "d) Deber de votar"],
+        correcta: "a) Deberes respecto a la comunidad y límites legales a los derechos por moral, orden público y bienestar general",
+        justificacion: "Art. 29: límites a derechos para proteger derechos ajenos y fines legítimos."
+      },
+      {
+        pregunta: "Artículo 30 DUDH (selecciona la INCORRECTA)",
+        opciones: ["a) Prohíbe interpretar la DUDH para suprimir derechos", "b) Ningún Estado puede invocar la DUDH para destruir derechos", "c) Permite restringir derechos a conveniencia estatal", "d) Salvaguarda la integridad de la Declaración"],
+        correcta: "c) Permite restringir derechos a conveniencia estatal",
+        justificacion: "Art. 30 impide interpretaciones destructivas de los derechos."
+      },
+      {
+        pregunta: "Artículo 2 DUDH",
+        opciones: ["a) Derechos sin distinción alguna", "b) Vacaciones pagadas", "c) Igualdad salarial", "d) Voto a los 16"],
+        correcta: "a) Derechos sin distinción alguna",
+        justificacion: "Art. 2: prohíbe distinciones por raza, sexo, religión, opinión, origen, etc."
+      },
+      {
+        pregunta: "Artículo 20.2 DUDH prohíbe",
+        opciones: ["a) Esclavitud", "b) Tortura", "c) Obligación de pertenecer a una asociación", "d) Discriminación"],
+        correcta: "c) Obligación de pertenecer a una asociación",
+        justificacion: "Art. 20.2: nadie puede ser obligado a asociarse."
+      },
+      {
+        pregunta: "Libertad de expresión en la DUDH",
+        opciones: ["a) Incluye recibir y difundir informaciones e ideas por cualquier medio", "b) Sólo protege a periodistas", "c) Se limita a medios impresos", "d) Requiere autorización previa"],
+        correcta: "a) Incluye recibir y difundir informaciones e ideas por cualquier medio",
+        justificacion: "Art. 19: amplitud de la libertad de expresión."
+      },
+      {
+        pregunta: "Adopción del PIDESC",
+        opciones: ["a) 1948", "b) 1966", "c) 1976", "d) 1989"],
+        correcta: "b) 1966",
+        justificacion: "Adoptado en 1966; entró en vigor en 1976."
+      },
+      {
+        pregunta: "Selecciona la INCORRECTA sobre el PIDESC",
+        opciones: ["a) Reconoce el derecho a la salud", "b) Reconoce el derecho a la educación", "c) Reconoce condiciones de trabajo justas", "d) Regula el derecho a portar armas"],
+        correcta: "d) Regula el derecho a portar armas",
+        justificacion: "El PIDESC se centra en DESC, no en armas."
+      },
+      {
+        pregunta: "Protocolo Facultativo del PIDCP permite",
+        opciones: ["a) Denuncias individuales ante el Comité de DDHH", "b) Crear un tribunal internacional", "c) Regular comercio", "d) Modificar la Carta de la ONU"],
+        correcta: "a) Denuncias individuales ante el Comité de DDHH",
+        justificacion: "Primer Protocolo Facultativo del PIDCP habilita comunicaciones individuales."
+      },
+      {
+        pregunta: "Declaración de Viena (1993) reafirma",
+        opciones: ["a) Primacía de civiles sobre sociales", "b) Subordinación a soberanía", "c) Indivisibilidad e interdependencia de todos los derechos humanos", "d) Supresión de los DESC"],
+        correcta: "c) Indivisibilidad e interdependencia de todos los derechos humanos",
+        justificacion: "Viena 1993: universalidad, interdependencia e indivisibilidad."
+      },
+      {
+        pregunta: "Principios generales de DDHH",
+        opciones: ["a) Universalidad", "b) Interdependencia", "c) Indivisibilidad", "d) Todas las anteriores"],
+        correcta: "d) Todas las anteriores",
+        justificacion: "Conjunto canónico reconocido por la doctrina y la ONU."
+      },
+      {
+        pregunta: "Órgano que conoce de vulneraciones del Convenio Europeo",
+        opciones: ["a) TJUE", "b) TEDH", "c) CPI", "d) CIJ"],
+        correcta: "b) TEDH",
+        justificacion: "El Tribunal Europeo de Derechos Humanos aplica el CEDH (Estrasburgo)."
+      },
+      {
+        pregunta: "Fecha de adopción del CEDH",
+        opciones: ["a) 1948", "b) 1950", "c) 1953", "d) 1966"],
+        correcta: "b) 1950",
+        justificacion: "Convenio adoptado el 4/11/1950; en vigor 1953."
+      },
+      {
+        pregunta: "Sede del TEDH",
+        opciones: ["a) Ginebra", "b) Nueva York", "c) Estrasburgo", "d) La Haya"],
+        correcta: "c) Estrasburgo",
+        justificacion: "El TEDH se ubica en Estrasburgo (Consejo de Europa)."
+      },
+      {
+        pregunta: "El Consejo de Seguridad es",
+        opciones: ["a) Órgano con decisiones obligatorias según la Carta", "b) Comité de expertos del PIDCP", "c) Tribunal penal", "d) Agencia especializada de la ONU"],
+        correcta: "a) Órgano con decisiones obligatorias según la Carta",
+        justificacion: "Responsable de paz y seguridad; 5 permanentes y 10 no permanentes."
+      },
+      {
+        pregunta: "Composición del Consejo de Derechos Humanos",
+        opciones: ["a) 15 Estados", "b) 47 Estados elegidos por la AGNU", "c) 193 Estados", "d) 28 Estados"],
+        correcta: "b) 47 Estados elegidos por la AGNU",
+        justificacion: "Mandatos de 3 años, con distribución geográfica."
+      },
+      {
+        pregunta: "Funciones del CDH (elige la correcta)",
+        opciones: ["a) Imponer sanciones económicas", "b) Realizar Examen Periódico Universal y formular recomendaciones", "c) Enjuiciar crímenes internacionales", "d) Dictar sentencias vinculantes"],
+        correcta: "b) Realizar Examen Periódico Universal y formular recomendaciones",
+        justificacion: "El EPU evalúa el desempeño de todos los Estados en DDHH."
+      },
+      {
+        pregunta: "Artículo 14 DUDH (asilo) (selecciona la INCORRECTA)",
+        opciones: ["a) Derecho a buscar asilo", "b) Puede denegarse por delitos comunes", "c) Puede denegarse por actos contrarios a la ONU", "d) Es un derecho absoluto sin excepciones"],
+        correcta: "d) Es un derecho absoluto sin excepciones",
+        justificacion: "El art. 14 prevé excepciones."
+      },
+      {
+        pregunta: "Artículo 17 DUDH (propiedad) incluye",
+        opciones: ["a) Propiedad sólo individual", "b) Propiedad individual y colectiva", "c) Expropiación arbitraria permitida", "d) Prohibición de la propiedad privada"],
+        correcta: "b) Propiedad individual y colectiva",
+        justificacion: "Art. 17 reconoce ambas y prohíbe privación arbitraria."
+      },
+      {
+        pregunta: "Artículo 23 DUDH (selecciona la INCORRECTA)",
+        opciones: ["a) Condiciones equitativas y satisfactorias", "b) Igual salario por trabajo igual", "c) Derecho a fundar sindicatos", "d) Derecho a portar armas en el trabajo"],
+        correcta: "d) Derecho a portar armas en el trabajo",
+        justificacion: "El art. 23 no contempla armas; se centra en derechos laborales."
+      },
+      {
+        pregunta: "Artículo 26.1 DUDH señala que la educación primaria",
+        opciones: ["a) Será gratuita y obligatoria", "b) Será de pago y optativa", "c) Depende de cada Estado sin principios", "d) Sólo para nacionales"],
+        correcta: "a) Será gratuita y obligatoria",
+        justificacion: "Art. 26.1: instrucción elemental gratuita y obligatoria."
+      },
+      {
+        pregunta: "Artículo 27.2 DUDH protege",
+        opciones: ["a) Intereses morales y materiales de los autores", "b) Sólo los materiales", "c) Sólo los morales", "d) Sólo patentes"],
+        correcta: "a) Intereses morales y materiales de los autores",
+        justificacion: "Reconoce la protección de las producciones científicas, literarias o artísticas."
+      },
+      {
+        pregunta: "Límites a los derechos según Art. 29.2 DUDH",
+        opciones: ["a) Moraleja, orden público y bienestar general en sociedad democrática", "b) Cualquier razón administrativa", "c) Conveniencia del gobierno", "d) Razones económicas privadas"],
+        correcta: "a) Moraleja, orden público y bienestar general en sociedad democrática",
+        justificacion: "Límites sólo para proteger derechos ajenos y fines legítimos."
+      },
+      {
+        pregunta: "Naturaleza jurídica de la DUDH",
+        opciones: ["a) Tratado internacional con sanciones", "b) Declaración no vinculante con gran autoridad moral", "c) Ley nacional española", "d) Reglamento de la UE"],
+        correcta: "b) Declaración no vinculante con gran autoridad moral",
+        justificacion: "Soft law con amplia aceptación y recepción en tratados/constituciones."
+      },
+      {
+        pregunta: "Relación DUDH–Pactos de 1966",
+        opciones: ["a) Los Pactos desarrollan derechos de la DUDH con fuerza obligatoria para Estados parte", "b) Son independientes y contradictorios", "c) Derogan la DUDH", "d) Sólo tratan comercio"],
+        correcta: "a) Los Pactos desarrollan derechos de la DUDH con fuerza obligatoria para Estados parte",
+        justificacion: "PIDCP y PIDESC convierten en obligaciones jurídicas varios derechos proclamados."
+      }
+
+
     ];
 
     function barajar(array) {
