@@ -3,11 +3,11 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tema X - [Nombre del tema]</title>
+  <title>Tema 2 - Igualdad</title>
   <link rel="stylesheet" href="../style.css">
 </head>
 <body>
-  <h2>Tema X - [Nombre del tema]</h2>
+  <h2>Tema 2 - Igualdad</h2>
   <div class="config">
     <label for="numPreguntas">Número de preguntas:</label>
     <select id="numPreguntas">
@@ -25,69 +25,22 @@
 
   <script>
     const preguntasBanco = [
-      // Aquí van las preguntas de este tema
+      // Aquí van las preguntas del Tema 2 - Igualdad
+      // Ejemplo:
+      /*
+      {
+        pregunta: "¿Qué ley garantiza la igualdad efectiva entre mujeres y hombres en España?",
+        opciones: [
+          "a) Ley Orgánica 3/2007",
+          "b) Ley Orgánica 1/2004",
+          "c) Ley 39/2015",
+          "d) Constitución Española"
+        ],
+        correcta: "a) Ley Orgánica 3/2007",
+        justificacion: "La Ley Orgánica 3/2007 de 22 de marzo garantiza la igualdad efectiva entre mujeres y hombres."
+      }
+      */
     ];
 
     function barajar(array) {
-      for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-      }
-    }
-
-    function cargarTest() {
-      const seleccionadas = [...preguntasBanco];
-      barajar(seleccionadas);
-      const num = parseInt(document.getElementById("numPreguntas").value);
-      const seleccion = seleccionadas.slice(0, num);
-      const testForm = document.getElementById("testForm");
-      testForm.innerHTML = '';
-
-      seleccion.forEach((preg, index) => {
-        const id = `q${index}`;
-        const opciones = [...preg.opciones];
-        barajar(opciones);
-        const opcionesHTML = opciones.map(op => `
-          <label class="option">
-            <input type="radio" name="${id}" value="${op}" data-correcta="${preg.correcta}" data-justificacion="${preg.justificacion}">
-            ${op}
-          </label>
-        `).join('');
-        testForm.innerHTML += `
-          <div class="question" id="${id}Box">
-            <p><strong>${index + 1}.</strong> ${preg.pregunta}</p>
-            <div class="options">${opcionesHTML}</div>
-            <div class="justification" id="j${id}"></div>
-          </div>
-        `;
-      });
-
-      testForm.innerHTML += '<div style="text-align:center;"><button type="button" onclick="corregir()">✅ Enviar</button></div>';
-    }
-
-    function corregir() {
-      const preguntas = document.querySelectorAll('.question');
-      let aciertos = 0;
-
-      preguntas.forEach((q, index) => {
-        const seleccion = q.querySelector('input[type="radio"]:checked');
-        const justificacionDiv = q.querySelector('.justification');
-
-        if (seleccion) {
-          if (seleccion.value === seleccion.dataset.correcta) {
-            aciertos++;
-            justificacionDiv.innerHTML = `<span class="correct">✔ ${seleccion.dataset.justificacion}</span>`;
-          } else {
-            justificacionDiv.innerHTML = `<span class="incorrect">✘ ${seleccion.dataset.justificacion}</span>`;
-          }
-        } else {
-          justificacionDiv.innerHTML = `<span class="incorrect">✘ No contestada</span>`;
-        }
-      });
-
-      document.getElementById('testResult').innerText =
-        `Has acertado ${aciertos} de ${preguntas.length}`;
-    }
-  </script>
-</body>
-</html>
+      for (l
