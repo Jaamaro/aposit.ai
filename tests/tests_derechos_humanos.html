@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Test Demo - Derechos Humanos</title>
+<title>Test Derechos Humanos</title>
 <style>
   body { font-family: sans-serif; background: #f0fdf4; margin: 0; padding: 2rem; color: #1f2937; }
   h2 { text-align: center; color: #065f46; }
@@ -19,13 +19,15 @@
 </style>
 </head>
 <body>
-<h2>Test de Derechos Humanos (Demo)</h2>
+<h2>Test de Derechos Humanos</h2>
 <div class="config">
 <label for="numPreguntas"><strong>Número de preguntas:</strong></label>
 <select id="numPreguntas">
-<option value="1">1</option>
-<option value="2">2</option>
-<option value="3" selected>3</option>
+<option value="10">10</option>
+<option value="20">20</option>
+<option value="30">30</option>
+<option value="40">40</option>
+<option value="50" selected>50</option>
 </select>
 <button onclick="cargarTest()" type="button">Comenzar</button>
 </div>
@@ -35,24 +37,1617 @@
 
 <script>
 const preguntasBanco = [
-  {
-    pregunta: "¿Cuál de los siguientes es un derecho fundamental?",
-    opciones: ["a) Derecho a la vivienda", "b) Derecho a un medio ambiente sano", "c) Derecho a la libertad ideológica", "d) Derecho al trabajo"],
-    correcta: "c) Derecho a la libertad ideológica",
-    justificacion: "La libertad ideológica está recogida como derecho fundamental en el artículo 16 de la Constitución."
-  },
-  {
-    pregunta: "¿Cuál es el objetivo principal de los derechos humanos?",
-    opciones: ["a) Promover el comercio", "b) Garantizar la seguridad jurídica", "c) Proteger la dignidad humana", "d) Controlar la inmigración"],
-    correcta: "c) Proteger la dignidad humana",
-    justificacion: "La base de los derechos humanos es la dignidad inherente a todos los seres humanos."
-  },
-  {
-    pregunta: "¿Qué organización internacional promueve los derechos humanos a nivel global?",
-    opciones: ["a) OTAN", "b) ONU", "c) FMI", "d) OMC"],
-    correcta: "b) ONU",
-    justificacion: "La ONU tiene organismos dedicados a la defensa de los derechos humanos como el Consejo de Derechos Humanos."
-  }
+{
+      {
+        pregunta: "¿Cuál de los siguientes es un derecho fundamental?",
+        opciones: ["a) Derecho a la vivienda", "b) Derecho a un medio ambiente sano", "c) Derecho a la libertad ideológica", "d) Derecho al trabajo"],
+        correcta: "c) Derecho a la libertad ideológica",
+        justificacion: "La libertad ideológica está recogida como derecho fundamental en el artículo 16 de la Constitución."
+      },
+{
+        pregunta: "¿Cuál es el objetivo principal de los derechos humanos?",
+        opciones: ["a) Promover el comercio", "b) Garantizar la seguridad jurídica", "c) Proteger la dignidad humana", "d) Controlar la inmigración"],
+        correcta: "c) Proteger la dignidad humana",
+        justificacion: "La base de los derechos humanos es la dignidad inherente a todos los seres humanos."
+      },
+{
+        pregunta: "¿Qué organización internacional promueve los derechos humanos a nivel global?",
+        opciones: ["a) OTAN", "b) ONU", "c) FMI", "d) OMC"],
+        correcta: "b) ONU",
+        justificacion: "La ONU tiene organismos dedicados a la defensa de los derechos humanos como el Consejo de Derechos Humanos."
+      },
+{
+        pregunta: "¿Qué documento proclama por primera vez los derechos humanos universales?",
+        opciones: ["a) Declaración de Independencia", "b) Carta de las Naciones Unidas", "c) Declaración Universal de Derechos Humanos", "d) Tratado de Versalles"],
+        correcta: "c) Declaración Universal de Derechos Humanos",
+        justificacion: "Fue adoptada por la Asamblea General de la ONU en 1948."
+      },
+{
+        pregunta: "¿Qué tribunal protege los derechos humanos en Europa?",
+        opciones: ["a) Tribunal Supremo", "b) Tribunal de Justicia de la UE", "c) Tribunal Europeo de Derechos Humanos", "d) Tribunal Penal Internacional"],
+        correcta: "c) Tribunal Europeo de Derechos Humanos",
+        justificacion: "Con sede en Estrasburgo, protege los derechos reconocidos en el Convenio Europeo."
+      },
+{
+        pregunta: "¿Qué característica NO es propia de los derechos humanos?",
+        opciones: ["a) Universales", "b) Inalienables", "c) Relativos", "d) Indivisibles"],
+        correcta: "c) Relativos",
+        justificacion: "Los derechos humanos son universales, inalienables, interdependientes e indivisibles."
+      },
+{
+        pregunta: "¿Qué derecho protege la libertad de religión?",
+        opciones: ["a) Artículo 15", "b) Artículo 16", "c) Artículo 17", "d) Artículo 18"],
+        correcta: "b) Artículo 16",
+        justificacion: "El artículo 16 CE reconoce la libertad ideológica, religiosa y de culto."
+      },
+{
+        pregunta: "¿Qué derecho está ligado al principio de igualdad?",
+        opciones: ["a) Derecho a la vida", "b) Derecho a la educación", "c) Derecho a no ser discriminado", "d) Derecho al voto"],
+        correcta: "c) Derecho a no ser discriminado",
+        justificacion: "Está recogido en el artículo 14, que prohíbe toda discriminación."
+      },
+{
+        pregunta: "¿Qué significa que los derechos humanos son inalienables?",
+        opciones: ["a) Se pueden ceder voluntariamente", "b) Solo los tiene el Estado", "c) No pueden ser eliminados", "d) Se aplican solo con nacionalidad"],
+        correcta: "c) No pueden ser eliminados",
+        justificacion: "Nadie puede renunciar ni ser despojado de sus derechos humanos."
+      },
+{
+        pregunta: "¿Cuándo fue proclamada la Declaración Universal de los Derechos Humanos?",
+        opciones: ["a) 26 de agosto de 1789", "b) 10 de diciembre de 1948", "c) 16 de diciembre de 1966", "d) 15 de marzo de 2006"],
+        correcta: "b) 10 de diciembre de 1948",
+        justificacion: "La DUDH fue adoptada por la Asamblea General de la ONU el 10/12/1948."
+      },
+{
+        pregunta: "Selecciona la INCORRECTA sobre la DUDH",
+        opciones: ["a) Tiene preámbulo y 30 artículos", "b) Es jurídicamente vinculante por sí misma para todos los Estados", "c) La adoptó la Asamblea General de la ONU", "d) Inspiró constituciones y tratados posteriores"],
+        correcta: "b) Es jurídicamente vinculante por sí misma para todos los Estados",
+        justificacion: "La DUDH no es un tratado; su fuerza es moral y de soft law, aunque ha influido en normas vinculantes."
+      },
+{
+        pregunta: "¿Qué proclama el artículo 1 de la DUDH?",
+        opciones: ["a) Igualdad ante la ley", "b) Libertad de circulación", "c) Nacer libres e iguales en dignidad y derechos", "d) Derecho a la educación"],
+        correcta: "c) Nacer libres e iguales en dignidad y derechos",
+        justificacion: "Art. 1: libertad e igualdad en dignidad y derechos; trato fraternal."
+      },
+{
+        pregunta: "¿Qué reconoce el artículo 3 de la DUDH?",
+        opciones: ["a) Derecho a un salario digno", "b) Derecho a la vida, libertad y seguridad", "c) Derecho al asilo", "d) Derecho a la propiedad"],
+        correcta: "b) Derecho a la vida, libertad y seguridad",
+        justificacion: "Art. 3: vida, libertad y seguridad personal."
+      },
+{
+        pregunta: "Sobre la Carta Internacional de Derechos Humanos",
+        opciones: ["a) Incluye la DUDH", "b) Incluye el PIDCP", "c) Incluye el PIDESC", "d) Todas son correctas"],
+        correcta: "d) Todas son correctas",
+        justificacion: "La Carta Internacional agrupa DUDH, PIDCP y PIDESC."
+      },
+{
+        pregunta: "¿En qué año se creó el Consejo de Derechos Humanos de la ONU?",
+        opciones: ["a) 1948", "b) 1979", "c) 2006", "d) 1989"],
+        correcta: "c) 2006",
+        justificacion: "La AGNU lo estableció el 15/03/2006 en sustitución de la Comisión de DDHH."
+      },
+{
+        pregunta: "¿Dónde se ubica el sistema principal de la ONU para DDHH (CDH/OACNUDH)?",
+        opciones: ["a) Nueva York", "b) Ginebra", "c) París", "d) Estrasburgo"],
+        correcta: "b) Ginebra",
+        justificacion: "El CDH y la OACNUDH operan principalmente desde Ginebra."
+      },
+{
+        pregunta: "Selecciona la INCORRECTA: ejemplos de derechos civiles y políticos",
+        opciones: ["a) Libertad de expresión", "b) Derecho a la vida", "c) Derecho a la seguridad social", "d) Participación política"],
+        correcta: "c) Derecho a la seguridad social",
+        justificacion: "La seguridad social es típico derecho social (DESC), no civil-político."
+      },
+{
+        pregunta: "¿Qué regula el artículo 13 de la DUDH?",
+        opciones: ["a) Educación", "b) Libertad de circulación y residencia", "c) Trabajo", "d) Seguridad social"],
+        correcta: "b) Libertad de circulación y residencia",
+        justificacion: "Art. 13: circular, residir, salir de cualquier país y regresar."
+      },
+{
+        pregunta: "Eleanor Roosevelt respecto a la DUDH",
+        opciones: ["a) Presidenta del Consejo de Seguridad", "b) Presidió la Comisión de DDHH que la elaboró", "c) Secretaria General de la ONU", "d) Autora única del texto"],
+        correcta: "b) Presidió la Comisión de DDHH que la elaboró",
+        justificacion: "Encabezó la Comisión de DDHH en el proceso de redacción."
+      },
+{
+        pregunta: "Entrada en vigor del PIDCP",
+        opciones: ["a) 1948", "b) 1966", "c) 1976", "d) 1989"],
+        correcta: "c) 1976",
+        justificacion: "Adoptado en 1966; entró en vigor en 1976."
+      },
+{
+        pregunta: "¿Qué documento inglés de 1215 limitó por primera vez el poder absoluto del monarca?",
+        opciones: ["a) Declaración de Independencia", "b) Bill of Rights", "c) Carta Magna", "d) Declaración de los Derechos del Hombre y del Ciudadano"],
+        correcta: "c) Carta Magna",
+        justificacion: "La Carta Magna de 1215 limitó los poderes del rey Juan sin Tierra e introdujo garantías legales básicas."
+      },
+{
+        pregunta: "¿En qué año se aprobó el Bill of Rights en Inglaterra?",
+        opciones: ["a) 1215", "b) 1689", "c) 1776", "d) 1789"],
+        correcta: "b) 1689",
+        justificacion: "El Bill of Rights de 1689 consolidó derechos parlamentarios y libertades frente a la monarquía."
+      },
+{
+        pregunta: "¿Qué declaración proclamaron los colonos de las Trece Colonias en 1776?",
+        opciones: ["a) Declaración Universal de Derechos Humanos", "b) Declaración de Independencia de Estados Unidos", "c) Declaración de Derechos del Hombre y del Ciudadano", "d) Carta de San Francisco"],
+        correcta: "b) Declaración de Independencia de Estados Unidos",
+        justificacion: "La Declaración de Independencia de 1776 afirmó principios de igualdad, libertad y derecho a la rebelión."
+      },
+{
+        pregunta: "¿Qué documento aprobó la Asamblea Nacional francesa en 1789?",
+        opciones: ["a) Declaración de Independencia", "b) Declaración Universal de Derechos Humanos", "c) Declaración de los Derechos del Hombre y del Ciudadano", "d) Bill of Rights"],
+        correcta: "c) Declaración de los Derechos del Hombre y del Ciudadano",
+        justificacion: "Aprobada en 1789, reconoce derechos individuales y principios de soberanía popular."
+      },
+{
+        pregunta: "¿En qué año se firmó la Carta de la ONU en San Francisco?",
+        opciones: ["a) 1919", "b) 1945", "c) 1948", "d) 1950"],
+        correcta: "b) 1945",
+        justificacion: "La Carta de San Francisco de 1945 creó la ONU y sentó las bases de la protección internacional de los derechos humanos."
+      },
+{
+        pregunta: "¿Qué órgano de la ONU se menciona en la Carta como principal responsable de promover derechos humanos?",
+        opciones: ["a) Consejo de Seguridad", "b) Asamblea General", "c) ECOSOC", "d) Corte Internacional de Justicia"],
+        correcta: "c) ECOSOC",
+        justificacion: "El ECOSOC fue dotado de competencias específicas para promover los derechos humanos."
+      },
+{
+        pregunta: "¿Qué comité de la ONU fue precursor del Consejo de Derechos Humanos?",
+        opciones: ["a) Comité DESC", "b) Comisión de Derechos Humanos", "c) Consejo de Seguridad", "d) Corte Penal Internacional"],
+        correcta: "b) Comisión de Derechos Humanos",
+        justificacion: "La Comisión de Derechos Humanos fue creada en 1946 y sustituida en 2006 por el Consejo de Derechos Humanos."
+      },
+{
+        pregunta: "¿Qué generación de derechos incluye los derechos de paz, solidaridad y medio ambiente?",
+        opciones: ["a) Primera", "b) Segunda", "c) Tercera", "d) Ninguna"],
+        correcta: "c) Tercera",
+        justificacion: "Los derechos de tercera generación incluyen derechos colectivos como paz, desarrollo y medio ambiente."
+      },
+{
+        pregunta: "¿Qué declaración internacional proclamó los Derechos del Niño en 1959?",
+        opciones: ["a) Convención de 1989", "b) Declaración Universal de Derechos Humanos", "c) Declaración de los Derechos del Niño", "d) Declaración de Viena"],
+        correcta: "c) Declaración de los Derechos del Niño",
+        justificacion: "La Asamblea General de la ONU proclamó en 1959 la Declaración de los Derechos del Niño, antecedente de la Convención de 1989."
+      },
+{
+        pregunta: "¿Qué convención posterior consolidó los derechos del niño con carácter vinculante?",
+        opciones: ["a) Convención de 1966", "b) Convención de Ginebra", "c) Convención sobre los Derechos del Niño de 1989", "d) Protocolo de San Salvador"],
+        correcta: "c) Convención sobre los Derechos del Niño de 1989",
+        justificacion: "Aprobada en 1989, es el tratado de derechos humanos más ratificado."
+      },
+{
+        pregunta: "¿Qué declaración de 1963 condenó la discriminación racial?",
+        opciones: ["a) Declaración de Viena", "b) Declaración sobre la Eliminación de todas las Formas de Discriminación Racial", "c) Declaración Universal de Derechos Humanos", "d) Carta Africana"],
+        correcta: "b) Declaración sobre la Eliminación de todas las Formas de Discriminación Racial",
+        justificacion: "Adoptada en 1963, fue antecedente de la Convención Internacional de 1965 contra la discriminación racial."
+      },
+{
+        pregunta: "¿Qué principio internacional prohíbe devolver a un refugiado a un país donde su vida peligra?",
+        opciones: ["a) Jus cogens", "b) Non-refoulement", "c) Pro homine", "d) Pacta sunt servanda"],
+        correcta: "b) Non-refoulement",
+        justificacion: "Principio recogido en la Convención sobre Refugiados de 1951."
+      },
+{
+        pregunta: "¿Qué conferencia proclamó el derecho a la autodeterminación de los pueblos coloniales?",
+        opciones: ["a) Viena 1993", "b) Teherán 1968", "c) Bandung 1955", "d) Durban 2001"],
+        correcta: "c) Bandung 1955",
+        justificacion: "La Conferencia de Bandung defendió la autodeterminación y la cooperación afroasiática."
+      },
+{
+        pregunta: "¿Qué declaración de 1978 vinculó salud y derechos humanos?",
+        opciones: ["a) Alma Ata", "b) Durban", "c) Río", "d) Viena"],
+        correcta: "a) Alma Ata",
+        justificacion: "La Declaración de Alma Ata de 1978 sobre Atención Primaria de Salud vinculó salud y derechos humanos."
+      },
+{
+        pregunta: "¿Qué declaración de 1992 vinculó medio ambiente y desarrollo?",
+        opciones: ["a) Río de Janeiro", "b) Viena", "c) Durban", "d) San Salvador"],
+        correcta: "a) Río de Janeiro",
+        justificacion: "La Conferencia de Río de 1992 aprobó la Declaración sobre Medio Ambiente y Desarrollo."
+      },
+{
+        pregunta: "¿Qué conferencia de 1990 adoptó la Declaración Islámica de Derechos Humanos?",
+        opciones: ["a) El Cairo", "b) Viena", "c) Durban", "d) San Francisco"],
+        correcta: "a) El Cairo",
+        justificacion: "La Declaración de El Cairo de 1990 fue adoptada por la Organización de la Conferencia Islámica."
+      },
+{
+        pregunta: "¿Qué convención internacional protege específicamente a los trabajadores migrantes?",
+        opciones: ["a) Convención 1989", "b) Convención 1990", "c) CEDAW", "d) CRPD"],
+        correcta: "b) Convención 1990",
+        justificacion: "La Convención de 1990 protege los derechos de los trabajadores migratorios y sus familias."
+      },
+{
+        pregunta: "¿Qué órgano internacional supervisa el cumplimiento de la Convención sobre los Derechos de las Personas con Discapacidad?",
+        opciones: ["a) Comité DESC", "b) Comité CRPD", "c) Comité CERD", "d) Comité CEDAW"],
+        correcta: "b) Comité CRPD",
+        justificacion: "El Comité CRPD vigila la aplicación de la Convención de 2006 sobre Discapacidad."
+      },
+{
+        pregunta: "¿Qué principio interpreta los derechos humanos de la manera más favorable a la persona?",
+        opciones: ["a) Non-refoulement", "b) Jus cogens", "c) Pro homine", "d) Pacta sunt servanda"],
+        correcta: "c) Pro homine",
+        justificacion: "El principio pro homine establece que debe aplicarse siempre la norma más favorable a la persona."
+      },
+{
+        pregunta: "¿Qué tratado internacional de 1951 regula el estatuto de los refugiados?",
+        opciones: ["a) Pacto Internacional de Derechos Civiles y Políticos", "b) Convención sobre el Estatuto de los Refugiados", "c) Carta de la ONU", "d) Convención contra la Tortura"],
+        correcta: "b) Convención sobre el Estatuto de los Refugiados",
+        justificacion: "Adoptada en 1951, regula el estatuto y protección internacional de los refugiados."
+      },
+{
+        pregunta: "¿Qué órgano regional protege derechos humanos en África?",
+        opciones: ["a) Tribunal Africano de Derechos Humanos y de los Pueblos", "b) Corte Interamericana", "c) TEDH", "d) Consejo de Europa"],
+        correcta: "a) Tribunal Africano de Derechos Humanos y de los Pueblos",
+        justificacion: "Creado en 1998, vigila la Carta Africana de Derechos Humanos y de los Pueblos."
+      },
+{
+        pregunta: "¿Qué órgano protege derechos en América a nivel regional?",
+        opciones: ["a) Corte Interamericana de Derechos Humanos", "b) TEDH", "c) CPI", "d) Consejo de Europa"],
+        correcta: "a) Corte Interamericana de Derechos Humanos",
+        justificacion: "La Corte Interamericana de DDHH se ubica en Costa Rica y aplica la Convención Americana de 1969."
+      },
+{
+        pregunta: "¿Qué convención americana de 1969 protege derechos humanos?",
+        opciones: ["a) Pacto de San José de Costa Rica", "b) Convención de Viena", "c) Protocolo de San Salvador", "d) Carta Democrática Interamericana"],
+        correcta: "a) Pacto de San José de Costa Rica",
+        justificacion: "La Convención Americana de Derechos Humanos fue adoptada en 1969 en San José."
+      },
+{
+        pregunta: "¿Qué protocolo adicional a la Convención Americana regula derechos económicos, sociales y culturales?",
+        opciones: ["a) Protocolo de San Salvador", "b) Protocolo de Nueva York", "c) Protocolo de Estrasburgo", "d) Protocolo de Madrid"],
+        correcta: "a) Protocolo de San Salvador",
+        justificacion: "Adoptado en 1988, amplía los DESC en el marco interamericano."
+      },
+{
+        pregunta: "¿Qué principio de derecho internacional obliga a cumplir los tratados?",
+        opciones: ["a) Jus cogens", "b) Pacta sunt servanda", "c) Pro homine", "d) Non-refoulement"],
+        correcta: "b) Pacta sunt servanda",
+        justificacion: "El principio pacta sunt servanda obliga a las partes a cumplir de buena fe los tratados internacionales."
+      },
+{
+        pregunta: "¿Qué norma internacional prohíbe prácticas como la esclavitud o la tortura sin excepciones?",
+        opciones: ["a) Jus cogens", "b) Non-refoulement", "c) Pro homine", "d) Pacta sunt servanda"],
+        correcta: "a) Jus cogens",
+        justificacion: "Las normas de jus cogens son imperativas y no admiten acuerdo en contrario."
+      },
+{
+        pregunta: "¿Qué tratado internacional de 1965 combate la discriminación racial?",
+        opciones: ["a) Convención Internacional sobre la Eliminación de todas las Formas de Discriminación Racial", "b) Convención de Viena", "c) CEDAW", "d) PIDESC"],
+        correcta: "a) Convención Internacional sobre la Eliminación de todas las Formas de Discriminación Racial",
+        justificacion: "Adoptada en 1965, es supervisada por el Comité CERD."
+      },
+{
+        pregunta: "¿Qué declaración mundial de 1968 reafirmó la universalidad de los derechos humanos?",
+        opciones: ["a) Declaración de Teherán", "b) Declaración de Viena", "c) Declaración de Durban", "d) Declaración de Río"],
+        correcta: "a) Declaración de Teherán",
+        justificacion: "La Conferencia de Teherán de 1968 reafirmó la universalidad e indivisibilidad de los DDHH."
+      },
+{
+        pregunta: "¿Qué conferencia internacional celebrada en 1993 reafirmó la indivisibilidad de todos los derechos humanos?",
+        opciones: ["a) Viena", "b) Río de Janeiro", "c) Teherán", "d) Durban"],
+        correcta: "a) Viena",
+        justificacion: "La Conferencia Mundial de Derechos Humanos de Viena en 1993 reafirmó la universalidad, interdependencia e indivisibilidad de los DDHH."
+      },
+{
+        pregunta: "¿Qué declaración de 2001 condenó el racismo, la xenofobia y la intolerancia?",
+        opciones: ["a) Viena", "b) Durban", "c) Alma Ata", "d) El Cairo"],
+        correcta: "b) Durban",
+        justificacion: "La Conferencia de Durban de 2001 se centró en la lucha contra el racismo, la discriminación racial, la xenofobia y formas conexas de intolerancia."
+      },
+{
+        pregunta: "¿Qué órgano judicial internacional tiene sede en La Haya y persigue crímenes de lesa humanidad?",
+        opciones: ["a) Corte Penal Internacional", "b) Corte Interamericana", "c) Tribunal Europeo de DDHH", "d) Corte Internacional de Justicia"],
+        correcta: "a) Corte Penal Internacional",
+        justificacion: "La CPI, creada en 1998 por el Estatuto de Roma, enjuicia crímenes de guerra, genocidio y lesa humanidad."
+      },
+{
+        pregunta: "¿Qué diferencia a la Corte Internacional de Justicia de la CPI?",
+        opciones: ["a) La CIJ resuelve litigios entre Estados, la CPI juzga a personas", "b) La CIJ juzga a individuos, la CPI a Estados", "c) Ambas son idénticas", "d) La CPI depende del Consejo de Europa"],
+        correcta: "a) La CIJ resuelve litigios entre Estados, la CPI juzga a personas",
+        justificacion: "La CIJ resuelve conflictos entre Estados; la CPI juzga responsabilidad penal individual."
+      },
+{
+        pregunta: "¿Qué órgano de la ONU puede imponer sanciones económicas y militares?",
+        opciones: ["a) Asamblea General", "b) Consejo de Seguridad", "c) ECOSOC", "d) Consejo de Derechos Humanos"],
+        correcta: "b) Consejo de Seguridad",
+        justificacion: "El Consejo de Seguridad tiene poder vinculante para imponer sanciones y medidas coercitivas."
+      },
+{
+        pregunta: "¿Qué es la Carta Africana de Derechos Humanos y de los Pueblos?",
+        opciones: ["a) Un tratado africano de 1981 que protege DDHH y deberes de los pueblos", "b) Una declaración de la ONU", "c) Un acuerdo europeo", "d) Un pacto interamericano"],
+        correcta: "a) Un tratado africano de 1981 que protege DDHH y deberes de los pueblos",
+        justificacion: "La Carta Africana de 1981 incluye derechos humanos y también deberes colectivos de los pueblos."
+      },
+{
+        pregunta: "¿Qué instrumento europeo de 1961 protege derechos sociales?",
+        opciones: ["a) Carta Social Europea", "b) Convenio Europeo de Derechos Humanos", "c) Pacto de San José", "d) Carta Africana"],
+        correcta: "a) Carta Social Europea",
+        justificacion: "Adoptada en 1961 en el Consejo de Europa, protege derechos económicos y sociales."
+      },
+{
+        pregunta: "¿Qué país no pertenece al Consejo de Europa y, por tanto, no está sometido al TEDH?",
+        opciones: ["a) España", "b) Francia", "c) Rusia (tras 2022)", "d) Alemania"],
+        correcta: "c) Rusia (tras 2022)",
+        justificacion: "Rusia fue expulsada del Consejo de Europa en 2022 y dejó de estar bajo jurisdicción del TEDH."
+      },
+{
+        pregunta: "¿Qué declaración de 1975 sobre seguridad en Europa incluyó compromisos en DDHH?",
+        opciones: ["a) Acta Final de Helsinki", "b) Carta Africana", "c) Declaración de Alma Ata", "d) Protocolo de San Salvador"],
+        correcta: "a) Acta Final de Helsinki",
+        justificacion: "El Acta de Helsinki de 1975 incluyó un 'tercer cesto' sobre DDHH y cooperación humanitaria."
+      },
+{
+        pregunta: "¿Qué principio establece que ningún tratado puede derogar normas imperativas de derecho internacional?",
+        opciones: ["a) Non-refoulement", "b) Jus cogens", "c) Pro homine", "d) Pacta sunt servanda"],
+        correcta: "b) Jus cogens",
+        justificacion: "El jus cogens prevalece sobre cualquier acuerdo en contrario."
+      },
+{
+        pregunta: "¿Qué institución española se considera un Mecanismo Nacional de DDHH?",
+        opciones: ["a) Tribunal Constitucional", "b) Defensor del Pueblo", "c) Consejo de Ministros", "d) Consejo General del Poder Judicial"],
+        correcta: "b) Defensor del Pueblo",
+        justificacion: "El Defensor del Pueblo actúa como institución nacional de DDHH en España, acreditada ante la ONU."
+      },
+{
+        pregunta: "¿Qué tratado creó en 1998 la Corte Penal Internacional?",
+        opciones: ["a) Convención de Viena", "b) Estatuto de Roma", "c) Acta de Helsinki", "d) Carta Africana"],
+        correcta: "b) Estatuto de Roma",
+        justificacion: "El Estatuto de Roma de 1998 estableció la CPI con sede en La Haya."
+      },
+{
+        pregunta: "¿Qué convención de 1984 prohíbe de forma absoluta la tortura?",
+        opciones: ["a) Convención contra la Tortura", "b) PIDCP", "c) PIDESC", "d) DUDH"],
+        correcta: "a) Convención contra la Tortura",
+        justificacion: "Adoptada en 1984, establece la prohibición absoluta de la tortura y crea el Comité contra la Tortura."
+      },
+{
+        pregunta: "¿Qué protocolo de 2002 complementa la Convención contra la Tortura?",
+        opciones: ["a) Protocolo Facultativo OPCAT", "b) Protocolo de San Salvador", "c) Protocolo de Estrasburgo", "d) Protocolo de Viena"],
+        correcta: "a) Protocolo Facultativo OPCAT",
+        justificacion: "El OPCAT de 2002 creó el Subcomité para la Prevención de la Tortura y mecanismos nacionales."
+      },
+{
+        pregunta: "¿Qué año se aprobó la Convención sobre la Eliminación de todas las Formas de Discriminación contra la Mujer (CEDAW)?",
+        opciones: ["a) 1965", "b) 1979", "c) 1989", "d) 1993"],
+        correcta: "b) 1979",
+        justificacion: "La CEDAW fue aprobada en 1979 y es supervisada por el Comité CEDAW."
+      },
+{
+        pregunta: "¿Qué convención de 2006 protege los derechos de las personas con discapacidad?",
+        opciones: ["a) CRPD", "b) CERD", "c) CEDAW", "d) CAT"],
+        correcta: "a) CRPD",
+        justificacion: "La Convención sobre los Derechos de las Personas con Discapacidad (CRPD) fue adoptada en 2006."
+      },
+{
+        pregunta: "¿Qué convención de 1989 es el tratado de DDHH más ratificado?",
+        opciones: ["a) CEDAW", "b) Convención sobre los Derechos del Niño", "c) PIDCP", "d) PIDESC"],
+        correcta: "b) Convención sobre los Derechos del Niño",
+        justificacion: "La CDN de 1989 es el tratado de DDHH con más ratificaciones en la historia."
+      },
+{
+        pregunta: "¿Qué declaración proclamó la ONU en 1981 sobre libertad religiosa?",
+        opciones: ["a) Declaración sobre la Eliminación de todas las Formas de Intolerancia y Discriminación basadas en la Religión", "b) Declaración de Viena", "c) Declaración de Durban", "d) Acta de Helsinki"],
+        correcta: "a) Declaración sobre la Eliminación de todas las Formas de Intolerancia y Discriminación basadas en la Religión",
+        justificacion: "Proclamada en 1981, protege la libertad religiosa y de creencias."
+      },
+{
+        pregunta: "¿Qué principio consagra el artículo 1 común de los Pactos de 1966?",
+        opciones: ["a) Autodeterminación de los pueblos", "b) Derecho a la vida", "c) Prohibición de la tortura", "d) Non-refoulement"],
+        correcta: "a) Autodeterminación de los pueblos",
+        justificacion: "El artículo 1 común del PIDCP y PIDESC reconoce el derecho de autodeterminación."
+      },
+{
+        pregunta: "¿Qué convención de 1954 regula el estatuto de los apátridas?",
+        opciones: ["a) Convención sobre el Estatuto de los Apátridas", "b) Convención de Refugiados", "c) PIDCP", "d) PIDESC"],
+        correcta: "a) Convención sobre el Estatuto de los Apátridas",
+        justificacion: "La Convención de 1954 regula la situación jurídica de los apátridas."
+      },
+{
+        pregunta: "¿Qué convención de 1961 trata de reducir los casos de apatridia?",
+        opciones: ["a) Convención de 1961 para Reducir los Casos de Apatridia", "b) Convención de Refugiados", "c) PIDESC", "d) CEDAW"],
+        correcta: "a) Convención de 1961 para Reducir los Casos de Apatridia",
+        justificacion: "La Convención de 1961 busca prevenir y reducir la apatridia."
+      },
+{
+        pregunta: "¿Qué organismo supervisa el cumplimiento de la Convención sobre Refugiados de 1951?",
+        opciones: ["a) ACNUR", "b) ONUDD", "c) ECOSOC", "d) CPI"],
+        correcta: "a) ACNUR",
+        justificacion: "El Alto Comisionado de las Naciones Unidas para los Refugiados (ACNUR) supervisa la aplicación de la Convención de 1951."
+      },
+{
+        pregunta: "¿Qué declaración de 1948 se considera la base de los DDHH modernos?",
+        opciones: ["a) Declaración Universal de Derechos Humanos", "b) Carta Africana", "c) Pacto de San José", "d) CEDAW"],
+        correcta: "a) Declaración Universal de Derechos Humanos",
+        justificacion: "La DUDH de 1948 proclamó por primera vez un catálogo universal de derechos humanos."
+      },
+{
+        pregunta: "¿Qué principio obliga a los Estados a garantizar progresivamente los derechos económicos, sociales y culturales?",
+        opciones: ["a) Pro homine", "b) Realización progresiva", "c) Jus cogens", "d) Non-refoulement"],
+        correcta: "b) Realización progresiva",
+        justificacion: "El PIDESC establece que los DESC deben garantizarse progresivamente en función de recursos disponibles."
+      },
+{
+        pregunta: "¿Qué principio establece que nadie puede renunciar a sus derechos humanos básicos?",
+        opciones: ["a) Inalienabilidad", "b) Indivisibilidad", "c) Interdependencia", "d) Universalidad"],
+        correcta: "a) Inalienabilidad",
+        justificacion: "Los derechos humanos son inalienables: no pueden ser enajenados ni renunciados."
+      },
+{
+        pregunta: "¿Qué principio implica que todos los derechos tienen igual importancia y deben cumplirse en conjunto?",
+        opciones: ["a) Indivisibilidad", "b) Universalidad", "c) Jus cogens", "d) Non-refoulement"],
+        correcta: "a) Indivisibilidad",
+        justificacion: "La indivisibilidad significa que todos los derechos humanos son igualmente esenciales."
+      },
+{
+        pregunta: "¿Qué principio establece que los derechos humanos corresponden a todas las personas sin distinción?",
+        opciones: ["a) Universalidad", "b) Jus cogens", "c) Pacta sunt servanda", "d) Pro homine"],
+        correcta: "a) Universalidad",
+        justificacion: "La universalidad es un principio básico: todos los seres humanos tienen derechos por igual."
+      },
+{
+        pregunta: "¿Qué documento de 1787 en Estados Unidos recogió por primera vez una Constitución escrita moderna?",
+        opciones: ["a) Declaración de Independencia", "b) Constitución de Filadelfia", "c) Bill of Rights", "d) Declaración de Virginia"],
+        correcta: "b) Constitución de Filadelfia",
+        justificacion: "La Constitución de 1787 en Filadelfia fue la primera constitución escrita moderna."
+      },
+{
+        pregunta: "¿Qué enmiendas de 1791 en Estados Unidos conforman el Bill of Rights norteamericano?",
+        opciones: ["a) Las primeras diez enmiendas", "b) Enmiendas 13 a 15", "c) Enmiendas 19 y 21", "d) Ninguna"],
+        correcta: "a) Las primeras diez enmiendas",
+        justificacion: "El Bill of Rights de 1791 incluyó las diez primeras enmiendas a la Constitución de EE.UU."
+      },
+{
+        pregunta: "¿Qué derechos se consideran de primera generación?",
+        opciones: ["a) Civiles y políticos", "b) Económicos y sociales", "c) Medioambientales", "d) De solidaridad"],
+        correcta: "a) Civiles y políticos",
+        justificacion: "Los derechos de primera generación son civiles y políticos: libertad de expresión, sufragio, etc."
+      },
+{
+        pregunta: "¿Qué derechos se consideran de segunda generación?",
+        opciones: ["a) Económicos, sociales y culturales", "b) Civiles y políticos", "c) Paz y medio ambiente", "d) Ninguno"],
+        correcta: "a) Económicos, sociales y culturales",
+        justificacion: "La segunda generación engloba derechos como trabajo, educación, salud, vivienda."
+      },
+{
+        pregunta: "¿Qué derechos se consideran de tercera generación?",
+        opciones: ["a) Paz, desarrollo y medio ambiente", "b) Libertad de expresión", "c) Derecho al voto", "d) Derecho a la propiedad"],
+        correcta: "a) Paz, desarrollo y medio ambiente",
+        justificacion: "Los derechos de tercera generación son de carácter colectivo, como paz, medio ambiente y desarrollo."
+      },
+{
+        pregunta: "¿Qué conferencia de 1972 vinculó medio ambiente y derechos humanos?",
+        opciones: ["a) Estocolmo", "b) Río de Janeiro", "c) Viena", "d) Durban"],
+        correcta: "a) Estocolmo",
+        justificacion: "La Conferencia de Estocolmo de 1972 abordó medio ambiente y DDHH."
+      },
+{
+        pregunta: "¿Qué principio establece que los derechos humanos deben aplicarse también en conflictos armados?",
+        opciones: ["a) Pro homine", "b) Complementariedad con el derecho internacional humanitario", "c) Non-refoulement", "d) Jus cogens"],
+        correcta: "b) Complementariedad con el derecho internacional humanitario",
+        justificacion: "Los DDHH no desaparecen en conflictos; se aplican junto al derecho internacional humanitario."
+      },
+{
+        pregunta: "¿Qué declaración de 1986 proclamó el derecho al desarrollo?",
+        opciones: ["a) Declaración de Viena", "b) Declaración sobre el Derecho al Desarrollo", "c) Declaración de Durban", "d) Declaración de Río"],
+        correcta: "b) Declaración sobre el Derecho al Desarrollo",
+        justificacion: "Proclamada en 1986, reconoce el desarrollo como derecho humano."
+      },
+{
+        pregunta: "¿Qué resolución de 1979 creó el Comité para la Eliminación de la Discriminación contra la Mujer?",
+        opciones: ["a) CEDAW", "b) PIDCP", "c) PIDESC", "d) CDN"],
+        correcta: "a) CEDAW",
+        justificacion: "La Convención de 1979 estableció el Comité CEDAW para supervisar la eliminación de la discriminación contra la mujer."
+      },
+{
+        pregunta: "¿Qué protocolo de 2000 complementa la Convención sobre los Derechos del Niño contra la explotación sexual?",
+        opciones: ["a) Protocolo Facultativo sobre participación en conflictos armados", "b) Protocolo Facultativo sobre venta de niños, prostitución infantil y pornografía infantil", "c) Protocolo de San Salvador", "d) Ninguno"],
+        correcta: "b) Protocolo Facultativo sobre venta de niños, prostitución infantil y pornografía infantil",
+        justificacion: "Adoptado en 2000, complementa la CDN de 1989 contra la explotación sexual infantil."
+      },
+{
+        pregunta: "¿Qué principio indica que los tratados internacionales de DDHH deben interpretarse en favor de la efectividad de los derechos?",
+        opciones: ["a) Pro persona / pro homine", "b) Jus cogens", "c) Non-refoulement", "d) Pacta sunt servanda"],
+        correcta: "a) Pro persona / pro homine",
+        justificacion: "Este principio exige aplicar siempre la interpretación más favorable a la persona."
+      },
+{
+        pregunta: "¿Qué convención internacional de 2007 protege a las personas desaparecidas forzadamente?",
+        opciones: ["a) Convención Internacional contra las Desapariciones Forzadas", "b) Convención de Viena", "c) PIDCP", "d) PIDESC"],
+        correcta: "a) Convención Internacional contra las Desapariciones Forzadas",
+        justificacion: "Aprobada en 2007, reconoce y protege a las víctimas de desaparición forzada."
+      },
+{
+        pregunta: "¿Qué protocolo facultativo de 1989 permite denuncias individuales ante el Comité de los Derechos del Niño?",
+        opciones: ["a) Ninguno", "b) Protocolo de comunicaciones de 1989", "c) Protocolo Facultativo de 2011", "d) Protocolo de San Salvador"],
+        correcta: "c) Protocolo Facultativo de 2011",
+        justificacion: "El Protocolo de 2011 establece un procedimiento de comunicaciones individuales ante el Comité de los Derechos del Niño."
+      },
+{
+        pregunta: "¿Qué convención de 1966 junto al PIDCP forma la Carta Internacional de DDHH?",
+        opciones: ["a) PIDESC", "b) CEDAW", "c) CAT", "d) CRPD"],
+        correcta: "a) PIDESC",
+        justificacion: "La Carta Internacional de DDHH la integran DUDH, PIDCP y PIDESC."
+      },
+{
+        pregunta: "¿Qué concepto reconoce que ciertos derechos no admiten suspensión ni siquiera en emergencias?",
+        opciones: ["a) Derechos inderogables", "b) Derechos progresivos", "c) Derechos limitados", "d) Derechos delegables"],
+        correcta: "a) Derechos inderogables",
+        justificacion: "Son derechos absolutos que no pueden suspenderse, como prohibición de tortura o esclavitud."
+      },
+{
+        pregunta: "¿Qué conferencia internacional de 1945 estableció la ONU?",
+        opciones: ["a) San Francisco", "b) Viena", "c) Teherán", "d) París"],
+        correcta: "a) San Francisco",
+        justificacion: "La Conferencia de San Francisco en 1945 adoptó la Carta de la ONU."
+      },
+{
+        pregunta: "¿Qué es el Examen Periódico Universal (EPU)?",
+        opciones: ["a) Mecanismo del Consejo de DDHH para evaluar a todos los Estados", "b) Una conferencia internacional", "c) Un tratado vinculante", "d) Una resolución del Consejo de Seguridad"],
+        correcta: "a) Mecanismo del Consejo de DDHH para evaluar a todos los Estados",
+        justificacion: "El EPU revisa periódicamente la situación de derechos humanos en todos los países miembros de la ONU."
+      },
+{
+        pregunta: "¿Qué principio del derecho internacional prohíbe la esclavitud y la trata en cualquier circunstancia?",
+        opciones: ["a) Jus cogens", "b) Non-refoulement", "c) Pacta sunt servanda", "d) Pro homine"],
+        correcta: "a) Jus cogens",
+        justificacion: "La prohibición de esclavitud es norma imperativa de jus cogens."
+      },
+{
+        pregunta: "¿Qué resolución de la ONU en 1946 creó la Comisión de Derechos Humanos?",
+        opciones: ["a) Resolución 5(I)", "b) Resolución 1514", "c) Resolución 2625", "d) Resolución 217A"],
+        correcta: "a) Resolución 5(I)",
+        justificacion: "La resolución 5(I) de 1946 creó la Comisión de Derechos Humanos."
+      },
+{
+        pregunta: "¿Qué resolución de 1960 reconoció el derecho a la independencia de los pueblos coloniales?",
+        opciones: ["a) Resolución 1514 (XV)", "b) Resolución 217A", "c) Resolución 2625", "d) Resolución 2758"],
+        correcta: "a) Resolución 1514 (XV)",
+        justificacion: "La Declaración sobre la Concesión de la Independencia a los Países y Pueblos Coloniales de 1960 reconoció la autodeterminación."
+      },
+{
+        pregunta: "¿Qué resolución de 1970 desarrolló los principios de cooperación y no intervención?",
+        opciones: ["a) Resolución 2625 (XXV)", "b) Resolución 1514", "c) Resolución 5(I)", "d) Resolución 217A"],
+        correcta: "a) Resolución 2625 (XXV)",
+        justificacion: "La Resolución 2625 (XXV) sobre Relaciones Amistosas desarrolló principios de cooperación y no intervención."
+      },
+{
+        pregunta: "¿Qué declaración de 1992 reafirmó los derechos de las minorías?",
+        opciones: ["a) Declaración sobre los Derechos de las Personas pertenecientes a Minorías Nacionales, Étnicas, Religiosas y Lingüísticas", "b) Declaración de Viena", "c) Declaración de Durban", "d) Declaración de Teherán"],
+        correcta: "a) Declaración sobre los Derechos de las Personas pertenecientes a Minorías Nacionales, Étnicas, Religiosas y Lingüísticas",
+        justificacion: "Aprobada en 1992, protege los derechos de las minorías en el marco de la ONU."
+      },
+{
+        pregunta: "¿Qué principio establece que los DDHH deben cumplirse de buena fe y no pueden quedar en letra muerta?",
+        opciones: ["a) Eficacia práctica", "b) Pacta sunt servanda", "c) Pro homine", "d) Jus cogens"],
+        correcta: "a) Eficacia práctica",
+        justificacion: "La eficacia práctica obliga a que los tratados se apliquen de manera real y no solo formal."
+      },
+{
+        pregunta: "¿Qué institución del Consejo de Europa supervisa la aplicación de la Carta Social Europea?",
+        opciones: ["a) Comité Europeo de Derechos Sociales", "b) Tribunal Europeo de Derechos Humanos", "c) Consejo de Ministros", "d) Comisión Interamericana"],
+        correcta: "a) Comité Europeo de Derechos Sociales",
+        justificacion: "El Comité Europeo de Derechos Sociales supervisa la aplicación de la Carta Social Europea."
+      },
+{
+        pregunta: "¿Qué figura jurídica de la ONU promueve la cooperación en derechos humanos en el plano nacional?",
+        opciones: ["a) Instituciones Nacionales de Derechos Humanos", "b) Corte Penal Internacional", "c) Consejo de Seguridad", "d) CPI"],
+        correcta: "a) Instituciones Nacionales de Derechos Humanos",
+        justificacion: "Las INDH, como el Defensor del Pueblo en España, son promovidas por la ONU como mecanismos nacionales."
+      },
+{
+        pregunta: "¿Qué declaración internacional de 1990 vinculó religión islámica y derechos humanos?",
+        opciones: ["a) Declaración de El Cairo", "b) Declaración de Viena", "c) Declaración de Durban", "d) Acta de Helsinki"],
+        correcta: "a) Declaración de El Cairo",
+        justificacion: "Adoptada por la Conferencia Islámica en 1990, integra principios islámicos en materia de derechos humanos."
+      },
+{
+        pregunta: "¿Qué concepto describe el carácter progresivo y expansivo del reconocimiento de derechos humanos en la historia?",
+        opciones: ["a) Historicidad de los derechos", "b) Jus cogens", "c) Pro homine", "d) Non-refoulement"],
+        correcta: "a) Historicidad de los derechos",
+        justificacion: "El concepto de historicidad describe cómo los derechos humanos se amplían a lo largo del tiempo."
+      },
+{
+        pregunta: "¿Qué documento de 1215 limitó por primera vez el poder absoluto del rey en Inglaterra?",
+        opciones: ["a) Bill of Rights", "b) Magna Carta", "c) Habeas Corpus Act", "d) Declaración de Derechos del Hombre"],
+        correcta: "b) Magna Carta",
+        justificacion: "La Magna Carta de 1215 limitó el poder del rey e introdujo garantías jurídicas básicas."
+      },
+{
+        pregunta: "¿Qué declaración francesa de 1789 reconoció derechos universales y fue modelo para Europa?",
+        opciones: ["a) Declaración de Independencia", "b) Declaración de los Derechos del Hombre y del Ciudadano", "c) Carta Magna", "d) Declaración de Virginia"],
+        correcta: "b) Declaración de los Derechos del Hombre y del Ciudadano",
+        justificacion: "Proclamada en 1789 durante la Revolución Francesa, influyó en las constituciones modernas."
+      },
+{
+        pregunta: "¿Qué documento de 1776 proclamó la independencia de las colonias americanas?",
+        opciones: ["a) Declaración de Independencia de EE.UU.", "b) Bill of Rights", "c) Constitución de Filadelfia", "d) Acta de Derechos Inglesa"],
+        correcta: "a) Declaración de Independencia de EE.UU.",
+        justificacion: "Firmada el 4 de julio de 1776, proclamó la independencia de las colonias y derechos inalienables."
+      },
+{
+        pregunta: "¿Qué instrumento internacional de 1951 regula el estatuto de los refugiados?",
+        opciones: ["a) Convención de Ginebra sobre Refugiados", "b) PIDCP", "c) PIDESC", "d) Carta de la ONU"],
+        correcta: "a) Convención de Ginebra sobre Refugiados",
+        justificacion: "La Convención de 1951, junto al Protocolo de 1967, regula el estatuto y protección de refugiados."
+      },
+{
+        pregunta: "¿Qué principio prohíbe devolver a un refugiado a un país donde su vida corra peligro?",
+        opciones: ["a) Non-refoulement", "b) Jus cogens", "c) Pro homine", "d) Pacta sunt servanda"],
+        correcta: "a) Non-refoulement",
+        justificacion: "Este principio protege a los refugiados frente a la devolución a territorios de persecución."
+      },
+{
+        pregunta: "¿Qué declaración de 1948 de la ONU aborda la eliminación de la discriminación racial?",
+        opciones: ["a) Declaración sobre la Raza y los Prejuicios Raciales", "b) Declaración Universal de Derechos Humanos", "c) Declaración de Teherán", "d) Ninguna"],
+        correcta: "a) Declaración sobre la Raza y los Prejuicios Raciales",
+        justificacion: "Fue una de las primeras declaraciones de la ONU contra el racismo tras la Segunda Guerra Mundial."
+      },
+{
+        pregunta: "¿Qué convención internacional de 1965 combate la discriminación racial?",
+        opciones: ["a) CERD", "b) CEDAW", "c) CRPD", "d) CAT"],
+        correcta: "a) CERD",
+        justificacion: "La Convención Internacional sobre la Eliminación de todas las Formas de Discriminación Racial fue adoptada en 1965."
+      },
+{
+        pregunta: "¿Qué convención de 2006 protege a las personas con discapacidad?",
+        opciones: ["a) CRPD", "b) CEDAW", "c) CERD", "d) CAT"],
+        correcta: "a) CRPD",
+        justificacion: "La Convención sobre los Derechos de las Personas con Discapacidad se adoptó en 2006."
+      },
+{
+        pregunta: "¿Qué convención de 1984 prohíbe la tortura?",
+        opciones: ["a) CAT", "b) PIDCP", "c) CEDAW", "d) CERD"],
+        correcta: "a) CAT",
+        justificacion: "La Convención contra la Tortura y otros Tratos o Penas Crueles, Inhumanos o Degradantes de 1984 prohíbe esta práctica."
+      },
+{
+        pregunta: "¿Qué conferencia de 1968 en Teherán reafirmó la universalidad de los DDHH?",
+        opciones: ["a) Viena 1993", "b) Teherán 1968", "c) Durban 2001", "d) El Cairo 1990"],
+        correcta: "b) Teherán 1968",
+        justificacion: "La Conferencia Internacional de Derechos Humanos en Teherán reafirmó la universalidad de los derechos."
+      },
+{
+        pregunta: "¿Qué conferencia de 2001 en Sudáfrica abordó el racismo a nivel global?",
+        opciones: ["a) Viena 1993", "b) Durban 2001", "c) Río 1992", "d) Estocolmo 1972"],
+        correcta: "b) Durban 2001",
+        justificacion: "La Conferencia de Durban de 2001 trató racismo, xenofobia y discriminación racial."
+      },
+{
+        pregunta: "¿Qué declaración de 1959 reconoce derechos específicos de la infancia?",
+        opciones: ["a) Declaración de los Derechos del Niño", "b) Convención sobre los Derechos del Niño", "c) Declaración Universal de DDHH", "d) PIDESC"],
+        correcta: "a) Declaración de los Derechos del Niño",
+        justificacion: "Aprobada en 1959, fue antecedente de la Convención de 1989 sobre Derechos del Niño."
+      },
+{
+        pregunta: "¿Qué convención de 1989 protege específicamente a los niños?",
+        opciones: ["a) Convención sobre los Derechos del Niño", "b) PIDCP", "c) PIDESC", "d) CEDAW"],
+        correcta: "a) Convención sobre los Derechos del Niño",
+        justificacion: "Adoptada en 1989, reconoce derechos civiles, políticos, sociales y culturales de los menores."
+      },
+{
+        pregunta: "¿Qué organismo especializado de la ONU fue el primero en incluir un preámbulo de derechos laborales?",
+        opciones: ["a) OIT", "b) UNESCO", "c) OMS", "d) FAO"],
+        correcta: "a) OIT",
+        justificacion: "La Organización Internacional del Trabajo, fundada en 1919, incluyó derechos laborales en su constitución."
+      },
+{
+        pregunta: "¿Qué organismo de la ONU se ocupa de la educación, ciencia y cultura vinculada a DDHH?",
+        opciones: ["a) UNESCO", "b) OMS", "c) FAO", "d) PNUD"],
+        correcta: "a) UNESCO",
+        justificacion: "La UNESCO promueve educación, ciencia y cultura en el marco de los derechos humanos."
+      },
+{
+        pregunta: "¿Qué organismo de la ONU se ocupa del derecho a la salud?",
+        opciones: ["a) OMS", "b) UNESCO", "c) FAO", "d) PNUD"],
+        correcta: "a) OMS",
+        justificacion: "La Organización Mundial de la Salud protege el derecho a la salud en el marco internacional."
+      },
+{
+        pregunta: "¿Qué organismo de la ONU se ocupa de alimentación y agricultura?",
+        opciones: ["a) FAO", "b) UNESCO", "c) OMS", "d) OIT"],
+        correcta: "a) FAO",
+        justificacion: "La FAO trabaja por la alimentación y agricultura, vinculada al derecho a la alimentación."
+      },
+{
+        pregunta: "¿Qué concepto implica que los Estados deben cumplir de buena fe sus obligaciones internacionales en DDHH?",
+        opciones: ["a) Pacta sunt servanda", "b) Non-refoulement", "c) Pro homine", "d) Jus cogens"],
+        correcta: "a) Pacta sunt servanda",
+        justificacion: "Principio general del derecho internacional que obliga a cumplir los tratados firmados."
+      },
+{
+        pregunta: "¿Qué principio establece que los DDHH son interdependientes y no jerarquizables?",
+        opciones: ["a) Indivisibilidad", "b) Jus cogens", "c) Pacta sunt servanda", "d) Non-refoulement"],
+        correcta: "a) Indivisibilidad",
+        justificacion: "Los DDHH son indivisibles: no se puede priorizar unos sobre otros."
+      },
+{
+        pregunta: "¿Qué tribunal internacional permanente fue creado en 2002 para juzgar crímenes de lesa humanidad?",
+        opciones: ["a) CPI", "b) TEDH", "c) CIJ", "d) CDH"],
+        correcta: "a) CPI",
+        justificacion: "La Corte Penal Internacional fue creada en 2002 por el Estatuto de Roma."
+      },
+{
+        pregunta: "¿Qué estatuto creó la Corte Penal Internacional?",
+        opciones: ["a) Estatuto de Roma", "b) Carta de San Francisco", "c) Pacto de la Sociedad de Naciones", "d) Carta Social Europea"],
+        correcta: "a) Estatuto de Roma",
+        justificacion: "El Estatuto de Roma de 1998 creó la Corte Penal Internacional en 2002."
+      },
+{
+        pregunta: "¿Qué principio establece que los DDHH no se limitan a nacionales, sino a toda persona?",
+        opciones: ["a) Universalidad", "b) Indivisibilidad", "c) Non-refoulement", "d) Jus cogens"],
+        correcta: "a) Universalidad",
+        justificacion: "Los derechos humanos son universales, corresponden a todas las personas sin distinción."
+      },
+{
+        pregunta: "¿Qué conferencia internacional adoptó la Agenda 2030 de desarrollo sostenible?",
+        opciones: ["a) Nueva York 2015", "b) Río 1992", "c) Estocolmo 1972", "d) Viena 1993"],
+        correcta: "a) Nueva York 2015",
+        justificacion: "En 2015 se adoptó en Nueva York la Agenda 2030 con 17 ODS vinculados a los DDHH."
+      },
+{
+        pregunta: "¿Qué órgano judicial de la ONU resuelve controversias entre Estados?",
+        opciones: ["a) CIJ", "b) CPI", "c) TEDH", "d) CDH"],
+        correcta: "a) CIJ",
+        justificacion: "La Corte Internacional de Justicia resuelve disputas entre Estados y emite dictámenes consultivos."
+      },
+{
+        pregunta: "¿Qué tratado de 1990 protege los derechos de los trabajadores migrantes?",
+        opciones: ["a) Convención internacional sobre trabajadores migrantes", "b) PIDCP", "c) PIDESC", "d) CAT"],
+        correcta: "a) Convención internacional sobre trabajadores migrantes",
+        justificacion: "La Convención de 1990 protege a los trabajadores migrantes y sus familias."
+      },
+{
+        pregunta: "¿Qué principio obliga a que en caso de conflicto normativo se aplique la norma más favorable a la persona?",
+        opciones: ["a) Pro homine", "b) Jus cogens", "c) Non-refoulement", "d) Indivisibilidad"],
+        correcta: "a) Pro homine",
+        justificacion: "El principio pro homine exige aplicar la norma más favorable al titular de derechos."
+      },
+{
+        pregunta: "¿Qué declaración de 1975 reconoció derechos en el marco de la cooperación este-oeste?",
+        opciones: ["a) Acta Final de Helsinki", "b) Declaración de Viena", "c) Declaración de Teherán", "d) Declaración de Durban"],
+        correcta: "a) Acta Final de Helsinki",
+        justificacion: "La Acta de Helsinki de 1975 vinculó derechos humanos y seguridad en Europa."
+      },
+{
+        pregunta: "¿Qué principio de derecho internacional impide derogar derechos básicos aunque se declare un estado de excepción?",
+        opciones: ["a) Inderogabilidad", "b) Non-refoulement", "c) Jus cogens", "d) Pro homine"],
+        correcta: "a) Inderogabilidad",
+        justificacion: "Algunos derechos, como la vida o la prohibición de tortura, son inderogables incluso en emergencias."
+      },
+{
+        pregunta: "Selecciona la INCORRECTA sobre el Comité de DDHH (PIDCP)",
+        opciones: ["a) Vigila el PIDCP", "b) Son expertos independientes", "c) Puede imponer sanciones económicas", "d) Examina informes estatales"],
+        correcta: "c) Puede imponer sanciones económicas",
+        justificacion: "Emite observaciones y dictámenes; no impone sanciones."
+      },
+{
+        pregunta: "Contenido del artículo 23 de la DUDH",
+        opciones: ["a) Sindicación y condiciones justas de trabajo", "b) Educación", "c) Asilo", "d) Nacionalidad"],
+        correcta: "a) Sindicación y condiciones justas de trabajo",
+        justificacion: "Art. 23: trabajo, condiciones equitativas, salario igual, sindicatos."
+      },
+{
+        pregunta: "Artículo que reconoce el derecho a la educación en la DUDH",
+        opciones: ["a) 21", "b) 22", "c) 26", "d) 28"],
+        correcta: "c) 26",
+        justificacion: "Art. 26: educación (gratuita en primaria), fines y papel de los padres."
+      },
+{
+        pregunta: "Asilo según la DUDH (elige la correcta)",
+        opciones: ["a) El asilo no existe en la DUDH", "b) Sólo para delitos comunes", "c) Derecho a buscar asilo con excepciones por delitos comunes o actos contra la ONU", "d) Garantía absoluta sin excepciones"],
+        correcta: "c) Derecho a buscar asilo con excepciones por delitos comunes o actos contra la ONU",
+        justificacion: "Art. 14: reconoce el asilo con límites."
+      },
+{
+        pregunta: "El Comité DESC supervisa",
+        opciones: ["a) Carta de la ONU", "b) PIDESC", "c) Declaración de Viena", "d) Consejo de Seguridad"],
+        correcta: "b) PIDESC",
+        justificacion: "Órgano de expertos que vigila el Pacto de DESC."
+      },
+{
+        pregunta: "Selecciona la INCORRECTA sobre el voto según DUDH",
+        opciones: ["a) Universal", "b) Igual", "c) Secreto", "d) Condicionado a religión"],
+        correcta: "d) Condicionado a religión",
+        justificacion: "Art. 21.3: elecciones auténticas por sufragio universal e igual y voto secreto."
+      },
+{
+        pregunta: "El artículo 25 de la DUDH reconoce el derecho a",
+        opciones: ["a) Salud, bienestar, alimentación, vestido y vivienda", "b) Fundar sindicatos", "c) Salario igual por trabajo igual", "d) Recurso efectivo"],
+        correcta: "a) Salud, bienestar, alimentación, vestido y vivienda",
+        justificacion: "Art. 25: nivel de vida adecuado y protección social."
+      },
+{
+        pregunta: "Nombramiento del Alto Comisionado de la ONU para DDHH",
+        opciones: ["a) Consejo de Seguridad", "b) Asamblea General a propuesta del Secretario General", "c) Consejo de DDHH", "d) Estados Parte de la DUDH"],
+        correcta: "b) Asamblea General a propuesta del Secretario General",
+        justificacion: "Procedimiento establecido por la AGNU."
+      },
+{
+        pregunta: "Conferencia Mundial de Viena sobre DDHH",
+        opciones: ["a) 1948", "b) 1966", "c) 1976", "d) 1993"],
+        correcta: "d) 1993",
+        justificacion: "Declaración y Programa de Acción de Viena, 1993."
+      },
+{
+        pregunta: "Artículo 4 de la DUDH prohíbe",
+        opciones: ["a) Esclavitud y servidumbre", "b) Servicio militar obligatorio", "c) Impuestos desproporcionados", "d) Censura previa"],
+        correcta: "a) Esclavitud y servidumbre",
+        justificacion: "Art. 4: prohibición absoluta de la esclavitud y la trata."
+      },
+{
+        pregunta: "Igualdad ante la ley (selecciona la INCORRECTA)",
+        opciones: ["a) Todas las personas son iguales ante la ley", "b) Derecho a igual protección contra la discriminación", "c) Se limita a los nacionales", "d) Protege frente a provocación a la discriminación"],
+        correcta: "c) Se limita a los nacionales",
+        justificacion: "Art. 7: igualdad y protección sin distinción."
+      },
+{
+        pregunta: "El artículo 12 de la DUDH protege frente a",
+        opciones: ["a) Ataques arbitrarios a la vida", "b) Injerencias arbitrarias en vida privada, familia, domicilio o correspondencia", "c) Pena de muerte", "d) Limitaciones a la asociación"],
+        correcta: "b) Injerencias arbitrarias en vida privada, familia, domicilio o correspondencia",
+        justificacion: "Art. 12: también protege la honra y reputación."
+      },
+{
+        pregunta: "Artículo 18 DUDH",
+        opciones: ["a) Libertad de pensamiento, conciencia y religión", "b) Libertad de circulación", "c) Derecho de reunión", "d) Propiedad"],
+        correcta: "a) Libertad de pensamiento, conciencia y religión",
+        justificacion: "Art. 18: incluye manifestar la religión en público o privado."
+      },
+{
+        pregunta: "Artículo 20 DUDH reconoce",
+        opciones: ["a) Participación en el gobierno", "b) Reunión y asociación pacíficas", "c) Seguridad social", "d) Nacionalidad"],
+        correcta: "b) Reunión y asociación pacíficas",
+        justificacion: "Art. 20.1 libertad de reunión/ asociación; 20.2 prohibición de obligación de asociarse."
+      },
+{
+        pregunta: "Artículo 15 DUDH",
+        opciones: ["a) Nacionalidad", "b) Fundar una familia", "c) Vacaciones pagadas", "d) Propiedad intelectual"],
+        correcta: "a) Nacionalidad",
+        justificacion: "Art. 15: derecho a una nacionalidad y a no ser privado arbitrariamente de ella."
+      },
+{
+        pregunta: "Propiedad en la DUDH (selecciona la INCORRECTA)",
+        opciones: ["a) Derecho a la propiedad", "b) Propiedad individual y colectiva", "c) Nadie será privado arbitrariamente", "d) La DUDH no reconoce la propiedad"],
+        correcta: "d) La DUDH no reconoce la propiedad",
+        justificacion: "Art. 17 reconoce la propiedad y prohíbe privaciones arbitrarias."
+      },
+{
+        pregunta: "¿Qué acontecimiento histórico influyó directamente en la redacción de la DUDH?",
+        opciones: ["a) Revolución Francesa", "b) Segunda Guerra Mundial", "c) Guerra Fría", "d) Guerra de Corea"],
+        correcta: "b) Segunda Guerra Mundial",
+        justificacion: "La devastación y crímenes de la Segunda Guerra Mundial motivaron la proclamación de la DUDH en 1948."
+      },
+{
+        pregunta: "¿En qué año se aprobó el Pacto Internacional de Derechos Económicos, Sociales y Culturales (PIDESC)?",
+        opciones: ["a) 1948", "b) 1966", "c) 1976", "d) 1989"],
+        correcta: "b) 1966",
+        justificacion: "El PIDESC fue adoptado por la Asamblea General de la ONU en 1966."
+      },
+{
+        pregunta: "¿Cuál de los siguientes NO es un órgano de tratados de Naciones Unidas?",
+        opciones: ["a) Comité de Derechos Humanos", "b) Comité de los Derechos del Niño", "c) Consejo de Seguridad", "d) Comité contra la Tortura"],
+        correcta: "c) Consejo de Seguridad",
+        justificacion: "El Consejo de Seguridad es un órgano principal de la ONU, pero no es un comité de tratados."
+      },
+{
+        pregunta: "El artículo 4 del Pacto Internacional de Derechos Civiles y Políticos permite suspender ciertos derechos en caso de:",
+        opciones: ["a) Crisis económica", "b) Guerra o emergencia pública que amenace a la nación", "c) Cambio de gobierno", "d) Pandemia leve"],
+        correcta: "b) Guerra o emergencia pública que amenace a la nación",
+        justificacion: "El PIDCP permite suspender temporalmente algunos derechos en circunstancias excepcionales."
+      },
+{
+        pregunta: "¿Cuál de los siguientes derechos es ABSOLUTO y no admite suspensión?",
+        opciones: ["a) Derecho a la vida", "b) Prohibición de la tortura", "c) Libertad de circulación", "d) Derecho de asociación"],
+        correcta: "b) Prohibición de la tortura",
+        justificacion: "La prohibición de la tortura y los tratos crueles es absoluta en todos los instrumentos internacionales."
+      },
+{
+        pregunta: "El Protocolo Facultativo de 1966 del PIDCP permite:",
+        opciones: ["a) Denuncias interestatales", "b) Denuncias individuales de personas ante el Comité de Derechos Humanos", "c) Revisar sentencias penales nacionales", "d) Imponer sanciones económicas"],
+        correcta: "b) Denuncias individuales de personas ante el Comité de Derechos Humanos",
+        justificacion: "El Primer Protocolo Facultativo del PIDCP habilita comunicaciones individuales."
+      },
+{
+        pregunta: "¿Qué derecho regula el artículo 25 del PIDCP?",
+        opciones: ["a) Educación", "b) Participación en asuntos públicos y derecho de voto", "c) Libertad de circulación", "d) Derecho al asilo"],
+        correcta: "b) Participación en asuntos públicos y derecho de voto",
+        justificacion: "El artículo 25 del PIDCP establece el derecho a participar en la vida pública y a votar."
+      },
+{
+        pregunta: "¿En qué ciudad se encuentra la Corte Interamericana de Derechos Humanos?",
+        opciones: ["a) Washington D.C.", "b) San José de Costa Rica", "c) La Haya", "d) Buenos Aires"],
+        correcta: "b) San José de Costa Rica",
+        justificacion: "La Corte Interamericana tiene su sede en San José (Costa Rica)."
+      },
+{
+        pregunta: "El Protocolo de Estambul de 1999 está relacionado con:",
+        opciones: ["a) Uso de armas nucleares", "b) Lucha contra la tortura", "c) Derechos de los refugiados", "d) Medio ambiente"],
+        correcta: "b) Lucha contra la tortura",
+        justificacion: "El Protocolo de Estambul ofrece directrices para documentar la tortura y malos tratos."
+      },
+{
+        pregunta: "¿Qué derecho protege el artículo 9 del PIDCP?",
+        opciones: ["a) Libertad de pensamiento", "b) Libertad y seguridad personales", "c) Derecho a la educación", "d) Derecho a la propiedad"],
+        correcta: "b) Libertad y seguridad personales",
+        justificacion: "El artículo 9 protege contra la detención y prisión arbitrarias."
+      },
+{
+        pregunta: "¿Qué establece el artículo 19 del PIDCP?",
+        opciones: ["a) Derecho a la vida", "b) Libertad de expresión", "c) Derecho a la nacionalidad", "d) Derecho a la educación"],
+        correcta: "b) Libertad de expresión",
+        justificacion: "El artículo 19 regula la libertad de opinión y de expresión."
+      },
+{
+        pregunta: "Selecciona la INCORRECTA sobre el Tribunal Penal Internacional (TPI):",
+        opciones: ["a) Tiene sede en La Haya", "b) Juzga crímenes de guerra y lesa humanidad", "c) Forma parte de la ONU", "d) Entró en vigor en 2002"],
+        correcta: "c) Forma parte de la ONU",
+        justificacion: "El TPI es independiente, creado por el Estatuto de Roma de 1998."
+      },
+{
+        pregunta: "¿En qué año se adoptó la Convención sobre la Eliminación de Todas las Formas de Discriminación contra la Mujer (CEDAW)?",
+        opciones: ["a) 1948", "b) 1966", "c) 1979", "d) 1993"],
+        correcta: "c) 1979",
+        justificacion: "La CEDAW fue adoptada en 1979 por la Asamblea General de la ONU."
+      },
+{
+        pregunta: "La Convención sobre los Derechos del Niño fue adoptada en:",
+        opciones: ["a) 1948", "b) 1966", "c) 1989", "d) 2000"],
+        correcta: "c) 1989",
+        justificacion: "La Convención sobre los Derechos del Niño se adoptó en 1989."
+      },
+{
+        pregunta: "¿Qué protege el artículo 14 del PIDCP?",
+        opciones: ["a) Igualdad ante los tribunales y juicios justos", "b) Derecho al voto", "c) Derecho a la educación", "d) Derecho al trabajo"],
+        correcta: "a) Igualdad ante los tribunales y juicios justos",
+        justificacion: "El artículo 14 garantiza las garantías procesales y el juicio justo."
+      },
+{
+        pregunta: "La Carta Africana de Derechos Humanos y de los Pueblos se adoptó en:",
+        opciones: ["a) 1948", "b) 1966", "c) 1981", "d) 1999"],
+        correcta: "c) 1981",
+        justificacion: "La Carta Africana fue adoptada en 1981 en Nairobi."
+      },
+{
+        pregunta: "El principio de 'non-refoulement' protege a:",
+        opciones: ["a) Menores", "b) Personas refugiadas", "c) Trabajadores migrantes", "d) Minorías étnicas"],
+        correcta: "b) Personas refugiadas",
+        justificacion: "Impide devolver a refugiados a un país donde puedan sufrir persecución."
+      },
+{
+        pregunta: "¿Qué tratado prohíbe la desaparición forzada?",
+        opciones: ["a) Convención de Viena", "b) Convención Internacional de 2006", "c) PIDCP", "d) CEDAW"],
+        correcta: "b) Convención Internacional de 2006",
+        justificacion: "La Convención Internacional para la Protección de Todas las Personas contra las Desapariciones Forzadas fue adoptada en 2006."
+      },
+{
+        pregunta: "El artículo 27 del PIDCP reconoce:",
+        opciones: ["a) Derechos de las minorías étnicas, religiosas y lingüísticas", "b) Derecho a la educación", "c) Derecho a la seguridad social", "d) Derecho de reunión"],
+        correcta: "a) Derechos de las minorías étnicas, religiosas y lingüísticas",
+        justificacion: "El artículo 27 garantiza la protección de minorías."
+      },
+{
+        pregunta: "La Declaración y Programa de Acción de Durban (2001) trató sobre:",
+        opciones: ["a) Desarme nuclear", "b) Lucha contra el racismo y la discriminación racial", "c) Derechos de los refugiados", "d) Cambio climático"],
+        correcta: "b) Lucha contra el racismo y la discriminación racial",
+        justificacion: "Fue una conferencia mundial contra el racismo."
+      },
+{
+      {
+        pregunta: "La Declaración de los Derechos del Niño de la ONU fue proclamada en:",
+        opciones: ["a) 1924", "b) 1959", "c) 1989", "d) 2000"],
+        correcta: "b) 1959",
+        justificacion: "La Asamblea General proclamó la Declaración de los Derechos del Niño en 1959."
+      },
+{
+        pregunta: "¿Qué país no ratificó la Convención sobre los Derechos del Niño?",
+        opciones: ["a) Somalia", "b) Estados Unidos", "c) Sudán del Sur", "d) India"],
+        correcta: "b) Estados Unidos",
+        justificacion: "EE.UU. firmó pero no ratificó la Convención de 1989."
+      },
+{
+        pregunta: "El derecho a un recurso efectivo está reconocido en:",
+        opciones: ["a) Artículo 8 de la DUDH", "b) Artículo 14 de la DUDH", "c) Artículo 20 del PIDCP", "d) Artículo 26 del PIDESC"],
+        correcta: "a) Artículo 8 de la DUDH",
+        justificacion: "El artículo 8 establece el derecho a un recurso efectivo ante violaciones de derechos."
+      },
+{
+        pregunta: "El derecho a la objeción de conciencia está relacionado con:",
+        opciones: ["a) Libertad de religión y de pensamiento", "b) Derecho a la educación", "c) Derecho a la propiedad", "d) Derecho a la nacionalidad"],
+        correcta: "a) Libertad de religión y de pensamiento",
+        justificacion: "Se deriva de la libertad de pensamiento, conciencia y religión."
+      },
+{
+        pregunta: "La Convención sobre los Derechos de las Personas con Discapacidad fue adoptada en:",
+        opciones: ["a) 1993", "b) 2006", "c) 2010", "d) 2015"],
+        correcta: "b) 2006",
+        justificacion: "La Convención fue adoptada en 2006 por la ONU."
+      },
+{
+        pregunta: "¿Qué significa 'jus cogens'?",
+        opciones: ["a) Normas imperativas del derecho internacional", "b) Reglas económicas", "c) Recomendaciones opcionales", "d) Derechos culturales"],
+        correcta: "a) Normas imperativas del derecho internacional",
+        justificacion: "Son normas inderogables como la prohibición de la tortura o la esclavitud."
+      },
+{
+        pregunta: "El derecho de petición en España está regulado en:",
+        opciones: ["a) Artículo 29 CE", "b) Artículo 14 CE", "c) Artículo 16 CE", "d) Artículo 30 CE"],
+        correcta: "a) Artículo 29 CE",
+        justificacion: "El artículo 29 regula el derecho de petición individual y colectiva."
+      },
+{
+        pregunta: "Artículo 19 DUDH regula",
+        opciones: ["a) Educación", "b) Opinión y expresión", "c) Igualdad salarial", "d) Elecciones"],
+        correcta: "b) Opinión y expresión",
+        justificacion: "Art. 19: incluye recibir y difundir informaciones e ideas."
+      },
+{
+        pregunta: "¿Qué organismo supervisa la aplicación de la Convención contra la Tortura (1984)?",
+        opciones: ["a) Comité contra la Tortura", "b) Consejo de Seguridad", "c) Corte Penal Internacional", "d) Comisión de la Verdad"],
+        correcta: "a) Comité contra la Tortura",
+        justificacion: "La Convención de 1984 creó el Comité contra la Tortura para vigilar su cumplimiento."
+      },
+{
+        pregunta: "La Declaración de los Defensores de Derechos Humanos fue adoptada en:",
+        opciones: ["a) 1948", "b) 1976", "c) 1998", "d) 2006"],
+        correcta: "c) 1998",
+        justificacion: "La ONU adoptó en 1998 esta declaración en el 50 aniversario de la DUDH."
+      },
+{
+        pregunta: "¿Qué derecho protege el artículo 22 del PIDCP?",
+        opciones: ["a) Libertad de asociación", "b) Libertad de pensamiento", "c) Derecho a la nacionalidad", "d) Derecho a la salud"],
+        correcta: "a) Libertad de asociación",
+        justificacion: "El artículo 22 reconoce la libertad de asociación con fines lícitos."
+      },
+{
+      {
+        pregunta: "¿Qué convención prohíbe todas las formas de discriminación racial?",
+        opciones: ["a) CERD (1965)", "b) CEDAW (1979)", "c) PIDESC (1966)", "d) CAT (1984)"],
+        correcta: "a) CERD (1965)",
+        justificacion: "La Convención Internacional sobre la Eliminación de todas las Formas de Discriminación Racial fue adoptada en 1965."
+      },
+{
+        pregunta: "El artículo 12 del PIDCP reconoce:",
+        opciones: ["a) Libertad de circulación y residencia", "b) Derecho al trabajo", "c) Derecho a la nacionalidad", "d) Libertad de prensa"],
+        correcta: "a) Libertad de circulación y residencia",
+        justificacion: "El artículo 12 protege la libre circulación y elección de residencia."
+      },
+{
+        pregunta: "El Pacto de San José (Convención Americana sobre DDHH) fue adoptado en:",
+        opciones: ["a) 1948", "b) 1966", "c) 1969", "d) 1979"],
+        correcta: "c) 1969",
+        justificacion: "La Convención Americana se adoptó en 1969 en San José de Costa Rica."
+      },
+{
+        pregunta: "El derecho a la objeción de conciencia en España está ligado a:",
+        opciones: ["a) Artículo 14 CE", "b) Artículo 16 CE", "c) Artículo 27 CE", "d) Artículo 30 CE"],
+        correcta: "d) Artículo 30 CE",
+        justificacion: "El artículo 30 CE regula el servicio militar y reconoce la objeción de conciencia."
+      },
+{
+        pregunta: "¿Qué órgano examina periódicamente a todos los Estados en DDHH en la ONU?",
+        opciones: ["a) Consejo Económico y Social", "b) Asamblea General", "c) Consejo de Derechos Humanos", "d) Comité de DDHH"],
+        correcta: "c) Consejo de Derechos Humanos",
+        justificacion: "El CDH realiza el Examen Periódico Universal (EPU)."
+      },
+{
+        pregunta: "El Convenio Europeo de Derechos Humanos entró en vigor en:",
+        opciones: ["a) 1948", "b) 1950", "c) 1953", "d) 1966"],
+        correcta: "c) 1953",
+        justificacion: "El CEDH se adoptó en 1950 y entró en vigor en 1953."
+      },
+{
+        pregunta: "¿Qué derecho protege el artículo 18 del PIDCP?",
+        opciones: ["a) Libertad de circulación", "b) Libertad de pensamiento, conciencia y religión", "c) Derecho al voto", "d) Derecho a la salud"],
+        correcta: "b) Libertad de pensamiento, conciencia y religión",
+        justificacion: "El artículo 18 reconoce la libertad de religión y convicciones."
+      },
+{
+        pregunta: "La Declaración de Viena de 1993 reafirmó:",
+        opciones: ["a) Supremacía de los derechos civiles", "b) Indivisibilidad y universalidad de todos los DDHH", "c) Eliminar los DESC", "d) Primacía de la soberanía absoluta"],
+        correcta: "b) Indivisibilidad y universalidad de todos los DDHH",
+        justificacion: "La Conferencia Mundial de Viena reafirmó la indivisibilidad y universalidad."
+      },
+{
+      {
+        pregunta: "La Corte Europea de DDHH pertenece a:",
+        opciones: ["a) ONU", "b) Unión Europea", "c) Consejo de Europa", "d) OSCE"],
+        correcta: "c) Consejo de Europa",
+        justificacion: "El TEDH pertenece al Consejo de Europa, no a la UE."
+      },
+{
+        pregunta: "¿Qué artículo de la DUDH reconoce el derecho a participar en la vida cultural?",
+        opciones: ["a) 19", "b) 21", "c) 24", "d) 27"],
+        correcta: "d) 27",
+        justificacion: "El artículo 27 reconoce el derecho a participar en la vida cultural y disfrutar del progreso científico."
+      },
+{
+      {
+      {
+        pregunta: "La Declaración sobre los Derechos de los Pueblos Indígenas fue adoptada en:",
+        opciones: ["a) 1989", "b) 1993", "c) 2007", "d) 2015"],
+        correcta: "c) 2007",
+        justificacion: "La ONU adoptó esta declaración en 2007."
+      },
+{
+        pregunta: "El principio de legalidad penal (nullum crimen, nulla poena sine lege) está en:",
+        opciones: ["a) Artículo 11.2 DUDH", "b) Artículo 7 PIDCP", "c) Artículo 25 CE", "d) Todas son correctas"],
+        correcta: "d) Todas son correctas",
+        justificacion: "El principio de legalidad aparece en la DUDH, PIDCP y CE."
+      },
+{
+      {
+        pregunta: "¿Qué convención regula los derechos de los trabajadores migrantes?",
+        opciones: ["a) PIDESC", "b) Convención de 1990", "c) CEDAW", "d) CERD"],
+        correcta: "b) Convención de 1990",
+        justificacion: "La Convención de 1990 protege los derechos de los trabajadores migrantes y sus familias."
+      },
+{
+        pregunta: "El Comité de los Derechos del Niño supervisa:",
+        opciones: ["a) La CEDAW", "b) La Convención sobre los Derechos del Niño", "c) El PIDCP", "d) El CEDH"],
+        correcta: "b) La Convención sobre los Derechos del Niño",
+        justificacion: "Supervisa el cumplimiento de la Convención de 1989."
+      },
+{
+        pregunta: "La Carta de Derechos Fundamentales de la UE entró en vigor con el Tratado de Lisboa en:",
+        opciones: ["a) 2000", "b) 2004", "c) 2009", "d) 2012"],
+        correcta: "c) 2009",
+        justificacion: "La Carta adquirió carácter vinculante en 2009 con el Tratado de Lisboa."
+      },
+{
+      {
+        pregunta: "La Declaración Americana de los Derechos y Deberes del Hombre se proclamó en:",
+        opciones: ["a) 1945", "b) 1948", "c) 1950", "d) 1966"],
+        correcta: "b) 1948",
+        justificacion: "Fue adoptada en Bogotá en 1948, meses antes que la DUDH."
+      },
+{
+        pregunta: "¿Qué derecho reconoce el artículo 15 PIDESC?",
+        opciones: ["a) Derecho a la cultura y al progreso científico", "b) Derecho a la propiedad privada", "c) Derecho de voto", "d) Derecho a la nacionalidad"],
+        correcta: "a) Derecho a la cultura y al progreso científico",
+        justificacion: "El artículo 15 PIDESC protege la vida cultural y el acceso a los beneficios de la ciencia."
+      },
+{
+      {
+        pregunta: "¿Qué principio impide juzgar a alguien dos veces por el mismo hecho?",
+        opciones: ["a) Non-refoulement", "b) Ne bis in idem", "c) Habeas corpus", "d) Pro homine"],
+        correcta: "b) Ne bis in idem",
+        justificacion: "El principio 'ne bis in idem' impide ser juzgado dos veces por el mismo hecho."
+      },
+{
+      {
+        pregunta: "La Declaración de Teherán de 1968 fue la primera conferencia internacional de la ONU sobre:",
+        opciones: ["a) Medio ambiente", "b) Derechos humanos", "c) Refugiados", "d) Igualdad de género"],
+        correcta: "b) Derechos humanos",
+        justificacion: "La Conferencia de Teherán de 1968 fue la primera sobre derechos humanos."
+      },
+{
+        pregunta: "El principio pro homine implica:",
+        opciones: ["a) Aplicar siempre la norma más favorable a la persona", "b) Priorizar la ley nacional sobre la internacional", "c) Aplicar la sanción más grave", "d) Favorecer al Estado"],
+        correcta: "a) Aplicar siempre la norma más favorable a la persona",
+        justificacion: "Es un principio interpretativo a favor de la máxima protección de derechos."
+      },
+{
+        pregunta: "¿Qué derecho protege el artículo 6 del PIDCP?",
+        opciones: ["a) Derecho a la vida", "b) Libertad de asociación", "c) Derecho a la educación", "d) Derecho de circulación"],
+        correcta: "a) Derecho a la vida",
+        justificacion: "El artículo 6 PIDCP protege el derecho inherente a la vida."
+      },
+{
+        pregunta: "¿Qué órgano supervisa la aplicación de la Convención sobre los Derechos de las Personas con Discapacidad?",
+        opciones: ["a) Comité DESC", "b) Comité sobre los Derechos de las Personas con Discapacidad", "c) Consejo de Seguridad", "d) Corte Internacional de Justicia"],
+        correcta: "b) Comité sobre los Derechos de las Personas con Discapacidad",
+        justificacion: "Supervisa la aplicación de la Convención de 2006."
+      },
+{
+      {
+        pregunta: "¿Qué convención de 1951 es clave en la protección de refugiados?",
+        opciones: ["a) Convención de Ginebra", "b) Convención de Viena", "c) Convención de Roma", "d) Convención de París"],
+        correcta: "a) Convención de Ginebra",
+        justificacion: "La Convención sobre el Estatuto de los Refugiados fue adoptada en 1951 en Ginebra."
+      },
+{
+        pregunta: "El Protocolo de 1967 relativo a refugiados amplió la Convención de 1951 en cuanto a:",
+        opciones: ["a) Nacionalidad", "b) Ámbito geográfico y temporal", "c) Derechos políticos", "d) Obligaciones fiscales"],
+        correcta: "b) Ámbito geográfico y temporal",
+        justificacion: "El Protocolo de 1967 eliminó las limitaciones temporales y geográficas de la Convención de 1951."
+      },
+{
+      {
+      {
+        pregunta: "La Carta Social Europea de 1961 protege principalmente:",
+        opciones: ["a) Derechos civiles", "b) Derechos políticos", "c) Derechos sociales y económicos", "d) Derechos militares"],
+        correcta: "c) Derechos sociales y económicos",
+        justificacion: "La Carta Social Europea se centra en los DESC."
+      },
+{
+        pregunta: "¿Qué tratado europeo de 1992 incluyó la ciudadanía europea?",
+        opciones: ["a) Tratado de Maastricht", "b) Tratado de Ámsterdam", "c) Tratado de Niza", "d) Tratado de Lisboa"],
+        correcta: "a) Tratado de Maastricht",
+        justificacion: "El Tratado de Maastricht (1992) introdujo la ciudadanía de la Unión Europea."
+      },
+{
+      {
+        pregunta: "¿Qué convención internacional protege a las personas con discapacidad?",
+        opciones: ["a) CEDAW", "b) CRPD", "c) CERD", "d) CAT"],
+        correcta: "b) CRPD",
+        justificacion: "La Convención sobre los Derechos de las Personas con Discapacidad (CRPD) fue adoptada en 2006."
+      },
+{
+      {
+        pregunta: "¿Qué significa el principio de no discriminación?",
+        opciones: ["a) Todos los Estados son iguales", "b) Prohibición de trato diferenciado injustificado", "c) Soberanía nacional", "d) Separación de poderes"],
+        correcta: "b) Prohibición de trato diferenciado injustificado",
+        justificacion: "El principio de no discriminación protege frente a desigualdades arbitrarias."
+      },
+{
+      {
+        pregunta: "La Declaración de los Derechos del Hombre y del Ciudadano de 1789 inspiró:",
+        opciones: ["a) DUDH", "b) PIDESC", "c) CEDAW", "d) CRPD"],
+        correcta: "a) DUDH",
+        justificacion: "La Declaración francesa de 1789 influyó en la tradición de derechos humanos."
+      },
+{
+      {
+      {
+        pregunta: "¿Qué significa 'habeas data'?",
+        opciones: ["a) Derecho a la propiedad intelectual", "b) Derecho a acceder y rectificar datos personales", "c) Libertad de circulación", "d) Derecho a la educación"],
+        correcta: "b) Derecho a acceder y rectificar datos personales",
+        justificacion: "Es un derecho relacionado con la protección de datos personales."
+      },
+{
+        pregunta: "El Convenio de Oviedo de 1997 trata sobre:",
+        opciones: ["a) Protección de datos", "b) Derechos humanos y biomedicina", "c) Medio ambiente", "d) Derechos digitales"],
+        correcta: "b) Derechos humanos y biomedicina",
+        justificacion: "El Convenio de Oviedo regula los derechos humanos aplicados a la biomedicina."
+      },
+{
+      {
+        pregunta: "¿Qué convención internacional de 1984 aborda específicamente la tortura?",
+        opciones: ["a) CAT", "b) CEDAW", "c) CERD", "d) PIDCP"],
+        correcta: "a) CAT",
+        justificacion: "La Convención contra la Tortura (CAT) fue adoptada en 1984."
+      },
+{
+      {
+      {
+        pregunta: "La Declaración de Alma-Ata de 1978 trató sobre:",
+        opciones: ["a) Educación universal", "b) Salud primaria", "c) Vivienda", "d) Medio ambiente"],
+        correcta: "b) Salud primaria",
+        justificacion: "La Declaración de Alma-Ata impulsó la salud primaria universal."
+      },
+{
+      {
+            {
+      {
+        pregunta: "La Convención de Belém do Pará (1994) aborda:",
+        opciones: ["a) Discriminación racial", "b) Eliminación de la violencia contra la mujer", "c) Derechos de refugiados", "d) Derechos de la infancia"],
+        correcta: "b) Eliminación de la violencia contra la mujer",
+        justificacion: "Es la convención interamericana para prevenir, sancionar y erradicar la violencia contra la mujer."
+      },
+{
+      {
+        pregunta: "La Carta Africana de Derechos Humanos y de los Pueblos se adoptó en:",
+        opciones: ["a) 1948", "b) 1966", "c) 1981", "d) 1993"],
+        correcta: "c) 1981",
+        justificacion: "La Carta Africana fue adoptada en Nairobi en 1981."
+      },
+{
+      {
+      {
+      {
+      {
+        pregunta: "La Declaración de Estocolmo de 1972 trató sobre:",
+        opciones: ["a) Medio ambiente humano", "b) Salud pública", "c) Refugiados", "d) Educación"],
+        correcta: "a) Medio ambiente humano",
+        justificacion: "Primera gran conferencia de la ONU sobre medio ambiente."
+      },
+{
+      {
+      {
+        pregunta: "La Declaración de Durban (2001) abordó:",
+        opciones: ["a) Cambio climático", "b) Racismo, discriminación racial y xenofobia", "c) Derechos de los niños", "d) Derechos digitales"],
+        correcta: "b) Racismo, discriminación racial y xenofobia",
+        justificacion: "Conferencia Mundial contra el Racismo, celebrada en Durban en 2001."
+      },
+{
+      {
+        pregunta: "¿Qué tratado creó el Tribunal Penal Internacional (TPI)?",
+        opciones: ["a) Tratado de Roma 1998", "b) Tratado de Viena 1969", "c) Tratado de Ámsterdam 1997", "d) Tratado de Lisboa 2007"],
+        correcta: "a) Tratado de Roma 1998",
+        justificacion: "El Estatuto de Roma de 1998 creó el TPI en La Haya."
+      },
+{
+      {
+        pregunta: "La Convención sobre los Derechos del Niño fue adoptada en:",
+        opciones: ["a) 1966", "b) 1979", "c) 1989", "d) 2000"],
+        correcta: "c) 1989",
+        justificacion: "La Asamblea General de la ONU adoptó la Convención sobre los Derechos del Niño en 1989."
+      },
+{
+      {
+        pregunta: "La Declaración de Río de 1992 trató sobre:",
+        opciones: ["a) Igualdad de género", "b) Medio ambiente y desarrollo sostenible", "c) Refugiados", "d) Salud"],
+        correcta: "b) Medio ambiente y desarrollo sostenible",
+        justificacion: "La Cumbre de la Tierra en Río de Janeiro abordó desarrollo sostenible."
+      },
+{
+      {
+      {
+        pregunta: "La Convención de Palermo (2000) trata sobre:",
+        opciones: ["a) Trata de personas y delincuencia organizada transnacional", "b) Derechos del mar", "c) Protección de refugiados", "d) Igualdad salarial"],
+        correcta: "a) Trata de personas y delincuencia organizada transnacional",
+        justificacion: "La Convención de Palermo aborda delincuencia organizada y trata de personas."
+      },
+{
+      {
+      {
+        pregunta: "La Declaración de París (1990) trató sobre:",
+        opciones: ["a) Refugiados", "b) Igualdad de género", "c) Nuevos derechos en la Conferencia sobre Seguridad y Cooperación en Europa", "d) Medio ambiente"],
+        correcta: "c) Nuevos derechos en la Conferencia sobre Seguridad y Cooperación en Europa",
+        justificacion: "La Declaración de París reafirmó los DDHH en el marco de la CSCE."
+      },
+{
+      {
+      {
+        pregunta: "La Declaración de El Cairo de 1990 abordó:",
+        opciones: ["a) Medio ambiente", "b) Derechos humanos en el Islam", "c) Refugiados", "d) Igualdad de género"],
+        correcta: "b) Derechos humanos en el Islam",
+        justificacion: "La Declaración de El Cairo sobre los Derechos Humanos en el Islam fue adoptada en 1990."
+      },
+{
+      {
+      {
+      {
+      {
+      {
+      {
+      {
+      {
+      {
+      {
+        pregunta: "La Declaración de Viena de 1989 trató sobre:",
+        opciones: ["a) Fin de la Guerra Fría y reafirmación de los derechos humanos", "b) Medio ambiente", "c) Refugiados", "d) Derechos digitales"],
+        correcta: "a) Fin de la Guerra Fría y reafirmación de los derechos humanos",
+        justificacion: "La Declaración de Viena de la CSCE en 1989 reafirmó los derechos humanos en Europa."
+      },
+{
+      {
+      {
+        pregunta: "La Declaración de Copenhague de 1993 trató sobre:",
+        opciones: ["a) Desarrollo social", "b) Medio ambiente", "c) Igualdad de género", "d) Refugiados"],
+        correcta: "a) Desarrollo social",
+        justificacion: "La Declaración de Copenhague de 1993 se centró en el desarrollo social y derechos humanos."
+      },
+{
+      {
+      {
+        pregunta: "La Convención de 1954 regula:",
+        opciones: ["a) Apatridia", "b) Derecho de asilo", "c) Protección de refugiados climáticos", "d) Derechos de los pueblos indígenas"],
+        correcta: "a) Apatridia",
+        justificacion: "La Convención de 1954 regula el estatuto de los apátridas."
+      },
+{
+      {
+      {
+      {
+      {
+      {
+      {
+        pregunta: "La Declaración de Estambul de 1996 trató sobre:",
+        opciones: ["a) Vivienda y asentamientos humanos", "b) Medio ambiente", "c) Refugiados", "d) Igualdad de género"],
+        correcta: "a) Vivienda y asentamientos humanos",
+        justificacion: "La Declaración de Estambul de 1996 trató sobre vivienda y desarrollo urbano sostenible."
+      },
+{
+      {
+      {
+      {
+        pregunta: "Artículo 21 DUDH",
+        opciones: ["a) Participación en el gobierno de su país", "b) Trabajo", "c) Protección social", "d) Propiedad"],
+        correcta: "a) Participación en el gobierno de su país",
+        justificacion: "Art. 21: participación directa o a través de representantes; sufragio."
+      },
+{
+        pregunta: "Artículo 22 DUDH (elige la correcta)",
+        opciones: ["a) No reconoce la seguridad social", "b) Reconoce seguridad social y realización progresiva de DESC", "c) Sólo derechos civiles", "d) Sólo en estados ricos"],
+        correcta: "b) Reconoce seguridad social y realización progresiva de DESC",
+        justificacion: "Art. 22: mediante esfuerzos nacionales y cooperación internacional."
+      },
+{
+        pregunta: "Artículo 9 DUDH prohíbe",
+        opciones: ["a) Detención, prisión o destierro arbitrarios", "b) Discriminación racial", "c) Tortura", "d) Censura"],
+        correcta: "a) Detención, prisión o destierro arbitrarios",
+        justificacion: "Art. 9: garantía frente a privaciones arbitrarias de libertad."
+      },
+{
+        pregunta: "Artículo 5 DUDH (selecciona la INCORRECTA)",
+        opciones: ["a) Prohíbe la tortura", "b) Prohíbe tratos crueles, inhumanos o degradantes", "c) Permite tratos crueles si son temporales", "d) Proscribe penas inhumanas"],
+        correcta: "c) Permite tratos crueles si son temporales",
+        justificacion: "La prohibición es absoluta, sin excepciones."
+      },
+{
+        pregunta: "Artículo 6 DUDH reconoce",
+        opciones: ["a) Voto", "b) Educación", "c) Personalidad jurídica", "d) Sindicación"],
+        correcta: "c) Personalidad jurídica",
+        justificacion: "Art. 6: reconocimiento en todas partes como persona ante la ley."
+      },
+{
+        pregunta: "Artículo 8 DUDH reconoce",
+        opciones: ["a) Recurso efectivo ante tribunales", "b) Asilo", "c) Circulación", "d) Trabajo"],
+        correcta: "a) Recurso efectivo ante tribunales",
+        justificacion: "Art. 8: tutela frente a violaciones de derechos fundamentales."
+      },
+{
+        pregunta: "Artículo 10 DUDH garantiza",
+        opciones: ["a) Juicio público y justo ante tribunal independiente e imparcial", "b) Voto", "c) Vacaciones pagadas", "d) Libre circulación"],
+        correcta: "a) Juicio público y justo ante tribunal independiente e imparcial",
+        justificacion: "Art. 10: garantías judiciales básicas."
+      },
+{
+        pregunta: "Artículo 11 DUDH establece",
+        opciones: ["a) Presunción de inocencia", "b) Derecho al voto", "c) Libertad de asociación", "d) Educación"],
+        correcta: "a) Presunción de inocencia",
+        justificacion: "Art. 11.1 presunción de inocencia y garantías penales."
+      },
+{
+        pregunta: "Artículo 16 DUDH (selecciona la INCORRECTA)",
+        opciones: ["a) Derecho a contraer matrimonio", "b) Igualdad de derechos en el matrimonio y su disolución", "c) Consentimiento libre y pleno de los contrayentes", "d) Sólo los hombres pueden disolver el matrimonio"],
+        correcta: "d) Sólo los hombres pueden disolver el matrimonio",
+        justificacion: "Art. 16: igualdad de derechos para hombres y mujeres."
+      },
+{
+        pregunta: "Artículo 24 DUDH reconoce",
+        opciones: ["a) Descanso, tiempo libre, limitación de jornada, vacaciones pagadas", "b) Educación", "c) Expresión", "d) Igualdad ante la ley"],
+        correcta: "a) Descanso, tiempo libre, limitación de jornada, vacaciones pagadas",
+        justificacion: "Art. 24: derechos vinculados al tiempo de trabajo y descanso."
+      },
+{
+        pregunta: "Artículo 27 DUDH establece",
+        opciones: ["a) Participar en la vida cultural y en los beneficios del progreso científico", "b) Libre circulación", "c) Seguridad social", "d) Voto"],
+        correcta: "a) Participar en la vida cultural y en los beneficios del progreso científico",
+        justificacion: "Art. 27: participación cultural y derechos de autor morales y materiales."
+      },
+{
+        pregunta: "Artículo 28 DUDH",
+        opciones: ["a) Derecho a un orden social e internacional que permita el pleno goce de los derechos", "b) Derecho a portar armas", "c) Derecho a la objeción de conciencia", "d) Derecho a la libertad de empresa"],
+        correcta: "a) Derecho a un orden social e internacional que permita el pleno goce de los derechos",
+        justificacion: "Art. 28: marco social e internacional adecuado."
+      },
+{
+        pregunta: "Artículo 29 DUDH",
+        opciones: ["a) Deberes respecto a la comunidad y límites legales a los derechos por moral, orden público y bienestar general", "b) Deber fiscal", "c) Servicio militar obligatorio", "d) Deber de votar"],
+        correcta: "a) Deberes respecto a la comunidad y límites legales a los derechos por moral, orden público y bienestar general",
+        justificacion: "Art. 29: límites a derechos para proteger derechos ajenos y fines legítimos."
+      },
+{
+        pregunta: "Artículo 30 DUDH (selecciona la INCORRECTA)",
+        opciones: ["a) Prohíbe interpretar la DUDH para suprimir derechos", "b) Ningún Estado puede invocar la DUDH para destruir derechos", "c) Permite restringir derechos a conveniencia estatal", "d) Salvaguarda la integridad de la Declaración"],
+        correcta: "c) Permite restringir derechos a conveniencia estatal",
+        justificacion: "Art. 30 impide interpretaciones destructivas de los derechos."
+      },
+{
+        pregunta: "Artículo 2 DUDH",
+        opciones: ["a) Derechos sin distinción alguna", "b) Vacaciones pagadas", "c) Igualdad salarial", "d) Voto a los 16"],
+        correcta: "a) Derechos sin distinción alguna",
+        justificacion: "Art. 2: prohíbe distinciones por raza, sexo, religión, opinión, origen, etc."
+      },
+{
+        pregunta: "Artículo 20.2 DUDH prohíbe",
+        opciones: ["a) Esclavitud", "b) Tortura", "c) Obligación de pertenecer a una asociación", "d) Discriminación"],
+        correcta: "c) Obligación de pertenecer a una asociación",
+        justificacion: "Art. 20.2: nadie puede ser obligado a asociarse."
+      },
+{
+        pregunta: "Libertad de expresión en la DUDH",
+        opciones: ["a) Incluye recibir y difundir informaciones e ideas por cualquier medio", "b) Sólo protege a periodistas", "c) Se limita a medios impresos", "d) Requiere autorización previa"],
+        correcta: "a) Incluye recibir y difundir informaciones e ideas por cualquier medio",
+        justificacion: "Art. 19: amplitud de la libertad de expresión."
+      },
+{
+        pregunta: "Adopción del PIDESC",
+        opciones: ["a) 1948", "b) 1966", "c) 1976", "d) 1989"],
+        correcta: "b) 1966",
+        justificacion: "Adoptado en 1966; entró en vigor en 1976."
+      },
+{
+        pregunta: "Selecciona la INCORRECTA sobre el PIDESC",
+        opciones: ["a) Reconoce el derecho a la salud", "b) Reconoce el derecho a la educación", "c) Reconoce condiciones de trabajo justas", "d) Regula el derecho a portar armas"],
+        correcta: "d) Regula el derecho a portar armas",
+        justificacion: "El PIDESC se centra en DESC, no en armas."
+      },
+{
+        pregunta: "Protocolo Facultativo del PIDCP permite",
+        opciones: ["a) Denuncias individuales ante el Comité de DDHH", "b) Crear un tribunal internacional", "c) Regular comercio", "d) Modificar la Carta de la ONU"],
+        correcta: "a) Denuncias individuales ante el Comité de DDHH",
+        justificacion: "Primer Protocolo Facultativo del PIDCP habilita comunicaciones individuales."
+      },
+{
+        pregunta: "Declaración de Viena (1993) reafirma",
+        opciones: ["a) Primacía de civiles sobre sociales", "b) Subordinación a soberanía", "c) Indivisibilidad e interdependencia de todos los derechos humanos", "d) Supresión de los DESC"],
+        correcta: "c) Indivisibilidad e interdependencia de todos los derechos humanos",
+        justificacion: "Viena 1993: universalidad, interdependencia e indivisibilidad."
+      },
+{
+        pregunta: "Principios generales de DDHH",
+        opciones: ["a) Universalidad", "b) Interdependencia", "c) Indivisibilidad", "d) Todas las anteriores"],
+        correcta: "d) Todas las anteriores",
+        justificacion: "Conjunto canónico reconocido por la doctrina y la ONU."
+      },
+{
+        pregunta: "Órgano que conoce de vulneraciones del Convenio Europeo",
+        opciones: ["a) TJUE", "b) TEDH", "c) CPI", "d) CIJ"],
+        correcta: "b) TEDH",
+        justificacion: "El Tribunal Europeo de Derechos Humanos aplica el CEDH (Estrasburgo)."
+      },
+{
+        pregunta: "El Consejo de Seguridad es",
+        opciones: ["a) Órgano con decisiones obligatorias según la Carta", "b) Comité de expertos del PIDCP", "c) Tribunal penal", "d) Agencia especializada de la ONU"],
+        correcta: "a) Órgano con decisiones obligatorias según la Carta",
+        justificacion: "Responsable de paz y seguridad; 5 permanentes y 10 no permanentes."
+      },
+{
+        pregunta: "Composición del Consejo de Derechos Humanos",
+        opciones: ["a) 15 Estados", "b) 47 Estados elegidos por la AGNU", "c) 193 Estados", "d) 28 Estados"],
+        correcta: "b) 47 Estados elegidos por la AGNU",
+        justificacion: "Mandatos de 3 años, con distribución geográfica."
+      },
+{
+        pregunta: "Funciones del CDH (elige la correcta)",
+        opciones: ["a) Imponer sanciones económicas", "b) Realizar Examen Periódico Universal y formular recomendaciones", "c) Enjuiciar crímenes internacionales", "d) Dictar sentencias vinculantes"],
+        correcta: "b) Realizar Examen Periódico Universal y formular recomendaciones",
+        justificacion: "El EPU evalúa el desempeño de todos los Estados en DDHH."
+      },
+{
+        pregunta: "Artículo 14 DUDH (asilo) (selecciona la INCORRECTA)",
+        opciones: ["a) Derecho a buscar asilo", "b) Puede denegarse por delitos comunes", "c) Puede denegarse por actos contrarios a la ONU", "d) Es un derecho absoluto sin excepciones"],
+        correcta: "d) Es un derecho absoluto sin excepciones",
+        justificacion: "El art. 14 prevé excepciones."
+      },
+{
+        pregunta: "Artículo 17 DUDH (propiedad) incluye",
+        opciones: ["a) Propiedad sólo individual", "b) Propiedad individual y colectiva", "c) Expropiación arbitraria permitida", "d) Prohibición de la propiedad privada"],
+        correcta: "b) Propiedad individual y colectiva",
+        justificacion: "Art. 17 reconoce ambas y prohíbe privación arbitraria."
+      },
+{
+        pregunta: "Artículo 23 DUDH (selecciona la INCORRECTA)",
+        opciones: ["a) Condiciones equitativas y satisfactorias", "b) Igual salario por trabajo igual", "c) Derecho a fundar sindicatos", "d) Derecho a portar armas en el trabajo"],
+        correcta: "d) Derecho a portar armas en el trabajo",
+        justificacion: "El art. 23 no contempla armas; se centra en derechos laborales."
+      },
+{
+        pregunta: "Artículo 26.1 DUDH señala que la educación primaria",
+        opciones: ["a) Será gratuita y obligatoria", "b) Será de pago y optativa", "c) Depende de cada Estado sin principios", "d) Sólo para nacionales"],
+        correcta: "a) Será gratuita y obligatoria",
+        justificacion: "Art. 26.1: instrucción elemental gratuita y obligatoria."
+      },
+{
+        pregunta: "Artículo 27.2 DUDH protege",
+        opciones: ["a) Intereses morales y materiales de los autores", "b) Sólo los materiales", "c) Sólo los morales", "d) Sólo patentes"],
+        correcta: "a) Intereses morales y materiales de los autores",
+        justificacion: "Reconoce la protección de las producciones científicas, literarias o artísticas."
+      },
+{
+        pregunta: "Límites a los derechos según Art. 29.2 DUDH",
+        opciones: ["a) Moraleja, orden público y bienestar general en sociedad democrática", "b) Cualquier razón administrativa", "c) Conveniencia del gobierno", "d) Razones económicas privadas"],
+        correcta: "a) Moraleja, orden público y bienestar general en sociedad democrática",
+        justificacion: "Límites sólo para proteger derechos ajenos y fines legítimos."
+      },
+{
+        pregunta: "Naturaleza jurídica de la DUDH",
+        opciones: ["a) Tratado internacional con sanciones", "b) Declaración no vinculante con gran autoridad moral", "c) Ley nacional española", "d) Reglamento de la UE"],
+        correcta: "b) Declaración no vinculante con gran autoridad moral",
+        justificacion: "Soft law con amplia aceptación y recepción en tratados/constituciones."
+      },
+{
+        pregunta: "Relación DUDH–Pactos de 1966",
+        opciones: ["a) Los Pactos desarrollan derechos de la DUDH con fuerza obligatoria para Estados parte", "b) Son independientes y contradictorios", "c) Derogan la DUDH", "d) Sólo tratan comercio"],
+        correcta: "a) Los Pactos desarrollan derechos de la DUDH con fuerza obligatoria para Estados parte",
+        justificacion: "PIDCP y PIDESC convierten en obligaciones jurídicas varios derechos proclamados."
+      }
 ];
 
 function barajar(array) {
