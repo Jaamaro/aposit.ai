@@ -36,14 +36,16 @@
 <button onclick="iniciarCuestionario()" type="button">Comenzar</button>
 </div>
 <form id="testForm"></form>
+<div style="text-align: center; margin-top:20px;">
+  <button type="button" onclick="corregirTest()">✅ Enviar</button>
+</div>
 <div class="result" id="testResult"></div>
 <div style="text-align: center;">
 <button onclick="reiniciarTest()" type="button">🔁 Repetir test</button>
 </div>
 <script>
 const preguntasBanco = [
-{
-      
+  {
         pregunta: "¿Cuál de los siguientes es un derecho fundamental?",
         opciones: ["a) Derecho a la vivienda", "b) Derecho a un medio ambiente sano", "c) Derecho a la libertad ideológica", "d) Derecho al trabajo"],
         correcta: "c) Derecho a la libertad ideológica",
