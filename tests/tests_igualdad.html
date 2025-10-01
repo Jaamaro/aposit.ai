@@ -4,12 +4,33 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tema 2 - Igualdad</title>
-  <link rel="stylesheet" href="../style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    /* Aquí puedes reutilizar el mismo CSS moderno que ya tienes en el Tema 1 */
+    body { font-family: 'Roboto', sans-serif; background: #f9fafb; margin: 0; padding: 2rem; color: #111827; }
+    h1.title { text-align: center; color: #1e40af; margin-bottom: 1.5rem; }
+    .config { text-align: center; margin-bottom: 2rem; }
+    .question { margin: 14px auto; padding: 18px; background: #fff; border-radius: 14px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); max-width: 800px; }
+    .options { margin-top: 10px; display: grid; gap: 8px; }
+    .option { padding: 10px 12px; border-radius: 10px; border: 1px solid #e5e7eb; background: #fff; cursor: pointer; }
+    .option:hover { background: #f3f4f6; }
+    .correct { color: green; font-weight: bold; }
+    .incorrect { color: red; font-weight: bold; }
+    .result-card { margin: 18px auto; padding: 16px; background: #fff; border-radius: 14px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); max-width: 500px; text-align: center; }
+    .score { font-size: 22px; font-weight: 800; margin: 8px 0; }
+    button { margin: 1rem 0.5rem; padding: 0.75rem 1.5rem; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; background: #2563eb; color: white; }
+    button:hover { background: #1e3a8a; }
+    .progress { width: 100%; height: 10px; background: #e5e7eb; border-radius: 999px; overflow: hidden; margin-top: 8px; }
+    .progress-bar { height: 100%; width: 0%; background: linear-gradient(90deg, #2563eb, #60a5fa); transition: width .3s ease; }
+  </style>
 </head>
 <body>
-  <h2>Tema 2 - Igualdad</h2>
+  <h1 class="title">Tema 2 - Igualdad</h1>
+
   <div class="config">
-    <label for="numPreguntas">Número de preguntas:</label>
+    <label for="numPreguntas"><strong>Número de preguntas:</strong></label>
     <select id="numPreguntas">
       <option value="10">10</option>
       <option value="20">20</option>
@@ -18,29 +39,130 @@
       <option value="50" selected>50</option>
     </select>
     <button onclick="cargarTest()" type="button">Comenzar</button>
+    <button onclick="reiniciarTest()" type="button">Reiniciar</button>
+    <div class="progress"><div class="progress-bar" id="progressBar"></div></div>
   </div>
 
   <form id="testForm"></form>
   <div class="result" id="testResult"></div>
 
   <script>
+    // Banco vacío, aquí deberás añadir las preguntas de Igualdad
     const preguntasBanco = [
-      // Aquí van las preguntas del Tema 2 - Igualdad
       // Ejemplo:
       /*
       {
         pregunta: "¿Qué ley garantiza la igualdad efectiva entre mujeres y hombres en España?",
-        opciones: [
-          "a) Ley Orgánica 3/2007",
-          "b) Ley Orgánica 1/2004",
-          "c) Ley 39/2015",
-          "d) Constitución Española"
-        ],
+        opciones: ["a) Ley Orgánica 3/2007", "b) Ley Orgánica 1/2004", "c) Ley 39/2015", "d) Constitución Española"],
         correcta: "a) Ley Orgánica 3/2007",
-        justificacion: "La Ley Orgánica 3/2007 de 22 de marzo garantiza la igualdad efectiva entre mujeres y hombres."
+        justificacion: "La Ley Orgánica 3/2007 garantiza la igualdad efectiva entre mujeres y hombres."
       }
       */
     ];
 
+    let preguntasSeleccionadas = [];
+    let respuestasUsuario = {};
+    let totalPreguntas = 0;
+
     function barajar(array) {
-      for (l
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+    }
+
+    function cargarTest() {
+      const num = parseInt(document.getElementById("numPreguntas").value);
+      totalPreguntas = num;
+      preguntasSeleccionadas = [...preguntasBanco];
+      barajar(preguntasSeleccionadas);
+      preguntasSeleccionadas = preguntasSeleccionadas.slice(0, num);
+
+      const testForm = document.getElementById("testForm");
+      testForm.innerHTML = "";
+      respuestasUsuario = {};
+
+      preguntasSeleccionadas.forEach((q, i) => {
+        const div = document.createElement("div");
+        div.className = "question";
+        div.innerHTML = `
+          <div class="q-head">
+            <span class="q-num">${i+1}.</span>
+            <p class="q-text">${q.pregunta}</p>
+          </div>
+          <div class="options">
+            ${q.opciones.map(op => `
+              <label class="option">
+                <input type="radio" name="q${i}" value="${op}" onchange="seleccionar(${i}, '${op}')">
+                ${op}
+              </label>
+            `).join("")}
+          </div>
+          <div class="justification" id="just${i}" style="display:none"></div>
+        `;
+        testForm.appendChild(div);
+      });
+
+      actualizarProgreso();
+      document.getElementById("testResult").innerHTML = "";
+    }
+
+    function seleccionar(i, respuesta) {
+      respuestasUsuario[i] = respuesta;
+      actualizarProgreso();
+      mostrarResultado(i);
+    }
+
+    function mostrarResultado(i) {
+      const q = preguntasSeleccionadas[i];
+      const elegido = respuestasUsuario[i];
+      const opciones = document.getElementsByName("q"+i);
+      opciones.forEach(op => {
+        const parent = op.closest(".option");
+        parent.classList.remove("correct-option","wrong-option");
+        if (op.value === q.correcta) parent.classList.add("correct-option");
+        if (op.checked && op.value !== q.correcta) parent.classList.add("wrong-option");
+      });
+
+      const justDiv = document.getElementById("just"+i);
+      justDiv.style.display = "block";
+      if (elegido === q.correcta) {
+        justDiv.innerHTML = `<span class="correct">✔ Correcto.</span> ${q.justificacion}`;
+      } else {
+        justDiv.innerHTML = `<span class="incorrect">✘ Incorrecto.</span> ${q.justificacion}`;
+      }
+    }
+
+    function actualizarProgreso() {
+      const contestadas = Object.keys(respuestasUsuario).length;
+      const porcentaje = (contestadas / totalPreguntas) * 100;
+      document.getElementById("progressBar").style.width = porcentaje + "%";
+
+      if (contestadas === totalPreguntas) {
+        mostrarResultadosFinales();
+      }
+    }
+
+    function mostrarResultadosFinales() {
+      let correctas = 0;
+      preguntasSeleccionadas.forEach((q, i) => {
+        if (respuestasUsuario[i] === q.correcta) correctas++;
+      });
+      const resultDiv = document.getElementById("testResult");
+      resultDiv.innerHTML = `
+        <div class="result-card">
+          <h2>Resultado Final</h2>
+          <p class="score">${correctas} / ${totalPreguntas} correctas</p>
+        </div>
+      `;
+    }
+
+    function reiniciarTest() {
+      respuestasUsuario = {};
+      document.getElementById("testForm").innerHTML = "";
+      document.getElementById("progressBar").style.width = "0%";
+      document.getElementById("testResult").innerHTML = "";
+    }
+  </script>
+</body>
+</html>
