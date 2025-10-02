@@ -200,7 +200,225 @@
   </div>
 
 <script>
-const preguntasBanco = []; // Banco vacío
+const preguntasBanco = [
+  {
+  pregunta: "La Ley 31/1995 de Prevención de Riesgos Laborales fue aprobada el:",
+  opciones: ["a) 8 de noviembre de 1995", "b) 28 de diciembre de 1995", "c) 1 de enero de 1996", "d) 14 de octubre de 1995"],
+  correcta: "a) 8 de noviembre de 1995",
+  justificacion: "La LPRL fue aprobada el 8 de noviembre de 1995."
+},
+{
+  pregunta: "El objetivo principal de la Ley de Prevención de Riesgos Laborales es:",
+  opciones: ["a) Sancionar a las empresas", "b) Garantizar la seguridad y salud de los trabajadores", "c) Reducir gastos en seguridad", "d) Sustituir a los convenios colectivos"],
+  correcta: "b) Garantizar la seguridad y salud de los trabajadores",
+  justificacion: "El objetivo fundamental es proteger la seguridad y salud de los trabajadores."
+},
+{
+  pregunta: "La Ley de Prevención de Riesgos Laborales es de aplicación:",
+  opciones: ["a) A todos los trabajadores por cuenta ajena", "b) A todos los trabajadores por cuenta propia", "c) Exclusivamente a funcionarios", "d) Únicamente al sector privado"],
+  correcta: "a) A todos los trabajadores por cuenta ajena",
+  justificacion: "La LPRL se aplica a todos los trabajadores que prestan servicios por cuenta ajena."
+},
+{
+  pregunta: "Según la LPRL, se considera riesgo laboral:",
+  opciones: ["a) Cualquier actividad en horario laboral", "b) La posibilidad de que un trabajador sufra un daño derivado del trabajo", "c) Cualquier daño en el centro de trabajo aunque no sea laboral", "d) Una actividad recreativa dentro de la empresa"],
+  correcta: "b) La posibilidad de que un trabajador sufra un daño derivado del trabajo",
+  justificacion: "El riesgo laboral se refiere a la posibilidad de sufrir un daño derivado del trabajo."
+},
+{
+  pregunta: "La acción preventiva en materia de riesgos laborales debe llevarse a cabo:",
+  opciones: ["a) Solo en actividades peligrosas", "b) En todas las fases de la actividad de la empresa", "c) Únicamente cuando hay accidentes", "d) En el ámbito de la negociación colectiva"],
+  correcta: "b) En todas las fases de la actividad de la empresa",
+  justificacion: "La prevención debe integrarse en todas las fases de la actividad laboral."
+},
+{
+  pregunta: "El principio de 'adaptar el trabajo a la persona' en PRL significa:",
+  opciones: ["a) Obligar al trabajador a aceptar cualquier tarea", "b) Tener en cuenta capacidades físicas y psicológicas en la organización del trabajo", "c) Que todos los trabajadores hagan el mismo trabajo", "d) Ajustar los salarios a la productividad"],
+  correcta: "b) Tener en cuenta capacidades físicas y psicológicas en la organización del trabajo",
+  justificacion: "Este principio busca adaptar el puesto a las características del trabajador."
+},
+{
+  pregunta: "En PRL, la planificación de la prevención debe realizarse:",
+  opciones: ["a) Una vez al inicio de la actividad", "b) De forma periódica y revisable", "c) Únicamente tras un accidente laboral", "d) Solo en grandes empresas"],
+  correcta: "b) De forma periódica y revisable",
+  justificacion: "La planificación preventiva debe actualizarse y revisarse de manera periódica."
+},
+{
+  pregunta: "El empresario, en materia de PRL, tiene la obligación de:",
+  opciones: ["a) Facilitar equipos de protección individual adecuados", "b) Informar a los trabajadores sobre los riesgos", "c) Formar a los trabajadores en seguridad", "d) Todas las anteriores"],
+  correcta: "d) Todas las anteriores",
+  justificacion: "El empresario debe proporcionar EPI, informar y formar en prevención."
+},
+{
+  pregunta: "Los trabajadores tienen el derecho de:",
+  opciones: ["a) Negarse a trabajar en caso de riesgo grave e inminente", "b) Exigir medidas preventivas", "c) Recibir formación en PRL", "d) Todas las anteriores"],
+  correcta: "d) Todas las anteriores",
+  justificacion: "Los trabajadores tienen derecho a formación, a exigir medidas y a interrumpir la actividad en caso de riesgo grave."
+},
+{
+  pregunta: "La consulta y participación de los trabajadores en PRL se articula a través de:",
+  opciones: ["a) Delegados de prevención", "b) Comité de seguridad y salud", "c) Ambas figuras", "d) Ninguna de las anteriores"],
+  correcta: "c) Ambas figuras",
+  justificacion: "Los trabajadores participan mediante delegados y comités de seguridad y salud."
+},
+{
+  pregunta: "Un delegado de prevención es:",
+  opciones: ["a) El representante de la empresa", "b) El trabajador designado por los representantes de los trabajadores para funciones de prevención", "c) El inspector de trabajo", "d) Un técnico externo"],
+  correcta: "b) El trabajador designado por los representantes de los trabajadores para funciones de prevención",
+  justificacion: "Los delegados son elegidos entre los representantes de los trabajadores."
+},
+{
+  pregunta: "El Comité de Seguridad y Salud debe crearse en empresas:",
+  opciones: ["a) Con más de 10 trabajadores", "b) Con 50 o más trabajadores", "c) Con 100 o más trabajadores", "d) En todas las empresas"],
+  correcta: "b) Con 50 o más trabajadores",
+  justificacion: "Es obligatorio en empresas de 50 o más trabajadores."
+},
+{
+  pregunta: "La vigilancia de la salud de los trabajadores debe ser:",
+  opciones: ["a) Obligatoria en todos los casos", "b) Voluntaria en la mayoría de los casos, salvo excepciones", "c) Realizada solo en accidentes laborales", "d) Una vez cada cinco años"],
+  correcta: "b) Voluntaria en la mayoría de los casos, salvo excepciones",
+  justificacion: "La vigilancia de la salud es voluntaria salvo situaciones específicas de riesgo."
+},
+{
+  pregunta: "El Real Decreto 67/2010 adapta la legislación de PRL a:",
+  opciones: ["a) Empresas privadas", "b) Administración General del Estado", "c) Comunidades Autónomas", "d) Fuerzas Armadas"],
+  correcta: "b) Administración General del Estado",
+  justificacion: "Este RD adapta la LPRL a la AGE."
+},
+{
+  pregunta: "El Real Decreto 179/2005 regula la prevención de riesgos laborales en:",
+  opciones: ["a) Fuerzas Armadas", "b) Policía Nacional", "c) Guardia Civil", "d) Administración General del Estado"],
+  correcta: "c) Guardia Civil",
+  justificacion: "Este RD regula la prevención de riesgos laborales en la Guardia Civil."
+},
+{
+  pregunta: "El derecho a la protección frente a riesgos laborales es:",
+  opciones: ["a) Un deber exclusivo del trabajador", "b) Un derecho de los trabajadores", "c) Una obligación voluntaria del empresario", "d) No está reconocido en la normativa"],
+  correcta: "b) Un derecho de los trabajadores",
+  justificacion: "El art. 14 LPRL reconoce el derecho a una protección eficaz."
+},
+{
+  pregunta: "El deber de cooperación en PRL implica que:",
+  opciones: ["a) Cada trabajador debe velar por su seguridad y la de sus compañeros", "b) Los empresarios compiten en seguridad", "c) Solo los delegados de prevención tienen obligaciones", "d) Los sindicatos sustituyen a los empresarios"],
+  correcta: "a) Cada trabajador debe velar por su seguridad y la de sus compañeros",
+  justificacion: "Todos los trabajadores deben cooperar en el cumplimiento de medidas preventivas."
+},
+{
+  pregunta: "Un accidente de trabajo es:",
+  opciones: ["a) Cualquier accidente sufrido en horario laboral", "b) Todo daño derivado del trabajo", "c) Solo los que ocurren en el centro de trabajo", "d) Únicamente lesiones físicas"],
+  correcta: "b) Todo daño derivado del trabajo",
+  justificacion: "Incluye accidentes, enfermedades profesionales y daños psíquicos."
+},
+{
+  pregunta: "La prevención de riesgos laborales en la Guardia Civil debe adaptarse a:",
+  opciones: ["a) La naturaleza militar de la institución", "b) La normativa de policía autonómica", "c) Los convenios sindicales", "d) La normativa sanitaria"],
+  correcta: "a) La naturaleza militar de la institución",
+  justificacion: "El RD 179/2005 adapta la prevención a las peculiaridades militares de la Guardia Civil."
+},
+{
+  pregunta: "Según la normativa, los equipos de protección individual (EPI) deben:",
+  opciones: ["a) Ser pagados por el trabajador", "b) Ser proporcionados gratuitamente por el empresario", "c) Ser voluntarios en todos los casos", "d) No estar regulados"],
+  correcta: "b) Ser proporcionados gratuitamente por el empresario",
+  justificacion: "El empresario tiene la obligación de proporcionar los EPI sin coste."
+},
+{
+  pregunta: "El principio de 'eliminar el riesgo en su origen' significa:",
+  opciones: ["a) Usar equipos de protección personal en todos los casos", "b) Sustituir lo peligroso por lo que entrañe poco o ningún peligro", "c) Evitar que el trabajador reclame daños", "d) Esperar a que se produzca un accidente"],
+  correcta: "b) Sustituir lo peligroso por lo que entrañe poco o ningún peligro",
+  justificacion: "Se debe actuar sobre el origen del riesgo y no solo sobre sus consecuencias."
+},
+{
+  pregunta: "El Instituto Nacional de Seguridad y Salud en el Trabajo es:",
+  opciones: ["a) El organismo científico-técnico de la Administración", "b) Una ONG privada", "c) Un sindicato de trabajadores", "d) Una empresa pública de prevención"],
+  correcta: "a) El organismo científico-técnico de la Administración",
+  justificacion: "El INSST asesora y apoya en la aplicación de la PRL."
+},
+{
+  pregunta: "El derecho de participación en materia preventiva se ejerce a través de:",
+  opciones: ["a) Los delegados de prevención", "b) El comité de seguridad y salud", "c) La representación legal de los trabajadores", "d) Todas las anteriores"],
+  correcta: "d) Todas las anteriores",
+  justificacion: "La participación se articula mediante varias figuras de representación."
+},
+{
+  pregunta: "Un plan de prevención de riesgos laborales debe incluir:",
+  opciones: ["a) Identificación de la empresa y su actividad", "b) Evaluación de riesgos", "c) Planificación preventiva", "d) Todas las anteriores"],
+  correcta: "d) Todas las anteriores",
+  justificacion: "El plan integra la estructura y organización de la prevención en la empresa."
+},
+{
+  pregunta: "En caso de riesgo grave e inminente, el trabajador tiene derecho a:",
+  opciones: ["a) Continuar trabajando para no perder el salario", "b) Interrumpir su actividad y abandonar el lugar de trabajo", "c) Esperar instrucciones sin actuar", "d) Delegar en el comité de empresa"],
+  correcta: "b) Interrumpir su actividad y abandonar el lugar de trabajo",
+  justificacion: "El trabajador puede interrumpir la actividad ante riesgo grave e inminente."
+},
+{
+  pregunta: "El Real Decreto 67/2010 adapta la LPRL a:",
+  opciones: ["a) La Administración General del Estado", "b) Empresas multinacionales", "c) Fuerzas Armadas y Guardia Civil", "d) Sindicatos"],
+  correcta: "a) La Administración General del Estado",
+  justificacion: "Su finalidad es aplicar la LPRL a la AGE."
+},
+{
+  pregunta: "La obligación de informar sobre riesgos corresponde a:",
+  opciones: ["a) Los delegados sindicales", "b) El empresario", "c) Los trabajadores entre sí", "d) El comité de seguridad y salud"],
+  correcta: "b) El empresario",
+  justificacion: "El empresario debe informar a los trabajadores de los riesgos existentes."
+},
+{
+  pregunta: "El principio de sustitución en PRL implica:",
+  opciones: ["a) Sustituir a los delegados de prevención por técnicos", "b) Sustituir lo peligroso por algo menos peligroso", "c) Sustituir al empresario por la Administración", "d) Sustituir a los trabajadores en caso de accidente"],
+  correcta: "b) Sustituir lo peligroso por algo menos peligroso",
+  justificacion: "Es uno de los principios básicos de la acción preventiva."
+},
+{
+  pregunta: "El Real Decreto 179/2005 establece que en la Guardia Civil:",
+  opciones: ["a) No se aplica la prevención por su carácter militar", "b) Se aplica la PRL adaptada a sus particularidades", "c) Solo se aplican medidas disciplinarias", "d) No existe obligación de prevención"],
+  correcta: "b) Se aplica la PRL adaptada a sus particularidades",
+  justificacion: "La Guardia Civil adapta la prevención a su naturaleza militar."
+},
+{
+  pregunta: "Los servicios de prevención pueden ser:",
+  opciones: ["a) Propios", "b) Ajenos", "c) Mancomunados", "d) Todas las anteriores"],
+  correcta: "d) Todas las anteriores",
+  justificacion: "La ley contempla estas modalidades de organización preventiva."
+},
+{
+  pregunta: "La coordinación de actividades empresariales se refiere a:",
+  opciones: ["a) Empresas que comparten centro de trabajo deben coordinar la prevención", "b) Solo se aplica a multinacionales", "c) Es exclusiva del sector público", "d) Se limita al transporte de mercancías"],
+  correcta: "a) Empresas que comparten centro de trabajo deben coordinar la prevención",
+  justificacion: "Es obligatorio coordinar la prevención en centros de trabajo compartidos."
+},
+{
+  pregunta: "En caso de accidente laboral grave, el empresario debe:",
+  opciones: ["a) Ocultarlo a la autoridad", "b) Comunicarlo a la autoridad laboral competente", "c) Resolverlo internamente", "d) Consultarlo con los delegados sindicales únicamente"],
+  correcta: "b) Comunicarlo a la autoridad laboral competente",
+  justificacion: "Es obligatorio notificar accidentes graves o mortales."
+},
+{
+  pregunta: "El Real Decreto 67/2010 reconoce como órganos en materia de PRL en la AGE a:",
+  opciones: ["a) Delegados de prevención y comités de seguridad y salud", "b) Inspector jefe", "c) Solo los sindicatos", "d) Directores generales"],
+  correcta: "a) Delegados de prevención y comités de seguridad y salud",
+  justificacion: "Estos órganos representan a los trabajadores en la AGE."
+},
+{
+  pregunta: "En la Guardia Civil, la aplicación de la PRL debe respetar:",
+  opciones: ["a) La disciplina y naturaleza militar", "b) Exclusivamente la normativa civil", "c) Únicamente las órdenes sindicales", "d) La normativa de la Policía Nacional"],
+  correcta: "a) La disciplina y naturaleza militar",
+  justificacion: "El RD 179/2005 establece esta adaptación."
+},
+{
+  pregunta: "La evaluación de riesgos laborales debe realizarse:",
+  opciones: ["a) Una sola vez al inicio de la actividad", "b) Cuando cambien las condiciones de trabajo", "c) Cada 10 años", "d) Solo si lo pide el comité"],
+  correcta: "b) Cuando cambien las condiciones de trabajo",
+  justificacion: "Debe actualizarse siempre que cambien las condiciones."
+},
+{
+  pregunta: "Los trabajadores tienen la obligación de:",
+  opciones: ["a) Usar adecuadamente los EPI", "b) Cooperar con el empresario en prevención", "c) No poner en peligro a otros trabajadores", "d) Todas las anteriores"],
+  correcta: "d) Todas las anteriores",
+  justificacion: "Son obligaciones básicas de los trabajadores en PRL."
+},
+
+]; // Banco vacío
 </script>
 </body>
 </html>
