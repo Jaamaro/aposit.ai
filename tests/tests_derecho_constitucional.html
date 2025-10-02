@@ -1,1 +1,2177 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test de Igualdad</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --card: #ffffff;
+      --text: #111827;
+      --muted: #6b7280;
+      --primary: #2563eb;
+      --primary-dark: #1e40af;
+      --success: #059669;
+      --danger: #dc2626;
+      --ring: rgba(37, 99, 235, 0.25);
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: 'Roboto', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      padding: 24px;
+    }
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+    header.hero {
+      text-align: center;
+      margin-bottom: 16px;
+    }
+    .title {
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--primary-dark);
+      margin: 0 0 8px;
+    }
+    .subtitle {
+      color: var(--muted);
+      margin: 0;
+    }
+    .controls {
+      background: var(--card);
+      border-radius: 14px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.06);
+      padding: 16px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      justify-content: center;
+      position: sticky;
+      top: 12px;
+      z-index: 5;
+    }
+    .controls label { font-weight: 500; }
+    select {
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid #e5e7eb;
+      background: #fff;
+      outline: none;
+      transition: box-shadow .2s, border-color .2s;
+    }
+    select:focus { border-color: var(--primary); box-shadow: 0 0 0 4px var(--ring); }
 
+    .btn {
+      cursor: pointer;
+      border: none;
+      border-radius: 10px;
+      padding: 12px 18px;
+      font-weight: 700;
+      transition: transform .15s, background .2s, box-shadow .2s;
+      color: #fff;
+      background: var(--primary);
+      box-shadow: 0 6px 14px rgba(37,99,235,.2);
+    }
+    .btn:hover { transform: translateY(-1px); background: var(--primary-dark); }
+    .btn.secondary { background: #6b7280; }
+    .btn.secondary:hover { background: #374151; }
+    .btn.success { background: var(--success); }
+    .btn.success:hover { background: #047857; }
+    .btn.danger { background: var(--danger); }
+    .btn.danger:hover { background: #b91c1c; }
+
+    .progress {
+      width: 100%;
+      height: 10px;
+      background: #e5e7eb;
+      border-radius: 999px;
+      overflow: hidden;
+      margin-top: 8px;
+    }
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--primary), #60a5fa);
+      transition: width .3s ease;
+    }
+
+    .question {
+      margin: 14px 0;
+      padding: 18px;
+      background: var(--card);
+      border-radius: 14px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.06);
+    }
+    .q-head {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+    }
+    .q-num {
+      font-weight: 800;
+      color: var(--primary-dark);
+    }
+    .q-text { margin: 0; }
+
+    .options { margin-top: 10px; display: grid; gap: 8px; }
+    .option {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid #e5e7eb;
+      background: #fff;
+      transition: background .15s, border-color .15s, box-shadow .15s;
+      cursor: pointer;
+    }
+    .option input { transform: scale(1.2); }
+    .option:hover { background: #f9fafb; border-color: #d1d5db; }
+    .option.is-selected { box-shadow: 0 0 0 4px var(--ring); border-color: var(--primary); }
+
+    .justification {
+      margin-top: 10px; color: var(--muted);
+    }
+    .correct { color: var(--success); font-weight: 700; }
+    .incorrect { color: var(--danger); font-weight: 700; }
+
+    .option.correct-option {
+      border-color: rgba(5,150,105,.4);
+      background: #ecfdf5;
+    }
+    .option.wrong-option {
+      border-color: rgba(220,38,38,.4);
+      background: #fef2f2;
+    }
+
+    .result-card {
+      margin: 18px 0;
+      padding: 16px;
+      background: var(--card);
+      border-radius: 14px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.06);
+      text-align: center;
+    }
+    .score {
+      font-size: 22px;
+      font-weight: 800;
+      margin: 8px 0;
+    }
+    .muted { color: var(--muted); }
+    footer { text-align: center; margin-top: 24px; color: var(--muted); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="hero">
+      <h1 class="title">Test de Igualdad</h1>
+      <p class="subtitle">Selecciona cuántas preguntas quieres y pulsa <strong>Comenzar</strong>.</p>
+    </header>
+
+    <div class="controls">
+      <label for="numPreguntas">Número de preguntas:</label>
+      <select id="numPreguntas">
+        <option value="10">10</option>
+        <option value="20">20</option>
+        <option value="30">30</option>
+        <option value="40">40</option>
+        <option value="50" selected>50</option>
+      </select>
+      <button class="btn" type="button" onclick="cargarTest()">Comenzar</button>
+      <button class="btn secondary" type="button" onclick="reiniciarTest()">Reiniciar</button>
+      <div class="progress" style="flex-basis: 100%;">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+    </div>
+
+    <form id="testForm"></form>
+
+    <div id="testResult"></div>
+    <footer>© Test de práctica — Igualdad</footer>
+  </div>
+
+<script>
+const preguntasBanco = [
+  {
+  pregunta: "¿Cuál fue la primera Constitución española?",
+  opciones: ["a) La de 1812", "b) La de 1834", "c) La de 1931", "d) La de 1845"],
+  correcta: "a) La de 1812",
+  justificacion: "La primera Constitución española fue la de 1812, conocida como la de Cádiz."
+},
+{
+  pregunta: "¿Qué ley fue considerada 'ley puente' hacia la Constitución de 1978?",
+  opciones: ["a) Ley de Reforma Política de 1976", "b) Ley de Amnistía de 1977", "c) Ley Orgánica del Estado de 1967", "d) Ley para la Reforma Universitaria de 1970"],
+  correcta: "a) Ley de Reforma Política de 1976",
+  justificacion: "Fue aprobada en 1976 y abrió el camino a la Constitución democrática."
+},
+{
+  pregunta: "¿Cuándo se celebraron las primeras elecciones democráticas tras la dictadura franquista?",
+  opciones: ["a) Junio de 1976", "b) Junio de 1977", "c) Octubre de 1978", "d) Diciembre de 1975"],
+  correcta: "b) Junio de 1977",
+  justificacion: "En junio de 1977 se celebraron las primeras elecciones democráticas tras la dictadura."
+},
+{
+  pregunta: "¿En qué fecha se aprobó el texto definitivo de la Constitución por Congreso y Senado?",
+  opciones: ["a) 6 de diciembre de 1978", "b) 31 de octubre de 1978", "c) 27 de diciembre de 1978", "d) 29 de diciembre de 1978"],
+  correcta: "b) 31 de octubre de 1978",
+  justificacion: "El texto fue aprobado en sesiones plenarias de Congreso y Senado el 31 de octubre de 1978."
+},
+{
+  pregunta: "¿En qué fecha fue publicada en el BOE la Constitución de 1978?",
+  opciones: ["a) 6 de diciembre de 1978", "b) 27 de diciembre de 1978", "c) 29 de diciembre de 1978", "d) 1 de enero de 1979"],
+  correcta: "c) 29 de diciembre de 1978",
+  justificacion: "La Constitución se publicó en el BOE el 29 de diciembre de 1978, entrando en vigor ese mismo día."
+},
+{
+  pregunta: "¿Cuál de las siguientes partes integra la estructura material de la Constitución?",
+  opciones: ["a) Parte dogmática y parte orgánica", "b) Parte formal y parte instrumental", "c) Parte legislativa y parte ejecutiva", "d) Parte política y parte jurídica"],
+  correcta: "a) Parte dogmática y parte orgánica",
+  justificacion: "La CE se divide en una parte dogmática (principios y derechos) y una parte orgánica (organización política y jurídica)."
+},
+{
+  pregunta: "La parte dogmática de la Constitución está compuesta por:",
+  opciones: ["a) Título Preliminar y Título I", "b) Títulos II al X", "c) Solo el Preámbulo", "d) El Preámbulo y Títulos II y III"],
+  correcta: "a) Título Preliminar y Título I",
+  justificacion: "La parte dogmática abarca el Título Preliminar y el Título I (arts. 1 a 55)."
+},
+{
+  pregunta: "¿Cuántos artículos tiene la Constitución Española de 1978?",
+  opciones: ["a) 168", "b) 169", "c) 170", "d) 171"],
+  correcta: "b) 169",
+  justificacion: "La CE cuenta con 169 artículos distribuidos en un Título Preliminar y diez Títulos."
+},
+{
+  pregunta: "¿Qué tipo de constitución es la de 1978?",
+  opciones: ["a) Consuetudinaria", "b) Flexible", "c) Escrita, formal y rígida", "d) Breve y concisa"],
+  correcta: "c) Escrita, formal y rígida",
+  justificacion: "Es escrita, formal y rígida, ya que su modificación es compleja."
+},
+{
+  pregunta: "¿Cuál de estas características NO corresponde a la Constitución de 1978?",
+  opciones: ["a) Es consensuada", "b) Es incompleta", "c) Es consuetudinaria", "d) Es democrática"],
+  correcta: "c) Es consuetudinaria",
+  justificacion: "No es consuetudinaria, sino escrita y formal."
+},
+{
+  pregunta: "¿Qué valores superiores recoge el artículo 1.1 de la Constitución?",
+  opciones: ["a) Libertad, justicia, igualdad y pluralismo político", "b) Unidad, seguridad, paz y solidaridad", "c) Igualdad, soberanía, orden y justicia", "d) Libertad, progreso, igualdad y bienestar"],
+  correcta: "a) Libertad, justicia, igualdad y pluralismo político",
+  justificacion: "El art. 1.1 CE establece estos valores como superiores."
+},
+{
+  pregunta: "¿Qué significa que España sea un Estado social?",
+  opciones: ["a) Que los ciudadanos están sometidos a los jueces", "b) Que promueve la igualdad real y efectiva", "c) Que la soberanía reside en el monarca", "d) Que el poder lo ejercen solo los partidos políticos"],
+  correcta: "b) Que promueve la igualdad real y efectiva",
+  justificacion: "El Estado social busca garantizar igualdad real y condiciones de bienestar."
+},
+{
+  pregunta: "¿Qué implica el principio de igualdad recogido en el artículo 14?",
+  opciones: ["a) Que no existen diferencias entre comunidades autónomas", "b) Que todos los españoles son iguales ante la ley", "c) Que se prohíbe cualquier clase de impuestos", "d) Que los jueces no pueden discriminar"],
+  correcta: "b) Que todos los españoles son iguales ante la ley",
+  justificacion: "El art. 14 CE establece la igualdad ante la ley sin discriminación."
+},
+{
+  pregunta: "El pluralismo político se reconoce en la Constitución como:",
+  opciones: ["a) Un valor superior", "b) Un derecho fundamental individual", "c) Una obligación del Estado", "d) Una competencia exclusiva de las Cortes"],
+  correcta: "a) Un valor superior",
+  justificacion: "El pluralismo político se reconoce como valor superior del ordenamiento jurídico."
+},
+{
+  pregunta: "¿Cuál es la forma política del Estado español?",
+  opciones: ["a) República federal", "b) Monarquía parlamentaria", "c) Confederación de estados", "d) República presidencialista"],
+  correcta: "b) Monarquía parlamentaria",
+  justificacion: "El art. 1.3 CE establece que España es una monarquía parlamentaria."
+},
+{
+  pregunta: "¿Qué lengua es oficial del Estado según la Constitución?",
+  opciones: ["a) El gallego", "b) El euskera", "c) El catalán", "d) El castellano"],
+  correcta: "d) El castellano",
+  justificacion: "El castellano es la lengua oficial del Estado; todos tienen el deber de conocerla y el derecho a usarla."
+},
+{
+  pregunta: "¿Qué establece el artículo 2 de la Constitución?",
+  opciones: ["a) El derecho a la educación", "b) La unidad indisoluble de la Nación española", "c) El derecho a la libertad de expresión", "d) La supremacía de la Constitución"],
+  correcta: "b) La unidad indisoluble de la Nación española",
+  justificacion: "El art. 2 CE reconoce la unidad indisoluble de la Nación y la autonomía de nacionalidades y regiones."
+},
+{
+  pregunta: "¿Quién es el jefe del Estado según la Constitución?",
+  opciones: ["a) El presidente del Gobierno", "b) El Rey", "c) El presidente del Congreso", "d) El Tribunal Constitucional"],
+  correcta: "b) El Rey",
+  justificacion: "El Rey es el jefe del Estado, símbolo de unidad y permanencia."
+},
+{
+  pregunta: "¿Qué misión tienen las Fuerzas Armadas según la CE?",
+  opciones: ["a) Velar por el orden público", "b) Garantizar soberanía, independencia e integridad territorial", "c) Controlar las elecciones", "d) Redactar las leyes"],
+  correcta: "b) Garantizar soberanía, independencia e integridad territorial",
+  justificacion: "El art. 8 CE atribuye esta misión a las Fuerzas Armadas."
+},
+{
+  pregunta: "¿Qué principio implica que nadie puede ser sancionado por acciones no tipificadas en el momento de cometerse?",
+  opciones: ["a) Seguridad jurídica", "b) Irretroactividad de disposiciones sancionadoras no favorables", "c) Jerarquía normativa", "d) Publicidad de las normas"],
+  correcta: "b) Irretroactividad de disposiciones sancionadoras no favorables",
+  justificacion: "Este principio garantiza que no se sancione por hechos no previstos en la ley vigente."
+},
+  {
+  pregunta: "¿Qué principio establece que todas las normas deben respetar la Constitución?",
+  opciones: ["a) Soberanía nacional", "b) Supremacía constitucional", "c) Pluralismo político", "d) Jerarquía judicial"],
+  correcta: "b) Supremacía constitucional",
+  justificacion: "La CE es la norma suprema del ordenamiento jurídico y vincula a todos los poderes públicos."
+},
+{
+  pregunta: "¿Qué establece la Constitución respecto a los poderes del Estado?",
+  opciones: ["a) Que se concentran en las Cortes", "b) Que deben estar separados", "c) Que los ejerce la Corona", "d) Que dependen del Gobierno"],
+  correcta: "b) Que deben estar separados",
+  justificacion: "La Constitución establece la separación de poderes: legislativo, ejecutivo y judicial."
+},
+{
+  pregunta: "¿Qué define el principio de soberanía nacional?",
+  opciones: ["a) La soberanía reside en el Rey", "b) La soberanía reside en las Fuerzas Armadas", "c) La soberanía reside en el pueblo español", "d) La soberanía reside en el Gobierno"],
+  correcta: "c) La soberanía reside en el pueblo español",
+  justificacion: "La soberanía nacional reside en el pueblo español, del que emanan los poderes del Estado."
+},
+{
+  pregunta: "¿Qué institución representa al pueblo español?",
+  opciones: ["a) El Tribunal Constitucional", "b) El Congreso de los Diputados", "c) Las Cortes Generales", "d) El Gobierno"],
+  correcta: "c) Las Cortes Generales",
+  justificacion: "Las Cortes Generales representan al pueblo español según la CE."
+},
+{
+  pregunta: "¿Qué órgano controla la constitucionalidad de las leyes?",
+  opciones: ["a) El Congreso", "b) El Senado", "c) El Tribunal Constitucional", "d) El Tribunal Supremo"],
+  correcta: "c) El Tribunal Constitucional",
+  justificacion: "El Tribunal Constitucional controla la constitucionalidad de las normas con rango de ley."
+},
+{
+  pregunta: "¿Qué derechos gozan de una especial protección en la CE?",
+  opciones: ["a) Derechos laborales", "b) Derechos fundamentales y libertades públicas", "c) Derechos económicos", "d) Derechos culturales"],
+  correcta: "b) Derechos fundamentales y libertades públicas",
+  justificacion: "Los derechos fundamentales (arts. 14 a 29 CE) cuentan con especial protección."
+},
+{
+  pregunta: "¿Qué mayoría se exige para una reforma constitucional agravada?",
+  opciones: ["a) Mayoría simple", "b) Mayoría absoluta", "c) Mayoría de dos tercios", "d) Mayoría de tres quintos"],
+  correcta: "c) Mayoría de dos tercios",
+  justificacion: "Las reformas agravadas requieren mayoría de dos tercios de Congreso y Senado."
+},
+{
+  pregunta: "¿Qué derechos reconoce el artículo 27 de la CE?",
+  opciones: ["a) Derecho a la libertad religiosa", "b) Derecho a la educación", "c) Derecho al trabajo", "d) Derecho de reunión"],
+  correcta: "b) Derecho a la educación",
+  justificacion: "El artículo 27 CE reconoce el derecho a la educación y la libertad de enseñanza."
+},
+{
+  pregunta: "¿Qué significa que la CE sea rígida?",
+  opciones: ["a) Que no se puede reformar", "b) Que solo puede reformarse con un procedimiento agravado", "c) Que solo el Rey puede modificarla", "d) Que está por debajo de la ley ordinaria"],
+  correcta: "b) Que solo puede reformarse con un procedimiento agravado",
+  justificacion: "La rigidez implica que no se puede reformar con el mismo procedimiento que una ley ordinaria."
+},
+{
+  pregunta: "¿Qué reconoce la CE respecto a la iniciativa legislativa popular?",
+  opciones: ["a) Que no existe", "b) Que se permite con un mínimo de 500.000 firmas", "c) Que solo corresponde a los partidos", "d) Que la pueden ejercer los sindicatos"],
+  correcta: "b) Que se permite con un mínimo de 500.000 firmas",
+  justificacion: "La CE reconoce la iniciativa legislativa popular con ese requisito."
+},
+{
+  pregunta: "¿Qué establece el artículo 6 sobre los partidos políticos?",
+  opciones: ["a) Son asociaciones privadas", "b) Son instrumentos fundamentales para la participación política", "c) No tienen reconocimiento constitucional", "d) Solo pueden crearse con autorización del Rey"],
+  correcta: "b) Son instrumentos fundamentales para la participación política",
+  justificacion: "El art. 6 CE establece el papel central de los partidos políticos."
+},
+{
+  pregunta: "¿Qué institución defiende los derechos fundamentales frente a la Administración?",
+  opciones: ["a) El Gobierno", "b) El Tribunal Supremo", "c) El Defensor del Pueblo", "d) El Senado"],
+  correcta: "c) El Defensor del Pueblo",
+  justificacion: "El Defensor del Pueblo supervisa la Administración en defensa de los ciudadanos."
+},
+{
+  pregunta: "¿Qué tribunal es el supremo intérprete de la Constitución?",
+  opciones: ["a) El Tribunal Supremo", "b) El Consejo General del Poder Judicial", "c) El Tribunal Constitucional", "d) El Consejo de Estado"],
+  correcta: "c) El Tribunal Constitucional",
+  justificacion: "El Tribunal Constitucional es el supremo intérprete de la CE."
+},
+{
+  pregunta: "¿Qué derechos se suspenden en un estado de excepción?",
+  opciones: ["a) Todos los derechos", "b) Solo los económicos", "c) Algunos derechos fundamentales", "d) Ninguno"],
+  correcta: "c) Algunos derechos fundamentales",
+  justificacion: "En estado de excepción pueden suspenderse determinados derechos fundamentales."
+},
+{
+  pregunta: "¿Qué órgano convoca el referéndum para la ratificación de la Constitución?",
+  opciones: ["a) El Rey", "b) El Gobierno", "c) El Congreso de los Diputados", "d) El Tribunal Constitucional"],
+  correcta: "a) El Rey",
+  justificacion: "El Rey convocó el referéndum de ratificación en 1978."
+},
+{
+  pregunta: "¿Qué tipo de sufragio establece la CE?",
+  opciones: ["a) Universal, libre, igual, directo y secreto", "b) Corporativo", "c) Censitario", "d) Limitado a mayores de 25 años"],
+  correcta: "a) Universal, libre, igual, directo y secreto",
+  justificacion: "Así lo establece la Constitución Española de 1978."
+},
+{
+  pregunta: "¿Qué principio garantiza que los poderes públicos deben promover las condiciones para que la libertad e igualdad sean reales y efectivas?",
+  opciones: ["a) Estado democrático", "b) Estado social", "c) Estado unitario", "d) Estado liberal"],
+  correcta: "b) Estado social",
+  justificacion: "El Estado social busca la efectividad de la libertad e igualdad."
+},
+{
+  pregunta: "¿Qué derecho recoge el artículo 20 de la CE?",
+  opciones: ["a) Derecho de huelga", "b) Derecho a la libertad de expresión y de información", "c) Derecho a la intimidad", "d) Derecho al trabajo"],
+  correcta: "b) Derecho a la libertad de expresión y de información",
+  justificacion: "El art. 20 CE protege la libertad de expresión y de información."
+},
+{
+  pregunta: "¿Qué derecho garantiza el artículo 18 de la CE?",
+  opciones: ["a) Derecho a la propiedad privada", "b) Derecho al honor, intimidad y propia imagen", "c) Derecho a fundar partidos políticos", "d) Derecho a la libertad sindical"],
+  correcta: "b) Derecho al honor, intimidad y propia imagen",
+  justificacion: "El art. 18 CE reconoce estos derechos fundamentales."
+},
+{
+  pregunta: "¿Qué tipo de Estado proclama la CE en su artículo 1?",
+  opciones: ["a) Estado federal", "b) Estado social y democrático de derecho", "c) Estado autoritario", "d) Estado confesional"],
+  correcta: "b) Estado social y democrático de derecho",
+  justificacion: "Así lo establece el artículo 1.1 CE."
+},
+{
+  pregunta: "¿Qué institución aprueba los Presupuestos Generales del Estado?",
+  opciones: ["a) El Gobierno", "b) El Tribunal de Cuentas", "c) Las Cortes Generales", "d) El Banco de España"],
+  correcta: "c) Las Cortes Generales",
+  justificacion: "La aprobación de los Presupuestos corresponde a las Cortes Generales."
+},
+{
+  pregunta: "¿Qué órgano ostenta la potestad legislativa del Estado?",
+  opciones: ["a) El Gobierno", "b) El Tribunal Constitucional", "c) Las Cortes Generales", "d) El Rey"],
+  correcta: "c) Las Cortes Generales",
+  justificacion: "Las Cortes Generales ejercen la potestad legislativa."
+},
+{
+  pregunta: "¿Qué principio establece que las normas deben ser publicadas para ser válidas?",
+  opciones: ["a) Jerarquía normativa", "b) Publicidad de las normas", "c) Seguridad jurídica", "d) Igualdad ante la ley"],
+  correcta: "b) Publicidad de las normas",
+  justificacion: "Las normas deben publicarse para adquirir validez."
+},
+{
+  pregunta: "¿Qué derecho garantiza la inviolabilidad del domicilio?",
+  opciones: ["a) Derecho de reunión", "b) Derecho a la intimidad personal y familiar", "c) Derecho a la libertad sindical", "d) Derecho a la tutela judicial efectiva"],
+  correcta: "b) Derecho a la intimidad personal y familiar",
+  justificacion: "El art. 18 CE establece la inviolabilidad del domicilio."
+},
+{
+  pregunta: "¿Qué mayoría se requiere para la investidura de un Presidente del Gobierno en primera votación?",
+  opciones: ["a) Mayoría simple", "b) Mayoría absoluta", "c) Mayoría de dos tercios", "d) Mayoría de tres quintos"],
+  correcta: "b) Mayoría absoluta",
+  justificacion: "En primera votación se exige mayoría absoluta de la Cámara."
+},
+{
+  pregunta: "¿Qué establece la CE sobre la religión en el Estado?",
+  opciones: ["a) El catolicismo es religión oficial", "b) El Estado es aconfesional", "c) Se reconoce la religión como fuente de derecho", "d) Solo se permite la libertad religiosa limitada"],
+  correcta: "b) El Estado es aconfesional",
+  justificacion: "El art. 16 CE establece que ninguna confesión tendrá carácter estatal."
+},
+{
+  pregunta: "¿Qué derecho protege la libertad de creación de centros docentes?",
+  opciones: ["a) Libertad ideológica", "b) Derecho a la educación", "c) Derecho de reunión", "d) Libertad de empresa"],
+  correcta: "b) Derecho a la educación",
+  justificacion: "El art. 27 CE protege la libertad de creación de centros docentes."
+},
+{
+  pregunta: "¿Qué derecho garantiza el habeas corpus?",
+  opciones: ["a) Derecho a la intimidad", "b) Derecho a la libertad y seguridad personal", "c) Derecho a la educación", "d) Derecho al trabajo"],
+  correcta: "b) Derecho a la libertad y seguridad personal",
+  justificacion: "El habeas corpus protege la libertad frente a detenciones ilegales."
+},
+{
+  pregunta: "¿Qué establece el artículo 15 CE?",
+  opciones: ["a) Derecho a la educación", "b) Derecho a la vida e integridad física y moral", "c) Derecho a fundar sindicatos", "d) Derecho de reunión"],
+  correcta: "b) Derecho a la vida e integridad física y moral",
+  justificacion: "El art. 15 CE garantiza el derecho a la vida y a la integridad."
+},
+{
+  pregunta: "¿Qué principio económico reconoce la CE?",
+  opciones: ["a) Libertad de empresa en el marco de la economía de mercado", "b) Planificación obligatoria de la economía", "c) Supremacía de la propiedad pública", "d) Control de precios por el Estado"],
+  correcta: "a) Libertad de empresa en el marco de la economía de mercado",
+  justificacion: "El art. 38 CE reconoce este principio económico."
+},
+{
+  pregunta: "¿Qué derecho reconoce la CE a los españoles en el extranjero?",
+  opciones: ["a) Derecho a votar", "b) Derecho a la educación gratuita", "c) Derecho a crear partidos políticos", "d) Derecho a la seguridad social universal"],
+  correcta: "a) Derecho a votar",
+  justificacion: "La CE reconoce el derecho de sufragio a los españoles residentes en el exterior."
+},
+{
+  pregunta: "¿Qué establece la CE respecto a la bandera de España?",
+  opciones: ["a) No se regula en la CE", "b) Que es roja y gualda", "c) Que cada comunidad tiene su bandera y no hay nacional", "d) Que se modificará por ley ordinaria"],
+  correcta: "b) Que es roja y gualda",
+  justificacion: "La CE establece que la bandera de España es la roja y gualda."
+},
+{
+  pregunta: "¿Qué órgano controla las cuentas y la gestión económica del Estado?",
+  opciones: ["a) El Banco de España", "b) El Tribunal de Cuentas", "c) El Tribunal Constitucional", "d) El Gobierno"],
+  correcta: "b) El Tribunal de Cuentas",
+  justificacion: "El Tribunal de Cuentas controla las cuentas del Estado."
+},
+{
+  pregunta: "¿Qué institución garantiza la unidad jurisdiccional en España?",
+  opciones: ["a) El Tribunal Constitucional", "b) El Tribunal Supremo", "c) El Consejo General del Poder Judicial", "d) El Consejo de Estado"],
+  correcta: "b) El Tribunal Supremo",
+  justificacion: "El Tribunal Supremo garantiza la unidad jurisdiccional en España."
+},
+{
+  pregunta: "¿Qué significa la irretroactividad de las disposiciones sancionadoras no favorables?",
+  opciones: ["a) Que nunca se aplican a nadie", "b) Que no se aplican a hechos anteriores a su entrada en vigor", "c) Que siempre se aplican aunque sean más graves", "d) Que se aplican solo a los extranjeros"],
+  correcta: "b) Que no se aplican a hechos anteriores a su entrada en vigor",
+  justificacion: "Se protege a los ciudadanos de sanciones retroactivas más gravosas."
+},
+{
+  pregunta: "¿Qué institución ejerce la función ejecutiva en España?",
+  opciones: ["a) El Congreso", "b) El Senado", "c) El Gobierno", "d) El Rey"],
+  correcta: "c) El Gobierno",
+  justificacion: "El Gobierno ejerce la función ejecutiva y la potestad reglamentaria."
+},
+{
+  pregunta: "¿Qué tipo de referéndum se celebró para aprobar la CE?",
+  opciones: ["a) Consultivo", "b) Ratificatorio", "c) Constitucional", "d) Constituyente"],
+  correcta: "b) Ratificatorio",
+  justificacion: "El referéndum del 6 de diciembre de 1978 fue de ratificación de la CE."
+},
+{
+  pregunta: "¿Qué límite establece la CE a la libertad de expresión?",
+  opciones: ["a) La seguridad nacional", "b) El respeto a los derechos al honor, intimidad y propia imagen", "c) La estabilidad del Gobierno", "d) La paz social"],
+  correcta: "b) El respeto a los derechos al honor, intimidad y propia imagen",
+  justificacion: "El art. 20.4 CE establece este límite a la libertad de expresión."
+},
+{
+  pregunta: "¿Qué institución regula el funcionamiento de los partidos políticos?",
+  opciones: ["a) Una ley orgánica", "b) Una ley ordinaria", "c) El Gobierno", "d) El Tribunal Constitucional"],
+  correcta: "a) Una ley orgánica",
+  justificacion: "Los partidos políticos se regulan mediante ley orgánica."
+},
+{
+  pregunta: "¿Qué derecho protege la CE respecto a la sindicación?",
+  opciones: ["a) Derecho de reunión", "b) Derecho a sindicarse libremente", "c) Derecho de huelga", "d) Derecho de asociación cultural"],
+  correcta: "b) Derecho a sindicarse libremente",
+  justificacion: "La CE reconoce la libertad sindical como derecho fundamental."
+},
+{
+  pregunta: "¿Qué establece la CE sobre la nacionalidad?",
+  opciones: ["a) Se regula por ley ordinaria", "b) Se regula por ley orgánica", "c) No se regula en la CE", "d) Solo la regula el Rey"],
+  correcta: "b) Se regula por ley orgánica",
+  justificacion: "El art. 11 CE establece que la nacionalidad se regula por ley orgánica."
+},
+{
+  pregunta: "¿Qué principio inspira la organización territorial del Estado?",
+  opciones: ["a) Centralismo", "b) Autonomía de nacionalidades y regiones", "c) Independencia de comunidades", "d) Supremacía de las provincias"],
+  correcta: "b) Autonomía de nacionalidades y regiones",
+  justificacion: "La CE reconoce y garantiza el derecho a la autonomía de nacionalidades y regiones."
+},
+{
+  pregunta: "¿Qué institución aprueba los Estatutos de Autonomía?",
+  opciones: ["a) El Gobierno", "b) El Rey", "c) Las Cortes Generales", "d) El Senado exclusivamente"],
+  correcta: "c) Las Cortes Generales",
+  justificacion: "Los Estatutos se aprueban como ley orgánica por las Cortes Generales."
+},
+{
+  pregunta: "¿Qué institución ejerce el control político del Gobierno?",
+  opciones: ["a) El Tribunal Constitucional", "b) El Congreso de los Diputados", "c) El Rey", "d) El Tribunal Supremo"],
+  correcta: "b) El Congreso de los Diputados",
+  justificacion: "El Congreso controla políticamente al Gobierno."
+},
+{
+  pregunta: "¿Qué figura constitucional garantiza el control previo de constitucionalidad de los tratados internacionales?",
+  opciones: ["a) El Tribunal Supremo", "b) El Consejo de Estado", "c) El Tribunal Constitucional", "d) El Congreso de los Diputados"],
+  correcta: "c) El Tribunal Constitucional",
+  justificacion: "El TC puede pronunciarse sobre la constitucionalidad de tratados internacionales antes de su ratificación."
+},
+{
+  pregunta: "¿Qué establece la CE sobre el matrimonio?",
+  opciones: ["a) Que solo puede celebrarse por lo civil", "b) Que se garantiza la igualdad jurídica entre los cónyuges", "c) Que solo el hombre tiene capacidad de decisión", "d) Que depende de la religión"],
+  correcta: "b) Que se garantiza la igualdad jurídica entre los cónyuges",
+  justificacion: "El art. 32 CE garantiza la igualdad jurídica en el matrimonio."
+},
+{
+  pregunta: "¿Qué establece la CE sobre la sucesión a la Corona?",
+  opciones: ["a) Se rige por la voluntad del Rey", "b) Por el principio de primogenitura y representación, con preferencia del varón sobre la mujer", "c) Por elección del Parlamento", "d) Por votación popular"],
+  correcta: "b) Por el principio de primogenitura y representación, con preferencia del varón sobre la mujer",
+  justificacion: "El art. 57 CE establece este principio en la sucesión a la Corona."
+},
+{
+  pregunta: "¿Qué derecho garantiza la tutela judicial efectiva?",
+  opciones: ["a) Derecho a un proceso con todas las garantías", "b) Derecho a la educación", "c) Derecho a la objeción de conciencia", "d) Derecho a no ser juzgado"],
+  correcta: "a) Derecho a un proceso con todas las garantías",
+  justificacion: "El art. 24 CE reconoce el derecho a la tutela judicial efectiva."
+},
+{
+  pregunta: "¿Qué órgano tiene iniciativa para reformar la Constitución?",
+  opciones: ["a) Solo el Gobierno", "b) Gobierno, Congreso, Senado y Asambleas de las Comunidades Autónomas", "c) Solo el Congreso", "d) Solo el Rey"],
+  correcta: "b) Gobierno, Congreso, Senado y Asambleas de las Comunidades Autónomas",
+  justificacion: "El art. 166 CE reconoce la iniciativa de reforma a estos órganos."
+},
+{
+  pregunta: "¿Qué derecho recoge el art. 23 CE?",
+  opciones: ["a) Derecho a la libertad ideológica", "b) Derecho a participar en asuntos públicos", "c) Derecho a la intimidad", "d) Derecho a la educación"],
+  correcta: "b) Derecho a participar en asuntos públicos",
+  justificacion: "El art. 23 CE reconoce el derecho a participar directamente o a través de representantes."
+},
+{
+  pregunta: "¿Qué derecho protege el recurso de amparo ante el Tribunal Constitucional?",
+  opciones: ["a) Derechos fundamentales y libertades públicas", "b) Derechos económicos", "c) Derechos de las comunidades autónomas", "d) Derechos de los partidos políticos"],
+  correcta: "a) Derechos fundamentales y libertades públicas",
+  justificacion: "El recurso de amparo protege los derechos de los arts. 14 a 29 CE."
+},
+{
+  pregunta: "¿Qué institución nombra al Presidente del Gobierno?",
+  opciones: ["a) El Congreso de los Diputados", "b) El Rey", "c) El Senado", "d) El Tribunal Constitucional"],
+  correcta: "a) El Congreso de los Diputados",
+  justificacion: "El Presidente es elegido por el Congreso y nombrado por el Rey."
+},
+{
+  pregunta: "¿Qué establece la CE sobre la enseñanza?",
+  opciones: ["a) Que solo puede ser pública", "b) Que garantiza la libertad de enseñanza y el derecho a la educación", "c) Que solo puede ser privada", "d) Que no regula la enseñanza"],
+  correcta: "b) Que garantiza la libertad de enseñanza y el derecho a la educación",
+  justificacion: "El art. 27 CE garantiza ambos principios."
+},
+{
+  pregunta: "¿Qué derecho garantiza la objeción de conciencia?",
+  opciones: ["a) Derecho a la vida", "b) Derecho a la libertad ideológica y religiosa", "c) Derecho a la educación", "d) Derecho a fundar partidos políticos"],
+  correcta: "b) Derecho a la libertad ideológica y religiosa",
+  justificacion: "El art. 16 CE ampara la objeción de conciencia."
+},
+{
+  pregunta: "¿Qué institución ostenta la jefatura del Estado?",
+  opciones: ["a) El Rey", "b) El Congreso", "c) El Senado", "d) El Gobierno"],
+  correcta: "a) El Rey",
+  justificacion: "El Rey es el jefe del Estado y símbolo de su unidad y permanencia."
+},
+{
+  pregunta: "¿Qué carácter tienen las Fuerzas Armadas según la CE?",
+  opciones: ["a) Fuerzas policiales", "b) Institución neutral y apartidista", "c) Guardia pretoriana del Gobierno", "d) Instrumento político de las Cortes"],
+  correcta: "b) Institución neutral y apartidista",
+  justificacion: "El art. 8 CE establece que su misión se ejerce con neutralidad política."
+},
+{
+  pregunta: "¿Qué derecho garantiza el art. 19 CE?",
+  opciones: ["a) Derecho de reunión", "b) Derecho a elegir libremente residencia y circular por el territorio", "c) Derecho a la educación", "d) Derecho a la sindicación"],
+  correcta: "b) Derecho a elegir libremente residencia y circular por el territorio",
+  justificacion: "El art. 19 CE reconoce este derecho fundamental."
+},
+{
+  pregunta: "¿Qué órgano resuelve los conflictos de competencias entre Estado y Comunidades Autónomas?",
+  opciones: ["a) El Tribunal Supremo", "b) El Tribunal Constitucional", "c) El Consejo de Estado", "d) El Congreso"],
+  correcta: "b) El Tribunal Constitucional",
+  justificacion: "El TC resuelve los conflictos de competencias."
+},
+{
+  pregunta: "¿Qué derecho protege el art. 28 CE?",
+  opciones: ["a) Libertad de expresión", "b) Derecho de huelga y libertad sindical", "c) Derecho a la intimidad", "d) Derecho de propiedad"],
+  correcta: "b) Derecho de huelga y libertad sindical",
+  justificacion: "El art. 28 CE garantiza estos derechos laborales."
+},
+{
+  pregunta: "¿Qué institución ejerce la función de control presupuestario?",
+  opciones: ["a) El Congreso", "b) El Tribunal de Cuentas", "c) El Gobierno", "d) El Banco de España"],
+  correcta: "b) El Tribunal de Cuentas",
+  justificacion: "El Tribunal de Cuentas controla las finanzas públicas."
+},
+{
+  pregunta: "¿Qué derecho recoge el art. 21 CE?",
+  opciones: ["a) Derecho de asociación", "b) Derecho de reunión y manifestación", "c) Derecho de petición", "d) Derecho a la objeción de conciencia"],
+  correcta: "b) Derecho de reunión y manifestación",
+  justificacion: "El art. 21 CE reconoce este derecho fundamental."
+},
+{
+  pregunta: "¿Qué derecho protege el art. 22 CE?",
+  opciones: ["a) Derecho de huelga", "b) Derecho de asociación", "c) Derecho a la educación", "d) Derecho a la intimidad"],
+  correcta: "b) Derecho de asociación",
+  justificacion: "El art. 22 CE garantiza el derecho de asociación."
+},
+{
+  pregunta: "¿Qué derecho recoge el art. 29 CE?",
+  opciones: ["a) Derecho de petición", "b) Derecho a la educación", "c) Derecho de expresión", "d) Derecho de reunión"],
+  correcta: "a) Derecho de petición",
+  justificacion: "El art. 29 CE reconoce el derecho de petición individual y colectiva."
+},
+{
+  pregunta: "¿Qué función tienen los sindicatos según la CE?",
+  opciones: ["a) Controlar el Gobierno", "b) Defender y promover los intereses económicos y sociales de los trabajadores", "c) Dirigir la economía nacional", "d) Ejercer potestad legislativa"],
+  correcta: "b) Defender y promover los intereses económicos y sociales de los trabajadores",
+  justificacion: "El art. 7 CE reconoce el papel de sindicatos en la defensa de trabajadores."
+},
+{
+  pregunta: "¿Qué institución aprueba la Ley de Presupuestos Generales del Estado?",
+  opciones: ["a) El Rey", "b) El Gobierno", "c) Las Cortes Generales", "d) El Senado exclusivamente"],
+  correcta: "c) Las Cortes Generales",
+  justificacion: "La aprobación corresponde a las Cortes Generales."
+},
+{
+  pregunta: "¿Qué tipo de Estado territorial es España según la CE?",
+  opciones: ["a) Federal", "b) Confederado", "c) Estado autonómico", "d) Centralizado"],
+  correcta: "c) Estado autonómico",
+  justificacion: "La CE reconoce la autonomía de nacionalidades y regiones."
+},
+{
+  pregunta: "¿Qué derecho garantiza la objeción de conciencia al servicio militar?",
+  opciones: ["a) Libertad de expresión", "b) Libertad ideológica y religiosa", "c) Derecho de reunión", "d) Derecho de educación"],
+  correcta: "b) Libertad ideológica y religiosa",
+  justificacion: "El art. 30 CE reconoce este derecho como excepción al servicio militar."
+},
+{
+  pregunta: "¿Qué institución convoca elecciones generales?",
+  opciones: ["a) El Rey", "b) El Gobierno", "c) El Congreso", "d) El Tribunal Constitucional"],
+  correcta: "a) El Rey",
+  justificacion: "El Rey convoca elecciones a propuesta del Gobierno."
+},
+{
+  pregunta: "¿Qué institución representa a la soberanía nacional?",
+  opciones: ["a) El Rey", "b) El Congreso", "c) Las Cortes Generales", "d) El Tribunal Constitucional"],
+  correcta: "c) Las Cortes Generales",
+  justificacion: "Las Cortes Generales representan a la soberanía nacional."
+},
+{
+  pregunta: "¿Qué derecho protege el art. 17 CE?",
+  opciones: ["a) Derecho a la libertad y seguridad", "b) Derecho a la vida", "c) Derecho a la educación", "d) Derecho a la intimidad"],
+  correcta: "a) Derecho a la libertad y seguridad",
+  justificacion: "El art. 17 CE reconoce la libertad y seguridad personal."
+},
+{
+  pregunta: "¿Qué institución aprueba las leyes orgánicas?",
+  opciones: ["a) El Rey", "b) El Gobierno", "c) Las Cortes Generales", "d) El Tribunal Constitucional"],
+  correcta: "c) Las Cortes Generales",
+  justificacion: "Las Cortes Generales aprueban las leyes orgánicas por mayoría absoluta."
+},
+{
+  pregunta: "¿Qué derecho protege el art. 16 CE?",
+  opciones: ["a) Libertad ideológica, religiosa y de culto", "b) Libertad de expresión", "c) Derecho de reunión", "d) Derecho de propiedad"],
+  correcta: "a) Libertad ideológica, religiosa y de culto",
+  justificacion: "El art. 16 CE reconoce este derecho fundamental."
+},
+{
+  pregunta: "¿Qué principio organiza la economía según la CE?",
+  opciones: ["a) Economía socialista planificada", "b) Economía de mercado con libertad de empresa", "c) Economía centralizada", "d) Economía mixta estatal"],
+  correcta: "b) Economía de mercado con libertad de empresa",
+  justificacion: "La CE establece libertad de empresa en el marco de la economía de mercado."
+},
+{
+  pregunta: "¿Qué derecho garantiza el art. 35 CE?",
+  opciones: ["a) Derecho a la salud", "b) Derecho al trabajo y a la libre elección de profesión", "c) Derecho a la intimidad", "d) Derecho a la libertad de expresión"],
+  correcta: "b) Derecho al trabajo y a la libre elección de profesión",
+  justificacion: "El art. 35 CE reconoce el derecho al trabajo y libre elección de profesión."
+},
+{
+  pregunta: "¿Qué derecho reconoce el art. 27 CE además de la educación?",
+  opciones: ["a) Derecho a huelga", "b) Derecho a la libertad de enseñanza", "c) Derecho a la objeción de conciencia", "d) Derecho de reunión"],
+  correcta: "b) Derecho a la libertad de enseñanza",
+  justificacion: "El art. 27 CE reconoce tanto el derecho a la educación como la libertad de enseñanza."
+},
+{
+  pregunta: "¿Qué principio obliga a los poderes públicos a actuar conforme a la CE y al resto del ordenamiento jurídico?",
+  opciones: ["a) Legalidad", "b) Igualdad", "c) Pluralismo", "d) Neutralidad"],
+  correcta: "a) Legalidad",
+  justificacion: "El principio de legalidad vincula a todos los poderes públicos."
+},
+{
+  pregunta: "¿Qué órgano dirige la política interior y exterior, la Administración civil y militar y la defensa del Estado?",
+  opciones: ["a) El Congreso", "b) El Senado", "c) El Gobierno", "d) El Tribunal Constitucional"],
+  correcta: "c) El Gobierno",
+  justificacion: "Según la CE, el Gobierno dirige la política interior y exterior, la Administración y la defensa del Estado."
+},
+{
+  pregunta: "¿Quién ostenta la potestad reglamentaria?",
+  opciones: ["a) El Rey", "b) El Gobierno", "c) Las Cortes Generales", "d) El Tribunal Constitucional"],
+  correcta: "b) El Gobierno",
+  justificacion: "El Gobierno ejerce la potestad reglamentaria conforme a la Constitución."
+},
+{
+  pregunta: "¿Qué función corresponde en exclusiva al Congreso de los Diputados?",
+  opciones: ["a) Aprobación de leyes ordinarias", "b) Investidura del Presidente del Gobierno", "c) Nombramiento del Defensor del Pueblo", "d) Control de la constitucionalidad"],
+  correcta: "b) Investidura del Presidente del Gobierno",
+  justificacion: "El Congreso investiga al Presidente del Gobierno con mayoría absoluta o simple en segunda votación."
+},
+{
+  pregunta: "¿Cuál es la función principal del Senado según la CE?",
+  opciones: ["a) Cámara de representación territorial", "b) Cámara legislativa exclusiva", "c) Aprobar los Presupuestos Generales del Estado", "d) Investir al Presidente del Gobierno"],
+  correcta: "a) Cámara de representación territorial",
+  justificacion: "El Senado es la Cámara de representación territorial según la CE."
+},
+{
+  pregunta: "¿Qué principio rige la organización y funcionamiento de las Administraciones Públicas?",
+  opciones: ["a) Principio de neutralidad", "b) Principio de jerarquía", "c) Principios de eficacia, jerarquía, descentralización, desconcentración y coordinación", "d) Principio de supremacía"],
+  correcta: "c) Principios de eficacia, jerarquía, descentralización, desconcentración y coordinación",
+  justificacion: "La CE establece estos principios para la organización de las Administraciones Públicas."
+},
+{
+  pregunta: "¿Qué órgano ejerce la potestad jurisdiccional en España?",
+  opciones: ["a) Las Cortes Generales", "b) El Tribunal Constitucional", "c) Los Juzgados y Tribunales", "d) El Rey"],
+  correcta: "c) Los Juzgados y Tribunales",
+  justificacion: "La potestad jurisdiccional corresponde exclusivamente a los Juzgados y Tribunales."
+},
+{
+  pregunta: "¿Quién nombra al Presidente del Tribunal Supremo?",
+  opciones: ["a) El Congreso", "b) El Rey", "c) El Senado", "d) El Gobierno"],
+  correcta: "b) El Rey",
+  justificacion: "El Rey nombra al Presidente del Tribunal Supremo a propuesta del Consejo General del Poder Judicial."
+},
+{
+  pregunta: "¿Qué órgano vela por la independencia de jueces y magistrados?",
+  opciones: ["a) El Tribunal Constitucional", "b) El Consejo General del Poder Judicial", "c) El Senado", "d) El Gobierno"],
+  correcta: "b) El Consejo General del Poder Judicial",
+  justificacion: "El CGPJ vela por la independencia de los jueces y magistrados."
+},
+{
+  pregunta: "¿Qué principio garantiza que los jueces solo están sometidos al imperio de la ley?",
+  opciones: ["a) Principio de imparcialidad", "b) Principio de independencia judicial", "c) Principio de jerarquía normativa", "d) Principio de legalidad procesal"],
+  correcta: "b) Principio de independencia judicial",
+  justificacion: "La CE reconoce la independencia judicial y la sumisión exclusiva a la ley."
+},
+{
+  pregunta: "¿Qué institución aprueba los Estatutos de Autonomía?",
+  opciones: ["a) El Gobierno", "b) El Senado", "c) Las Cortes Generales", "d) El Tribunal Constitucional"],
+  correcta: "c) Las Cortes Generales",
+  justificacion: "Los Estatutos de Autonomía se aprueban como ley orgánica por las Cortes Generales."
+},
+{
+  pregunta: "¿Qué límite tienen los Estatutos de Autonomía?",
+  opciones: ["a) No tienen límites", "b) Deben ser conformes a la Constitución", "c) Solo dependen de los Parlamentos autonómicos", "d) Pueden modificar la Constitución"],
+  correcta: "b) Deben ser conformes a la Constitución",
+  justificacion: "Los Estatutos están subordinados a la Constitución Española."
+},
+{
+  pregunta: "¿Qué órganos pueden plantear un recurso de inconstitucionalidad?",
+  opciones: ["a) Solo el Gobierno", "b) Gobierno, Defensor del Pueblo, 50 diputados o 50 senadores", "c) Solo el Congreso", "d) Los jueces y tribunales"],
+  correcta: "b) Gobierno, Defensor del Pueblo, 50 diputados o 50 senadores",
+  justificacion: "La CE regula los legitimados para interponer recurso de inconstitucionalidad."
+},
+{
+  pregunta: "¿Qué mayoría se exige para una moción de censura constructiva?",
+  opciones: ["a) Mayoría simple", "b) Mayoría absoluta", "c) Mayoría de tres quintos", "d) Mayoría de dos tercios"],
+  correcta: "b) Mayoría absoluta",
+  justificacion: "La moción de censura debe aprobarse por mayoría absoluta del Congreso."
+},
+{
+  pregunta: "¿Qué figura parlamentaria permite al Congreso retirar su confianza al Gobierno?",
+  opciones: ["a) Cuestión de confianza", "b) Moción de censura", "c) Interpelación", "d) Comisión de investigación"],
+  correcta: "b) Moción de censura",
+  justificacion: "La moción de censura permite retirar la confianza al Gobierno."
+},
+{
+  pregunta: "¿Qué figura parlamentaria permite al Presidente del Gobierno someterse a la decisión del Congreso?",
+  opciones: ["a) Cuestión de confianza", "b) Moción de censura", "c) Interpelación", "d) Proposición no de ley"],
+  correcta: "a) Cuestión de confianza",
+  justificacion: "La cuestión de confianza permite al Presidente someterse al Congreso."
+},
+{
+  pregunta: "¿Qué función tiene el Tribunal de Cuentas?",
+  opciones: ["a) Controlar la constitucionalidad", "b) Controlar las cuentas y la gestión económica del Estado", "c) Elaborar los presupuestos", "d) Fiscalizar a los partidos políticos exclusivamente"],
+  correcta: "b) Controlar las cuentas y la gestión económica del Estado",
+  justificacion: "El Tribunal de Cuentas controla las cuentas del Estado y del sector público."
+},
+{
+  pregunta: "¿Qué derechos son objeto de recurso de amparo ante el Tribunal Constitucional?",
+  opciones: ["a) Todos los derechos reconocidos en la CE", "b) Solo los derechos fundamentales (arts. 14 a 29) y objeción de conciencia del art. 30", "c) Los derechos económicos y sociales", "d) Los derechos de los Estatutos de Autonomía"],
+  correcta: "b) Solo los derechos fundamentales (arts. 14 a 29) y objeción de conciencia del art. 30",
+  justificacion: "El recurso de amparo protege estos derechos fundamentales."
+},
+{
+  pregunta: "¿Qué derecho reconoce la CE en relación con los sindicatos?",
+  opciones: ["a) Derecho a la libertad sindical", "b) Derecho a huelga", "c) Derecho de asociación cultural", "d) Derecho a formar partidos políticos"],
+  correcta: "a) Derecho a la libertad sindical",
+  justificacion: "El art. 28 CE reconoce la libertad sindical como derecho fundamental."
+},
+{
+  pregunta: "¿Qué derecho garantiza la CE en relación con los partidos políticos?",
+  opciones: ["a) Derecho de reunión", "b) Derecho de asociación política", "c) Derecho a fundar partidos", "d) Derecho a formar asociaciones culturales"],
+  correcta: "c) Derecho a fundar partidos",
+  justificacion: "El art. 6 CE reconoce el derecho a fundar partidos políticos."
+},
+{
+  pregunta: "¿Qué derecho garantiza el art. 27 CE respecto a los padres?",
+  opciones: ["a) Derecho a que sus hijos reciban formación religiosa y moral conforme a sus convicciones", "b) Derecho a que elijan universidad gratuita", "c) Derecho a prohibir asignaturas concretas", "d) Derecho a impedir la escolarización obligatoria"],
+  correcta: "a) Derecho a que sus hijos reciban formación religiosa y moral conforme a sus convicciones",
+  justificacion: "El art. 27 CE reconoce este derecho a los padres."
+},
+{
+  pregunta: "¿Qué mayoría se exige para aprobar una ley orgánica?",
+  opciones: ["a) Mayoría simple", "b) Mayoría absoluta", "c) Mayoría de tres quintos", "d) Mayoría de dos tercios"],
+  correcta: "b) Mayoría absoluta",
+  justificacion: "Las leyes orgánicas requieren mayoría absoluta en el Congreso."
+},
+{
+  pregunta: "¿Qué órgano tiene competencia exclusiva en materia de relaciones internacionales?",
+  opciones: ["a) El Senado", "b) El Gobierno", "c) El Congreso", "d) El Estado"],
+  correcta: "d) El Estado",
+  justificacion: "El art. 149 CE atribuye al Estado la competencia exclusiva en relaciones internacionales."
+},
+{
+  pregunta: "¿Qué institución aprueba la declaración de estados de alarma, excepción y sitio?",
+  opciones: ["a) El Gobierno", "b) El Congreso de los Diputados", "c) El Senado", "d) El Tribunal Constitucional"],
+  correcta: "b) El Congreso de los Diputados",
+  justificacion: "El Congreso debe autorizar y controlar estos estados excepcionales."
+},
+{
+  pregunta: "¿Qué establece la CE sobre la descentralización territorial?",
+  opciones: ["a) Que España es un Estado federal", "b) Que se reconoce y garantiza el derecho a la autonomía de nacionalidades y regiones", "c) Que las comunidades pueden independizarse", "d) Que la organización territorial es centralista"],
+  correcta: "b) Que se reconoce y garantiza el derecho a la autonomía de nacionalidades y regiones",
+  justificacion: "El art. 2 CE reconoce la autonomía de nacionalidades y regiones."
+},
+{
+  pregunta: "¿Qué tribunal resuelve los recursos de casación?",
+  opciones: ["a) El Tribunal Constitucional", "b) El Tribunal Supremo", "c) El Consejo de Estado", "d) El Congreso"],
+  correcta: "b) El Tribunal Supremo",
+  justificacion: "El Tribunal Supremo conoce los recursos de casación."
+},
+{
+  pregunta: "¿Qué derecho protege el art. 30 CE?",
+  opciones: ["a) Derecho a la objeción de conciencia en relación con el servicio militar", "b) Derecho a la propiedad privada", "c) Derecho a la educación", "d) Derecho de huelga"],
+  correcta: "a) Derecho a la objeción de conciencia en relación con el servicio militar",
+  justificacion: "El art. 30 CE reconoce este derecho como excepción al deber de defender a España."
+},
+{
+  pregunta: "¿Qué órgano es competente para convocar referéndums consultivos?",
+  opciones: ["a) El Rey", "b) El Gobierno, autorizado por el Congreso", "c) El Senado", "d) El Tribunal Constitucional"],
+  correcta: "b) El Gobierno, autorizado por el Congreso",
+  justificacion: "El art. 92 CE establece que el Gobierno, autorizado por el Congreso, convoca referéndums consultivos."
+},
+{
+  pregunta: "¿Qué derecho protege el art. 33 CE?",
+  opciones: ["a) Derecho a la propiedad privada y herencia", "b) Derecho de huelga", "c) Derecho a la educación", "d) Derecho de reunión"],
+  correcta: "a) Derecho a la propiedad privada y herencia",
+  justificacion: "El art. 33 CE garantiza este derecho con límites en función del interés general."
+},
+{
+  pregunta: "¿Qué órgano aprueba los tratados internacionales?",
+  opciones: ["a) El Gobierno", "b) El Congreso y el Senado", "c) El Rey", "d) El Tribunal Constitucional"],
+  correcta: "b) El Congreso y el Senado",
+  justificacion: "Las Cortes Generales aprueban los tratados internacionales."
+},
+{
+  pregunta: "¿Qué derecho protege el art. 38 CE?",
+  opciones: ["a) Derecho a la salud", "b) Derecho a la libertad de empresa en el marco de la economía de mercado", "c) Derecho de huelga", "d) Derecho a la intimidad"],
+  correcta: "b) Derecho a la libertad de empresa en el marco de la economía de mercado",
+  justificacion: "El art. 38 CE reconoce la libertad de empresa en la economía de mercado."
+},
+{
+  pregunta: "¿Qué establece la CE sobre la iniciativa legislativa?",
+  opciones: ["a) Corresponde exclusivamente al Gobierno", "b) Corresponde al Gobierno, al Congreso, al Senado y a las Asambleas autonómicas", "c) Corresponde solo al Rey", "d) Corresponde a los sindicatos"],
+  correcta: "b) Corresponde al Gobierno, al Congreso, al Senado y a las Asambleas autonómicas",
+  justificacion: "La CE reconoce esta iniciativa a dichos órganos."
+},
+{
+  pregunta: "¿Qué tipo de control ejerce el Congreso sobre el Gobierno?",
+  opciones: ["a) Control político", "b) Control económico", "c) Control judicial", "d) Control administrativo"],
+  correcta: "a) Control político",
+  justificacion: "El Congreso ejerce el control político del Gobierno."
+},
+{
+  pregunta: "¿Qué derecho protege el art. 39 CE?",
+  opciones: ["a) Protección social, económica y jurídica de la familia", "b) Derecho de reunión", "c) Derecho de huelga", "d) Derecho a la objeción de conciencia"],
+  correcta: "a) Protección social, económica y jurídica de la familia",
+  justificacion: "El art. 39 CE reconoce este principio rector de la política social y económica."
+},
+{
+  pregunta: "¿Qué órgano controla la constitucionalidad de los estatutos de autonomía?",
+  opciones: ["a) El Congreso", "b) El Tribunal Supremo", "c) El Tribunal Constitucional", "d) El Consejo de Estado"],
+  correcta: "c) El Tribunal Constitucional",
+  justificacion: "El Tribunal Constitucional controla la constitucionalidad de los estatutos."
+},
+{
+  pregunta: "¿Qué derecho protege el art. 40 CE?",
+  opciones: ["a) Derecho a la propiedad", "b) Derecho a la promoción del progreso social y económico", "c) Derecho de huelga", "d) Derecho de reunión"],
+  correcta: "b) Derecho a la promoción del progreso social y económico",
+  justificacion: "El art. 40 CE establece este principio rector."
+},
+{
+  pregunta: "¿Qué institución controla la actividad económica de los partidos políticos?",
+  opciones: ["a) El Tribunal Supremo", "b) El Tribunal de Cuentas", "c) El Congreso", "d) El Senado"],
+  correcta: "b) El Tribunal de Cuentas",
+  justificacion: "El Tribunal de Cuentas controla también la financiación de los partidos."
+},
+{
+  pregunta: "¿Qué derecho protege el art. 43 CE?",
+  opciones: ["a) Derecho a la salud", "b) Derecho de huelga", "c) Derecho a la intimidad", "d) Derecho de reunión"],
+  correcta: "a) Derecho a la salud",
+  justificacion: "El art. 43 CE reconoce el derecho a la protección de la salud."
+},
+{
+  pregunta: "¿Qué órgano aprueba la designación del Defensor del Pueblo?",
+  opciones: ["a) El Congreso y el Senado", "b) El Gobierno", "c) El Rey", "d) El Tribunal Constitucional"],
+  correcta: "a) El Congreso y el Senado",
+  justificacion: "El Defensor del Pueblo es designado por las Cortes Generales."
+},
+{
+  pregunta: "¿Qué derecho protege el art. 44 CE?",
+  opciones: ["a) Derecho a la cultura y a la ciencia", "b) Derecho de reunión", "c) Derecho de huelga", "d) Derecho de objeción de conciencia"],
+  correcta: "a) Derecho a la cultura y a la ciencia",
+  justificacion: "El art. 44 CE establece el acceso a la cultura y a la ciencia."
+},
+{
+  pregunta: "¿Qué institución nombra a los magistrados del Tribunal Constitucional?",
+  opciones: ["a) El Rey, a propuesta de diferentes órganos", "b) El Gobierno", "c) El Congreso exclusivamente", "d) El Senado exclusivamente"],
+  correcta: "a) El Rey, a propuesta de diferentes órganos",
+  justificacion: "El Rey nombra a los magistrados a propuesta del Congreso, Senado, Gobierno y CGPJ."
+},
+{
+  pregunta: "¿Qué derecho protege el art. 45 CE?",
+  opciones: ["a) Derecho al medio ambiente adecuado", "b) Derecho de huelga", "c) Derecho de reunión", "d) Derecho a la intimidad"],
+  correcta: "a) Derecho al medio ambiente adecuado",
+  justificacion: "El art. 45 CE garantiza el derecho a un medio ambiente adecuado."
+},
+{
+  pregunta: "¿Qué principio económico reconoce la CE respecto al sistema tributario?",
+  opciones: ["a) Principio de igualdad y progresividad", "b) Principio de neutralidad", "c) Principio de proporcionalidad", "d) Principio de voluntariedad"],
+  correcta: "a) Principio de igualdad y progresividad",
+  justificacion: "El art. 31 CE establece estos principios del sistema tributario."
+},
+{
+  pregunta: "¿Qué órgano aprueba el estado de sitio?",
+  opciones: ["a) El Gobierno", "b) El Congreso de los Diputados", "c) El Senado", "d) El Rey"],
+  correcta: "b) El Congreso de los Diputados",
+  justificacion: "El Congreso aprueba el estado de sitio a propuesta del Gobierno."
+},
+{
+  pregunta: "¿Qué institución interpreta la Constitución?",
+  opciones: ["a) El Congreso", "b) El Senado", "c) El Tribunal Constitucional", "d) El Tribunal Supremo"],
+  correcta: "c) El Tribunal Constitucional",
+  justificacion: "El TC es el supremo intérprete de la Constitución."
+},
+{
+  pregunta: "¿Qué derecho protege el art. 46 CE?",
+  opciones: ["a) Protección del patrimonio histórico, cultural y artístico", "b) Derecho a la educación", "c) Derecho a la propiedad", "d) Derecho a la huelga"],
+  correcta: "a) Protección del patrimonio histórico, cultural y artístico",
+  justificacion: "El art. 46 CE establece la protección de este patrimonio."
+},
+{
+  pregunta: "¿Qué derecho protege el art. 48 CE?",
+  opciones: ["a) Derecho a la protección del medio ambiente", "b) Derecho a la participación de la juventud en el desarrollo político, social, económico y cultural", "c) Derecho de huelga", "d) Derecho a la educación universitaria gratuita"],
+  correcta: "b) Derecho a la participación de la juventud en el desarrollo político, social, económico y cultural",
+  justificacion: "El art. 48 CE promueve la participación activa de la juventud en la vida del país."
+},
+{
+  pregunta: "¿Qué derecho recoge el art. 49 CE?",
+  opciones: ["a) Derecho a la sanidad", "b) Protección de las personas con discapacidad", "c) Derecho de propiedad", "d) Derecho de huelga"],
+  correcta: "b) Protección de las personas con discapacidad",
+  justificacion: "El art. 49 CE garantiza la protección y amparo de las personas con discapacidad."
+},
+{
+  pregunta: "¿Qué derecho protege el art. 50 CE?",
+  opciones: ["a) Protección de los mayores mediante pensiones adecuadas", "b) Derecho de huelga", "c) Derecho a la intimidad", "d) Derecho de asociación"],
+  correcta: "a) Protección de los mayores mediante pensiones adecuadas",
+  justificacion: "El art. 50 CE garantiza el bienestar de las personas mayores mediante pensiones y servicios adecuados."
+},
+{
+  pregunta: "¿Qué órgano aprueba los Estatutos de Autonomía como ley orgánica?",
+  opciones: ["a) El Gobierno", "b) Las Cortes Generales", "c) El Rey", "d) El Senado"],
+  correcta: "b) Las Cortes Generales",
+  justificacion: "Los Estatutos de Autonomía son aprobados mediante ley orgánica por las Cortes."
+},
+{
+  pregunta: "¿Qué establece la CE respecto a las competencias del Estado en materia de defensa?",
+  opciones: ["a) Que son compartidas con las comunidades autónomas", "b) Que son exclusivas del Estado", "c) Que dependen del Congreso", "d) Que son competencia del Rey"],
+  correcta: "b) Que son exclusivas del Estado",
+  justificacion: "La defensa nacional es competencia exclusiva del Estado."
+},
+{
+  pregunta: "¿Qué establece la CE sobre la soberanía nacional?",
+  opciones: ["a) Reside en el Rey", "b) Reside en las Cortes Generales", "c) Reside en el pueblo español", "d) Reside en el Gobierno"],
+  correcta: "c) Reside en el pueblo español",
+  justificacion: "El art. 1.2 CE establece que la soberanía reside en el pueblo español."
+},
+{
+  pregunta: "¿Qué función tiene el Tribunal Constitucional además de interpretar la CE?",
+  opciones: ["a) Aprobar leyes", "b) Resolver conflictos de competencias entre Estado y comunidades", "c) Nombrar al Presidente del Gobierno", "d) Convocar elecciones"],
+  correcta: "b) Resolver conflictos de competencias entre Estado y comunidades",
+  justificacion: "El TC resuelve conflictos de competencias entre el Estado y las comunidades autónomas."
+},
+{
+  pregunta: "¿Qué institución ejerce la función de control de constitucionalidad de los tratados internacionales?",
+  opciones: ["a) El Congreso", "b) El Senado", "c) El Tribunal Constitucional", "d) El Gobierno"],
+  correcta: "c) El Tribunal Constitucional",
+  justificacion: "El TC puede pronunciarse sobre la constitucionalidad de un tratado antes de su ratificación."
+},
+{
+  pregunta: "¿Qué derecho recoge el art. 51 CE?",
+  opciones: ["a) Derecho de huelga", "b) Defensa de los consumidores y usuarios", "c) Derecho a la educación", "d) Derecho a la objeción de conciencia"],
+  correcta: "b) Defensa de los consumidores y usuarios",
+  justificacion: "El art. 51 CE garantiza la protección de consumidores y usuarios."
+},
+{
+  pregunta: "¿Qué establece el art. 52 CE?",
+  opciones: ["a) Reconoce el papel de las Fuerzas Armadas", "b) Regula las organizaciones profesionales que defienden intereses económicos", "c) Define el sistema de partidos políticos", "d) Regula la iniciativa legislativa popular"],
+  correcta: "b) Regula las organizaciones profesionales que defienden intereses económicos",
+  justificacion: "El art. 52 CE regula las organizaciones profesionales de carácter económico."
+},
+{
+  pregunta: "¿Qué establece el art. 53 CE?",
+  opciones: ["a) Garantías de los derechos fundamentales", "b) Organización de las Cortes", "c) Funciones del Senado", "d) Competencias del Gobierno"],
+  correcta: "a) Garantías de los derechos fundamentales",
+  justificacion: "El art. 53 CE regula las garantías y mecanismos de protección de los derechos fundamentales."
+},
+{
+  pregunta: "¿Qué establece el art. 54 CE?",
+  opciones: ["a) El Defensor del Pueblo", "b) El Tribunal Constitucional", "c) El Consejo General del Poder Judicial", "d) El Tribunal Supremo"],
+  correcta: "a) El Defensor del Pueblo",
+  justificacion: "El art. 54 CE crea la institución del Defensor del Pueblo."
+},
+{
+  pregunta: "¿Qué procedimiento de reforma constitucional es más complejo?",
+  opciones: ["a) El ordinario", "b) El agravado", "c) El parlamentario", "d) El simplificado"],
+  correcta: "b) El agravado",
+  justificacion: "El procedimiento agravado afecta a Títulos especialmente protegidos y requiere disolución de Cortes y referéndum."
+},
+{
+  pregunta: "¿Qué órganos pueden solicitar la declaración de inconstitucionalidad de una ley?",
+  opciones: ["a) El Rey y el Gobierno", "b) Gobierno, Defensor del Pueblo, 50 diputados o senadores y Parlamentos autonómicos", "c) Solo el Congreso", "d) Solo el Senado"],
+  correcta: "b) Gobierno, Defensor del Pueblo, 50 diputados o senadores y Parlamentos autonómicos",
+  justificacion: "La CE establece quiénes están legitimados para interponer recurso de inconstitucionalidad."
+},
+{
+  pregunta: "¿Qué órgano controla la constitucionalidad de los reglamentos parlamentarios?",
+  opciones: ["a) El Congreso", "b) El Senado", "c) El Tribunal Constitucional", "d) El Gobierno"],
+  correcta: "c) El Tribunal Constitucional",
+  justificacion: "El TC controla la constitucionalidad de los reglamentos parlamentarios."
+},
+{
+  pregunta: "¿Qué derecho protege el art. 56 CE?",
+  opciones: ["a) La inviolabilidad del Rey", "b) Derecho de reunión", "c) Derecho de asociación", "d) Derecho a la intimidad"],
+  correcta: "a) La inviolabilidad del Rey",
+  justificacion: "El Rey es inviolable y no está sujeto a responsabilidad según la CE."
+},
+{
+  pregunta: "¿Qué establece la CE sobre el refrendo de los actos del Rey?",
+  opciones: ["a) No requieren refrendo", "b) Requieren refrendo del Presidente del Gobierno o ministros competentes", "c) Requieren refrendo del Congreso", "d) Requieren refrendo del Senado"],
+  correcta: "b) Requieren refrendo del Presidente del Gobierno o ministros competentes",
+  justificacion: "Los actos del Rey carecen de validez sin refrendo."
+},
+{
+  pregunta: "¿Quién sanciona y promulga las leyes?",
+  opciones: ["a) El Congreso", "b) El Senado", "c) El Rey", "d) El Tribunal Constitucional"],
+  correcta: "c) El Rey",
+  justificacion: "El Rey sanciona y promulga las leyes aprobadas por las Cortes Generales."
+},
+{
+  pregunta: "¿Qué establece la CE sobre la responsabilidad criminal del Presidente y miembros del Gobierno?",
+  opciones: ["a) No pueden ser juzgados", "b) Responden ante el Tribunal Supremo", "c) Responden ante el Tribunal Constitucional", "d) Responden ante el Rey"],
+  correcta: "b) Responden ante el Tribunal Supremo",
+  justificacion: "El Presidente y los miembros del Gobierno responden ante el Tribunal Supremo."
+},
+{
+  pregunta: "¿Quién convoca y disuelve las Cortes Generales?",
+  opciones: ["a) El Congreso", "b) El Senado", "c) El Rey", "d) El Gobierno"],
+  correcta: "c) El Rey",
+  justificacion: "El Rey convoca y disuelve las Cortes Generales a propuesta del Presidente del Gobierno."
+},
+{
+  pregunta: "¿Qué derecho recoge el art. 62 CE?",
+  opciones: ["a) Funciones del Rey", "b) Derecho de huelga", "c) Derecho a la educación", "d) Derecho de objeción de conciencia"],
+  correcta: "a) Funciones del Rey",
+  justificacion: "El art. 62 CE enumera las funciones que corresponden al Rey."
+},
+{
+  pregunta: "¿Qué figura parlamentaria permite delegar en el Gobierno la potestad legislativa?",
+  opciones: ["a) Ley ordinaria", "b) Ley orgánica", "c) Ley de delegación legislativa", "d) Decreto-ley"],
+  correcta: "c) Ley de delegación legislativa",
+  justificacion: "La CE permite delegar la potestad legislativa mediante ley de delegación."
+},
+{
+  pregunta: "¿Qué figura normativa puede dictar el Gobierno en caso de extraordinaria y urgente necesidad?",
+  opciones: ["a) Decreto legislativo", "b) Decreto-ley", "c) Real decreto ordinario", "d) Ley de bases"],
+  correcta: "b) Decreto-ley",
+  justificacion: "El Gobierno puede dictar decretos-ley en casos de extraordinaria y urgente necesidad."
+},
+{
+  pregunta: "¿Qué órgano autoriza los estados de alarma y excepción?",
+  opciones: ["a) El Congreso de los Diputados", "b) El Senado", "c) El Gobierno", "d) El Rey"],
+  correcta: "a) El Congreso de los Diputados",
+  justificacion: "El Congreso autoriza y controla los estados de alarma y excepción."
+},
+{
+  pregunta: "¿Qué derecho protege el art. 66 CE?",
+  opciones: ["a) La potestad legislativa de las Cortes Generales", "b) Derecho de asociación", "c) Derecho de reunión", "d) Derecho de huelga"],
+  correcta: "a) La potestad legislativa de las Cortes Generales",
+  justificacion: "El art. 66 CE establece que las Cortes Generales representan al pueblo y ejercen la potestad legislativa."
+},
+{
+  pregunta: "¿Qué derecho protege el art. 69 CE?",
+  opciones: ["a) Regulación del Senado como cámara de representación territorial", "b) Derecho de huelga", "c) Derecho a la propiedad", "d) Derecho a la intimidad"],
+  correcta: "a) Regulación del Senado como cámara de representación territorial",
+  justificacion: "El art. 69 CE regula la composición y funciones del Senado."
+},
+{
+  pregunta: "¿Qué establece la CE sobre el mandato de los diputados?",
+  opciones: ["a) Es imperativo", "b) Es libre", "c) Depende del Rey", "d) Depende de los partidos políticos"],
+  correcta: "b) Es libre",
+  justificacion: "El mandato de los diputados es libre, sin estar sujetos a mandato imperativo."
+},
+{
+  pregunta: "¿Qué derecho recoge el art. 68 CE?",
+  opciones: ["a) Elección de los diputados por sufragio universal, libre, igual, directo y secreto", "b) Derecho de huelga", "c) Derecho de educación", "d) Derecho de asociación"],
+  correcta: "a) Elección de los diputados por sufragio universal, libre, igual, directo y secreto",
+  justificacion: "El art. 68 CE establece este sistema electoral."
+},
+{
+  pregunta: "¿Qué institución ostenta la iniciativa legislativa?",
+  opciones: ["a) El Rey", "b) El Gobierno, el Congreso, el Senado y las Asambleas autonómicas", "c) Solo el Congreso", "d) Solo el Gobierno"],
+  correcta: "b) El Gobierno, el Congreso, el Senado y las Asambleas autonómicas",
+  justificacion: "La CE reconoce la iniciativa legislativa a estos órganos."
+},
+{
+  pregunta: "¿Qué derecho protege el art. 70 CE?",
+  opciones: ["a) Causas de inelegibilidad e incompatibilidad de los parlamentarios", "b) Derecho de huelga", "c) Derecho de propiedad", "d) Derecho a la intimidad"],
+  correcta: "a) Causas de inelegibilidad e incompatibilidad de los parlamentarios",
+  justificacion: "El art. 70 CE regula estos supuestos."
+},
+{
+  pregunta: "¿Qué derecho protege el art. 71 CE?",
+  opciones: ["a) Inviolabilidad e inmunidad parlamentaria", "b) Derecho de huelga", "c) Derecho a la educación", "d) Derecho de asociación"],
+  correcta: "a) Inviolabilidad e inmunidad parlamentaria",
+  justificacion: "El art. 71 CE reconoce estas garantías de los parlamentarios."
+},
+{
+  pregunta: "¿Qué derecho recoge el art. 72 CE?",
+  opciones: ["a) Autonomía de las Cámaras", "b) Derecho de huelga", "c) Derecho de asociación", "d) Derecho a la intimidad"],
+  correcta: "a) Autonomía de las Cámaras",
+  justificacion: "El art. 72 CE reconoce la autonomía de las Cámaras."
+},
+{
+  pregunta: "¿Qué institución controla la actividad del Gobierno?",
+  opciones: ["a) El Senado", "b) El Congreso de los Diputados", "c) El Rey", "d) El Tribunal Constitucional"],
+  correcta: "b) El Congreso de los Diputados",
+  justificacion: "El Congreso controla la acción del Gobierno."
+},
+{
+  pregunta: "¿Qué órgano nombra al Presidente del Gobierno?",
+  opciones: ["a) El Rey, con la aprobación del Congreso", "b) El Senado", "c) El Tribunal Constitucional", "d) El Rey directamente"],
+  correcta: "a) El Rey, con la aprobación del Congreso",
+  justificacion: "El Rey nombra al Presidente del Gobierno con la confianza del Congreso."
+},
+{
+  pregunta: "¿Qué derecho protege el art. 97 CE?",
+  opciones: ["a) El Gobierno dirige la política interior y exterior, la Administración civil y militar y la defensa del Estado", "b) Derecho de huelga", "c) Derecho a la educación", "d) Derecho a la intimidad"],
+  correcta: "a) El Gobierno dirige la política interior y exterior, la Administración civil y militar y la defensa del Estado",
+  justificacion: "El art. 97 CE atribuye al Gobierno estas funciones."
+},
+{
+  pregunta: "¿Qué establece la CE sobre el Consejo de Ministros?",
+  opciones: ["a) No existe", "b) Es el órgano colegiado del Gobierno", "c) Solo es un órgano consultivo", "d) Es nombrado por el Congreso"],
+  correcta: "b) Es el órgano colegiado del Gobierno",
+  justificacion: "El Consejo de Ministros es el órgano colegiado del Gobierno."
+},
+{
+  pregunta: "¿Qué derecho protege el art. 103 CE?",
+  opciones: ["a) Principios de la Administración Pública: eficacia, jerarquía, descentralización, desconcentración y coordinación", "b) Derecho a la salud", "c) Derecho a la educación", "d) Derecho a la huelga"],
+  correcta: "a) Principios de la Administración Pública: eficacia, jerarquía, descentralización, desconcentración y coordinación",
+  justificacion: "El art. 103 CE establece estos principios para la Administración Pública."
+},
+{
+  pregunta: "¿Qué derecho protege el art. 104 CE?",
+  opciones: ["a) Misiones de las Fuerzas y Cuerpos de Seguridad", "b) Derecho de huelga", "c) Derecho a la intimidad", "d) Derecho a la educación"],
+  correcta: "a) Misiones de las Fuerzas y Cuerpos de Seguridad",
+  justificacion: "El art. 104 CE establece la misión de proteger el libre ejercicio de derechos y garantizar la seguridad ciudadana."
+},
+{
+  pregunta: "¿Qué órgano aprueba el nombramiento del Fiscal General del Estado?",
+  opciones: ["a) El Congreso", "b) El Rey a propuesta del Gobierno", "c) El Senado", "d) El Tribunal Constitucional"],
+  correcta: "b) El Rey a propuesta del Gobierno",
+  justificacion: "El Fiscal General es nombrado por el Rey a propuesta del Gobierno."
+},
+{
+  pregunta: "¿Qué derecho protege el art. 117 CE?",
+  opciones: ["a) Principios básicos del Poder Judicial", "b) Derecho de huelga", "c) Derecho de propiedad", "d) Derecho a la educación"],
+  correcta: "a) Principios básicos del Poder Judicial",
+  justificacion: "El art. 117 CE regula la unidad jurisdiccional y la independencia judicial."
+},
+{
+  pregunta: "¿Qué derecho protege el art. 122 CE?",
+  opciones: ["a) Composición y funciones del Consejo General del Poder Judicial", "b) Derecho a la salud", "c) Derecho de huelga", "d) Derecho a la intimidad"],
+  correcta: "a) Composición y funciones del Consejo General del Poder Judicial",
+  justificacion: "El art. 122 CE regula la organización y funciones del CGPJ."
+},
+{
+  pregunta: "¿Qué derecho protege el art. 123 CE?",
+  opciones: ["a) El Tribunal Supremo es el órgano jurisdiccional superior en todos los órdenes", "b) Derecho de huelga", "c) Derecho a la educación", "d) Derecho a la intimidad"],
+  correcta: "a) El Tribunal Supremo es el órgano jurisdiccional superior en todos los órdenes",
+  justificacion: "El art. 123 CE establece al Tribunal Supremo como órgano superior."
+},
+{
+  pregunta: "¿Qué derecho protege el art. 124 CE?",
+  opciones: ["a) El Ministerio Fiscal promueve la acción de la justicia", "b) Derecho de huelga", "c) Derecho de educación", "d) Derecho a la intimidad"],
+  correcta: "a) El Ministerio Fiscal promueve la acción de la justicia",
+  justificacion: "El art. 124 CE regula las funciones del Ministerio Fiscal."
+},
+{
+  pregunta: "¿Qué derecho protege el art. 127 CE?",
+  opciones: ["a) Incompatibilidades de jueces y magistrados", "b) Derecho de huelga", "c) Derecho de educación", "d) Derecho a la intimidad"],
+  correcta: "a) Incompatibilidades de jueces y magistrados",
+  justificacion: "El art. 127 CE regula estas incompatibilidades."
+},
+{
+  pregunta: "¿Qué es el Defensor del Pueblo según la Constitución?",
+  opciones: ["a) Un órgano judicial", "b) Una autoridad administrativa independiente", "c) Un alto comisionado de las Cortes Generales", "d) Un miembro del Gobierno"],
+  correcta: "c) Un alto comisionado de las Cortes Generales",
+  justificacion: "El art. 54 CE define al Defensor del Pueblo como alto comisionado de las Cortes Generales."
+},
+{
+  pregunta: "¿Cuál es la función principal del Defensor del Pueblo?",
+  opciones: ["a) Elaborar leyes", "b) Defender los derechos fundamentales frente a la Administración", "c) Dictar sentencias", "d) Aprobar reglamentos"],
+  correcta: "b) Defender los derechos fundamentales frente a la Administración",
+  justificacion: "Su función esencial es supervisar la actividad de la Administración para proteger los derechos reconocidos en la CE."
+},
+{
+  pregunta: "¿Quién elige al Defensor del Pueblo?",
+  opciones: ["a) El Rey", "b) El Gobierno", "c) Las Cortes Generales", "d) El Tribunal Constitucional"],
+  correcta: "c) Las Cortes Generales",
+  justificacion: "El Defensor del Pueblo es elegido por las Cortes Generales mediante mayoría cualificada."
+},
+{
+  pregunta: "¿Qué mayoría se exige para la elección del Defensor del Pueblo?",
+  opciones: ["a) Mayoría absoluta", "b) Tres quintos en Congreso y Senado", "c) Dos tercios en Congreso y mayoría simple en Senado", "d) Mayoría simple"],
+  correcta: "b) Tres quintos en Congreso y Senado",
+  justificacion: "La LO 3/1981 establece que se elige por mayoría de tres quintos en ambas Cámaras."
+},
+{
+  pregunta: "¿Cuál es el mandato del Defensor del Pueblo?",
+  opciones: ["a) 3 años", "b) 4 años", "c) 5 años", "d) 6 años"],
+  correcta: "b) 5 años",
+  justificacion: "El mandato del Defensor del Pueblo es de 5 años, renovable."
+},
+{
+  pregunta: "¿Qué órgano supervisa el Defensor del Pueblo?",
+  opciones: ["a) Solo el Congreso", "b) La Administración pública", "c) Los jueces y tribunales", "d) El Rey"],
+  correcta: "b) La Administración pública",
+  justificacion: "El Defensor del Pueblo controla la actividad de la Administración, no la de jueces ni tribunales."
+},
+{
+  pregunta: "¿Puede el Defensor del Pueblo anular actos administrativos?",
+  opciones: ["a) Sí, por resolución directa", "b) No, solo puede supervisar y recomendar", "c) Sí, pero solo con autorización del Congreso", "d) Sí, si afecta a derechos fundamentales"],
+  correcta: "b) No, solo puede supervisar y recomendar",
+  justificacion: "No tiene capacidad de anulación, solo supervisa y formula recomendaciones."
+},
+{
+  pregunta: "¿Qué institución garantiza la independencia del Defensor del Pueblo?",
+  opciones: ["a) El Gobierno", "b) El Congreso", "c) La Constitución y su regulación orgánica", "d) El Tribunal Constitucional"],
+  correcta: "c) La Constitución y su regulación orgánica",
+  justificacion: "La CE y la LO 3/1981 garantizan su independencia funcional."
+},
+{
+  pregunta: "¿Puede ser reelegido el Defensor del Pueblo?",
+  opciones: ["a) No", "b) Sí, indefinidamente", "c) Sí, pero solo una vez", "d) Sí, pero máximo dos mandatos"],
+  correcta: "b) Sí, indefinidamente",
+  justificacion: "La LO 3/1981 no limita la reelección del Defensor del Pueblo."
+},
+{
+  pregunta: "¿Quién controla la actuación del Defensor del Pueblo?",
+  opciones: ["a) El Rey", "b) Las Cortes Generales", "c) El Tribunal Supremo", "d) Nadie, es totalmente independiente"],
+  correcta: "b) Las Cortes Generales",
+  justificacion: "El Defensor del Pueblo responde ante las Cortes Generales."
+},
+{
+  pregunta: "¿A quién presenta el Defensor del Pueblo un informe anual?",
+  opciones: ["a) Al Rey", "b) Al Gobierno", "c) A las Cortes Generales", "d) Al Tribunal Constitucional"],
+  correcta: "c) A las Cortes Generales",
+  justificacion: "El Defensor del Pueblo presenta un informe anual a las Cortes sobre su gestión."
+},
+{
+  pregunta: "¿Qué órganos auxiliares puede tener el Defensor del Pueblo?",
+  opciones: ["a) Adjuntos", "b) Secretarios de Estado", "c) Ministros", "d) Magistrados"],
+  correcta: "a) Adjuntos",
+  justificacion: "La LO 3/1981 prevé la existencia de adjuntos que colaboren en sus funciones."
+},
+{
+  pregunta: "¿Cómo actúa el Defensor del Pueblo?",
+  opciones: ["a) Solo a instancia de parte", "b) De oficio o por queja de los ciudadanos", "c) Solo por denuncia judicial", "d) A propuesta del Gobierno"],
+  correcta: "b) De oficio o por queja de los ciudadanos",
+  justificacion: "Puede iniciar investigaciones por iniciativa propia o a partir de quejas."
+},
+{
+  pregunta: "¿Qué materias están excluidas del control del Defensor del Pueblo?",
+  opciones: ["a) Administración pública", "b) Actividad de jueces y tribunales", "c) Gobierno central", "d) Comunidades Autónomas"],
+  correcta: "b) Actividad de jueces y tribunales",
+  justificacion: "No puede interferir en la función jurisdiccional."
+},
+{
+  pregunta: "¿Qué puede solicitar el Defensor del Pueblo a la Administración?",
+  opciones: ["a) Información y documentos", "b) La destitución de funcionarios", "c) La aprobación de normas", "d) La convocatoria de elecciones"],
+  correcta: "a) Información y documentos",
+  justificacion: "Tiene derecho a recabar información y documentación de la Administración."
+},
+{
+  pregunta: "¿Qué ocurre si la Administración no colabora con el Defensor del Pueblo?",
+  opciones: ["a) Nada", "b) Puede acudir a las Cortes Generales", "c) Puede sancionar directamente", "d) Puede destituir al responsable"],
+  correcta: "b) Puede acudir a las Cortes Generales",
+  justificacion: "Si la Administración no coopera, el Defensor informa a las Cortes."
+},
+{
+  pregunta: "¿Qué pueden hacer los ciudadanos para dirigirse al Defensor del Pueblo?",
+  opciones: ["a) Presentar quejas por escrito y sin necesidad de abogado", "b) Acudir con procurador", "c) Denunciar solo ante el Congreso", "d) Pedir autorización judicial"],
+  correcta: "a) Presentar quejas por escrito y sin necesidad de abogado",
+  justificacion: "Los ciudadanos pueden presentar quejas de manera sencilla y gratuita."
+},
+{
+  pregunta: "¿Qué carácter tienen las recomendaciones del Defensor del Pueblo?",
+  opciones: ["a) Vinculante", "b) No vinculante", "c) Judicial", "d) Reglamentario"],
+  correcta: "b) No vinculante",
+  justificacion: "Las recomendaciones no son obligatorias, pero tienen fuerza moral y política."
+},
+{
+  pregunta: "¿Qué informe adicional puede presentar el Defensor del Pueblo además del anual?",
+  opciones: ["a) Informe extraordinario", "b) Informe bianual", "c) Informe económico", "d) Informe judicial"],
+  correcta: "a) Informe extraordinario",
+  justificacion: "Puede presentar informes extraordinarios cuando la gravedad de los hechos lo requiera."
+},
+{
+  pregunta: "¿Qué ocurre si el Defensor del Pueblo dimite o fallece?",
+  opciones: ["a) Se designa inmediatamente un sustituto por el Gobierno", "b) Sus funciones las asume el Rey", "c) Sus funciones son ejercidas interinamente por un Adjunto", "d) El cargo queda vacante hasta nuevas elecciones"],
+  correcta: "c) Sus funciones son ejercidas interinamente por un Adjunto",
+  justificacion: "Un Adjunto ejerce el cargo hasta que se designe nuevo Defensor."
+},
+{
+  pregunta: "¿Qué rango tiene la Ley Orgánica que regula al Defensor del Pueblo?",
+  opciones: ["a) Ley ordinaria", "b) Ley orgánica", "c) Real decreto", "d) Estatuto"],
+  correcta: "b) Ley orgánica",
+  justificacion: "El Defensor del Pueblo se regula por la Ley Orgánica 3/1981."
+},
+{
+  pregunta: "¿Qué tratamiento recibe el Defensor del Pueblo?",
+  opciones: ["a) Excelencia", "b) Señoría", "c) Ilustrísimo", "d) Ninguno en especial"],
+  correcta: "a) Excelencia",
+  justificacion: "El Defensor del Pueblo recibe el tratamiento de Excelencia."
+},
+{
+  pregunta: "¿Dónde tiene su sede principal el Defensor del Pueblo?",
+  opciones: ["a) Congreso de los Diputados", "b) Senado", "c) Madrid", "d) En cada comunidad autónoma"],
+  correcta: "c) Madrid",
+  justificacion: "Su sede institucional está en Madrid."
+},
+{
+  pregunta: "¿Qué personal integra la institución del Defensor del Pueblo?",
+  opciones: ["a) El Defensor, Adjuntos y personal al servicio", "b) Solo el Defensor", "c) El Rey y el Defensor", "d) Solo funcionarios del Congreso"],
+  correcta: "a) El Defensor, Adjuntos y personal al servicio",
+  justificacion: "La institución está formada por el Defensor, sus Adjuntos y el personal de apoyo."
+},
+{
+  pregunta: "¿Qué adjuntos puede nombrar el Defensor del Pueblo?",
+  opciones: ["a) Uno", "b) Dos, Primero y Segundo", "c) Tres", "d) Cuatro"],
+  correcta: "b) Dos, Primero y Segundo",
+  justificacion: "La LO 3/1981 establece que puede haber un Adjunto Primero y un Adjunto Segundo."
+},
+{
+  pregunta: "¿Quién nombra a los Adjuntos del Defensor del Pueblo?",
+  opciones: ["a) El Congreso", "b) El Senado", "c) El Defensor del Pueblo", "d) El Rey"],
+  correcta: "c) El Defensor del Pueblo",
+  justificacion: "El Defensor nombra libremente a sus Adjuntos."
+},
+{
+  pregunta: "¿Qué obligación tienen los funcionarios respecto al Defensor del Pueblo?",
+  opciones: ["a) Ninguna", "b) Colaborar con él", "c) Acudir a sus citaciones voluntariamente", "d) Informar solo si lo autoriza el ministro"],
+  correcta: "b) Colaborar con él",
+  justificacion: "Todos los funcionarios deben colaborar y facilitar información al Defensor."
+},
+{
+  pregunta: "¿Qué ocurre si un funcionario se niega a colaborar con el Defensor del Pueblo?",
+  opciones: ["a) Nada", "b) Puede ser sancionado disciplinariamente", "c) Es destituido directamente", "d) Queda inhabilitado"],
+  correcta: "b) Puede ser sancionado disciplinariamente",
+  justificacion: "La negativa injustificada a colaborar constituye falta disciplinaria."
+},
+{
+  pregunta: "¿Qué carácter tiene la actividad del Defensor del Pueblo?",
+  opciones: ["a) Político", "b) Administrativo", "c) Público", "d) Confidencial"],
+  correcta: "d) Confidencial",
+  justificacion: "La LO 3/1981 establece que sus actuaciones son reservadas y confidenciales."
+},
+{
+  pregunta: "¿Qué plazo tiene la Administración para responder al Defensor del Pueblo?",
+  opciones: ["a) 10 días", "b) 15 días", "c) 1 mes", "d) 3 meses"],
+  correcta: "c) 1 mes",
+  justificacion: "La Administración debe contestar en el plazo máximo de un mes."
+},
+{
+  pregunta: "¿Qué puede hacer el Defensor del Pueblo si detecta un caso de mala administración?",
+  opciones: ["a) Imponer sanciones", "b) Formular recomendaciones y sugerencias", "c) Anular el acto", "d) Despedir funcionarios"],
+  correcta: "b) Formular recomendaciones y sugerencias",
+  justificacion: "No puede sancionar, solo recomendar y sugerir mejoras."
+},
+{
+  pregunta: "¿Qué ocurre si la Administración no acepta las recomendaciones del Defensor del Pueblo?",
+  opciones: ["a) No ocurre nada", "b) Debe justificar su negativa", "c) Queda anulada la actuación", "d) Se interpone recurso automático"],
+  correcta: "b) Debe justificar su negativa",
+  justificacion: "Si no acepta, la Administración debe motivar su decisión."
+},
+{
+  pregunta: "¿Qué puede hacer el Defensor del Pueblo si considera que una norma es inconstitucional?",
+  opciones: ["a) Nada", "b) Interponer recurso de inconstitucionalidad ante el Tribunal Constitucional", "c) Derogar la norma", "d) Suspender su aplicación"],
+  correcta: "b) Interponer recurso de inconstitucionalidad ante el Tribunal Constitucional",
+  justificacion: "Está legitimado para recurrir ante el TC."
+},
+{
+  pregunta: "¿Qué puede hacer el Defensor del Pueblo si un derecho fundamental ha sido vulnerado?",
+  opciones: ["a) Nada", "b) Interponer recurso de amparo ante el Tribunal Constitucional", "c) Dictar sentencia", "d) Revocar la actuación"],
+  correcta: "b) Interponer recurso de amparo ante el Tribunal Constitucional",
+  justificacion: "Puede interponer recurso de amparo para la protección de derechos fundamentales."
+},
+{
+  pregunta: "¿Qué carácter tienen los informes del Defensor del Pueblo?",
+  opciones: ["a) Vinculante", "b) No vinculante pero con valor político", "c) Jurídico", "d) Normativo"],
+  correcta: "b) No vinculante pero con valor político",
+  justificacion: "Sus informes tienen valor político y repercusión pública, aunque no son vinculantes."
+},
+{
+  pregunta: "¿Qué especialidad tienen las actuaciones del Defensor del Pueblo?",
+  opciones: ["a) Son gratuitas", "b) Son de pago", "c) Requieren procurador", "d) Requieren abogado"],
+  correcta: "a) Son gratuitas",
+  justificacion: "Las quejas y actuaciones ante el Defensor son siempre gratuitas."
+},
+{
+  pregunta: "¿Qué facultad tiene el Defensor del Pueblo respecto a los centros penitenciarios?",
+  opciones: ["a) No tiene ninguna", "b) Puede visitarlos sin previo aviso", "c) Puede dirigirlos", "d) Puede nombrar a los directores"],
+  correcta: "b) Puede visitarlos sin previo aviso",
+  justificacion: "Tiene la facultad de visitar prisiones para supervisar condiciones."
+},
+{
+  pregunta: "¿Qué principio guía la actuación del Defensor del Pueblo?",
+  opciones: ["a) Jerarquía normativa", "b) Autonomía e independencia", "c) Dependencia del Gobierno", "d) Control administrativo"],
+  correcta: "b) Autonomía e independencia",
+  justificacion: "Actúa con plena autonomía e independencia funcional."
+},
+{
+  pregunta: "¿Qué naturaleza tienen los Adjuntos del Defensor del Pueblo?",
+  opciones: ["a) Órganos auxiliares", "b) Miembros de las Cortes", "c) Funcionarios", "d) Magistrados"],
+  correcta: "a) Órganos auxiliares",
+  justificacion: "Los Adjuntos son órganos auxiliares del Defensor del Pueblo."
+},
+{
+  pregunta: "¿Qué ocurre si el Defensor del Pueblo pierde la confianza de las Cámaras?",
+  opciones: ["a) Nada", "b) Puede ser cesado antes de terminar su mandato", "c) Sigue hasta el final de su mandato", "d) Es reelegido automáticamente"],
+  correcta: "b) Puede ser cesado antes de terminar su mandato",
+  justificacion: "Las Cortes pueden cesarlo si pierde su confianza."
+},
+{
+  pregunta: "¿Qué edad mínima se exige para ser Defensor del Pueblo?",
+  opciones: ["a) 18 años", "b) 21 años", "c) 25 años", "d) No se establece en la ley"],
+  correcta: "d) No se establece en la ley",
+  justificacion: "La LO 3/1981 no fija una edad mínima específica."
+},
+{
+  pregunta: "¿Qué requisitos debe reunir el Defensor del Pueblo?",
+  opciones: ["a) Ser español y mayor de edad", "b) Ser jurista de reconocido prestigio y con experiencia", "c) Ser diputado o senador", "d) Ser juez o magistrado"],
+  correcta: "b) Ser jurista de reconocido prestigio y con experiencia",
+  justificacion: "Debe ser un jurista de prestigio y experiencia contrastada."
+},
+{
+  pregunta: "¿Qué órgano cubre las vacantes del Defensor del Pueblo y sus Adjuntos?",
+  opciones: ["a) El Rey", "b) Las Cortes Generales", "c) El Gobierno", "d) El Tribunal Constitucional"],
+  correcta: "b) Las Cortes Generales",
+  justificacion: "La designación corresponde a las Cortes Generales."
+},
+{
+  pregunta: "¿Qué responsabilidad tiene el Defensor del Pueblo?",
+  opciones: ["a) Política", "b) Civil y penal como cualquier ciudadano", "c) Disciplinaria", "d) No tiene ninguna"],
+  correcta: "b) Civil y penal como cualquier ciudadano",
+  justificacion: "No tiene fuero especial: responde civil y penalmente como cualquier ciudadano."
+},
+{
+  pregunta: "¿Cuál es la duración del mandato de los Adjuntos del Defensor del Pueblo?",
+  opciones: ["a) 3 años", "b) 4 años", "c) Coincide con el del Defensor del Pueblo", "d) 6 años"],
+  correcta: "c) Coincide con el del Defensor del Pueblo",
+  justificacion: "El mandato de los Adjuntos coincide con el del Defensor del Pueblo."
+},
+{
+  pregunta: "¿Qué ocurre con las quejas presentadas de forma anónima al Defensor del Pueblo?",
+  opciones: ["a) No se admiten", "b) Se investigan igualmente", "c) Se trasladan al Congreso", "d) Se devuelven al remitente"],
+  correcta: "a) No se admiten",
+  justificacion: "Las quejas deben ir firmadas con identificación del remitente."
+},
+{
+  pregunta: "¿Qué plazo tiene el Defensor del Pueblo para comunicar al interesado la inadmisión de una queja?",
+  opciones: ["a) 5 días", "b) 10 días", "c) 15 días", "d) 1 mes"],
+  correcta: "c) 15 días",
+  justificacion: "Debe notificar la inadmisión en un plazo máximo de 15 días."
+},
+{
+  pregunta: "¿Qué actuaciones están excluidas del control del Defensor del Pueblo?",
+  opciones: ["a) Actos de la Administración", "b) Actividad judicial", "c) Actividad de la Administración local", "d) Actividad de las comunidades autónomas"],
+  correcta: "b) Actividad judicial",
+  justificacion: "No puede intervenir en resoluciones judiciales."
+},
+{
+  pregunta: "¿Qué puede hacer el Defensor del Pueblo durante su investigación?",
+  opciones: ["a) Dictar sentencias", "b) Solicitar informes, documentos y comparecencias", "c) Imponer sanciones", "d) Anular actos administrativos"],
+  correcta: "b) Solicitar informes, documentos y comparecencias",
+  justificacion: "Puede recabar información y documentación de cualquier organismo público."
+},
+{
+  pregunta: "¿Qué ocurre si el Defensor del Pueblo considera que un funcionario ha cometido delito?",
+  opciones: ["a) Puede detenerlo", "b) Remite la información al Ministerio Fiscal", "c) Lo destituye directamente", "d) Lo sanciona disciplinariamente"],
+  correcta: "b) Remite la información al Ministerio Fiscal",
+  justificacion: "Debe comunicarlo al Ministerio Fiscal para que actúe."
+},
+{
+  pregunta: "¿Qué responsabilidad tienen los funcionarios que se niegan a colaborar con el Defensor del Pueblo?",
+  opciones: ["a) Ninguna", "b) Disciplinaria", "c) Penal", "d) Civil"],
+  correcta: "b) Disciplinaria",
+  justificacion: "La negativa injustificada constituye falta disciplinaria."
+},
+{
+  pregunta: "¿Qué naturaleza tienen los informes del Defensor del Pueblo?",
+  opciones: ["a) Confidencial", "b) Públicos", "c) Reservados", "d) Solo para el Congreso"],
+  correcta: "b) Públicos",
+  justificacion: "Los informes son públicos para garantizar transparencia."
+},
+{
+  pregunta: "¿Qué pueden hacer las Cortes Generales si no están de acuerdo con el informe del Defensor del Pueblo?",
+  opciones: ["a) Cesan automáticamente al Defensor", "b) Debaten y valoran políticamente el informe", "c) Lo modifican", "d) Lo devuelven para rehacerlo"],
+  correcta: "b) Debaten y valoran políticamente el informe",
+  justificacion: "El informe no se modifica, pero puede ser objeto de debate y valoración política."
+},
+{
+  pregunta: "¿Qué informes debe elaborar siempre el Defensor del Pueblo?",
+  opciones: ["a) Informe anual y extraordinarios cuando lo estime necesario", "b) Solo informes extraordinarios", "c) Solo un informe final", "d) Informes mensuales"],
+  correcta: "a) Informe anual y extraordinarios cuando lo estime necesario",
+  justificacion: "El informe anual es obligatorio, además de los extraordinarios que sean pertinentes."
+},
+{
+  pregunta: "¿Qué especialidad tienen los informes extraordinarios del Defensor del Pueblo?",
+  opciones: ["a) Son confidenciales", "b) Son públicos e inmediatos", "c) Se entregan solo al Gobierno", "d) Son de carácter judicial"],
+  correcta: "b) Son públicos e inmediatos",
+  justificacion: "Se presentan en casos de especial gravedad y se difunden públicamente."
+},
+{
+  pregunta: "¿Qué límite tienen las investigaciones del Defensor del Pueblo?",
+  opciones: ["a) Ninguno", "b) Respeto a la independencia judicial", "c) No investigar al Gobierno", "d) No investigar a la Administración local"],
+  correcta: "b) Respeto a la independencia judicial",
+  justificacion: "No puede intervenir en procesos jurisdiccionales."
+},
+{
+  pregunta: "¿Qué ocurre si el Defensor del Pueblo excede sus competencias?",
+  opciones: ["a) Sus actos son nulos", "b) Las Cortes pueden requerirle explicaciones", "c) Puede ser destituido", "d) Todas las anteriores"],
+  correcta: "d) Todas las anteriores",
+  justificacion: "El exceso de competencias puede acarrear nulidad de actos, control parlamentario o incluso destitución."
+},
+{
+  pregunta: "¿Qué carácter tiene la relación del Defensor del Pueblo con las Cortes Generales?",
+  opciones: ["a) Independiente pero con rendición de cuentas", "b) Jerárquico", "c) De subordinación directa", "d) No tiene relación"],
+  correcta: "a) Independiente pero con rendición de cuentas",
+  justificacion: "Es autónomo, pero rinde cuentas a las Cortes mediante informes."
+},
+{
+  pregunta: "¿Qué pueden hacer las Comunidades Autónomas respecto al Defensor del Pueblo?",
+  opciones: ["a) Crear sus propios defensores autonómicos", "b) Nada", "c) Nombrar al Defensor del Pueblo nacional", "d) Fiscalizar al Defensor del Pueblo"],
+  correcta: "a) Crear sus propios defensores autonómicos",
+  justificacion: "Las comunidades pueden establecer sus propios órganos de defensa ciudadana."
+},
+{
+  pregunta: "¿Qué figura internacional inspira la institución del Defensor del Pueblo?",
+  opciones: ["a) Ombudsman sueco", "b) Procurador romano", "c) Canciller alemán", "d) Prefecto francés"],
+  correcta: "a) Ombudsman sueco",
+  justificacion: "El Defensor del Pueblo está inspirado en el modelo del Ombudsman sueco."
+},
+{
+  pregunta: "¿Qué ocurre si el Defensor del Pueblo considera que una ley vulnera derechos?",
+  opciones: ["a) La deroga directamente", "b) Puede interponer recurso de inconstitucionalidad", "c) Puede modificarla", "d) Puede suspenderla"],
+  correcta: "b) Puede interponer recurso de inconstitucionalidad",
+  justificacion: "Está legitimado para recurrir leyes ante el TC."
+},
+{
+  pregunta: "¿Qué ocurre si un ciudadano presenta una queja reiterada ya resuelta?",
+  opciones: ["a) Se investiga nuevamente", "b) Puede ser inadmitida", "c) Se envía al Congreso", "d) Se remite al TC"],
+  correcta: "b) Puede ser inadmitida",
+  justificacion: "Las quejas ya resueltas pueden no admitirse a trámite."
+},
+{
+  pregunta: "¿Qué ocurre con las quejas que se refieren a actuaciones privadas?",
+  opciones: ["a) Se investigan", "b) No son competencia del Defensor del Pueblo", "c) Se trasladan a los tribunales", "d) Se investigan solo si afectan a funcionarios"],
+  correcta: "b) No son competencia del Defensor del Pueblo",
+  justificacion: "Solo supervisa la actuación de la Administración pública."
+},
+{
+  pregunta: "¿Qué puede hacer el Defensor del Pueblo respecto a la Administración militar?",
+  opciones: ["a) Nada", "b) Puede supervisarla también", "c) Solo en casos de guerra", "d) Solo si lo aprueba el Rey"],
+  correcta: "b) Puede supervisarla también",
+  justificacion: "Su supervisión alcanza a toda la Administración, incluida la militar."
+},
+{
+  pregunta: "¿Qué efectos tienen las resoluciones del Defensor del Pueblo?",
+  opciones: ["a) Obligatorios", "b) No vinculantes", "c) Judiciales", "d) Legislativos"],
+  correcta: "b) No vinculantes",
+  justificacion: "Las resoluciones no son de obligado cumplimiento, pero tienen peso político y moral."
+},
+{
+  pregunta: "¿Qué recursos judiciales puede interponer el Defensor del Pueblo?",
+  opciones: ["a) Ninguno", "b) Recurso de inconstitucionalidad y recurso de amparo", "c) Recurso de casación", "d) Recurso contencioso-administrativo"],
+  correcta: "b) Recurso de inconstitucionalidad y recurso de amparo",
+  justificacion: "Está legitimado para interponer ambos recursos ante el Tribunal Constitucional."
+},
+{
+  pregunta: "¿Qué garantiza la Ley Orgánica del Defensor del Pueblo respecto a sus actuaciones?",
+  opciones: ["a) Que son públicas y gratuitas", "b) Que tienen carácter sancionador", "c) Que generan jurisprudencia", "d) Que sustituyen a los tribunales"],
+  correcta: "a) Que son públicas y gratuitas",
+  justificacion: "La LO 3/1981 establece la gratuidad y publicidad de sus actuaciones."
+},
+{
+  pregunta: "¿Qué puede hacer el Defensor del Pueblo en caso de observar abusos policiales?",
+  opciones: ["a) Nada", "b) Formular recomendaciones y dar traslado al Ministerio Fiscal", "c) Imponer sanciones disciplinarias", "d) Ordenar ceses"],
+  correcta: "b) Formular recomendaciones y dar traslado al Ministerio Fiscal",
+  justificacion: "Puede intervenir con recomendaciones y remitir el caso al Ministerio Fiscal."
+},
+{
+  pregunta: "¿Qué protege la Ley Orgánica 1/1982?",
+  opciones: ["a) El derecho a la propiedad", "b) Los derechos al honor, a la intimidad personal y familiar y a la propia imagen", "c) El derecho de asociación", "d) El derecho de reunión"],
+  correcta: "b) Los derechos al honor, a la intimidad personal y familiar y a la propia imagen",
+  justificacion: "La LO 1/1982 regula la protección civil de estos derechos fundamentales."
+},
+{
+  pregunta: "¿Qué naturaleza tienen los derechos regulados en la LO 1/1982?",
+  opciones: ["a) Derechos fundamentales", "b) Derechos ordinarios", "c) Derechos patrimoniales", "d) Derechos sociales"],
+  correcta: "a) Derechos fundamentales",
+  justificacion: "Están reconocidos en el art. 18 CE como derechos fundamentales."
+},
+{
+  pregunta: "¿Qué actos se consideran intromisiones ilegítimas en el derecho al honor?",
+  opciones: ["a) Manifestaciones vejatorias", "b) Críticas políticas", "c) Opiniones académicas", "d) Declaraciones jurídicas"],
+  correcta: "a) Manifestaciones vejatorias",
+  justificacion: "Las expresiones que lesionan la dignidad personal constituyen intromisiones ilegítimas."
+},
+{
+  pregunta: "¿Qué actos se consideran intromisiones ilegítimas en la intimidad?",
+  opciones: ["a) Opiniones en redes sociales", "b) Utilización de micrófonos o cámaras ocultas", "c) Artículos de prensa de interés general", "d) Debates parlamentarios"],
+  correcta: "b) Utilización de micrófonos o cámaras ocultas",
+  justificacion: "La captación de la vida íntima mediante artificios técnicos es intromisión ilegítima."
+},
+{
+  pregunta: "¿Qué actos vulneran el derecho a la propia imagen?",
+  opciones: ["a) Publicación de imágenes sin consentimiento", "b) Críticas deportivas", "c) Opiniones en foros", "d) Reproducciones literarias"],
+  correcta: "a) Publicación de imágenes sin consentimiento",
+  justificacion: "La publicación de imágenes sin consentimiento es intromisión ilegítima."
+},
+{
+  pregunta: "¿Qué excepción admite la LO 1/1982 a la publicación de imágenes sin consentimiento?",
+  opciones: ["a) Cuando existe interés histórico, científico o cultural relevante", "b) Nunca", "c) Siempre que sea prensa", "d) Con autorización del Congreso"],
+  correcta: "a) Cuando existe interés histórico, científico o cultural relevante",
+  justificacion: "La ley admite esta excepción en beneficio del interés general."
+},
+{
+  pregunta: "¿Qué ocurre con la captación de imágenes de cargos públicos en actos oficiales?",
+  opciones: ["a) Siempre es ilícita", "b) Puede ser legítima si se refiere a su cargo", "c) Solo con autorización del Rey", "d) Solo con autorización judicial"],
+  correcta: "b) Puede ser legítima si se refiere a su cargo",
+  justificacion: "La ley permite la difusión de imágenes de cargos públicos en actos oficiales."
+},
+{
+  pregunta: "¿Qué órgano judicial es competente en los procesos de la LO 1/1982?",
+  opciones: ["a) Juzgados de paz", "b) Juzgados de primera instancia", "c) Tribunal Constitucional", "d) Tribunal Supremo"],
+  correcta: "b) Juzgados de primera instancia",
+  justificacion: "Los juzgados de primera instancia conocen de estos procesos civiles."
+},
+{
+  pregunta: "¿Qué plazo de prescripción tienen las acciones de protección del honor, intimidad e imagen?",
+  opciones: ["a) 6 meses", "b) 1 año", "c) 2 años", "d) 4 años"],
+  correcta: "b) 4 años",
+  justificacion: "Las acciones prescriben a los 4 años desde la intromisión."
+},
+{
+  pregunta: "¿Qué tipo de acción puede ejercitarse para proteger estos derechos?",
+  opciones: ["a) Acción penal", "b) Acción civil de cesación y resarcimiento", "c) Acción contenciosa", "d) Acción administrativa"],
+  correcta: "b) Acción civil de cesación y resarcimiento",
+  justificacion: "La LO 1/1982 regula acciones civiles de protección y resarcimiento."
+},
+{
+  pregunta: "¿Qué medidas cautelares pueden adoptarse en estos procesos?",
+  opciones: ["a) Embargo preventivo", "b) Suspensión de la difusión", "c) Intervención judicial de medios", "d) Arresto domiciliario"],
+  correcta: "b) Suspensión de la difusión",
+  justificacion: "El juez puede suspender la difusión de la información como medida cautelar."
+},
+{
+  pregunta: "¿Qué ocurre con la difusión de caricaturas de personajes públicos?",
+  opciones: ["a) Siempre es ilícita", "b) Puede ser legítima si se hace con finalidad informativa o humorística", "c) Solo con autorización del Rey", "d) Nunca es legítima"],
+  correcta: "b) Puede ser legítima si se hace con finalidad informativa o humorística",
+  justificacion: "La LO 1/1982 admite caricaturas de personajes públicos por razones informativas o humorísticas."
+},
+{
+  pregunta: "¿Qué excepción contempla la LO 1/1982 respecto a reportajes gráficos?",
+  opciones: ["a) Si existe interés histórico, científico o cultural relevante", "b) Si se publican en revistas internacionales", "c) Si afectan a deportistas", "d) Ninguna excepción"],
+  correcta: "a) Si existe interés histórico, científico o cultural relevante",
+  justificacion: "La publicación puede justificarse por interés general."
+},
+{
+  pregunta: "¿Qué ocurre con las intromisiones consentidas expresamente por el afectado?",
+  opciones: ["a) Siguen siendo ilícitas", "b) No se consideran intromisiones ilegítimas", "c) Solo se consideran ilícitas en prensa", "d) Requieren autorización judicial"],
+  correcta: "b) No se consideran intromisiones ilegítimas",
+  justificacion: "El consentimiento del afectado legitima la actuación."
+},
+{
+  pregunta: "¿Qué forma debe tener el consentimiento para publicar datos íntimos?",
+  opciones: ["a) Oral", "b) Expreso", "c) Tácito", "d) Siempre por escrito"],
+  correcta: "b) Expreso",
+  justificacion: "Debe existir consentimiento expreso, aunque no necesariamente escrito."
+},
+{
+  pregunta: "¿Qué ocurre con el consentimiento otorgado por menores de edad?",
+  opciones: ["a) Es válido siempre", "b) Requiere autorización de sus representantes legales", "c) Nunca es válido", "d) Debe ser ratificado por el juez"],
+  correcta: "b) Requiere autorización de sus representantes legales",
+  justificacion: "El consentimiento de los menores debe estar complementado por sus representantes."
+},
+{
+  pregunta: "¿Qué ocurre con la publicación de datos relativos a delitos cuando el proceso está en curso?",
+  opciones: ["a) Está prohibida", "b) Puede ser intromisión ilegítima si afecta a la intimidad", "c) Está siempre permitida", "d) No tiene relevancia"],
+  correcta: "b) Puede ser intromisión ilegítima si afecta a la intimidad",
+  justificacion: "La difusión de datos del proceso penal puede vulnerar la intimidad."
+},
+{
+  pregunta: "¿Qué ocurre con las publicaciones que afectan a la intimidad familiar?",
+  opciones: ["a) Están siempre permitidas", "b) Constituyen intromisión ilegítima", "c) Solo con autorización del Congreso", "d) Solo con autorización judicial"],
+  correcta: "b) Constituyen intromisión ilegítima",
+  justificacion: "La ley protege la intimidad personal y familiar frente a publicaciones no consentidas."
+},
+{
+  pregunta: "¿Qué ocurre con las informaciones falsas que lesionan el honor?",
+  opciones: ["a) Constituyen intromisión ilegítima", "b) Están permitidas", "c) No son relevantes", "d) Son legítimas si las difunde la prensa"],
+  correcta: "a) Constituyen intromisión ilegítima",
+  justificacion: "Las informaciones falsas que dañan la reputación lesionan el honor."
+},
+{
+  pregunta: "¿Qué ocurre con las publicaciones de cartas privadas sin permiso?",
+  opciones: ["a) Constituyen intromisión ilegítima", "b) Son legítimas si se publican en prensa", "c) Están permitidas si se traducen", "d) No tienen relevancia"],
+  correcta: "a) Constituyen intromisión ilegítima",
+  justificacion: "La divulgación de cartas privadas sin permiso vulnera la intimidad."
+},
+{
+  pregunta: "¿Qué ocurre con las grabaciones de conversaciones privadas sin consentimiento?",
+  opciones: ["a) Constituyen intromisión ilegítima", "b) Están permitidas siempre", "c) Son legales si hay interés público", "d) Están autorizadas por defecto"],
+  correcta: "a) Constituyen intromisión ilegítima",
+  justificacion: "Las grabaciones no consentidas son vulneración del derecho a la intimidad."
+},
+{
+  pregunta: "¿Qué ocurre con las publicaciones en las que aparece la voz de una persona sin permiso?",
+  opciones: ["a) Es irrelevante", "b) Puede constituir intromisión ilegítima", "c) Siempre es legítima", "d) Solo afecta a menores"],
+  correcta: "b) Puede constituir intromisión ilegítima",
+  justificacion: "La reproducción no consentida de la voz afecta a la intimidad y propia imagen."
+},
+{
+  pregunta: "¿Qué ocurre con la difusión de datos médicos sin permiso?",
+  opciones: ["a) No tiene relevancia", "b) Constituye intromisión ilegítima", "c) Está permitida si lo hace un periódico", "d) Siempre está justificada"],
+  correcta: "b) Constituye intromisión ilegítima",
+  justificacion: "La divulgación de datos médicos sin permiso vulnera la intimidad."
+},
+{
+  pregunta: "¿Qué ocurre con las publicaciones sobre la vida privada de personajes públicos?",
+  opciones: ["a) Siempre están permitidas", "b) Solo son legítimas si tienen relevancia pública", "c) Nunca están permitidas", "d) Requieren autorización del Congreso"],
+  correcta: "b) Solo son legítimas si tienen relevancia pública",
+  justificacion: "La vida privada de personajes públicos solo puede difundirse si es relevante para su cargo o función."
+},
+{
+  pregunta: "¿Qué ocurre con la utilización del nombre de una persona en campañas publicitarias sin permiso?",
+  opciones: ["a) Está permitida", "b) Constituye intromisión ilegítima", "c) Es válida si se hace una vez", "d) Está autorizada por la LO 1/1982"],
+  correcta: "b) Constituye intromisión ilegítima",
+  justificacion: "El uso del nombre sin consentimiento en publicidad vulnera la propia imagen."
+},
+{
+  pregunta: "¿Qué ocurre con las intromisiones ilegítimas realizadas por funcionarios públicos en ejercicio de su cargo?",
+  opciones: ["a) Son siempre legítimas", "b) Se consideran especialmente graves", "c) Son irrelevantes", "d) Están permitidas"],
+  correcta: "b) Se consideran especialmente graves",
+  justificacion: "La ley considera más graves las intromisiones cometidas desde el poder público."
+},
+{
+  pregunta: "¿Qué ocurre con la utilización de datos personales en ficheros sin autorización?",
+  opciones: ["a) Está permitida", "b) Puede constituir intromisión ilegítima", "c) Es irrelevante", "d) Siempre es legal"],
+  correcta: "b) Puede constituir intromisión ilegítima",
+  justificacion: "El tratamiento de datos personales sin consentimiento puede vulnerar la intimidad."
+},
+{
+  pregunta: "¿Qué ocurre con la publicación de imágenes en lugares públicos?",
+  opciones: ["a) Siempre está permitida", "b) Puede constituir intromisión si no hay relevancia pública", "c) Nunca está permitida", "d) Requiere autorización del Rey"],
+  correcta: "b) Puede constituir intromisión si no hay relevancia pública",
+  justificacion: "Incluso en lugares públicos, la difusión de imágenes debe respetar la intimidad."
+},
+{
+  pregunta: "¿Qué ocurre con la publicación de datos de menores?",
+  opciones: ["a) Están especialmente protegidos", "b) Son irrelevantes", "c) Están permitidos si los publica un medio de comunicación", "d) Están autorizados por defecto"],
+  correcta: "a) Están especialmente protegidos",
+  justificacion: "Los datos de menores gozan de especial protección en la LO 1/1982."
+},
+{
+  pregunta: "¿Qué ocurre con la publicación de datos relativos a la vida sexual de una persona sin consentimiento?",
+  opciones: ["a) Es irrelevante", "b) Constituye intromisión ilegítima", "c) Está siempre permitida", "d) Requiere autorización del Congreso"],
+  correcta: "b) Constituye intromisión ilegítima",
+  justificacion: "La LO 1/1982 protege expresamente la intimidad sexual de las personas."
+},
+{
+  pregunta: "¿Qué ocurre con la publicación de datos referentes a la ideología política de una persona sin su consentimiento?",
+  opciones: ["a) No tiene relevancia", "b) Constituye intromisión ilegítima", "c) Está permitida si es un cargo público", "d) Siempre es legítima"],
+  correcta: "b) Constituye intromisión ilegítima",
+  justificacion: "La ideología es parte de la intimidad y requiere consentimiento expreso."
+},
+{
+  pregunta: "¿Qué ocurre con la publicación de datos sobre creencias religiosas sin autorización?",
+  opciones: ["a) Está permitida", "b) Es intromisión ilegítima", "c) Siempre es legítima", "d) No tiene relevancia"],
+  correcta: "b) Es intromisión ilegítima",
+  justificacion: "Las creencias religiosas forman parte de la intimidad personal."
+},
+{
+  pregunta: "¿Qué ocurre con la publicación de datos sobre la salud mental de una persona?",
+  opciones: ["a) Es irrelevante", "b) Puede ser intromisión ilegítima", "c) Está siempre permitida", "d) Es legal si lo difunde un periódico"],
+  correcta: "b) Puede ser intromisión ilegítima",
+  justificacion: "La divulgación de datos médicos vulnera la intimidad personal."
+},
+{
+  pregunta: "¿Qué ocurre con la reproducción de imágenes de fallecidos?",
+  opciones: ["a) Nunca está permitida", "b) Está protegida la memoria del difunto y la intimidad de sus familiares", "c) Siempre es legal", "d) No tiene relevancia"],
+  correcta: "b) Está protegida la memoria del difunto y la intimidad de sus familiares",
+  justificacion: "La LO 1/1982 protege la memoria de los difuntos y la intimidad familiar."
+},
+{
+  pregunta: "¿Quién está legitimado para defender la memoria de un fallecido?",
+  opciones: ["a) Solo el Ministerio Fiscal", "b) Familiares próximos", "c) El Gobierno", "d) Nadie"],
+  correcta: "b) Familiares próximos",
+  justificacion: "Los familiares cercanos pueden interponer acciones para proteger la memoria del difunto."
+},
+{
+  pregunta: "¿Qué ocurre con las imágenes captadas en espectáculos públicos?",
+  opciones: ["a) Siempre están permitidas", "b) Pueden ser legítimas si tienen finalidad informativa", "c) Nunca son legales", "d) Solo con autorización judicial"],
+  correcta: "b) Pueden ser legítimas si tienen finalidad informativa",
+  justificacion: "Las imágenes en espectáculos pueden difundirse con fines informativos."
+},
+{
+  pregunta: "¿Qué ocurre con las caricaturas de particulares en publicaciones humorísticas?",
+  opciones: ["a) Son intromisión ilegítima", "b) Pueden ser legítimas si no lesionan el honor", "c) Siempre son legales", "d) Nunca son legales"],
+  correcta: "b) Pueden ser legítimas si no lesionan el honor",
+  justificacion: "Las caricaturas de particulares solo son ilícitas si vulneran su honor o imagen."
+},
+{
+  pregunta: "¿Qué ocurre con la publicación de datos que afecten a la seguridad del Estado?",
+  opciones: ["a) Siempre está permitida", "b) Puede limitarse por razones de seguridad nacional", "c) Es irrelevante", "d) Siempre es intromisión ilegítima"],
+  correcta: "b) Puede limitarse por razones de seguridad nacional",
+  justificacion: "El derecho al honor e intimidad puede limitarse por razones de seguridad nacional."
+},
+{
+  pregunta: "¿Qué límite general tienen los derechos regulados en la LO 1/1982?",
+  opciones: ["a) No tienen límite", "b) El respeto a los demás derechos y al interés general", "c) Dependen del Gobierno", "d) Dependen de la prensa"],
+  correcta: "b) El respeto a los demás derechos y al interés general",
+  justificacion: "Estos derechos deben ejercerse respetando los derechos de los demás y el interés general."
+},
+{
+  pregunta: "¿Qué ocurre con la difusión de imágenes en manifestaciones públicas?",
+  opciones: ["a) Siempre está prohibida", "b) Puede ser legítima con finalidad informativa", "c) Nunca es legítima", "d) Solo con autorización judicial"],
+  correcta: "b) Puede ser legítima con finalidad informativa",
+  justificacion: "La ley admite la difusión informativa de manifestaciones públicas."
+},
+{
+  pregunta: "¿Qué ocurre con la utilización de la imagen de un menor en medios de comunicación?",
+  opciones: ["a) Está prohibida salvo consentimiento de sus representantes", "b) Siempre está permitida", "c) Es irrelevante", "d) Está autorizada por defecto"],
+  correcta: "a) Está prohibida salvo consentimiento de sus representantes",
+  justificacion: "La protección de menores requiere autorización de sus tutores."
+},
+{
+  pregunta: "¿Qué ocurre con la captación de imágenes en domicilios sin autorización?",
+  opciones: ["a) Está permitida si hay interés público", "b) Constituye intromisión ilegítima", "c) Es irrelevante", "d) Está autorizada siempre por la LO 1/1982"],
+  correcta: "b) Constituye intromisión ilegítima",
+  justificacion: "El domicilio es inviolable, la captación sin autorización vulnera la intimidad."
+},
+{
+  pregunta: "¿Qué ocurre con la utilización de dispositivos de seguimiento sin consentimiento?",
+  opciones: ["a) Está permitida", "b) Puede constituir intromisión ilegítima", "c) Es irrelevante", "d) Está autorizada en la LO 1/1982"],
+  correcta: "b) Puede constituir intromisión ilegítima",
+  justificacion: "El uso de dispositivos para controlar a alguien vulnera su intimidad."
+},
+{
+  pregunta: "¿Qué ocurre con la divulgación de datos de carácter académico sin consentimiento?",
+  opciones: ["a) Siempre es legítima", "b) Puede ser intromisión ilegítima", "c) Es irrelevante", "d) No tiene regulación"],
+  correcta: "b) Puede ser intromisión ilegítima",
+  justificacion: "Los datos académicos forman parte de la esfera privada de una persona."
+},
+{
+  pregunta: "¿Qué ocurre con el uso de datos personales en encuestas sin consentimiento?",
+  opciones: ["a) Está permitido", "b) Puede ser intromisión ilegítima", "c) Siempre es legal", "d) Es irrelevante"],
+  correcta: "b) Puede ser intromisión ilegítima",
+  justificacion: "El uso de datos personales sin autorización puede vulnerar la intimidad."
+},
+{
+  pregunta: "¿Qué ocurre con la publicación de sentencias judiciales que revelen datos personales?",
+  opciones: ["a) Siempre está permitida", "b) Puede ser legítima si se suprimen los datos identificativos", "c) Nunca es legal", "d) Es irrelevante"],
+  correcta: "b) Puede ser legítima si se suprimen los datos identificativos",
+  justificacion: "La publicación de sentencias requiere anonimización de datos."
+},
+{
+  pregunta: "¿Qué ocurre con la divulgación de datos bancarios sin autorización?",
+  opciones: ["a) Siempre está permitida", "b) Constituye intromisión ilegítima", "c) Es irrelevante", "d) Está autorizada por defecto"],
+  correcta: "b) Constituye intromisión ilegítima",
+  justificacion: "Los datos bancarios son parte de la intimidad económica."
+},
+{
+  pregunta: "¿Qué ocurre con la utilización de imágenes de personas detenidas?",
+  opciones: ["a) Siempre está permitida", "b) Puede vulnerar la presunción de inocencia y la intimidad", "c) No tiene relevancia", "d) Está autorizada en todos los casos"],
+  correcta: "b) Puede vulnerar la presunción de inocencia y la intimidad",
+  justificacion: "La publicación de imágenes de detenidos puede vulnerar sus derechos."
+},
+{
+  pregunta: "¿Qué ocurre con la publicación de fotografías de accidentes sin autorización?",
+  opciones: ["a) Es irrelevante", "b) Puede constituir intromisión ilegítima", "c) Siempre está permitida", "d) Está autorizada por defecto"],
+  correcta: "b) Puede constituir intromisión ilegítima",
+  justificacion: "La difusión de imágenes de accidentes sin consentimiento vulnera la intimidad y la imagen."
+},
+{
+  pregunta: "¿Qué ocurre con la utilización de la imagen de una persona para fines comerciales sin consentimiento?",
+  opciones: ["a) Está permitida", "b) Constituye intromisión ilegítima", "c) Es irrelevante", "d) Solo es válida si se hace en redes sociales"],
+  correcta: "b) Constituye intromisión ilegítima",
+  justificacion: "El uso de la imagen para fines comerciales sin consentimiento vulnera la LO 1/1982."
+},
+{
+  pregunta: "¿Qué ocurre con la divulgación de correspondencia privada sin autorización?",
+  opciones: ["a) Es legítima si tiene interés cultural", "b) Constituye intromisión ilegítima", "c) Está permitida si la realiza un periodista", "d) Nunca es ilegal"],
+  correcta: "b) Constituye intromisión ilegítima",
+  justificacion: "La divulgación de correspondencia privada vulnera la intimidad."
+},
+{
+  pregunta: "¿Qué ocurre con la difusión de datos de adopciones sin consentimiento?",
+  opciones: ["a) Es irrelevante", "b) Constituye intromisión ilegítima", "c) Está permitida si lo autoriza el juez", "d) Siempre es legal"],
+  correcta: "b) Constituye intromisión ilegítima",
+  justificacion: "La difusión de datos de adopciones vulnera la intimidad familiar."
+},
+{
+  pregunta: "¿Qué ocurre con la publicación de datos de filiación de una persona sin permiso?",
+  opciones: ["a) Es irrelevante", "b) Puede ser intromisión ilegítima", "c) Siempre está permitida", "d) Está autorizada por la LO 1/1982"],
+  correcta: "b) Puede ser intromisión ilegítima",
+  justificacion: "Los datos de filiación forman parte de la intimidad personal."
+},
+{
+  pregunta: "¿Qué ocurre con la utilización del nombre de una persona en una obra artística sin consentimiento?",
+  opciones: ["a) Está siempre prohibida", "b) Puede ser intromisión ilegítima", "c) Siempre es legal", "d) Solo con autorización del Congreso"],
+  correcta: "b) Puede ser intromisión ilegítima",
+  justificacion: "El uso del nombre sin permiso en obras artísticas puede vulnerar la LO 1/1982."
+},
+{
+  pregunta: "¿Qué ocurre con la publicación de datos relativos a menores víctimas de delitos?",
+  opciones: ["a) Siempre está prohibida", "b) Solo se permite con autorización judicial y de los representantes", "c) Siempre está permitida", "d) Es irrelevante"],
+  correcta: "b) Solo se permite con autorización judicial y de los representantes",
+  justificacion: "Los menores víctimas tienen especial protección legal."
+},
+{
+  pregunta: "¿Qué ocurre con la divulgación de grabaciones en lugares privados abiertos al público?",
+  opciones: ["a) Siempre es ilícita", "b) Puede ser ilícita si afecta a la intimidad de las personas", "c) Siempre es legítima", "d) No tiene relevancia"],
+  correcta: "b) Puede ser ilícita si afecta a la intimidad de las personas",
+  justificacion: "La captación en lugares privados abiertos al público puede vulnerar derechos."
+},
+{
+  pregunta: "¿Qué ocurre con la difusión de fotografías en hospitales sin consentimiento?",
+  opciones: ["a) Siempre es legal", "b) Puede constituir intromisión ilegítima", "c) Es irrelevante", "d) Está permitida si lo publica un medio"],
+  correcta: "b) Puede constituir intromisión ilegítima",
+  justificacion: "Los hospitales son espacios protegidos respecto a la intimidad."
+},
+{
+  pregunta: "¿Qué ocurre con la utilización del nombre de una persona en encuestas publicitarias sin permiso?",
+  opciones: ["a) Está permitida", "b) Constituye intromisión ilegítima", "c) Siempre es legal", "d) Es irrelevante"],
+  correcta: "b) Constituye intromisión ilegítima",
+  justificacion: "El uso del nombre sin consentimiento en publicidad vulnera la LO 1/1982."
+},
+{
+  pregunta: "¿Qué ocurre con la publicación de datos en redes sociales sin consentimiento?",
+  opciones: ["a) Es irrelevante", "b) Puede constituir intromisión ilegítima", "c) Siempre es legal", "d) Está permitida por defecto"],
+  correcta: "b) Puede constituir intromisión ilegítima",
+  justificacion: "La difusión en redes sociales está sometida a los mismos límites legales."
+},
+{
+  pregunta: "¿Qué ocurre con las intromisiones realizadas por periodistas?",
+  opciones: ["a) Siempre están permitidas", "b) No son ilícitas si prevalece el derecho a la información", "c) Nunca son ilícitas", "d) Siempre son ilícitas"],
+  correcta: "b) No son ilícitas si prevalece el derecho a la información",
+  justificacion: "Se pondera entre el derecho a la información y los derechos al honor e intimidad."
+},
+{
+  pregunta: "¿Qué ocurre con la publicación de imágenes de militares en servicio sin permiso?",
+  opciones: ["a) Siempre está prohibida", "b) Puede limitarse por razones de seguridad", "c) Siempre está permitida", "d) Es irrelevante"],
+  correcta: "b) Puede limitarse por razones de seguridad",
+  justificacion: "El derecho a la información se limita por la seguridad nacional."
+},
+{
+  pregunta: "¿Qué ocurre con la utilización de datos de una persona en campañas políticas sin su consentimiento?",
+  opciones: ["a) Está permitida", "b) Puede constituir intromisión ilegítima", "c) Siempre es legal", "d) Es irrelevante"],
+  correcta: "b) Puede constituir intromisión ilegítima",
+  justificacion: "El uso de datos en campañas sin consentimiento vulnera la intimidad y la imagen."
+},
+{
+  pregunta: "¿Qué ocurre con la divulgación de grabaciones de llamadas telefónicas sin permiso?",
+  opciones: ["a) Siempre es legal", "b) Constituye intromisión ilegítima", "c) Es irrelevante", "d) Está permitida si hay interés público"],
+  correcta: "b) Constituye intromisión ilegítima",
+  justificacion: "La divulgación de conversaciones telefónicas vulnera la intimidad personal."
+},
+{
+  pregunta: "¿Qué ocurre con la publicación de datos de testigos en un proceso penal?",
+  opciones: ["a) Está prohibida salvo autorización judicial", "b) Siempre es legal", "c) Es irrelevante", "d) Nunca es ilícita"],
+  correcta: "a) Está prohibida salvo autorización judicial",
+  justificacion: "Los testigos están protegidos para garantizar su seguridad y privacidad."
+},
+{
+  pregunta: "¿Qué ocurre con la utilización de la imagen de un trabajador en la empresa sin consentimiento?",
+  opciones: ["a) Siempre es legal", "b) Puede constituir intromisión ilegítima", "c) Es irrelevante", "d) Está autorizada por la LO 1/1982"],
+  correcta: "b) Puede constituir intromisión ilegítima",
+  justificacion: "El uso de imágenes laborales sin consentimiento vulnera la propia imagen."
+},
+{
+  pregunta: "¿Qué ocurre con la publicación de imágenes de accidentes de tráfico con víctimas?",
+  opciones: ["a) Es irrelevante", "b) Puede constituir intromisión ilegítima", "c) Siempre es legal", "d) Está permitida si lo hace un medio"],
+  correcta: "b) Puede constituir intromisión ilegítima",
+  justificacion: "La difusión de estas imágenes vulnera la intimidad y la dignidad de las víctimas."
+},
+{
+  pregunta: "¿Qué ocurre con la difusión de imágenes de operaciones policiales?",
+  opciones: ["a) Siempre es legal", "b) Puede limitarse por razones de seguridad y dignidad", "c) Es irrelevante", "d) Nunca es ilícita"],
+  correcta: "b) Puede limitarse por razones de seguridad y dignidad",
+  justificacion: "La difusión puede limitarse para proteger la seguridad y la dignidad personal."
+},
+{
+  pregunta: "¿Qué ocurre con la divulgación de datos de condenados por delitos?",
+  opciones: ["a) Siempre es legal", "b) Puede constituir intromisión ilegítima si afecta a su reinserción", "c) Nunca es ilícita", "d) Es irrelevante"],
+  correcta: "b) Puede constituir intromisión ilegítima si afecta a su reinserción",
+  justificacion: "La ley protege la reinserción social de los condenados."
+},
+{
+  pregunta: "¿Qué ocurre con la captación de imágenes en colegios sin autorización?",
+  opciones: ["a) Siempre es legal", "b) Constituye intromisión ilegítima", "c) Es irrelevante", "d) Está autorizada por la LO 1/1982"],
+  correcta: "b) Constituye intromisión ilegítima",
+  justificacion: "La captación de imágenes en colegios sin autorización vulnera la intimidad de los menores."
+},
+{
+  pregunta: "¿Qué ocurre con la utilización del nombre de una persona en videojuegos sin consentimiento?",
+  opciones: ["a) Está permitida", "b) Constituye intromisión ilegítima", "c) Es irrelevante", "d) Siempre es legal"],
+  correcta: "b) Constituye intromisión ilegítima",
+  justificacion: "El uso del nombre sin autorización en productos comerciales vulnera la propia imagen."
+},
+{
+  pregunta: "¿Qué ocurre con la publicación de datos sobre la orientación sexual de una persona?",
+  opciones: ["a) Siempre está permitida", "b) Constituye intromisión ilegítima", "c) Es irrelevante", "d) Está autorizada por defecto"],
+  correcta: "b) Constituye intromisión ilegítima",
+  justificacion: "La orientación sexual pertenece a la intimidad personal."
+},
+{
+  pregunta: "¿Qué ocurre con la divulgación de imágenes de víctimas de violencia de género?",
+  opciones: ["a) Siempre es legal", "b) Puede ser intromisión ilegítima", "c) Es irrelevante", "d) Está autorizada por defecto"],
+  correcta: "b) Puede ser intromisión ilegítima",
+  justificacion: "La difusión de estas imágenes vulnera la dignidad y la intimidad de las víctimas."
+},
+{
+  pregunta: "¿Qué ocurre con la difusión de grabaciones en el ámbito laboral sin permiso?",
+  opciones: ["a) Siempre es legal", "b) Puede constituir intromisión ilegítima", "c) Es irrelevante", "d) Nunca es ilícita"],
+  correcta: "b) Puede constituir intromisión ilegítima",
+  justificacion: "Las grabaciones laborales no consentidas vulneran la intimidad personal."
+},
+{
+  pregunta: "¿Qué ocurre con la publicación de datos sobre procesos de divorcio?",
+  opciones: ["a) Siempre es legal", "b) Puede ser intromisión ilegítima", "c) Es irrelevante", "d) Está autorizada por la LO 1/1982"],
+  correcta: "b) Puede ser intromisión ilegítima",
+  justificacion: "La vida personal y familiar está especialmente protegida frente a intromisiones."
+},
+{
+  pregunta: "¿Qué ocurre con la utilización de imágenes en campañas benéficas sin permiso del afectado?",
+  opciones: ["a) Siempre está permitida", "b) Puede constituir intromisión ilegítima", "c) Es irrelevante", "d) Siempre es legal"],
+  correcta: "b) Puede constituir intromisión ilegítima",
+  justificacion: "Aunque tenga fines benéficos, la imagen requiere consentimiento."
+},
+{
+  pregunta: "¿Qué ocurre con la publicación de datos de procedimientos administrativos disciplinarios?",
+  opciones: ["a) Siempre es legal", "b) Puede ser intromisión ilegítima", "c) Nunca es ilícita", "d) Es irrelevante"],
+  correcta: "b) Puede ser intromisión ilegítima",
+  justificacion: "La divulgación de procedimientos disciplinarios puede vulnerar la intimidad."
+},
