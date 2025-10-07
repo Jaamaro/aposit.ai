@@ -1251,7 +1251,138 @@ const preguntasBanco = [
   correcta: "a) En todos los niveles de la empresa",
   justificacion: "Debe estar presente en toda la gestión empresarial."
 },
-]; // Banco vacío
+];
+
+let totalPreguntasRenderizadas = 0;
+
+function barajar(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+}
+
+function setProgress(current, total) {
+  const bar = document.getElementById('progressBar');
+  const pct = total > 0 ? Math.round((current / total) * 100) : 0;
+  bar.style.width = pct + '%';
+  bar.title = pct + '%';
+}
+
+function cargarTest() {
+  const seleccionadas = [...preguntasBanco];
+  barajar(seleccionadas);
+  const num = parseInt(document.getElementById("numPreguntas").value);
+  const seleccion = seleccionadas.slice(0, num);
+
+  const testForm = document.getElementById("testForm");
+  const result = document.getElementById("testResult");
+  testForm.innerHTML = '';
+  result.innerHTML = '';
+  totalPreguntasRenderizadas = seleccion.length;
+  setProgress(0, totalPreguntasRenderizadas);
+
+  seleccion.forEach((preg, index) => {
+    const id = `q${index}`;
+    const opciones = [...preg.opciones];
+    barajar(opciones);
+    const opcionesHTML = opciones.map(op => `
+      <label class="option">
+        <input type="radio" name="${id}" value="${op}" data-correcta="${preg.correcta}" data-justificacion="${preg.justificacion}">
+        ${op}
+      </label>
+    `).join('');
+
+    const card = document.createElement('div');
+    card.className = 'question';
+    card.innerHTML = `
+      <div class="q-head">
+        <div class="q-num">Pregunta ${index + 1}:</div>
+        <p class="q-text">${preg.pregunta}</p>
+      </div>
+      <div class="options">${opcionesHTML}</div>
+      <div class="justification" id="j${id}"></div>
+    `;
+    testForm.appendChild(card);
+  });
+
+  // Botonera inferior
+  const actions = document.createElement('div');
+  actions.style.textAlign = 'center';
+  actions.style.marginTop = '14px';
+  actions.innerHTML = '<button class="btn success" type="button" onclick="corregir()">✅ Enviar</button>';
+  testForm.appendChild(actions);
+
+  // Selección visual on click
+  testForm.querySelectorAll('.option input').forEach(inp => {
+    inp.addEventListener('change', (e) => {
+      const group = e.target.name;
+      // Quitar selección previa
+      testForm.querySelectorAll(`input[name="${group}"]`).forEach(i2 => {
+        i2.closest('.option').classList.remove('is-selected');
+      });
+      e.target.closest('.option').classList.add('is-selected');
+
+      // Progreso (contar cuántas preguntas ya tienen marcada una opción)
+      const respondidas = new Set();
+      testForm.querySelectorAll('.option input:checked').forEach(i3 => respondidas.add(i3.name));
+      setProgress(respondidas.size, totalPreguntasRenderizadas);
+    });
+  });
+}
+
+function corregir() {
+  const preguntas = document.querySelectorAll('.question');
+  let aciertos = 0;
+
+  preguntas.forEach(q => {
+    const seleccion = q.querySelector('input[type="radio"]:checked');
+    const justDiv = q.querySelector('.justification');
+
+    // Limpiar estilos previos
+    q.querySelectorAll('.option').forEach(lbl => {
+      lbl.classList.remove('correct-option', 'wrong-option');
+    });
+
+    // Marcar siempre la opción correcta
+    q.querySelectorAll('.option input').forEach(inp => {
+      if (inp.value === inp.dataset.correcta) {
+        inp.closest('.option').classList.add('correct-option');
+      }
+    });
+
+    if (seleccion) {
+      if (seleccion.value === seleccion.dataset.correcta) {
+        aciertos++;
+        justDiv.innerHTML = `<span class="correct">✔ ${seleccion.dataset.justificacion}</span>`;
+      } else {
+        // Señalar la opción elegida como errónea
+        seleccion.closest('.option').classList.add('wrong-option');
+        justDiv.innerHTML = `<span class="incorrect">✘ ${seleccion.dataset.justificacion}</span>`;
+      }
+    } else {
+      justDiv.innerHTML = `<span class="incorrect">✘ No contestada</span>`;
+    }
+  });
+
+  const result = document.getElementById('testResult');
+  const total = preguntas.length;
+  const pct = Math.round((aciertos / total) * 100);
+  const emoji = pct >= 70 ? "🎉" : (pct >= 50 ? "🙂" : "💪");
+  result.innerHTML = `
+    <div class="result-card">
+      <div class="muted">Resultado</div>
+      <div class="score">${emoji} ${aciertos} / ${total} (${pct}%)</div>
+      <div class="muted">Puedes cambiar tus respuestas y volver a pulsar <strong>Enviar</strong>.</div>
+    </div>
+  `;
+}
+
+function reiniciarTest() {
+  document.getElementById('testForm').innerHTML = '';
+  document.getElementById('testResult').innerHTML = '';
+  setProgress(0, 0);
+}
 </script>
 </body>
 </html>
