@@ -201,7 +201,2032 @@
 
 <script>
 const preguntasBanco = [
+  {
+    pregunta: "¿Cuál fue el principal motivo del surgimiento del proyecto de integración europea tras la Segunda Guerra Mundial?",
+    opciones: [
+      "a) Crear una alianza militar contra Estados Unidos.",
+      "b) Evitar nuevos conflictos y asegurar la paz mediante la cooperación económica.",
+      "c) Sustituir a la ONU como organización internacional.",
+      "d) Establecer una moneda común inmediata."
+    ],
+    correcta: "b) Evitar nuevos conflictos y asegurar la paz mediante la cooperación económica.",
+    justificacion: "La integración europea nació tras la Segunda Guerra Mundial para garantizar la paz mediante la interdependencia económica."
+  },
+  {
+    pregunta: "¿Qué tratado creó la Comunidad Europea del Carbón y del Acero (CECA)?",
+    opciones: [
+      "a) Tratado de Roma",
+      "b) Tratado de París",
+      "c) Tratado de Maastricht",
+      "d) Acta Única Europea"
+    ],
+    correcta: "b) Tratado de París",
+    justificacion: "El Tratado de París, firmado en 1951, creó la CECA entre seis Estados fundadores."
+  },
+  {
+    pregunta: "¿En qué año se firmó el Tratado de París?",
+    opciones: [
+      "a) 1950",
+      "b) 1951",
+      "c) 1952",
+      "d) 1953"
+    ],
+    correcta: "b) 1951",
+    justificacion: "El Tratado de París fue firmado el 18 de abril de 1951 y entró en vigor en 1952."
+  },
+  {
+    pregunta: "¿Qué tratados firmados en 1957 crearon la Comunidad Económica Europea y Euratom?",
+    opciones: [
+      "a) Tratados de Roma",
+      "b) Tratados de París",
+      "c) Tratado de Niza",
+      "d) Tratado de Ámsterdam"
+    ],
+    correcta: "a) Tratados de Roma",
+    justificacion: "Los Tratados de Roma, firmados el 25 de marzo de 1957, crearon la CEE y Euratom."
+  },
+  {
+    pregunta: "¿Qué gran avance introdujo el Acta Única Europea de 1986?",
+    opciones: [
+      "a) La creación del euro.",
+      "b) La unificación monetaria.",
+      "c) El establecimiento del mercado interior único.",
+      "d) La incorporación de nuevos Estados del Este."
+    ],
+    correcta: "c) El establecimiento del mercado interior único.",
+    justificacion: "El Acta Única Europea impulsó la creación del mercado interior y amplió competencias comunitarias."
+  },
+  {
+    pregunta: "¿Qué tratado estableció formalmente la Unión Europea?",
+    opciones: [
+      "a) Tratado de Roma",
+      "b) Tratado de Maastricht",
+      "c) Tratado de Niza",
+      "d) Tratado de Lisboa"
+    ],
+    correcta: "b) Tratado de Maastricht",
+    justificacion: "El Tratado de Maastricht de 1992 dio origen formal a la Unión Europea y creó la ciudadanía europea."
+  },
+  {
+    pregunta: "¿Qué tratado otorgó personalidad jurídica única a la Unión Europea?",
+    opciones: [
+      "a) Tratado de Ámsterdam",
+      "b) Tratado de Lisboa",
+      "c) Tratado de Niza",
+      "d) Acta Única Europea"
+    ],
+    correcta: "b) Tratado de Lisboa",
+    justificacion: "El Tratado de Lisboa (2007, en vigor en 2009) dio personalidad jurídica única a la UE."
+  },
+  {
+    pregunta: "¿En qué año se produjo la adhesión oficial de España a la entonces CEE?",
+    opciones: [
+      "a) 1985",
+      "b) 1986",
+      "c) 1992",
+      "d) 1990"
+    ],
+    correcta: "b) 1986",
+    justificacion: "España ingresó en la CEE el 1 de enero de 1986 junto con Portugal."
+  },
+  {
+    pregunta: "¿Qué tratado incorporó el espacio Schengen al marco jurídico de la Unión Europea?",
+    opciones: [
+      "a) Tratado de Ámsterdam",
+      "b) Tratado de Niza",
+      "c) Tratado de Maastricht",
+      "d) Tratado de Lisboa"
+    ],
+    correcta: "a) Tratado de Ámsterdam",
+    justificacion: "El Tratado de Ámsterdam (1997) integró el Acuerdo de Schengen dentro del Derecho de la UE."
+  },
+  {
+    pregunta: "¿Cuál fue el objetivo del Tratado de Niza de 2001?",
+    opciones: [
+      "a) Crear la moneda única.",
+      "b) Reforzar el Parlamento Europeo.",
+      "c) Preparar las instituciones para la ampliación hacia Europa del Este.",
+      "d) Establecer la Política Exterior Común."
+    ],
+    correcta: "c) Preparar las instituciones para la ampliación hacia Europa del Este.",
+    justificacion: "El Tratado de Niza reformó el sistema de votación y adaptó las instituciones para la futura ampliación."
+  },
+  {
+    pregunta: "¿Cuántos Estados fundaron la Comunidad Europea del Carbón y del Acero?",
+    opciones: [
+      "a) Cuatro",
+      "b) Cinco",
+      "c) Seis",
+      "d) Siete"
+    ],
+    correcta: "c) Seis",
+    justificacion: "Alemania Occidental, Francia, Italia, Bélgica, Países Bajos y Luxemburgo fueron los seis fundadores de la CECA."
+  },
+  {
+    pregunta: "El principio de atribución implica que:",
+    opciones: [
+      "a) La Unión puede actuar libremente en todos los ámbitos.",
+      "b) Los Estados atribuyen competencias a la Unión mediante los tratados.",
+      "c) Los Estados miembros deben actuar siempre conjuntamente.",
+      "d) La Unión asume competencias en materias nacionales por decisión judicial."
+    ],
+    correcta: "b) Los Estados atribuyen competencias a la Unión mediante los tratados.",
+    justificacion: "La UE solo actúa en los ámbitos que los Estados le han conferido por los Tratados."
+  },
+  {
+    pregunta: "El principio de subsidiariedad significa que:",
+    opciones: [
+      "a) Los Estados no pueden intervenir en competencias compartidas.",
+      "b) La UE actúa solo si los objetivos no pueden alcanzarse eficazmente por los Estados.",
+      "c) La UE actúa siempre en primer lugar.",
+      "d) Los Estados ceden totalmente su soberanía."
+    ],
+    correcta: "b) La UE actúa solo si los objetivos no pueden alcanzarse eficazmente por los Estados.",
+    justificacion: "El principio de subsidiariedad limita la acción de la UE en materias compartidas, reservando el resto a los Estados."
+  },
+  {
+    pregunta: "El principio de proporcionalidad exige que:",
+    opciones: [
+      "a) Las decisiones europeas se adopten por mayoría simple.",
+      "b) Las medidas de la UE no excedan lo necesario para lograr sus fines.",
+      "c) Los Estados no puedan legislar en competencias compartidas.",
+      "d) Todas las normas sean aplicadas directamente."
+    ],
+    correcta: "b) Las medidas de la UE no excedan lo necesario para lograr sus fines.",
+    justificacion: "Este principio busca equilibrio entre los medios empleados y los objetivos de la acción de la Unión."
+  },
+  {
+    pregunta: "El principio de primacía del Derecho de la UE implica que:",
+    opciones: [
+      "a) Los Estados aplican sus normas internas por encima de las europeas.",
+      "b) El Derecho de la UE prevalece sobre el derecho nacional.",
+      "c) Solo las directivas tienen prioridad.",
+      "d) Los tribunales nacionales pueden anular normas de la UE."
+    ],
+    correcta: "b) El Derecho de la UE prevalece sobre el derecho nacional.",
+    justificacion: "El principio de primacía asegura la uniformidad y eficacia del ordenamiento jurídico europeo."
+  },
+  {
+    pregunta: "El Derecho primario de la Unión está formado por:",
+    opciones: [
+      "a) Reglamentos y directivas.",
+      "b) Tratados fundacionales y de reforma.",
+      "c) Jurisprudencia del TJUE.",
+      "d) Acuerdos internacionales con terceros Estados."
+    ],
+    correcta: "b) Tratados fundacionales y de reforma.",
+    justificacion: "El Derecho primario constituye la base constitucional de la UE e incluye los tratados y anexos."
+  },
+  {
+    pregunta: "Las normas derivadas del Derecho primario se denominan:",
+    opciones: [
+      "a) Derecho derivado",
+      "b) Derecho complementario",
+      "c) Derecho común",
+      "d) Derecho secundario internacional"
+    ],
+    correcta: "a) Derecho derivado",
+    justificacion: "El Derecho derivado comprende los reglamentos, directivas, decisiones, recomendaciones y dictámenes."
+  },
+  {
+    pregunta: "¿Qué tipo de norma europea es directamente aplicable en todos los Estados miembros?",
+    opciones: [
+      "a) Directiva",
+      "b) Reglamento",
+      "c) Decisión",
+      "d) Dictamen"
+    ],
+    correcta: "b) Reglamento",
+    justificacion: "Los reglamentos tienen aplicación directa e inmediata en todos los Estados miembros."
+  },
+  {
+    pregunta: "¿Qué tipo de norma europea obliga en cuanto al resultado, pero deja libertad en la forma de aplicarlo?",
+    opciones: [
+      "a) Reglamento",
+      "b) Directiva",
+      "c) Decisión",
+      "d) Recomendación"
+    ],
+    correcta: "b) Directiva",
+    justificacion: "Las directivas obligan al resultado previsto, pero los Estados deciden cómo incorporarlas a su derecho interno."
+  },
+  {
+    pregunta: "Las recomendaciones y dictámenes de la UE tienen carácter:",
+    opciones: [
+      "a) Obligatorio",
+      "b) Vinculante solo para Estados fundadores",
+      "c) No vinculante",
+      "d) De aplicación directa"
+    ],
+    correcta: "c) No vinculante",
+    justificacion: "Estos actos forman parte del llamado 'soft law', sin fuerza obligatoria."
+  },
+  {
+    pregunta: "¿Qué tratado reconoció jurídicamente la Carta de los Derechos Fundamentales de la Unión Europea?",
+    opciones: [
+      "a) Tratado de Niza",
+      "b) Tratado de Lisboa",
+      "c) Tratado de Maastricht",
+      "d) Tratado de Roma"
+    ],
+    correcta: "b) Tratado de Lisboa",
+    justificacion: "El Tratado de Lisboa otorgó valor jurídico a la Carta de los Derechos Fundamentales de la UE."
+  },
+  {
+    pregunta: "La ciudadanía europea fue introducida por:",
+    opciones: [
+      "a) El Tratado de Roma",
+      "b) El Tratado de Maastricht",
+      "c) El Tratado de Lisboa",
+      "d) El Acta Única Europea"
+    ],
+    correcta: "b) El Tratado de Maastricht",
+    justificacion: "El Tratado de Maastricht (1992) instauró la ciudadanía europea."
+  },
+  {
+    pregunta: "¿Cuál de los siguientes NO es un derecho del ciudadano de la Unión?",
+    opciones: [
+      "a) Votar en elecciones municipales en otro Estado miembro.",
+      "b) Circular y residir libremente en la UE.",
+      "c) Votar en elecciones generales de cualquier Estado miembro.",
+      "d) Presentar peticiones al Parlamento Europeo."
+    ],
+    correcta: "c) Votar en elecciones generales de cualquier Estado miembro.",
+    justificacion: "Los ciudadanos pueden votar en municipales y europeas, no en las generales nacionales."
+  },
+  {
+    pregunta: "La Iniciativa Ciudadana Europea requiere un mínimo de:",
+    opciones: [
+      "a) 100.000 firmas de 5 países.",
+      "b) 500.000 firmas de 10 países.",
+      "c) 1 millón de firmas de 7 Estados miembros.",
+      "d) 2 millones de firmas de 15 países."
+    ],
+    correcta: "c) 1 millón de firmas de 7 Estados miembros.",
+    justificacion: "La ICE permite a los ciudadanos pedir a la Comisión que proponga legislación, con al menos 1 millón de firmas de 7 países."
+  },
+  {
+    pregunta: "¿Cuál de los siguientes es un beneficio de pertenecer a la UE para España?",
+    opciones: [
+      "a) Acceso a fondos estructurales y de cohesión.",
+      "b) Pérdida de voto en el Consejo.",
+      "c) Exclusión de la política agrícola común.",
+      "d) Renuncia a la soberanía económica."
+    ],
+    correcta: "a) Acceso a fondos estructurales y de cohesión.",
+    justificacion: "España recibe fondos europeos para desarrollo económico y territorial."
+  },
+  {
+    pregunta: "¿Qué fecha marca la salida oficial del Reino Unido de la Unión Europea (Brexit)?",
+    opciones: [
+      "a) 31 de diciembre de 2019",
+      "b) 31 de enero de 2020",
+      "c) 1 de enero de 2020",
+      "d) 30 de junio de 2019"
+    ],
+    correcta: "b) 31 de enero de 2020",
+    justificacion: "El Reino Unido abandonó oficialmente la UE el 31 de enero de 2020."
+  },
+  {
+    pregunta: "¿Qué principio exige que los Estados miembros cooperen con la Unión de buena fe?",
+    opciones: [
+      "a) Principio de cooperación leal",
+      "b) Principio de subsidiariedad",
+      "c) Principio de coordinación administrativa",
+      "d) Principio de proporcionalidad"
+    ],
+    correcta: "a) Principio de cooperación leal",
+    justificacion: "Los Estados deben actuar de buena fe para cumplir los objetivos de la Unión (art. 4.3 TUE)."
+  },
+  {
+    pregunta: "El proceso legislativo ordinario en la UE se basa en:",
+    opciones: [
+      "a) La aprobación exclusiva del Consejo",
+      "b) La codecisión entre Parlamento Europeo y Consejo",
+      "c) La propuesta directa del BCE",
+      "d) El referéndum europeo"
+    ],
+    correcta: "b) La codecisión entre Parlamento Europeo y Consejo",
+    justificacion: "El procedimiento ordinario implica la participación igual del Parlamento y el Consejo."
+  },
+  {
+    pregunta: "La Comisión Europea tiene el poder de:",
+    opciones: [
+      "a) Proponer legislación europea",
+      "b) Ratificar tratados internacionales",
+      "c) Designar jueces del TJUE",
+      "d) Nombrar eurodiputados"
+    ],
+    correcta: "a) Proponer legislación europea",
+    justificacion: "La iniciativa legislativa corresponde en exclusiva a la Comisión Europea."
+  },
+  {
+    pregunta: "Las directivas europeas deben ser:",
+    opciones: [
+      "a) Ratificadas por referéndum",
+      "b) Incorporadas al Derecho nacional (trasposición)",
+      "c) Aplicadas directamente sin trámite",
+      "d) Aprobadas por los tribunales nacionales"
+    ],
+    correcta: "b) Incorporadas al Derecho nacional (trasposición)",
+    justificacion: "Las directivas obligan a los Estados al resultado, pero deben adaptarlas a su ordenamiento jurídico."
+  },
+  {
+    pregunta: "¿Qué tipo de competencias conserva España frente a la Unión Europea?",
+    opciones: [
+      "a) Las exclusivas nacionales no atribuidas por los tratados.",
+      "b) Ninguna, todas son transferidas.",
+      "c) Solo las compartidas.",
+      "d) Solo las concurrentes."
+    ],
+    correcta: "a) Las exclusivas nacionales no atribuidas por los tratados.",
+    justificacion: "Las competencias no conferidas a la UE permanecen en poder de los Estados miembros."
+  },
+  {
+    pregunta: "La libre circulación dentro de la UE puede limitarse por razones de:",
+    opciones: [
+      "a) Orden público, seguridad o salud pública.",
+      "b) Diferencias económicas.",
+      "c) Política interior.",
+      "d) Competencia desleal."
+    ],
+    correcta: "a) Orden público, seguridad o salud pública.",
+    justificacion: "Estas son las únicas causas justificadas para restringir la libre circulación en la UE."
+  },
+  {
+    pregunta: "España participa en los asuntos europeos a través de:",
+    opciones: [
+      "a) Solo el Ministerio de Asuntos Exteriores.",
+      "b) Conferencias sectoriales y oficinas autonómicas en Bruselas.",
+      "c) Las Cortes Generales exclusivamente.",
+      "d) Solo el Consejo de Ministros."
+    ],
+    correcta: "b) Conferencias sectoriales y oficinas autonómicas en Bruselas.",
+    justificacion: "Las comunidades autónomas colaboran en la gestión de asuntos europeos mediante estos canales."
+  },
+  {
+    pregunta: "¿Qué documento es considerado el punto de partida del proceso de integración europea?",
+    opciones: [
+      "a) El Plan Marshall",
+      "b) La Declaración Schuman",
+      "c) El Tratado de París",
+      "d) El Tratado de Roma"
+    ],
+    correcta: "b) La Declaración Schuman",
+    justificacion: "El 9 de mayo de 1950, Robert Schuman propuso la integración del carbón y el acero, origen de la CECA."
+  },
+  {
+    pregunta: "¿Qué acontecimiento histórico influyó directamente en la necesidad de crear una Europa unida?",
+    opciones: [
+      "a) La Primera Guerra Mundial",
+      "b) La Segunda Guerra Mundial",
+      "c) La Guerra de los Cien Años",
+      "d) La Guerra de Corea"
+    ],
+    correcta: "b) La Segunda Guerra Mundial",
+    justificacion: "Tras el conflicto, Europa buscó la paz y la estabilidad mediante la cooperación económica."
+  },
+  {
+    pregunta: "¿Qué organización se creó en 1948 para gestionar el Plan Marshall?",
+    opciones: [
+      "a) OTAN",
+      "b) OECE",
+      "c) ONU",
+      "d) CECA"
+    ],
+    correcta: "b) OECE",
+    justificacion: "La Organización Europea de Cooperación Económica administró el Plan Marshall y fue un paso hacia la integración."
+  },
+  {
+    pregunta: "¿Qué unión aduanera firmaron Bélgica, Países Bajos y Luxemburgo antes de la CECA?",
+    opciones: [
+      "a) El Benelux",
+      "b) La CEE",
+      "c) La CEPE",
+      "d) La Euratom"
+    ],
+    correcta: "a) El Benelux",
+    justificacion: "En 1948 se creó la unión aduanera Benelux, ejemplo de cooperación económica previa a la UE."
+  },
+  {
+    pregunta: "¿Qué tratado fusionó las instituciones de la CECA, CEE y Euratom?",
+    opciones: [
+      "a) Tratado de Roma",
+      "b) Tratado de Fusión de 1967",
+      "c) Tratado de Maastricht",
+      "d) Acta Única Europea"
+    ],
+    correcta: "b) Tratado de Fusión de 1967",
+    justificacion: "El Tratado de Fusión unificó las instituciones ejecutivas de las tres comunidades europeas."
+  },
+  {
+    pregunta: "¿Qué ampliación permitió la entrada del Reino Unido, Dinamarca e Irlanda?",
+    opciones: [
+      "a) Primera ampliación (1973)",
+      "b) Segunda ampliación (1981)",
+      "c) Tercera ampliación (1986)",
+      "d) Cuarta ampliación (1995)"
+    ],
+    correcta: "a) Primera ampliación (1973)",
+    justificacion: "En 1973 se incorporaron estos tres Estados, la primera expansión de la CEE."
+  },
+  {
+    pregunta: "¿Qué tratado sentó las bases de la unión económica y monetaria?",
+    opciones: [
+      "a) Tratado de Maastricht",
+      "b) Tratado de Roma",
+      "c) Acta Única Europea",
+      "d) Tratado de Ámsterdam"
+    ],
+    correcta: "a) Tratado de Maastricht",
+    justificacion: "El Tratado de Maastricht creó la Unión Económica y Monetaria y el camino hacia el euro."
+  },
+  {
+    pregunta: "¿Qué ampliación llevó a la incorporación de Grecia a la Comunidad Europea?",
+    opciones: [
+      "a) Primera ampliación",
+      "b) Segunda ampliación",
+      "c) Tercera ampliación",
+      "d) Cuarta ampliación"
+    ],
+    correcta: "b) Segunda ampliación",
+    justificacion: "Grecia se unió a la Comunidad en 1981, siendo la segunda ampliación de la CEE."
+  },
+  {
+    pregunta: "¿Qué año marcó la introducción del euro como moneda de cuenta (no en efectivo)?",
+    opciones: [
+      "a) 1997",
+      "b) 1999",
+      "c) 2000",
+      "d) 2002"
+    ],
+    correcta: "b) 1999",
+    justificacion: "El euro se introdujo como moneda escritural el 1 de enero de 1999."
+  },
+  {
+    pregunta: "¿Cuándo comenzó la circulación del euro en efectivo?",
+    opciones: [
+      "a) 1999",
+      "b) 2000",
+      "c) 2002",
+      "d) 2004"
+    ],
+    correcta: "c) 2002",
+    justificacion: "Los billetes y monedas de euro comenzaron a circular el 1 de enero de 2002."
+  },
+  {
+    pregunta: "El principio de subsidiariedad se aplica especialmente en:",
+    opciones: [
+      "a) Materias de competencia exclusiva de la UE",
+      "b) Materias de competencia compartida",
+      "c) Materias de defensa nacional",
+      "d) Política monetaria"
+    ],
+    correcta: "b) Materias de competencia compartida",
+    justificacion: "Solo se aplica cuando los Estados y la UE comparten competencia en una materia."
+  },
+  {
+    pregunta: "Las competencias no atribuidas a la Unión Europea pertenecen:",
+    opciones: [
+      "a) A la Comisión",
+      "b) A los Estados miembros",
+      "c) Al Parlamento Europeo",
+      "d) Al Consejo de la Unión"
+    ],
+    correcta: "b) A los Estados miembros",
+    justificacion: "Por el principio de atribución, lo no conferido a la UE permanece en manos de los Estados."
+  },
+  {
+    pregunta: "¿Qué principio obliga a los Estados a cooperar lealmente con las instituciones europeas?",
+    opciones: [
+      "a) Principio de primacía",
+      "b) Principio de lealtad institucional",
+      "c) Principio de subsidiariedad",
+      "d) Principio de solidaridad"
+    ],
+    correcta: "b) Principio de lealtad institucional",
+    justificacion: "También conocido como cooperación leal, exige respeto y ayuda mutua entre la UE y los Estados."
+  },
+  {
+    pregunta: "¿Qué tipo de acto jurídico europeo se dirige a destinatarios concretos y es obligatorio solo para ellos?",
+    opciones: [
+      "a) Reglamento",
+      "b) Directiva",
+      "c) Decisión",
+      "d) Dictamen"
+    ],
+    correcta: "c) Decisión",
+    justificacion: "La decisión tiene carácter vinculante únicamente para los destinatarios a quienes va dirigida."
+  },
+  {
+    pregunta: "La jurisprudencia del Tribunal de Justicia de la UE constituye:",
+    opciones: [
+      "a) Una fuente del Derecho de la UE",
+      "b) Una norma sin valor jurídico",
+      "c) Un derecho nacional complementario",
+      "d) Una opinión consultiva"
+    ],
+    correcta: "a) Una fuente del Derecho de la UE",
+    justificacion: "Las sentencias del TJUE interpretan y desarrollan el Derecho europeo, siendo fuente obligatoria."
+  },
+  {
+    pregunta: "Los principios generales del Derecho de la UE, como la seguridad jurídica o la buena administración, se incluyen en:",
+    opciones: [
+      "a) Derecho primario",
+      "b) Derecho derivado",
+      "c) Derecho complementario",
+      "d) Derecho subsidiario"
+    ],
+    correcta: "c) Derecho complementario",
+    justificacion: "Estos principios forman parte del Derecho complementario junto con acuerdos internacionales."
+  },
+  {
+    pregunta: "¿Qué órgano puede iniciar la mayoría de las propuestas legislativas europeas?",
+    opciones: [
+      "a) Consejo Europeo",
+      "b) Comisión Europea",
+      "c) Parlamento Europeo",
+      "d) Banco Central Europeo"
+    ],
+    correcta: "b) Comisión Europea",
+    justificacion: "La Comisión tiene la iniciativa legislativa principal en la Unión."
+  },
+  {
+    pregunta: "El procedimiento legislativo ordinario también se conoce como:",
+    opciones: [
+      "a) Procedimiento de aprobación",
+      "b) Procedimiento de codecisión",
+      "c) Procedimiento de cooperación",
+      "d) Procedimiento de urgencia"
+    ],
+    correcta: "b) Procedimiento de codecisión",
+    justificacion: "En él, el Parlamento y el Consejo adoptan conjuntamente las normas europeas."
+  },
+  {
+    pregunta: "¿Qué procedimiento legislativo requiere el consentimiento del Parlamento sin posibilidad de enmienda?",
+    opciones: [
+      "a) Ordinario",
+      "b) Consulta",
+      "c) Aprobación",
+      "d) Cooperación"
+    ],
+    correcta: "c) Aprobación",
+    justificacion: "El procedimiento de aprobación obliga al Parlamento a aceptar o rechazar el texto sin modificarlo."
+  },
+  {
+    pregunta: "¿Qué procedimiento obliga al Consejo a solicitar la opinión del Parlamento, sin estar vinculado a ella?",
+    opciones: [
+      "a) Consulta",
+      "b) Aprobación",
+      "c) Ordinario",
+      "d) Delegado"
+    ],
+    correcta: "a) Consulta",
+    justificacion: "El procedimiento de consulta se utiliza en materias fiscales o de competencia."
+  },
+  {
+    pregunta: "En el proceso legislativo ordinario, ¿quién realiza la propuesta inicial de legislación?",
+    opciones: [
+      "a) El Consejo",
+      "b) La Comisión Europea",
+      "c) El Parlamento Europeo",
+      "d) El Tribunal de Justicia"
+    ],
+    correcta: "b) La Comisión Europea",
+    justificacion: "El proceso legislativo comienza con una propuesta formal de la Comisión."
+  },
+  {
+    pregunta: "El Derecho de la UE tiene primacía sobre el nacional. Esto significa que:",
+    opciones: [
+      "a) Los jueces nacionales deben inaplicar normas contrarias al Derecho de la UE.",
+      "b) Los Estados pueden decidir qué normas aplicar.",
+      "c) Solo prevalece en materias económicas.",
+      "d) Los tribunales nacionales pueden anular leyes europeas."
+    ],
+    correcta: "a) Los jueces nacionales deben inaplicar normas contrarias al Derecho de la UE.",
+    justificacion: "La primacía garantiza la efectividad del Derecho europeo en los Estados miembros."
+  },
+  {
+    pregunta: "¿Qué tratado introdujo el concepto de 'Unión Económica y Monetaria'?",
+    opciones: [
+      "a) Acta Única Europea",
+      "b) Tratado de Maastricht",
+      "c) Tratado de Lisboa",
+      "d) Tratado de Roma"
+    ],
+    correcta: "b) Tratado de Maastricht",
+    justificacion: "El Tratado de Maastricht estableció la UEM y los criterios de convergencia para el euro."
+  },
+  {
+    pregunta: "El derecho de libre circulación en la UE incluye la posibilidad de:",
+    opciones: [
+      "a) Trabajar o estudiar en otro Estado miembro.",
+      "b) Ser propietario de tierras en cualquier país.",
+      "c) Obtener automáticamente la nacionalidad del país receptor.",
+      "d) Evadir impuestos de residencia."
+    ],
+    correcta: "a) Trabajar o estudiar en otro Estado miembro.",
+    justificacion: "Los ciudadanos de la UE pueden vivir, trabajar o estudiar en cualquier Estado miembro."
+  },
+  {
+    pregunta: "¿Cuál de las siguientes situaciones puede justificar una limitación del derecho de libre circulación?",
+    opciones: [
+      "a) Razones de salud pública",
+      "b) Diferencias culturales",
+      "c) Nivel de ingresos bajo",
+      "d) Cambio de residencia frecuente"
+    ],
+    correcta: "a) Razones de salud pública",
+    justificacion: "Las únicas limitaciones válidas son por motivos de orden, seguridad o salud pública."
+  },
+  {
+    pregunta: "¿Qué derecho otorga la ciudadanía europea en materia política local?",
+    opciones: [
+      "a) Votar en elecciones municipales del país donde resida.",
+      "b) Ser miembro del Consejo de la UE.",
+      "c) Designar comisarios europeos.",
+      "d) Formar parte del Tribunal de Justicia."
+    ],
+    correcta: "a) Votar en elecciones municipales del país donde resida.",
+    justificacion: "Los ciudadanos de la UE pueden votar y ser elegidos en las elecciones municipales del país donde vivan."
+  },
+  {
+    pregunta: "¿Cuál es la principal diferencia entre el Derecho primario y el derivado?",
+    opciones: [
+      "a) El primario proviene de los tratados, el derivado de las instituciones.",
+      "b) El primario es secundario en jerarquía.",
+      "c) El derivado prevalece sobre el primario.",
+      "d) Ambos tienen el mismo valor jurídico."
+    ],
+    correcta: "a) El primario proviene de los tratados, el derivado de las instituciones.",
+    justificacion: "El Derecho derivado desarrolla las normas del Derecho primario, que tiene jerarquía superior."
+  },
+  {
+    pregunta: "¿Qué norma europea se conoce como 'soft law'?",
+    opciones: [
+      "a) Decisiones",
+      "b) Recomendaciones y dictámenes",
+      "c) Reglamentos",
+      "d) Directivas"
+    ],
+    correcta: "b) Recomendaciones y dictámenes",
+    justificacion: "Las recomendaciones y dictámenes no son vinculantes y forman parte del 'soft law'."
+  },
+  {
+    pregunta: "El Tratado de Lisboa reforzó el papel de los ciudadanos mediante:",
+    opciones: [
+      "a) La iniciativa ciudadana europea.",
+      "b) La creación del Tribunal de Cuentas.",
+      "c) El derecho a veto nacional.",
+      "d) La eliminación del euro."
+    ],
+    correcta: "a) La iniciativa ciudadana europea.",
+    justificacion: "Con Lisboa, los ciudadanos pueden solicitar nuevas leyes si reúnen 1 millón de firmas de 7 países."
+  },
+  {
+    pregunta: "La participación de España en la UE implica la obligación de:",
+    opciones: [
+      "a) Cumplir las normas europeas y sentencias del TJUE.",
+      "b) Priorizar el Derecho nacional ante el europeo.",
+      "c) Abstenerse en decisiones del Consejo.",
+      "d) No participar en políticas comunes."
+    ],
+    correcta: "a) Cumplir las normas europeas y sentencias del TJUE.",
+    justificacion: "Los Estados deben cumplir los actos jurídicos y decisiones del Tribunal de Justicia."
+  },
+  {
+    pregunta: "Los fondos estructurales europeos tienen como objetivo principal:",
+    opciones: [
+      "a) Financiar el gasto militar europeo.",
+      "b) Reducir las desigualdades económicas y sociales.",
+      "c) Promover la política exterior común.",
+      "d) Controlar la deuda pública."
+    ],
+    correcta: "b) Reducir las desigualdades económicas y sociales.",
+    justificacion: "Estos fondos promueven la cohesión económica y territorial dentro de la UE."
+  },
+  {
+    pregunta: "España está representada en el Consejo Europeo por:",
+    opciones: [
+      "a) El Presidente del Gobierno",
+      "b) El Ministro de Exteriores",
+      "c) El Rey",
+      "d) El Presidente del Congreso"
+    ],
+    correcta: "a) El Presidente del Gobierno",
+    justificacion: "Cada Estado miembro está representado en el Consejo Europeo por su jefe de Estado o de Gobierno."
+  },
+  {
+    pregunta: "¿Qué año marcó la mayor ampliación de la Unión Europea con diez nuevos Estados?",
+    opciones: [
+      "a) 1995",
+      "b) 2004",
+      "c) 2007",
+      "d) 2013"
+    ],
+    correcta: "b) 2004",
+    justificacion: "En 2004 ingresaron diez países de Europa Central y Oriental, la mayor ampliación en la historia de la UE."
+  }
+];
 
+  {
+    pregunta: "La adhesión de España a la CEE se firmó el:",
+    opciones: [
+      "a) 1 de enero de 1986",
+      "b) 12 de junio de 1985",
+      "c) 25 de marzo de 1985",
+      "d) 31 de diciembre de 1985"
+    ],
+    correcta: "b) 12 de junio de 1985",
+    justificacion: "España firmó su adhesión el 12 de junio de 1985, entrando como miembro el 1 de enero de 1986."
+  }
+  {
+    pregunta: "¿Qué tratado otorgó a la Unión Europea una estructura de tres pilares?",
+    opciones: [
+      "a) Tratado de Maastricht",
+      "b) Tratado de Roma",
+      "c) Tratado de Niza",
+      "d) Tratado de Lisboa"
+    ],
+    correcta: "a) Tratado de Maastricht",
+    justificacion: "El Tratado de Maastricht (1992) estructuró la UE en tres pilares: Comunidades Europeas, Política Exterior y de Seguridad Común, y Cooperación en Justicia e Interior."
+  },
+  {
+    pregunta: "¿Qué pilar de la Unión Europea desapareció con el Tratado de Lisboa?",
+    opciones: [
+      "a) El de la Política Exterior y de Seguridad Común",
+      "b) El de las Comunidades Europeas",
+      "c) El de la Cooperación Judicial y Policial",
+      "d) La estructura de pilares en su conjunto"
+    ],
+    correcta: "d) La estructura de pilares en su conjunto",
+    justificacion: "El Tratado de Lisboa eliminó la estructura de tres pilares y dotó a la Unión de personalidad jurídica única."
+  },
+  {
+    pregunta: "¿Qué característica hace que la Unión Europea sea una organización 'sui generis'?",
+    opciones: [
+      "a) Que combina elementos intergubernamentales y supranacionales",
+      "b) Que es una confederación de Estados",
+      "c) Que tiene un ejército propio permanente",
+      "d) Que depende directamente de la ONU"
+    ],
+    correcta: "a) Que combina elementos intergubernamentales y supranacionales",
+    justificacion: "La UE es única porque mezcla características de ambos tipos de organizaciones."
+  },
+  {
+    pregunta: "El principio de unidad y coherencia del ordenamiento jurídico europeo implica que:",
+    opciones: [
+      "a) Cada Estado puede aplicar las normas europeas como considere",
+      "b) El Derecho europeo debe aplicarse de forma uniforme en todos los Estados miembros",
+      "c) Los tratados solo obligan a los países fundadores",
+      "d) Los Estados pueden modificar unilateralmente las normas europeas"
+    ],
+    correcta: "b) El Derecho europeo debe aplicarse de forma uniforme en todos los Estados miembros",
+    justificacion: "La coherencia garantiza la efectividad del sistema jurídico comunitario."
+  },
+  {
+    pregunta: "¿Qué órgano de la UE garantiza el respeto y la aplicación uniforme del Derecho europeo?",
+    opciones: [
+      "a) El Consejo",
+      "b) El Tribunal de Justicia de la Unión Europea",
+      "c) El Parlamento Europeo",
+      "d) El Banco Central Europeo"
+    ],
+    correcta: "b) El Tribunal de Justicia de la Unión Europea",
+    justificacion: "El TJUE asegura la interpretación y aplicación del Derecho de la UE en todos los Estados miembros."
+  },
+  {
+    pregunta: "El procedimiento legislativo ordinario exige para la aprobación de una norma:",
+    opciones: [
+      "a) Acuerdo del Consejo y el Parlamento Europeo",
+      "b) Dictamen del Tribunal de Justicia",
+      "c) Voto unánime del Consejo Europeo",
+      "d) Aprobación exclusiva del Parlamento"
+    ],
+    correcta: "a) Acuerdo del Consejo y el Parlamento Europeo",
+    justificacion: "Ambos colegisladores deben aprobar el texto propuesto por la Comisión."
+  },
+  {
+    pregunta: "En el procedimiento de codecisión, si Parlamento y Consejo no llegan a acuerdo tras dos lecturas:",
+    opciones: [
+      "a) La norma se considera rechazada automáticamente",
+      "b) Se convoca un Comité de Conciliación",
+      "c) La Comisión decide unilateralmente",
+      "d) El Parlamento tiene la última palabra"
+    ],
+    correcta: "b) Se convoca un Comité de Conciliación",
+    justificacion: "El comité busca un texto común aceptable para ambas instituciones."
+  },
+  {
+    pregunta: "¿Cuál de las siguientes competencias pertenece en exclusiva a la Unión Europea?",
+    opciones: [
+      "a) Política exterior",
+      "b) Política comercial común",
+      "c) Sanidad pública",
+      "d) Educación"
+    ],
+    correcta: "b) Política comercial común",
+    justificacion: "Las competencias exclusivas incluyen la unión aduanera y la política comercial común."
+  },
+  {
+    pregunta: "La cooperación judicial y policial en materia penal se enmarca en:",
+    opciones: [
+      "a) Las competencias compartidas",
+      "b) Las competencias exclusivas",
+      "c) Las competencias de apoyo",
+      "d) Las competencias complementarias"
+    ],
+    correcta: "a) Las competencias compartidas",
+    justificacion: "En justicia y seguridad, tanto la UE como los Estados pueden legislar, prevaleciendo la normativa europea."
+  },
+  {
+    pregunta: "¿Qué documento tiene el mismo valor jurídico que los tratados desde la entrada en vigor del Tratado de Lisboa?",
+    opciones: [
+      "a) La Carta de los Derechos Fundamentales de la UE",
+      "b) La Declaración Schuman",
+      "c) La Constitución Europea",
+      "d) El Acta Única Europea"
+    ],
+    correcta: "a) La Carta de los Derechos Fundamentales de la UE",
+    justificacion: "Desde 2009, la Carta tiene el mismo valor jurídico que los tratados."
+  },
+  {
+    pregunta: "¿Cuál de las siguientes opciones no es una fuente del Derecho de la Unión Europea?",
+    opciones: [
+      "a) Tratados fundacionales",
+      "b) Jurisprudencia del TJUE",
+      "c) Leyes nacionales de los Estados",
+      "d) Reglamentos"
+    ],
+    correcta: "c) Leyes nacionales de los Estados",
+    justificacion: "El Derecho nacional no forma parte de las fuentes del Derecho europeo."
+  },
+  {
+    pregunta: "Los reglamentos europeos se aplican:",
+    opciones: [
+      "a) Solo a los Estados que los ratifiquen",
+      "b) Directamente y en su totalidad en todos los Estados miembros",
+      "c) Tras su transposición al derecho nacional",
+      "d) Únicamente cuando lo apruebe el Consejo Europeo"
+    ],
+    correcta: "b) Directamente y en su totalidad en todos los Estados miembros",
+    justificacion: "Los reglamentos son de aplicación directa y obligatoria en todos sus elementos."
+  },
+  {
+    pregunta: "Las directivas de la Unión Europea deben ser:",
+    opciones: [
+      "a) Ratificadas por los parlamentos nacionales",
+      "b) Incorporadas al Derecho nacional en un plazo determinado",
+      "c) Aplicadas solo por los Estados fundadores",
+      "d) Aprobadas mediante referéndum europeo"
+    ],
+    correcta: "b) Incorporadas al Derecho nacional en un plazo determinado",
+    justificacion: "Los Estados deben trasponer las directivas conforme a los objetivos fijados por la UE."
+  },
+  {
+    pregunta: "Las decisiones europeas obligan:",
+    opciones: [
+      "a) A todos los Estados miembros por igual",
+      "b) Solo a sus destinatarios específicos",
+      "c) Exclusivamente a los órganos comunitarios",
+      "d) Únicamente a las instituciones nacionales"
+    ],
+    correcta: "b) Solo a sus destinatarios específicos",
+    justificacion: "Las decisiones son obligatorias para los Estados o entidades a los que se dirigen."
+  },
+  {
+    pregunta: "Los acuerdos internacionales firmados por la Unión forman parte del:",
+    opciones: [
+      "a) Derecho derivado",
+      "b) Derecho complementario",
+      "c) Derecho primario",
+      "d) Derecho consuetudinario"
+    ],
+    correcta: "b) Derecho complementario",
+    justificacion: "Los tratados internacionales de la UE son fuentes complementarias de su ordenamiento."
+  },
+  {
+    pregunta: "La libre circulación de personas dentro de la UE incluye:",
+    opciones: [
+      "a) Solo a los trabajadores asalariados",
+      "b) A todos los ciudadanos de la Unión y sus familias",
+      "c) Únicamente a los estudiantes",
+      "d) Solo a nacionales de países del euro"
+    ],
+    correcta: "b) A todos los ciudadanos de la Unión y sus familias",
+    justificacion: "El derecho a circular y residir libremente abarca a todos los ciudadanos europeos."
+  },
+  {
+    pregunta: "El derecho de petición ante el Parlamento Europeo puede ejercerlo:",
+    opciones: [
+      "a) Cualquier ciudadano o residente en la UE",
+      "b) Solo los eurodiputados",
+      "c) Los Estados miembros",
+      "d) La Comisión Europea"
+    ],
+    correcta: "a) Cualquier ciudadano o residente en la UE",
+    justificacion: "El derecho de petición está abierto a toda persona física o jurídica residente en la Unión."
+  },
+  {
+    pregunta: "El derecho a dirigirse a las instituciones europeas en cualquiera de las lenguas oficiales se reconoce a:",
+    opciones: [
+      "a) Los eurodiputados",
+      "b) Los Estados miembros",
+      "c) Los ciudadanos de la Unión",
+      "d) Las instituciones nacionales"
+    ],
+    correcta: "c) Los ciudadanos de la Unión",
+    justificacion: "Todo ciudadano tiene derecho a comunicarse y recibir respuesta en cualquiera de las lenguas oficiales."
+  },
+  {
+    pregunta: "La protección diplomática por parte de otro Estado miembro se concede cuando:",
+    opciones: [
+      "a) El ciudadano está en un país donde su Estado no tiene representación",
+      "b) Se solicita por razones laborales",
+      "c) Se pierde la nacionalidad de origen",
+      "d) Se reside permanentemente fuera de la UE"
+    ],
+    correcta: "a) El ciudadano está en un país donde su Estado no tiene representación",
+    justificacion: "Cualquier ciudadano de la UE puede acudir a la embajada de otro Estado miembro si el suyo no está presente."
+  },
+  {
+    pregunta: "¿Qué tratado introdujo formalmente la figura de la ciudadanía de la Unión?",
+    opciones: [
+      "a) Tratado de Roma",
+      "b) Tratado de Maastricht",
+      "c) Acta Única Europea",
+      "d) Tratado de Niza"
+    ],
+    correcta: "b) Tratado de Maastricht",
+    justificacion: "La ciudadanía de la Unión se estableció con el Tratado de Maastricht en 1992."
+  },
+  {
+    pregunta: "El derecho de libre circulación puede suspenderse:",
+    opciones: [
+      "a) Por razones de orden, seguridad o salud pública",
+      "b) Por motivos económicos",
+      "c) Por decisión unilateral de un Estado miembro",
+      "d) En caso de crisis política interna"
+    ],
+    correcta: "a) Por razones de orden, seguridad o salud pública",
+    justificacion: "Solo esos motivos justifican restricciones al derecho de libre circulación."
+  },
+  {
+    pregunta: "¿Cuántos Estados formaban parte de la Unión Europea tras el Brexit?",
+    opciones: [
+      "a) 26",
+      "b) 27",
+      "c) 28",
+      "d) 25"
+    ],
+    correcta: "b) 27",
+    justificacion: "Con la salida del Reino Unido en 2020, la Unión quedó compuesta por 27 Estados miembros."
+  },
+  {
+    pregunta: "¿Qué fecha conmemora el Día de Europa, en recuerdo de la Declaración Schuman?",
+    opciones: [
+      "a) 1 de enero",
+      "b) 9 de mayo",
+      "c) 25 de marzo",
+      "d) 18 de abril"
+    ],
+    correcta: "b) 9 de mayo",
+    justificacion: "Cada 9 de mayo se celebra el Día de Europa por la Declaración Schuman de 1950."
+  },
+  {
+    pregunta: "El ingreso de Croacia en la Unión Europea tuvo lugar en:",
+    opciones: [
+      "a) 2011",
+      "b) 2013",
+      "c) 2015",
+      "d) 2018"
+    ],
+    correcta: "b) 2013",
+    justificacion: "Croacia se convirtió en el 28º Estado miembro el 1 de julio de 2013."
+  },
+  {
+    pregunta: "España firmó su Tratado de Adhesión a la CEE el:",
+    opciones: [
+      "a) 1 de enero de 1986",
+      "b) 12 de junio de 1985",
+      "c) 25 de marzo de 1985",
+      "d) 31 de diciembre de 1985"
+    ],
+    correcta: "b) 12 de junio de 1985",
+    justificacion: "El Tratado de Adhesión se firmó el 12 de junio de 1985 y entró en vigor el 1 de enero de 1986."
+  },
+  {
+    pregunta: "La pertenencia de España a la Unión Europea ha implicado:",
+    opciones: [
+      "a) Adaptar su legislación al Derecho comunitario",
+      "b) Renunciar a toda soberanía económica",
+      "c) Salir del sistema Schengen",
+      "d) Abandonar el euro"
+    ],
+    correcta: "a) Adaptar su legislación al Derecho comunitario",
+    justificacion: "España ha incorporado el Derecho europeo a su ordenamiento interno desde su adhesión."
+  },
+  {
+    pregunta: "Las Comunidades Autónomas españolas pueden participar en asuntos europeos mediante:",
+    opciones: [
+      "a) Oficinas autonómicas en Bruselas y conferencias sectoriales",
+      "b) Voto directo en el Consejo Europeo",
+      "c) Participación en el Tribunal de Justicia",
+      "d) Delegaciones en la Comisión Europea"
+    ],
+    correcta: "a) Oficinas autonómicas en Bruselas y conferencias sectoriales",
+    justificacion: "Estos mecanismos permiten coordinar políticas autonómicas con las europeas."
+  },
+  {
+    pregunta: "Los fondos de cohesión de la UE se destinan principalmente a:",
+    opciones: [
+      "a) Mejorar la defensa común",
+      "b) Apoyar el desarrollo de regiones menos favorecidas",
+      "c) Financiar las campañas electorales europeas",
+      "d) Pagar el presupuesto de la Comisión"
+    ],
+    correcta: "b) Apoyar el desarrollo de regiones menos favorecidas",
+    justificacion: "El objetivo de estos fondos es promover la cohesión económica, social y territorial."
+  },
+  {
+    pregunta: "¿Qué tratado reforzó el papel del Parlamento Europeo en el proceso legislativo?",
+    opciones: [
+      "a) Acta Única Europea",
+      "b) Tratado de Ámsterdam",
+      "c) Tratado de Niza",
+      "d) Tratado de Roma"
+    ],
+    correcta: "a) Acta Única Europea",
+    justificacion: "La Acta Única Europea amplió las competencias del Parlamento en el proceso legislativo mediante la cooperación."
+  },
+  {
+    pregunta: "La expresión 'efecto directo' en el Derecho de la UE significa que:",
+    opciones: [
+      "a) Las normas europeas pueden ser invocadas directamente por los ciudadanos ante los tribunales nacionales",
+      "b) Solo los Estados pueden aplicar el Derecho de la UE",
+      "c) Las directivas no requieren trasposición",
+      "d) El Parlamento Europeo dicta sentencias vinculantes"
+    ],
+    correcta: "a) Las normas europeas pueden ser invocadas directamente por los ciudadanos ante los tribunales nacionales",
+    justificacion: "El TJUE reconoció el efecto directo de ciertas normas europeas en el caso Van Gend en Loos (1963)."
+  }
+  {
+    pregunta: "¿Qué tratado estableció las bases del actual mercado común europeo?",
+    opciones: [
+      "a) Tratado de París",
+      "b) Tratados de Roma",
+      "c) Acta Única Europea",
+      "d) Tratado de Maastricht"
+    ],
+    correcta: "b) Tratados de Roma",
+    justificacion: "Los Tratados de Roma de 1957 crearon la CEE, cuyo objetivo era un mercado común entre los Estados miembros."
+  },
+  {
+    pregunta: "¿Qué fecha se considera el inicio de la actual Unión Europea al firmarse el Tratado de Maastricht?",
+    opciones: [
+      "a) 7 de febrero de 1992",
+      "b) 12 de junio de 1985",
+      "c) 1 de enero de 1993",
+      "d) 17 de febrero de 1986"
+    ],
+    correcta: "a) 7 de febrero de 1992",
+    justificacion: "El Tratado de Maastricht se firmó el 7 de febrero de 1992 y marcó el nacimiento formal de la Unión Europea."
+  },
+  {
+    pregunta: "¿Qué año entró en vigor el Tratado de Maastricht?",
+    opciones: [
+      "a) 1992",
+      "b) 1993",
+      "c) 1994",
+      "d) 1995"
+    ],
+    correcta: "b) 1993",
+    justificacion: "El Tratado de Maastricht entró en vigor el 1 de noviembre de 1993, tras su ratificación por los Estados miembros."
+  },
+  {
+    pregunta: "¿Qué país fue el primero en abandonar oficialmente la Unión Europea?",
+    opciones: [
+      "a) Grecia",
+      "b) Reino Unido",
+      "c) Noruega",
+      "d) Dinamarca"
+    ],
+    correcta: "b) Reino Unido",
+    justificacion: "El Reino Unido abandonó la UE el 31 de enero de 2020, proceso conocido como Brexit."
+  },
+  {
+    pregunta: "¿Qué tratado adaptó las instituciones europeas para la gran ampliación hacia el Este?",
+    opciones: [
+      "a) Tratado de Niza",
+      "b) Tratado de Lisboa",
+      "c) Tratado de Ámsterdam",
+      "d) Tratado de Maastricht"
+    ],
+    correcta: "a) Tratado de Niza",
+    justificacion: "El Tratado de Niza (2001) modificó el sistema institucional para acoger nuevos miembros."
+  },
+  {
+    pregunta: "¿En qué año se incorporaron Bulgaria y Rumanía a la Unión Europea?",
+    opciones: [
+      "a) 2004",
+      "b) 2006",
+      "c) 2007",
+      "d) 2013"
+    ],
+    correcta: "c) 2007",
+    justificacion: "Bulgaria y Rumanía se convirtieron en miembros de la UE el 1 de enero de 2007."
+  },
+  {
+    pregunta: "¿Qué ampliación fue conocida como la 'Europa de los quince'?",
+    opciones: [
+      "a) 1992",
+      "b) 1995",
+      "c) 1999",
+      "d) 2001"
+    ],
+    correcta: "b) 1995",
+    justificacion: "En 1995 se incorporaron Austria, Suecia y Finlandia, pasando la UE a tener 15 Estados miembros."
+  },
+  {
+    pregunta: "¿Qué institución aprobó la creación del Comité de las Regiones?",
+    opciones: [
+      "a) El Consejo Europeo en 1994",
+      "b) El Parlamento Europeo en 1993",
+      "c) La Comisión Europea en 1992",
+      "d) El Tratado de Roma en 1957"
+    ],
+    correcta: "a) El Consejo Europeo en 1994",
+    justificacion: "El Comité de las Regiones fue creado en 1994 como órgano consultivo representando a regiones y municipios."
+  },
+  {
+    pregunta: "¿Qué país adoptó el euro en 2015, convirtiéndose en el miembro número 19 de la eurozona?",
+    opciones: [
+      "a) Eslovaquia",
+      "b) Lituania",
+      "c) Eslovenia",
+      "d) Letonia"
+    ],
+    correcta: "b) Lituania",
+    justificacion: "Lituania adoptó el euro el 1 de enero de 2015, siendo el último país báltico en incorporarse a la moneda única."
+  },
+  {
+    pregunta: "¿Qué país se convirtió en el vigésimo miembro de la eurozona en 2023?",
+    opciones: [
+      "a) Croacia",
+      "b) Bulgaria",
+      "c) Polonia",
+      "d) Hungría"
+    ],
+    correcta: "a) Croacia",
+    justificacion: "Croacia adoptó el euro el 1 de enero de 2023, convirtiéndose en el miembro número 20 de la eurozona."
+  },
+  {
+    pregunta: "¿Qué tratado estableció por primera vez la cooperación en materia de política exterior y seguridad común?",
+    opciones: [
+      "a) Acta Única Europea",
+      "b) Tratado de Maastricht",
+      "c) Tratado de Lisboa",
+      "d) Tratado de Roma"
+    ],
+    correcta: "b) Tratado de Maastricht",
+    justificacion: "El Tratado de Maastricht introdujo la PESC como segundo pilar de la Unión Europea."
+  },
+  {
+    pregunta: "¿Qué tratado incorporó el Acuerdo de Schengen dentro del marco jurídico de la Unión Europea?",
+    opciones: [
+      "a) Tratado de Niza",
+      "b) Tratado de Ámsterdam",
+      "c) Tratado de Lisboa",
+      "d) Tratado de Roma"
+    ],
+    correcta: "b) Tratado de Ámsterdam",
+    justificacion: "El Tratado de Ámsterdam (1997) integró Schengen en la estructura institucional de la UE."
+  },
+  {
+    pregunta: "¿En qué año se creó el Banco Central Europeo?",
+    opciones: [
+      "a) 1997",
+      "b) 1998",
+      "c) 1999",
+      "d) 2000"
+    ],
+    correcta: "b) 1998",
+    justificacion: "El BCE se estableció en 1998 como parte del proceso de la Unión Económica y Monetaria."
+  },
+  {
+    pregunta: "¿Qué tratado fue firmado el 13 de diciembre de 2007 y entró en vigor en 2009?",
+    opciones: [
+      "a) Tratado de Ámsterdam",
+      "b) Tratado de Niza",
+      "c) Tratado de Lisboa",
+      "d) Acta Única Europea"
+    ],
+    correcta: "c) Tratado de Lisboa",
+    justificacion: "El Tratado de Lisboa fue firmado en 2007 y entró en vigor el 1 de diciembre de 2009."
+  },
+  {
+    pregunta: "La 'Europa de los seis' hace referencia a:",
+    opciones: [
+      "a) Los seis países fundadores de la CECA",
+      "b) Los seis primeros países del euro",
+      "c) Los seis miembros del Consejo Europeo original",
+      "d) Los seis primeros países de la OTAN"
+    ],
+    correcta: "a) Los seis países fundadores de la CECA",
+    justificacion: "Alemania, Francia, Italia, Bélgica, Países Bajos y Luxemburgo fueron los fundadores en 1951."
+  },
+  {
+    pregunta: "El proceso de integración europea se inició formalmente con:",
+    opciones: [
+      "a) La Declaración Schuman",
+      "b) El Plan Marshall",
+      "c) La fundación de la ONU",
+      "d) El Tratado de Versalles"
+    ],
+    correcta: "a) La Declaración Schuman",
+    justificacion: "La Declaración Schuman del 9 de mayo de 1950 es considerada el punto de partida de la integración europea."
+  },
+  {
+    pregunta: "El Tratado de Lisboa reforzó el papel de los parlamentos nacionales al:",
+    opciones: [
+      "a) Permitirles controlar el principio de subsidiariedad",
+      "b) Darles poder legislativo directo en la UE",
+      "c) Autorizarles a vetar decisiones del Consejo Europeo",
+      "d) Incluirlos en la Comisión Europea"
+    ],
+    correcta: "a) Permitirles controlar el principio de subsidiariedad",
+    justificacion: "Los parlamentos nacionales pueden vigilar que la UE no exceda sus competencias."
+  },
+  {
+    pregunta: "¿Qué instrumento de participación ciudadana permite proponer legislación a la Comisión Europea?",
+    opciones: [
+      "a) Iniciativa Ciudadana Europea",
+      "b) Petición parlamentaria",
+      "c) Referéndum europeo",
+      "d) Consulta pública"
+    ],
+    correcta: "a) Iniciativa Ciudadana Europea",
+    justificacion: "La ICE requiere un millón de firmas de al menos siete Estados miembros para solicitar propuestas legislativas."
+  },
+  {
+    pregunta: "El derecho de libre circulación dentro de la UE se introdujo por primera vez con:",
+    opciones: [
+      "a) El Tratado de Roma",
+      "b) El Acta Única Europea",
+      "c) El Tratado de Maastricht",
+      "d) El Tratado de Lisboa"
+    ],
+    correcta: "a) El Tratado de Roma",
+    justificacion: "El Tratado de Roma estableció la libre circulación de trabajadores y servicios dentro de la CEE."
+  },
+  {
+    pregunta: "Los ciudadanos de la UE pueden votar y ser elegidos en las elecciones al Parlamento Europeo en:",
+    opciones: [
+      "a) Su país de nacionalidad únicamente",
+      "b) Cualquier Estado miembro donde residan",
+      "c) Solo en su país de nacimiento",
+      "d) En el país donde trabajen, pero no residan"
+    ],
+    correcta: "b) Cualquier Estado miembro donde residan",
+    justificacion: "La ciudadanía de la UE otorga ese derecho político sin importar la nacionalidad."
+  },
+  {
+    pregunta: "¿Qué organismo fue creado en 1958 para financiar proyectos europeos de desarrollo?",
+    opciones: [
+      "a) Banco Central Europeo",
+      "b) Banco Europeo de Inversiones",
+      "c) Fondo Monetario Europeo",
+      "d) Banco Europeo de Reconstrucción"
+    ],
+    correcta: "b) Banco Europeo de Inversiones",
+    justificacion: "El BEI fue creado en 1958 para promover la cohesión y el desarrollo dentro de la UE."
+  },
+  {
+    pregunta: "La entrada de España en la CEE supuso, entre otras cosas:",
+    opciones: [
+      "a) La eliminación de aranceles con otros Estados miembros",
+      "b) La salida del sistema monetario europeo",
+      "c) La imposibilidad de participar en el Parlamento Europeo",
+      "d) La adopción inmediata del euro"
+    ],
+    correcta: "a) La eliminación de aranceles con otros Estados miembros",
+    justificacion: "España se integró plenamente en el mercado común eliminando barreras comerciales."
+  },
+  {
+    pregunta: "El Derecho complementario de la UE incluye:",
+    opciones: [
+      "a) Las leyes nacionales",
+      "b) Los acuerdos internacionales firmados por la Unión",
+      "c) Solo los reglamentos del Parlamento Europeo",
+      "d) Las decisiones judiciales nacionales"
+    ],
+    correcta: "b) Los acuerdos internacionales firmados por la Unión",
+    justificacion: "Estos acuerdos son parte del Derecho complementario de la UE junto con los principios generales."
+  },
+  {
+    pregunta: "El efecto directo del Derecho de la UE significa que:",
+    opciones: [
+      "a) Las normas europeas pueden invocarse ante tribunales nacionales",
+      "b) Solo los Estados pueden hacerlas cumplir",
+      "c) Las directivas no son vinculantes",
+      "d) Los reglamentos necesitan aprobación estatal"
+    ],
+    correcta: "a) Las normas europeas pueden invocarse ante tribunales nacionales",
+    justificacion: "El principio de efecto directo fue reconocido por el TJUE en 1963."
+  },
+  {
+    pregunta: "El principio de primacía del Derecho de la UE fue reconocido inicialmente por:",
+    opciones: [
+      "a) El Tratado de Lisboa",
+      "b) La jurisprudencia del TJUE",
+      "c) El Parlamento Europeo",
+      "d) El Consejo Europeo"
+    ],
+    correcta: "b) La jurisprudencia del TJUE",
+    justificacion: "Aunque no aparece expresamente en los tratados, la primacía fue declarada por el TJUE."
+  },
+  {
+    pregunta: "¿Qué ampliación permitió la entrada de España y Portugal en la Comunidad Económica Europea?",
+    opciones: [
+      "a) 1981",
+      "b) 1986",
+      "c) 1990",
+      "d) 1989"
+    ],
+    correcta: "b) 1986",
+    justificacion: "Ambos países ingresaron el 1 de enero de 1986."
+  },
+  {
+    pregunta: "¿Qué tratado estableció el concepto de 'espacio de libertad, seguridad y justicia'?",
+    opciones: [
+      "a) Tratado de Ámsterdam",
+      "b) Tratado de Niza",
+      "c) Tratado de Maastricht",
+      "d) Tratado de Roma"
+    ],
+    correcta: "a) Tratado de Ámsterdam",
+    justificacion: "El Tratado de Ámsterdam creó ese espacio común dentro de la UE para cooperación judicial y policial."
+  },
+  {
+    pregunta: "El procedimiento de aprobación se utiliza, entre otras materias, para:",
+    opciones: [
+      "a) La adhesión de nuevos Estados a la UE",
+      "b) La aprobación de reglamentos",
+      "c) Las leyes de presupuestos nacionales",
+      "d) Los actos delegados"
+    ],
+    correcta: "a) La adhesión de nuevos Estados a la UE",
+    justificacion: "El Parlamento debe dar su consentimiento sin posibilidad de modificar el texto."
+  },
+  {
+    pregunta: "¿Qué tratado reforzó la cooperación en asuntos de justicia e interior?",
+    opciones: [
+      "a) Tratado de Maastricht",
+      "b) Tratado de Ámsterdam",
+      "c) Tratado de Lisboa",
+      "d) Acta Única Europea"
+    ],
+    correcta: "b) Tratado de Ámsterdam",
+    justificacion: "En 1997 se reforzó la cooperación judicial y policial, integrando Schengen en la UE."
+  },
+  {
+    pregunta: "¿Qué fecha marca la creación del euro como moneda única de uso efectivo?",
+    opciones: [
+      "a) 1 de enero de 1999",
+      "b) 1 de enero de 2000",
+      "c) 1 de enero de 2002",
+      "d) 1 de enero de 2003"
+    ],
+    correcta: "c) 1 de enero de 2002",
+    justificacion: "El euro comenzó a circular como moneda física el 1 de enero de 2002."
+  },
+  {
+    pregunta: "¿Qué documento estableció el objetivo de crear un mercado interior europeo antes de 1993?",
+    opciones: [
+      "a) Acta Única Europea",
+      "b) Tratado de Roma",
+      "c) Tratado de Maastricht",
+      "d) Tratado de Niza"
+    ],
+    correcta: "a) Acta Única Europea",
+    justificacion: "La Acta Única Europea de 1986 fijó como meta la realización del mercado interior antes de 1993."
+  }
+  {
+    pregunta: "¿Qué objetivo fundamental persigue la Unión Europea según los tratados?",
+    opciones: [
+      "a) Garantizar la defensa común",
+      "b) Promover la paz, el bienestar y los valores de la Unión",
+      "c) Crear un único Estado europeo",
+      "d) Sustituir las legislaciones nacionales"
+    ],
+    correcta: "b) Promover la paz, el bienestar y los valores de la Unión",
+    justificacion: "El artículo 3 del TUE establece que el fin de la UE es promover la paz, sus valores y el bienestar de sus pueblos."
+  },
+  {
+    pregunta: "El lema oficial de la Unión Europea es:",
+    opciones: [
+      "a) Unión en la diversidad",
+      "b) Libertad, igualdad y justicia",
+      "c) Unidos por Europa",
+      "d) Paz y progreso"
+    ],
+    correcta: "a) Unión en la diversidad",
+    justificacion: "El lema refleja la unidad europea respetando las diferencias culturales y nacionales."
+  },
+  {
+    pregunta: "El himno oficial de la Unión Europea es:",
+    opciones: [
+      "a) La Marsellesa",
+      "b) La Oda a la Alegría",
+      "c) Himno de Europa",
+      "d) Himno de la Paz"
+    ],
+    correcta: "b) La Oda a la Alegría",
+    justificacion: "La melodía de Beethoven fue adoptada como himno europeo en 1985 por el Consejo Europeo."
+  },
+  {
+    pregunta: "La bandera de la Unión Europea fue adoptada oficialmente en:",
+    opciones: [
+      "a) 1950",
+      "b) 1955",
+      "c) 1985",
+      "d) 1992"
+    ],
+    correcta: "b) 1955",
+    justificacion: "El Consejo de Europa adoptó la bandera azul con doce estrellas doradas en 1955; más tarde fue asumida por la Comunidad Europea."
+  },
+  {
+    pregunta: "El Tratado de Lisboa definió por primera vez de forma clara:",
+    opciones: [
+      "a) Los tipos de competencias de la Unión",
+      "b) El sistema monetario único",
+      "c) El derecho de veto permanente",
+      "d) La creación del Consejo de Europa"
+    ],
+    correcta: "a) Los tipos de competencias de la Unión",
+    justificacion: "Lisboa clasificó las competencias en exclusivas, compartidas y de apoyo."
+  },
+  {
+    pregunta: "Las competencias exclusivas de la Unión Europea incluyen:",
+    opciones: [
+      "a) Política exterior y defensa",
+      "b) Unión aduanera y política comercial común",
+      "c) Educación y cultura",
+      "d) Sanidad pública"
+    ],
+    correcta: "b) Unión aduanera y política comercial común",
+    justificacion: "Estas materias son competencia exclusiva de la UE según el TUE."
+  },
+  {
+    pregunta: "Las competencias de apoyo permiten a la UE:",
+    opciones: [
+      "a) Sustituir la acción de los Estados miembros",
+      "b) Coordinar o complementar la acción nacional",
+      "c) Imponer normas obligatorias uniformes",
+      "d) Asumir competencias nacionales"
+    ],
+    correcta: "b) Coordinar o complementar la acción nacional",
+    justificacion: "En estas áreas, la UE solo puede apoyar, no sustituir, la acción de los Estados."
+  },
+  {
+    pregunta: "En materia de educación y cultura, la Unión Europea tiene:",
+    opciones: [
+      "a) Competencia exclusiva",
+      "b) Competencia compartida",
+      "c) Competencia de apoyo",
+      "d) Ninguna competencia"
+    ],
+    correcta: "c) Competencia de apoyo",
+    justificacion: "En educación y cultura, la UE puede fomentar la cooperación, pero no legislar."
+  },
+  {
+    pregunta: "Las normas europeas obligatorias que requieren transposición son:",
+    opciones: [
+      "a) Reglamentos",
+      "b) Directivas",
+      "c) Decisiones",
+      "d) Dictámenes"
+    ],
+    correcta: "b) Directivas",
+    justificacion: "Las directivas fijan objetivos que los Estados deben incorporar a su legislación."
+  },
+  {
+    pregunta: "¿Cuál de los siguientes actos de la Unión no es jurídicamente vinculante?",
+    opciones: [
+      "a) Reglamento",
+      "b) Directiva",
+      "c) Decisión",
+      "d) Recomendación"
+    ],
+    correcta: "d) Recomendación",
+    justificacion: "Las recomendaciones forman parte del Derecho no vinculante o 'soft law'."
+  },
+  {
+    pregunta: "Los acuerdos internacionales de la UE con terceros países se firman:",
+    opciones: [
+      "a) Por el Consejo, previa aprobación del Parlamento",
+      "b) Solo por la Comisión Europea",
+      "c) Por el Tribunal de Justicia",
+      "d) Por los Estados miembros individualmente"
+    ],
+    correcta: "a) Por el Consejo, previa aprobación del Parlamento",
+    justificacion: "Los tratados internacionales se firman en nombre de la Unión con participación del Parlamento Europeo."
+  },
+  {
+    pregunta: "Los principios generales del Derecho de la UE, como la proporcionalidad o la seguridad jurídica, provienen de:",
+    opciones: [
+      "a) Los tratados fundacionales",
+      "b) La jurisprudencia del TJUE",
+      "c) El Consejo de Europa",
+      "d) La Comisión Europea"
+    ],
+    correcta: "b) La jurisprudencia del TJUE",
+    justificacion: "El Tribunal de Justicia desarrolló estos principios como parte del Derecho complementario."
+  },
+  {
+    pregunta: "El principio de subsidiariedad pretende garantizar que:",
+    opciones: [
+      "a) La UE actúe solo cuando la acción estatal sea insuficiente",
+      "b) La UE tenga prioridad sobre los Estados en todas las materias",
+      "c) Las decisiones sean siempre centralizadas",
+      "d) Los parlamentos nacionales no intervengan"
+    ],
+    correcta: "a) La UE actúe solo cuando la acción estatal sea insuficiente",
+    justificacion: "Este principio limita la actuación de la UE en competencias compartidas."
+  },
+  {
+    pregunta: "El principio de cooperación leal obliga a los Estados a:",
+    opciones: [
+      "a) Cumplir y facilitar el cumplimiento del Derecho de la Unión",
+      "b) Anteponer su legislación nacional",
+      "c) Oponerse a la ejecución de sentencias del TJUE",
+      "d) Controlar las decisiones del Consejo Europeo"
+    ],
+    correcta: "a) Cumplir y facilitar el cumplimiento del Derecho de la Unión",
+    justificacion: "Los Estados deben colaborar activamente para aplicar el Derecho de la UE."
+  },
+  {
+    pregunta: "El Derecho primario de la Unión Europea está compuesto por:",
+    opciones: [
+      "a) Reglamentos y directivas",
+      "b) Tratados y sus protocolos",
+      "c) Jurisprudencia del TJUE",
+      "d) Normas nacionales adaptadas"
+    ],
+    correcta: "b) Tratados y sus protocolos",
+    justificacion: "El Derecho primario es la base jurídica y constitucional de la UE."
+  },
+  {
+    pregunta: "El Tribunal de Justicia de la Unión Europea garantiza:",
+    opciones: [
+      "a) El cumplimiento uniforme del Derecho de la UE",
+      "b) La soberanía legislativa de los Estados",
+      "c) La ejecución de leyes nacionales",
+      "d) El control presupuestario de la UE"
+    ],
+    correcta: "a) El cumplimiento uniforme del Derecho de la UE",
+    justificacion: "El TJUE asegura la correcta interpretación y aplicación del Derecho europeo."
+  },
+  {
+    pregunta: "El Parlamento Europeo participa en el proceso legislativo mediante:",
+    opciones: [
+      "a) El procedimiento de codecisión u ordinario",
+      "b) La aprobación de reglamentos nacionales",
+      "c) La ratificación de tratados de adhesión",
+      "d) El nombramiento de jueces del TJUE"
+    ],
+    correcta: "a) El procedimiento de codecisión u ordinario",
+    justificacion: "En el procedimiento legislativo ordinario, Parlamento y Consejo son colegisladores."
+  },
+  {
+    pregunta: "En el procedimiento legislativo especial, la iniciativa puede corresponder a:",
+    opciones: [
+      "a) La Comisión o un Estado miembro",
+      "b) Solo al Parlamento Europeo",
+      "c) El Banco Central Europeo",
+      "d) Los tribunales nacionales"
+    ],
+    correcta: "a) La Comisión o un Estado miembro",
+    justificacion: "El procedimiento especial puede iniciarse por la Comisión o, en algunos casos, por los Estados miembros."
+  },
+  {
+    pregunta: "¿Qué ocurre si un Estado miembro no transpone correctamente una directiva europea?",
+    opciones: [
+      "a) Se le impone una sanción por el TJUE",
+      "b) Se anula automáticamente la directiva",
+      "c) El Parlamento asume su competencia",
+      "d) El acto se convierte en no vinculante"
+    ],
+    correcta: "a) Se le impone una sanción por el TJUE",
+    justificacion: "La Comisión puede denunciar al Estado ante el TJUE por incumplimiento."
+  },
+  {
+    pregunta: "El presupuesto anual de la Unión Europea se aprueba por:",
+    opciones: [
+      "a) Parlamento Europeo y Consejo",
+      "b) Consejo Europeo exclusivamente",
+      "c) Comisión Europea",
+      "d) Tribunal de Cuentas"
+    ],
+    correcta: "a) Parlamento Europeo y Consejo",
+    justificacion: "Ambos órganos aprueban conjuntamente el presupuesto anual de la Unión."
+  },
+  {
+    pregunta: "Los recursos financieros de la UE provienen principalmente de:",
+    opciones: [
+      "a) Contribuciones de los Estados miembros",
+      "b) Impuestos europeos directos",
+      "c) Fondos privados de inversión",
+      "d) Aportaciones voluntarias"
+    ],
+    correcta: "a) Contribuciones de los Estados miembros",
+    justificacion: "El presupuesto se nutre principalmente de aportaciones nacionales y recursos propios como el IVA o derechos de aduana."
+  },
+  {
+    pregunta: "¿Cuál de las siguientes políticas no es una competencia exclusiva de la UE?",
+    opciones: [
+      "a) Unión aduanera",
+      "b) Política agrícola común",
+      "c) Política comercial común",
+      "d) Política de competencia"
+    ],
+    correcta: "b) Política agrícola común",
+    justificacion: "La política agrícola es competencia compartida, no exclusiva."
+  },
+  {
+    pregunta: "El principio de proporcionalidad asegura que:",
+    opciones: [
+      "a) La UE solo adopte medidas necesarias para lograr sus objetivos",
+      "b) Todos los Estados voten por igual en el Consejo",
+      "c) El TJUE decida las competencias nacionales",
+      "d) El Parlamento apruebe todas las leyes nacionales"
+    ],
+    correcta: "a) La UE solo adopte medidas necesarias para lograr sus objetivos",
+    justificacion: "Evita que la acción de la Unión exceda lo necesario para cumplir los fines de los Tratados."
+  },
+  {
+    pregunta: "¿Qué documento sustituyó al fallido proyecto de Constitución Europea?",
+    opciones: [
+      "a) El Tratado de Lisboa",
+      "b) El Tratado de Niza",
+      "c) El Tratado de Ámsterdam",
+      "d) El Acta Única Europea"
+    ],
+    correcta: "a) El Tratado de Lisboa",
+    justificacion: "El Tratado de Lisboa (2007) asumió la mayor parte del contenido de la fallida Constitución Europea."
+  },
+  {
+    pregunta: "El 'acervo comunitario' se refiere a:",
+    opciones: [
+      "a) El conjunto del Derecho, principios y políticas de la UE",
+      "b) Las competencias nacionales de los Estados miembros",
+      "c) Los acuerdos con países terceros",
+      "d) La jurisprudencia nacional"
+    ],
+    correcta: "a) El conjunto del Derecho, principios y políticas de la UE",
+    justificacion: "El acervo es el patrimonio jurídico y político común que deben aceptar los nuevos Estados que se adhieren."
+  },
+  {
+    pregunta: "El procedimiento de consulta se emplea en materias como:",
+    opciones: [
+      "a) La fiscalidad y la competencia",
+      "b) La ampliación de la Unión",
+      "c) La política exterior y defensa",
+      "d) La aprobación del presupuesto"
+    ],
+    correcta: "a) La fiscalidad y la competencia",
+    justificacion: "En estas materias, el Parlamento emite un dictamen no vinculante."
+  },
+  {
+    pregunta: "El derecho a circular y residir libremente puede limitarse:",
+    opciones: [
+      "a) Por razones de orden público o seguridad pública",
+      "b) Por motivos políticos o culturales",
+      "c) Por exigencias fiscales",
+      "d) Por edad o profesión"
+    ],
+    correcta: "a) Por razones de orden público o seguridad pública",
+    justificacion: "Solo motivos de orden, seguridad o salud pública pueden restringir este derecho."
+  },
+  {
+    pregunta: "España participa en la elaboración del Derecho europeo a través de:",
+    opciones: [
+      "a) El Consejo de la Unión y el Comité de Representantes Permanentes",
+      "b) Solo el Parlamento Europeo",
+      "c) El Tribunal de Justicia",
+      "d) Los parlamentos autonómicos"
+    ],
+    correcta: "a) El Consejo de la Unión y el Comité de Representantes Permanentes",
+    justificacion: "España interviene mediante sus representantes en estos órganos durante la negociación legislativa."
+  },
+  {
+    pregunta: "Las regiones españolas pueden intervenir en asuntos europeos mediante:",
+    opciones: [
+      "a) Conferencias sectoriales y oficinas de representación en Bruselas",
+      "b) Sedes parlamentarias conjuntas",
+      "c) Órganos de defensa comunes",
+      "d) Delegaciones judiciales"
+    ],
+    correcta: "a) Conferencias sectoriales y oficinas de representación en Bruselas",
+    justificacion: "Las comunidades autónomas tienen mecanismos de participación y coordinación en materia europea."
+  }
+  {
+    pregunta: "¿Cuál fue la primera política común establecida por la Comunidad Económica Europea?",
+    opciones: [
+      "a) Política Agrícola Común (PAC)",
+      "b) Política de Transporte",
+      "c) Política Exterior y de Seguridad Común",
+      "d) Política de Cohesión"
+    ],
+    correcta: "a) Política Agrícola Común (PAC)",
+    justificacion: "La PAC fue la primera política común, iniciada en 1962 para garantizar la autosuficiencia alimentaria y estabilidad de precios."
+  },
+  {
+    pregunta: "La Política Agrícola Común tiene como objetivo principal:",
+    opciones: [
+      "a) Estimular la competencia entre agricultores",
+      "b) Asegurar un nivel de vida equitativo a la población agrícola",
+      "c) Reducir las ayudas al campo europeo",
+      "d) Centralizar la producción alimentaria"
+    ],
+    correcta: "b) Asegurar un nivel de vida equitativo a la población agrícola",
+    justificacion: "La PAC busca estabilidad de ingresos agrícolas y abastecimiento regular de alimentos a precios razonables."
+  },
+  {
+    pregunta: "La Política Pesquera Común (PPC) se ocupa de:",
+    opciones: [
+      "a) Controlar las aguas territoriales exclusivamente nacionales",
+      "b) Gestionar sosteniblemente los recursos marinos europeos",
+      "c) Crear una armada de pesca común",
+      "d) Administrar los puertos europeos"
+    ],
+    correcta: "b) Gestionar sosteniblemente los recursos marinos europeos",
+    justificacion: "La PPC regula la explotación pesquera y protege el medio marino de los Estados miembros."
+  },
+  {
+    pregunta: "¿Qué principio rige la competencia en el mercado interior europeo?",
+    opciones: [
+      "a) Libre competencia y prohibición de ayudas de Estado injustificadas",
+      "b) Protección de monopolios nacionales",
+      "c) Subsidios ilimitados al sector público",
+      "d) Libre circulación sin regulación"
+    ],
+    correcta: "a) Libre competencia y prohibición de ayudas de Estado injustificadas",
+    justificacion: "El Derecho de la competencia garantiza igualdad de condiciones dentro del mercado interior."
+  },
+  {
+    pregunta: "La Política de Cohesión Económica y Social tiene como objetivo:",
+    opciones: [
+      "a) Reducir las desigualdades entre las regiones europeas",
+      "b) Unificar los sistemas educativos",
+      "c) Favorecer la migración intraeuropea",
+      "d) Establecer un ejército común"
+    ],
+    correcta: "a) Reducir las desigualdades entre las regiones europeas",
+    justificacion: "Los fondos de cohesión buscan equilibrar el desarrollo económico y territorial."
+  },
+  {
+    pregunta: "El Fondo Social Europeo (FSE) financia principalmente:",
+    opciones: [
+      "a) Programas de empleo y formación",
+      "b) Construcción de infraestructuras",
+      "c) Subvenciones agrícolas",
+      "d) Proyectos de defensa"
+    ],
+    correcta: "a) Programas de empleo y formación",
+    justificacion: "El FSE apoya la empleabilidad, formación profesional y la inclusión social en la UE."
+  },
+  {
+    pregunta: "El principio del 'mutuo reconocimiento' en el mercado interior implica que:",
+    opciones: [
+      "a) Un producto legal en un Estado miembro puede venderse en otro sin restricciones adicionales",
+      "b) Cada país puede imponer sus normas sin coordinación",
+      "c) Se eliminan todos los controles fronterizos internos",
+      "d) Los Estados deben homologar los productos extranjeros"
+    ],
+    correcta: "a) Un producto legal en un Estado miembro puede venderse en otro sin restricciones adicionales",
+    justificacion: "Este principio garantiza la libre circulación de mercancías dentro del mercado interior."
+  },
+  {
+    pregunta: "El Espacio Económico Europeo (EEE) incluye a:",
+    opciones: [
+      "a) Los 27 Estados de la UE y algunos países de la AELC como Noruega e Islandia",
+      "b) Solo los países del euro",
+      "c) Los Estados candidatos a la adhesión",
+      "d) Países del Mediterráneo asociados"
+    ],
+    correcta: "a) Los 27 Estados de la UE y algunos países de la AELC como Noruega e Islandia",
+    justificacion: "El EEE permite a países no miembros participar en el mercado interior bajo ciertas condiciones."
+  },
+  {
+    pregunta: "Los actos delegados son:",
+    opciones: [
+      "a) Normas de desarrollo dictadas por la Comisión bajo delegación legislativa",
+      "b) Reglamentos de aplicación inmediata sin control",
+      "c) Actos judiciales del TJUE",
+      "d) Directrices internas del Consejo"
+    ],
+    correcta: "a) Normas de desarrollo dictadas por la Comisión bajo delegación legislativa",
+    justificacion: "Los actos delegados permiten a la Comisión completar o modificar aspectos no esenciales de una norma legislativa."
+  },
+  {
+    pregunta: "Los actos de ejecución tienen como finalidad:",
+    opciones: [
+      "a) Asegurar la aplicación uniforme de los actos jurídicos de la Unión",
+      "b) Sustituir las leyes nacionales",
+      "c) Reformar los tratados fundacionales",
+      "d) Establecer políticas comunes nuevas"
+    ],
+    correcta: "a) Asegurar la aplicación uniforme de los actos jurídicos de la Unión",
+    justificacion: "La Comisión o el Consejo los aprueban para garantizar una ejecución homogénea del Derecho de la UE."
+  },
+  {
+    pregunta: "La cooperación reforzada permite:",
+    opciones: [
+      "a) Que algunos Estados avancen en una materia concreta sin participación de todos",
+      "b) La creación de nuevos tratados fuera de la UE",
+      "c) Rechazar normas europeas comunes",
+      "d) Salir temporalmente de la Unión"
+    ],
+    correcta: "a) Que algunos Estados avancen en una materia concreta sin participación de todos",
+    justificacion: "Este mecanismo posibilita integrar progresivamente a los Estados que deseen avanzar más deprisa."
+  },
+  {
+    pregunta: "El principio de solidaridad entre los Estados miembros significa que:",
+    opciones: [
+      "a) Los Estados deben ayudarse mutuamente ante crisis comunes",
+      "b) Cada Estado actúa de forma independiente",
+      "c) La UE no puede intervenir en políticas internas",
+      "d) Solo aplica en política exterior"
+    ],
+    correcta: "a) Los Estados deben ayudarse mutuamente ante crisis comunes",
+    justificacion: "El principio de solidaridad guía la acción conjunta frente a catástrofes, emergencias o amenazas externas."
+  },
+  {
+    pregunta: "La política medioambiental de la Unión Europea se basa en el principio de:",
+    opciones: [
+      "a) Prevención y 'quien contamina paga'",
+      "b) Reactividad y compensación posterior",
+      "c) Libre explotación de recursos",
+      "d) Subvenciones sin control"
+    ],
+    correcta: "a) Prevención y 'quien contamina paga'",
+    justificacion: "Estos principios garantizan la sostenibilidad ambiental en la legislación europea."
+  },
+  {
+    pregunta: "¿Qué país mantiene un 'opt-out' (exención) en materia de participación en el euro?",
+    opciones: [
+      "a) Dinamarca",
+      "b) Irlanda",
+      "c) Finlandia",
+      "d) Países Bajos"
+    ],
+    correcta: "a) Dinamarca",
+    justificacion: "Dinamarca decidió no adoptar el euro y conserva una cláusula de exención permanente."
+  },
+  {
+    pregunta: "¿Qué país tiene actualmente estatus de candidato oficial para ingresar en la UE?",
+    opciones: [
+      "a) Ucrania",
+      "b) Suiza",
+      "c) Noruega",
+      "d) Islandia"
+    ],
+    correcta: "a) Ucrania",
+    justificacion: "Ucrania obtuvo el estatus de país candidato en junio de 2022."
+  },
+  {
+    pregunta: "El procedimiento de adhesión a la UE comienza con:",
+    opciones: [
+      "a) Una solicitud dirigida al Consejo Europeo",
+      "b) Un referéndum nacional",
+      "c) La aprobación de la Comisión sin consulta",
+      "d) Una negociación bilateral con el Parlamento Europeo"
+    ],
+    correcta: "a) Una solicitud dirigida al Consejo Europeo",
+    justificacion: "El proceso se inicia formalmente con la solicitud del Estado al Consejo Europeo."
+  },
+  {
+    pregunta: "Durante el proceso de adhesión, el país candidato debe:",
+    opciones: [
+      "a) Adoptar el acervo comunitario",
+      "b) Redactar su propio tratado de integración",
+      "c) Modificar su constitución a discreción",
+      "d) Ser aceptado por mayoría simple de los Estados miembros"
+    ],
+    correcta: "a) Adoptar el acervo comunitario",
+    justificacion: "El Estado candidato debe aceptar íntegramente el Derecho y las políticas de la UE."
+  },
+  {
+    pregunta: "El Mecanismo de Cooperación Estructurada Permanente (PESCO) se relaciona con:",
+    opciones: [
+      "a) La defensa y seguridad común europea",
+      "b) La política monetaria única",
+      "c) La política agrícola común",
+      "d) La política medioambiental"
+    ],
+    correcta: "a) La defensa y seguridad común europea",
+    justificacion: "PESCO busca mejorar la cooperación en defensa entre los Estados miembros participantes."
+  },
+  {
+    pregunta: "El Tribunal de Cuentas Europeo tiene como misión:",
+    opciones: [
+      "a) Controlar la correcta utilización de los fondos de la UE",
+      "b) Juzgar los delitos financieros",
+      "c) Aprobar los presupuestos nacionales",
+      "d) Recaudar impuestos europeos"
+    ],
+    correcta: "a) Controlar la correcta utilización de los fondos de la UE",
+    justificacion: "Fiscaliza la gestión económica de la Unión para garantizar transparencia y legalidad."
+  },
+  {
+    pregunta: "El Banco Central Europeo tiene su sede en:",
+    opciones: [
+      "a) Luxemburgo",
+      "b) Bruselas",
+      "c) Fráncfort",
+      "d) Estrasburgo"
+    ],
+    correcta: "c) Fráncfort",
+    justificacion: "El BCE tiene su sede en Fráncfort del Meno, Alemania."
+  },
+  {
+    pregunta: "¿Qué país fue el primero en realizar un referéndum favorable a ingresar en la Comunidad Económica Europea?",
+    opciones: [
+      "a) Irlanda",
+      "b) Grecia",
+      "c) España",
+      "d) Dinamarca"
+    ],
+    correcta: "d) Dinamarca",
+    justificacion: "Dinamarca aprobó su ingreso mediante referéndum en 1972, antes de la ampliación de 1973."
+  },
+  {
+    pregunta: "El Tratado de Fusión de 1965 tuvo como efecto:",
+    opciones: [
+      "a) Unificar las instituciones de las tres Comunidades Europeas",
+      "b) Crear la política exterior común",
+      "c) Suprimir la CECA",
+      "d) Establecer el euro"
+    ],
+    correcta: "a) Unificar las instituciones de las tres Comunidades Europeas",
+    justificacion: "Entró en vigor en 1967, fusionando los órganos ejecutivos de la CECA, CEE y Euratom."
+  },
+  {
+    pregunta: "El procedimiento de cooperación legislativa fue introducido por:",
+    opciones: [
+      "a) Acta Única Europea",
+      "b) Tratado de Maastricht",
+      "c) Tratado de Lisboa",
+      "d) Tratado de Roma"
+    ],
+    correcta: "a) Acta Única Europea",
+    justificacion: "La Acta Única Europea (1986) introdujo este procedimiento, ampliando el papel del Parlamento Europeo."
+  },
+  {
+    pregunta: "La libre circulación de capitales implica:",
+    opciones: [
+      "a) Transferencias financieras sin restricciones entre Estados miembros",
+      "b) Solo el movimiento de dinero en efectivo",
+      "c) Restricciones por control bancario nacional",
+      "d) Exclusión de inversiones extranjeras"
+    ],
+    correcta: "a) Transferencias financieras sin restricciones entre Estados miembros",
+    justificacion: "Permite el libre movimiento de capitales y pagos dentro y fuera de la UE."
+  },
+  {
+    pregunta: "El Programa Erasmus fue creado con el objetivo de:",
+    opciones: [
+      "a) Fomentar la movilidad de estudiantes universitarios europeos",
+      "b) Unificar los sistemas educativos nacionales",
+      "c) Financiación exclusiva de universidades privadas",
+      "d) Atraer estudiantes extracomunitarios"
+    ],
+    correcta: "a) Fomentar la movilidad de estudiantes universitarios europeos",
+    justificacion: "Creado en 1987, el programa Erasmus promueve el intercambio académico y la cooperación educativa."
+  },
+  {
+    pregunta: "¿Qué Estado tiene el euro como moneda sin ser miembro de la Unión Europea?",
+    opciones: [
+      "a) Andorra",
+      "b) Suecia",
+      "c) Dinamarca",
+      "d) Polonia"
+    ],
+    correcta: "a) Andorra",
+    justificacion: "Andorra, Mónaco, San Marino y el Vaticano usan el euro mediante acuerdos monetarios con la UE."
+  },
+  {
+    pregunta: "¿Qué valor jurídico tiene la Carta de los Derechos Fundamentales de la Unión Europea?",
+    opciones: [
+      "a) El mismo que los tratados fundacionales",
+      "b) Carácter meramente declarativo",
+      "c) Valor inferior a las directivas",
+      "d) Valor simbólico sin efectos jurídicos"
+    ],
+    correcta: "a) El mismo que los tratados fundacionales",
+    justificacion: "Con el Tratado de Lisboa (2009), la Carta adquirió valor jurídico vinculante igual a los tratados."
+  }
 ];
 
 let totalPreguntasRenderizadas = 0;
