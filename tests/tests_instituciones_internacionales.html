@@ -1,1 +1,2593 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test de Constitucional</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --card: #ffffff;
+      --text: #111827;
+      --muted: #6b7280;
+      --primary: #2563eb;
+      --primary-dark: #1e40af;
+      --success: #059669;
+      --danger: #dc2626;
+      --ring: rgba(37, 99, 235, 0.25);
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: 'Roboto', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      padding: 24px;
+    }
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+    header.hero {
+      text-align: center;
+      margin-bottom: 16px;
+    }
+    .title {
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--primary-dark);
+      margin: 0 0 8px;
+    }
+    .subtitle {
+      color: var(--muted);
+      margin: 0;
+    }
+    .controls {
+      background: var(--card);
+      border-radius: 14px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.06);
+      padding: 16px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      justify-content: center;
+      position: sticky;
+      top: 12px;
+      z-index: 5;
+    }
+    .controls label { font-weight: 500; }
+    select {
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid #e5e7eb;
+      background: #fff;
+      outline: none;
+      transition: box-shadow .2s, border-color .2s;
+    }
+    select:focus { border-color: var(--primary); box-shadow: 0 0 0 4px var(--ring); }
 
+    .btn {
+      cursor: pointer;
+      border: none;
+      border-radius: 10px;
+      padding: 12px 18px;
+      font-weight: 700;
+      transition: transform .15s, background .2s, box-shadow .2s;
+      color: #fff;
+      background: var(--primary);
+      box-shadow: 0 6px 14px rgba(37,99,235,.2);
+    }
+    .btn:hover { transform: translateY(-1px); background: var(--primary-dark); }
+    .btn.secondary { background: #6b7280; }
+    .btn.secondary:hover { background: #374151; }
+    .btn.success { background: var(--success); }
+    .btn.success:hover { background: #047857; }
+    .btn.danger { background: var(--danger); }
+    .btn.danger:hover { background: #b91c1c; }
+
+    .progress {
+      width: 100%;
+      height: 10px;
+      background: #e5e7eb;
+      border-radius: 999px;
+      overflow: hidden;
+      margin-top: 8px;
+    }
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--primary), #60a5fa);
+      transition: width .3s ease;
+    }
+
+    .question {
+      margin: 14px 0;
+      padding: 18px;
+      background: var(--card);
+      border-radius: 14px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.06);
+    }
+    .q-head {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+    }
+    .q-num {
+      font-weight: 800;
+      color: var(--primary-dark);
+    }
+    .q-text { margin: 0; }
+
+    .options { margin-top: 10px; display: grid; gap: 8px; }
+    .option {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid #e5e7eb;
+      background: #fff;
+      transition: background .15s, border-color .15s, box-shadow .15s;
+      cursor: pointer;
+    }
+    .option input { transform: scale(1.2); }
+    .option:hover { background: #f9fafb; border-color: #d1d5db; }
+    .option.is-selected { box-shadow: 0 0 0 4px var(--ring); border-color: var(--primary); }
+
+    .justification {
+      margin-top: 10px; color: var(--muted);
+    }
+    .correct { color: var(--success); font-weight: 700; }
+    .incorrect { color: var(--danger); font-weight: 700; }
+
+    .option.correct-option {
+      border-color: rgba(5,150,105,.4);
+      background: #ecfdf5;
+    }
+    .option.wrong-option {
+      border-color: rgba(220,38,38,.4);
+      background: #fef2f2;
+    }
+
+    .result-card {
+      margin: 18px 0;
+      padding: 16px;
+      background: var(--card);
+      border-radius: 14px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.06);
+      text-align: center;
+    }
+    .score {
+      font-size: 22px;
+      font-weight: 800;
+      margin: 8px 0;
+    }
+    .muted { color: var(--muted); }
+    footer { text-align: center; margin-top: 24px; color: var(--muted); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="hero">
+      <h1 class="title">Test de Derecho Constitucional</h1>
+      <p class="subtitle">Selecciona cuántas preguntas quieres y pulsa <strong>Comenzar</strong>.</p>
+    </header>
+
+    <div class="controls">
+      <label for="numPreguntas">Número de preguntas:</label>
+      <select id="numPreguntas">
+        <option value="10">10</option>
+        <option value="20">20</option>
+        <option value="30">30</option>
+        <option value="40">40</option>
+        <option value="50" selected>50</option>
+      </select>
+      <button class="btn" type="button" onclick="cargarTest()">Comenzar</button>
+      <button class="btn secondary" type="button" onclick="reiniciarTest()">Reiniciar</button>
+      <div class="progress" style="flex-basis: 100%;">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+    </div>
+
+    <form id="testForm"></form>
+
+    <div id="testResult"></div>
+    <footer>© Test de práctica — Derecho Constitucional</footer>
+  </div>
+
+<script>
+const preguntasBanco = [
+    {
+    pregunta: "¿Cuál fue el antecedente inmediato de la Organización de las Naciones Unidas?",
+    opciones: [
+      "a) La Sociedad de Naciones",
+      "b) La Liga Árabe",
+      "c) El Consejo de Europa",
+      "d) La OTAN"
+    ],
+    correcta: "a) La Sociedad de Naciones",
+    justificacion: "La Sociedad de Naciones fue creada tras la Primera Guerra Mundial y sirvió de precedente para la ONU."
+  },
+  {
+    pregunta: "¿En qué año se firmó la Carta de las Naciones Unidas?",
+    opciones: [
+      "a) 1943",
+      "b) 1945",
+      "c) 1947",
+      "d) 1950"
+    ],
+    correcta: "b) 1945",
+    justificacion: "La Carta de las Naciones Unidas fue firmada el 26 de junio de 1945 en San Francisco."
+  },
+  {
+    pregunta: "¿Cuándo entró en vigor la Carta de las Naciones Unidas?",
+    opciones: [
+      "a) 26 de junio de 1945",
+      "b) 24 de octubre de 1945",
+      "c) 10 de diciembre de 1948",
+      "d) 1 de enero de 1946"
+    ],
+    correcta: "b) 24 de octubre de 1945",
+    justificacion: "La ONU entró en vigor el 24 de octubre de 1945, fecha que se celebra como el Día de las Naciones Unidas."
+  },
+  {
+    pregunta: "¿Cuál es el propósito principal de las Naciones Unidas según su Carta fundacional?",
+    opciones: [
+      "a) Promover la paz y la seguridad internacionales",
+      "b) Regular el comercio mundial",
+      "c) Coordinar la defensa colectiva europea",
+      "d) Establecer un gobierno mundial"
+    ],
+    correcta: "a) Promover la paz y la seguridad internacionales",
+    justificacion: "El principal objetivo de la ONU es mantener la paz y la seguridad internacionales."
+  },
+  {
+    pregunta: "¿Dónde tiene su sede principal la Organización de las Naciones Unidas?",
+    opciones: [
+      "a) Ginebra",
+      "b) Nueva York",
+      "c) París",
+      "d) Viena"
+    ],
+    correcta: "b) Nueva York",
+    justificacion: "La sede central de la ONU se encuentra en Nueva York, aunque tiene oficinas en Ginebra, Viena y Nairobi."
+  },
+  {
+    pregunta: "¿Cuántos países fundaron la ONU en 1945?",
+    opciones: [
+      "a) 45",
+      "b) 50",
+      "c) 51",
+      "d) 55"
+    ],
+    correcta: "c) 51",
+    justificacion: "La ONU se fundó con 51 Estados miembros, firmantes de la Carta de San Francisco."
+  },
+  {
+    pregunta: "¿Qué documento establece los propósitos y principios de la ONU?",
+    opciones: [
+      "a) La Declaración Universal de los Derechos Humanos",
+      "b) La Carta de las Naciones Unidas",
+      "c) El Pacto Internacional de Derechos Civiles y Políticos",
+      "d) El Acta Final de Helsinki"
+    ],
+    correcta: "b) La Carta de las Naciones Unidas",
+    justificacion: "La Carta es el tratado constitutivo de la ONU, firmada en 1945."
+  },
+  {
+    pregunta: "¿Cuáles son los seis órganos principales de la ONU?",
+    opciones: [
+      "a) Asamblea General, Consejo de Seguridad, Consejo Económico y Social, Consejo de Administración Fiduciaria, Corte Internacional de Justicia y Secretaría",
+      "b) Consejo Europeo, Comisión, Parlamento, Tribunal, Banco Central y Comité de las Regiones",
+      "c) Asamblea General, Comité Militar, Consejo Atlántico, Secretaría, Banco Mundial y UNESCO",
+      "d) Asamblea General, Consejo de Europa, Corte Penal Internacional, Consejo de Seguridad, FMI y OMS"
+    ],
+    correcta: "a) Asamblea General, Consejo de Seguridad, Consejo Económico y Social, Consejo de Administración Fiduciaria, Corte Internacional de Justicia y Secretaría",
+    justificacion: "Estos son los seis órganos principales de la ONU según la Carta fundacional."
+  },
+  {
+    pregunta: "¿Qué órgano de la ONU tiene la responsabilidad principal del mantenimiento de la paz y seguridad internacionales?",
+    opciones: [
+      "a) La Asamblea General",
+      "b) El Consejo de Seguridad",
+      "c) El Consejo Económico y Social",
+      "d) El Consejo de Administración Fiduciaria"
+    ],
+    correcta: "b) El Consejo de Seguridad",
+    justificacion: "El Consejo de Seguridad es el órgano encargado de velar por la paz y la seguridad internacionales."
+  },
+  {
+    pregunta: "¿Cuántos miembros permanentes tiene el Consejo de Seguridad de la ONU?",
+    opciones: [
+      "a) Cuatro",
+      "b) Cinco",
+      "c) Seis",
+      "d) Ocho"
+    ],
+    correcta: "b) Cinco",
+    justificacion: "Los cinco miembros permanentes del Consejo de Seguridad son: China, Estados Unidos, Francia, Reino Unido y Rusia."
+  },
+  {
+    pregunta: "¿Qué poder especial poseen los miembros permanentes del Consejo de Seguridad?",
+    opciones: [
+      "a) Poder de voto doble",
+      "b) Derecho de veto",
+      "c) Inmunidad diplomática absoluta",
+      "d) Capacidad de sancionar Estados directamente"
+    ],
+    correcta: "b) Derecho de veto",
+    justificacion: "Cada miembro permanente puede vetar resoluciones sustantivas del Consejo de Seguridad."
+  },
+  {
+    pregunta: "¿Cuántos miembros en total componen el Consejo de Seguridad?",
+    opciones: [
+      "a) 10",
+      "b) 12",
+      "c) 15",
+      "d) 20"
+    ],
+    correcta: "c) 15",
+    justificacion: "El Consejo de Seguridad está formado por 15 miembros: 5 permanentes y 10 no permanentes elegidos por la Asamblea General."
+  },
+  {
+    pregunta: "Los miembros no permanentes del Consejo de Seguridad son elegidos por un periodo de:",
+    opciones: [
+      "a) Un año",
+      "b) Dos años",
+      "c) Tres años",
+      "d) Cuatro años"
+    ],
+    correcta: "b) Dos años",
+    justificacion: "Los miembros no permanentes del Consejo de Seguridad se eligen por un mandato de dos años."
+  },
+  {
+    pregunta: "La Asamblea General de la ONU puede hacer recomendaciones sobre:",
+    opciones: [
+      "a) Cualquier asunto dentro del ámbito de la Carta",
+      "b) Solo cuestiones económicas",
+      "c) Solo temas de seguridad",
+      "d) Exclusivamente derechos humanos"
+    ],
+    correcta: "a) Cualquier asunto dentro del ámbito de la Carta",
+    justificacion: "La Asamblea General puede tratar y recomendar sobre una amplia gama de asuntos internacionales."
+  },
+  {
+    pregunta: "Las decisiones de la Asamblea General de la ONU sobre cuestiones importantes requieren:",
+    opciones: [
+      "a) Mayoría simple de los miembros presentes",
+      "b) Mayoría de dos tercios de los presentes y votantes",
+      "c) Unanimidad",
+      "d) Aprobación del Consejo de Seguridad"
+    ],
+    correcta: "b) Mayoría de dos tercios de los presentes y votantes",
+    justificacion: "Cuestiones como paz, admisión de miembros o presupuesto requieren mayoría de dos tercios."
+  },
+  {
+    pregunta: "El Secretario General de la ONU es nombrado por:",
+    opciones: [
+      "a) El Consejo Económico y Social",
+      "b) El Consejo de Seguridad a propuesta de la Asamblea General",
+      "c) La Asamblea General a recomendación del Consejo de Seguridad",
+      "d) Los Estados miembros por votación directa"
+    ],
+    correcta: "c) La Asamblea General a recomendación del Consejo de Seguridad",
+    justificacion: "El Secretario General es nombrado por la Asamblea General siguiendo la recomendación del Consejo de Seguridad."
+  },
+  {
+    pregunta: "El mandato del Secretario General de la ONU tiene una duración de:",
+    opciones: [
+      "a) Cuatro años",
+      "b) Cinco años",
+      "c) Seis años",
+      "d) Siete años"
+    ],
+    correcta: "b) Cinco años",
+    justificacion: "El mandato del Secretario General dura cinco años, con posibilidad de renovación."
+  },
+  {
+    pregunta: "¿Qué órgano de la ONU es el principal encargado de los asuntos económicos, sociales y humanitarios?",
+    opciones: [
+      "a) Consejo Económico y Social (ECOSOC)",
+      "b) Consejo de Seguridad",
+      "c) Asamblea General",
+      "d) Consejo de Administración Fiduciaria"
+    ],
+    correcta: "a) Consejo Económico y Social (ECOSOC)",
+    justificacion: "El ECOSOC coordina la labor económica, social y humanitaria de la ONU y sus organismos especializados."
+  },
+  {
+    pregunta: "El Consejo de Administración Fiduciaria fue creado para:",
+    opciones: [
+      "a) Supervisar los territorios en fideicomiso hasta su independencia",
+      "b) Administrar los fondos de la ONU",
+      "c) Controlar los derechos humanos",
+      "d) Coordinar las operaciones de mantenimiento de paz"
+    ],
+    correcta: "a) Supervisar los territorios en fideicomiso hasta su independencia",
+    justificacion: "Su función se cumplió al lograr la independencia de todos los territorios bajo su tutela."
+  },
+  {
+    pregunta: "¿Dónde tiene su sede la Corte Internacional de Justicia (CIJ)?",
+    opciones: [
+      "a) Nueva York",
+      "b) La Haya",
+      "c) Ginebra",
+      "d) Estrasburgo"
+    ],
+    correcta: "b) La Haya",
+    justificacion: "La Corte Internacional de Justicia tiene su sede en el Palacio de la Paz, en La Haya (Países Bajos)."
+  },
+  {
+    pregunta: "¿Qué órgano de la ONU actúa como su principal órgano judicial?",
+    opciones: [
+      "a) Corte Internacional de Justicia",
+      "b) Tribunal Penal Internacional",
+      "c) Consejo de Seguridad",
+      "d) Consejo de Europa"
+    ],
+    correcta: "a) Corte Internacional de Justicia",
+    justificacion: "La CIJ resuelve controversias entre Estados y emite opiniones consultivas."
+  },
+  {
+    pregunta: "Los fallos de la Corte Internacional de Justicia son:",
+    opciones: [
+      "a) No vinculantes",
+      "b) Vinculantes solo para las partes en litigio",
+      "c) Obligatorios para todos los Estados miembros",
+      "d) Recomendaciones generales"
+    ],
+    correcta: "b) Vinculantes solo para las partes en litigio",
+    justificacion: "Las sentencias de la CIJ solo obligan a los Estados implicados en el caso concreto."
+  },
+  {
+    pregunta: "¿Qué documento fue adoptado por la Asamblea General de la ONU el 10 de diciembre de 1948?",
+    opciones: [
+      "a) Carta de las Naciones Unidas",
+      "b) Declaración Universal de los Derechos Humanos",
+      "c) Carta Social Europea",
+      "d) Convención de Viena"
+    ],
+    correcta: "b) Declaración Universal de los Derechos Humanos",
+    justificacion: "Adoptada el 10 de diciembre de 1948, es un documento fundamental en la protección internacional de los derechos humanos."
+  },
+  {
+    pregunta: "¿Qué día se celebra el Día de los Derechos Humanos?",
+    opciones: [
+      "a) 24 de octubre",
+      "b) 9 de mayo",
+      "c) 10 de diciembre",
+      "d) 8 de marzo"
+    ],
+    correcta: "c) 10 de diciembre",
+    justificacion: "El Día de los Derechos Humanos conmemora la adopción de la Declaración Universal en 1948."
+  },
+  {
+    pregunta: "La Carta de las Naciones Unidas fue firmada en la Conferencia de:",
+    opciones: [
+      "a) San Francisco",
+      "b) Ginebra",
+      "c) París",
+      "d) Londres"
+    ],
+    correcta: "a) San Francisco",
+    justificacion: "La Carta se firmó en la Conferencia de San Francisco, celebrada del 25 de abril al 26 de junio de 1945."
+  },
+  {
+    pregunta: "El lema de las Naciones Unidas es:",
+    opciones: [
+      "a) Por la paz y el progreso de los pueblos",
+      "b) Unir a las naciones por la paz",
+      "c) Paz, dignidad e igualdad en un planeta sano",
+      "d) La unión hace la fuerza"
+    ],
+    correcta: "c) Paz, dignidad e igualdad en un planeta sano",
+    justificacion: "Este es el lema actual de la ONU, que refleja sus valores fundamentales."
+  },
+  {
+    pregunta: "El actual Secretario General de las Naciones Unidas (2025) es:",
+    opciones: [
+      "a) António Guterres",
+      "b) Ban Ki-moon",
+      "c) Kofi Annan",
+      "d) Boutros Boutros-Ghali"
+    ],
+    correcta: "a) António Guterres",
+    justificacion: "António Guterres, de nacionalidad portuguesa, ocupa el cargo desde enero de 2017."
+  },
+  {
+    pregunta: "La Organización de las Naciones Unidas tiene actualmente:",
+    opciones: [
+      "a) 183 Estados miembros",
+      "b) 190 Estados miembros",
+      "c) 193 Estados miembros",
+      "d) 198 Estados miembros"
+    ],
+    correcta: "c) 193 Estados miembros",
+    justificacion: "Actualmente, la ONU cuenta con 193 Estados miembros."
+  },
+  {
+    pregunta: "¿Cuál fue el último país en incorporarse a la ONU?",
+    opciones: [
+      "a) Montenegro",
+      "b) Sudán del Sur",
+      "c) Kosovo",
+      "d) Timor Oriental"
+    ],
+    correcta: "b) Sudán del Sur",
+    justificacion: "Sudán del Sur se incorporó en 2011, siendo el miembro más reciente de la ONU."
+  },
+  {
+    pregunta: "¿Qué órgano aprueba el presupuesto de las Naciones Unidas?",
+    opciones: [
+      "a) La Asamblea General",
+      "b) El Consejo de Seguridad",
+      "c) El ECOSOC",
+      "d) El Secretario General"
+    ],
+    correcta: "a) La Asamblea General",
+    justificacion: "La Asamblea General examina y aprueba el presupuesto bienal de la ONU."
+  },
+  {
+    pregunta: "Las resoluciones de la Asamblea General son:",
+    opciones: [
+      "a) Vinculantes para los Estados miembros",
+      "b) De carácter recomendatorio",
+      "c) De obligado cumplimiento en materia económica",
+      "d) Ejecutivas en caso de guerra"
+    ],
+    correcta: "b) De carácter recomendatorio",
+    justificacion: "Las resoluciones de la Asamblea General no son vinculantes, salvo en cuestiones internas de la organización."
+  },
+  {
+    pregunta: "¿Cuál de los siguientes órganos de la ONU cesó su actividad en 1994?",
+    opciones: [
+      "a) Consejo de Administración Fiduciaria",
+      "b) Consejo Económico y Social",
+      "c) Asamblea General",
+      "d) Corte Internacional de Justicia"
+    ],
+    correcta: "a) Consejo de Administración Fiduciaria",
+    justificacion: "El Consejo de Administración Fiduciaria suspendió su actividad en 1994 al cumplir su misión."
+  },
+  {
+    pregunta: "La ONU se financia principalmente mediante:",
+    opciones: [
+      "a) Donaciones voluntarias de ONG",
+      "b) Contribuciones obligatorias de los Estados miembros",
+      "c) Inversiones privadas",
+      "d) Fondos del Banco Mundial"
+    ],
+    correcta: "b) Contribuciones obligatorias de los Estados miembros",
+    justificacion: "Los Estados aportan una cuota proporcional a su capacidad económica."
+  },
+  {
+    pregunta: "¿Qué principio prohíbe a los Estados usar la fuerza salvo en defensa propia o por mandato del Consejo de Seguridad?",
+    opciones: [
+      "a) Principio de soberanía",
+      "b) Principio de no intervención",
+      "c) Prohibición del uso de la fuerza",
+      "d) Principio de cooperación"
+    ],
+    correcta: "c) Prohibición del uso de la fuerza",
+    justificacion: "La Carta de la ONU prohíbe el uso de la fuerza, salvo en legítima defensa o por decisión del Consejo de Seguridad."
+  },
+  {
+    pregunta: "El mantenimiento de la paz mediante fuerzas de interposición de la ONU comenzó en:",
+    opciones: [
+      "a) 1945",
+      "b) 1948",
+      "c) 1956",
+      "d) 1967"
+    ],
+    correcta: "b) 1948",
+    justificacion: "Las primeras misiones de mantenimiento de la paz datan de 1948 en Palestina."
+  },
+  {
+    pregunta: "Las operaciones de mantenimiento de paz de la ONU son aprobadas por:",
+    opciones: [
+      "a) El Secretario General",
+      "b) El Consejo de Seguridad",
+      "c) La Asamblea General",
+      "d) El ECOSOC"
+    ],
+    correcta: "b) El Consejo de Seguridad",
+    justificacion: "El Consejo de Seguridad autoriza las operaciones de paz bajo el Capítulo VII de la Carta."
+  },
+  {
+    pregunta: "¿Qué organismo especializado de la ONU tiene como objetivo erradicar el hambre y mejorar la nutrición mundial?",
+    opciones: [
+      "a) OMS",
+      "b) FAO",
+      "c) UNICEF",
+      "d) PNUD"
+    ],
+    correcta: "b) FAO",
+    justificacion: "La FAO, creada en 1945, trabaja para mejorar la seguridad alimentaria y erradicar el hambre en el mundo."
+  },
+  {
+    pregunta: "¿Dónde tiene su sede la FAO?",
+    opciones: [
+      "a) Ginebra",
+      "b) Roma",
+      "c) París",
+      "d) Nueva York"
+    ],
+    correcta: "b) Roma",
+    justificacion: "La sede de la Organización de las Naciones Unidas para la Alimentación y la Agricultura (FAO) está en Roma."
+  },
+  {
+    pregunta: "¿Qué organismo de la ONU tiene como objetivo mejorar la salud pública mundial?",
+    opciones: [
+      "a) FAO",
+      "b) OMS",
+      "c) UNESCO",
+      "d) ACNUR"
+    ],
+    correcta: "b) OMS",
+    justificacion: "La Organización Mundial de la Salud (OMS), fundada en 1948, coordina la acción sanitaria internacional."
+  },
+  {
+    pregunta: "La sede de la Organización Mundial de la Salud (OMS) se encuentra en:",
+    opciones: [
+      "a) París",
+      "b) Ginebra",
+      "c) Viena",
+      "d) Roma"
+    ],
+    correcta: "b) Ginebra",
+    justificacion: "La OMS tiene su sede en Ginebra, Suiza."
+  },
+  {
+    pregunta: "¿Cuál de las siguientes es una de las funciones principales de la OMS?",
+    opciones: [
+      "a) Regular el comercio mundial de medicamentos",
+      "b) Coordinar respuestas ante emergencias sanitarias internacionales",
+      "c) Conceder licencias farmacéuticas globales",
+      "d) Imponer sanciones por incumplimiento sanitario"
+    ],
+    correcta: "b) Coordinar respuestas ante emergencias sanitarias internacionales",
+    justificacion: "La OMS lidera la respuesta mundial frente a epidemias y crisis sanitarias."
+  },
+  {
+    pregunta: "¿Qué organismo de la ONU promueve la educación, la ciencia y la cultura?",
+    opciones: [
+      "a) FAO",
+      "b) UNICEF",
+      "c) UNESCO",
+      "d) PNUD"
+    ],
+    correcta: "c) UNESCO",
+    justificacion: "La UNESCO, creada en 1945, promueve la cooperación internacional en educación, ciencia y cultura."
+  },
+  {
+    pregunta: "¿Dónde se encuentra la sede de la UNESCO?",
+    opciones: [
+      "a) Nueva York",
+      "b) Ginebra",
+      "c) París",
+      "d) Viena"
+    ],
+    correcta: "c) París",
+    justificacion: "La sede de la UNESCO está en París, Francia."
+  },
+  {
+    pregunta: "¿Qué organización especializada de la ONU promueve la justicia social y los derechos laborales?",
+    opciones: [
+      "a) OIT",
+      "b) FAO",
+      "c) PNUD",
+      "d) FMI"
+    ],
+    correcta: "a) OIT",
+    justificacion: "La Organización Internacional del Trabajo (OIT) fomenta la justicia social y el trabajo decente desde 1919."
+  },
+  {
+    pregunta: "¿Cuál fue la primera agencia especializada creada en el sistema de Naciones Unidas?",
+    opciones: [
+      "a) OIT",
+      "b) UNESCO",
+      "c) FAO",
+      "d) OMS"
+    ],
+    correcta: "a) OIT",
+    justificacion: "La OIT fue creada en 1919, antes de la ONU, y se integró en su sistema en 1946."
+  },
+  {
+    pregunta: "La sede de la Organización Internacional del Trabajo (OIT) se encuentra en:",
+    opciones: [
+      "a) Nueva York",
+      "b) Ginebra",
+      "c) Bruselas",
+      "d) Viena"
+    ],
+    correcta: "b) Ginebra",
+    justificacion: "La OIT tiene su sede en Ginebra, Suiza."
+  },
+  {
+    pregunta: "El Fondo de las Naciones Unidas para la Infancia (UNICEF) fue creado en:",
+    opciones: [
+      "a) 1945",
+      "b) 1946",
+      "c) 1947",
+      "d) 1948"
+    ],
+    correcta: "b) 1946",
+    justificacion: "UNICEF fue creado en 1946 para asistir a los niños afectados por la Segunda Guerra Mundial."
+  },
+  {
+    pregunta: "¿Cuál es la sede del UNICEF?",
+    opciones: [
+      "a) Nueva York",
+      "b) Ginebra",
+      "c) Roma",
+      "d) Viena"
+    ],
+    correcta: "a) Nueva York",
+    justificacion: "UNICEF tiene su sede principal en Nueva York, Estados Unidos."
+  },
+  {
+    pregunta: "El principal objetivo del UNICEF es:",
+    opciones: [
+      "a) Mejorar las condiciones laborales",
+      "b) Proteger los derechos y el bienestar de los niños",
+      "c) Combatir el hambre",
+      "d) Coordinar programas sanitarios"
+    ],
+    correcta: "b) Proteger los derechos y el bienestar de los niños",
+    justificacion: "UNICEF trabaja por la supervivencia, educación y protección infantil en todo el mundo."
+  },
+  {
+    pregunta: "El Alto Comisionado de las Naciones Unidas para los Refugiados (ACNUR) fue creado para:",
+    opciones: [
+      "a) Gestionar la migración económica",
+      "b) Proteger y asistir a los refugiados y desplazados",
+      "c) Promover el comercio internacional",
+      "d) Controlar los flujos migratorios ilegales"
+    ],
+    correcta: "b) Proteger y asistir a los refugiados y desplazados",
+    justificacion: "ACNUR se creó en 1950 para garantizar protección a los refugiados en todo el mundo."
+  },
+  {
+    pregunta: "¿Dónde se encuentra la sede del ACNUR?",
+    opciones: [
+      "a) París",
+      "b) Viena",
+      "c) Ginebra",
+      "d) Roma"
+    ],
+    correcta: "c) Ginebra",
+    justificacion: "El Alto Comisionado de las Naciones Unidas para los Refugiados (ACNUR) tiene su sede en Ginebra, Suiza."
+  },
+  {
+    pregunta: "El Fondo Monetario Internacional (FMI) fue creado en:",
+    opciones: [
+      "a) 1944",
+      "b) 1945",
+      "c) 1946",
+      "d) 1947"
+    ],
+    correcta: "a) 1944",
+    justificacion: "El FMI se fundó en 1944 en la Conferencia de Bretton Woods y comenzó a operar en 1945."
+  },
+  {
+    pregunta: "¿Cuál es el principal objetivo del Fondo Monetario Internacional (FMI)?",
+    opciones: [
+      "a) Financiar proyectos de desarrollo agrícola",
+      "b) Mantener la estabilidad del sistema monetario internacional",
+      "c) Regular el comercio mundial",
+      "d) Controlar los precios de las materias primas"
+    ],
+    correcta: "b) Mantener la estabilidad del sistema monetario internacional",
+    justificacion: "El FMI busca la cooperación monetaria y la estabilidad financiera global."
+  },
+  {
+    pregunta: "¿Dónde tiene su sede el Fondo Monetario Internacional (FMI)?",
+    opciones: [
+      "a) Nueva York",
+      "b) Washington D.C.",
+      "c) Bruselas",
+      "d) Londres"
+    ],
+    correcta: "b) Washington D.C.",
+    justificacion: "El FMI tiene su sede en Washington D.C., Estados Unidos."
+  },
+  {
+    pregunta: "El Banco Mundial forma parte del grupo conocido como:",
+    opciones: [
+      "a) Sistema de Naciones Unidas",
+      "b) Sistema Europeo de Inversión",
+      "c) Fondo de Cooperación Global",
+      "d) Consejo Económico Internacional"
+    ],
+    correcta: "a) Sistema de Naciones Unidas",
+    justificacion: "El Banco Mundial, junto al FMI, forma parte del sistema de organismos especializados de la ONU."
+  },
+  {
+    pregunta: "¿Cuál es el principal objetivo del Banco Mundial?",
+    opciones: [
+      "a) Proporcionar ayuda humanitaria",
+      "b) Financiar proyectos de desarrollo económico y reducción de la pobreza",
+      "c) Regular las bolsas internacionales",
+      "d) Establecer políticas fiscales globales"
+    ],
+    correcta: "b) Financiar proyectos de desarrollo económico y reducción de la pobreza",
+    justificacion: "El Banco Mundial otorga préstamos y asistencia técnica a países en desarrollo."
+  },
+  {
+    pregunta: "¿Qué dos instituciones forman el núcleo del Banco Mundial?",
+    opciones: [
+      "a) BIRF y AIF",
+      "b) FMI y FAO",
+      "c) UNESCO y OMS",
+      "d) ACNUR y UNICEF"
+    ],
+    correcta: "a) BIRF y AIF",
+    justificacion: "El Banco Internacional de Reconstrucción y Fomento (BIRF) y la Asociación Internacional de Fomento (AIF) constituyen su base."
+  },
+  {
+    pregunta: "¿Dónde se encuentra la sede del Banco Mundial?",
+    opciones: [
+      "a) Nueva York",
+      "b) Washington D.C.",
+      "c) Londres",
+      "d) Ginebra"
+    ],
+    correcta: "b) Washington D.C.",
+    justificacion: "La sede del Banco Mundial está en Washington D.C., compartida con el FMI."
+  },
+  {
+    pregunta: "¿Qué organización internacional reemplazó al GATT en 1995?",
+    opciones: [
+      "a) FMI",
+      "b) OMC",
+      "c) OCDE",
+      "d) UNCTAD"
+    ],
+    correcta: "b) OMC",
+    justificacion: "La Organización Mundial del Comercio (OMC) sustituyó al Acuerdo General sobre Aranceles y Comercio (GATT) en 1995."
+  },
+  {
+    pregunta: "¿Cuál es el objetivo principal de la Organización Mundial del Comercio (OMC)?",
+    opciones: [
+      "a) Establecer acuerdos comerciales internacionales",
+      "b) Promover el libre comercio y reducir barreras arancelarias",
+      "c) Fijar los tipos de cambio internacionales",
+      "d) Regular la inversión extranjera directa"
+    ],
+    correcta: "b) Promover el libre comercio y reducir barreras arancelarias",
+    justificacion: "La OMC busca la liberalización comercial y la resolución de disputas entre países."
+  },
+  {
+    pregunta: "¿Dónde tiene su sede la Organización Mundial del Comercio (OMC)?",
+    opciones: [
+      "a) Ginebra",
+      "b) Bruselas",
+      "c) Nueva York",
+      "d) Viena"
+    ],
+    correcta: "a) Ginebra",
+    justificacion: "La OMC tiene su sede en Ginebra, Suiza."
+  },
+  {
+    pregunta: "El Programa de las Naciones Unidas para el Desarrollo (PNUD) se centra en:",
+    opciones: [
+      "a) El comercio internacional",
+      "b) La erradicación de la pobreza y el desarrollo sostenible",
+      "c) La regulación financiera mundial",
+      "d) La seguridad internacional"
+    ],
+    correcta: "b) La erradicación de la pobreza y el desarrollo sostenible",
+    justificacion: "El PNUD apoya políticas de desarrollo humano sostenible y reducción de desigualdades."
+  },
+  {
+    pregunta: "¿Dónde tiene su sede el Programa de las Naciones Unidas para el Desarrollo (PNUD)?",
+    opciones: [
+      "a) Nueva York",
+      "b) Roma",
+      "c) Viena",
+      "d) Ginebra"
+    ],
+    correcta: "a) Nueva York",
+    justificacion: "El PNUD tiene su sede central en Nueva York, Estados Unidos."
+  },
+  {
+    pregunta: "El Organismo Internacional de Energía Atómica (OIEA) se encarga de:",
+    opciones: [
+      "a) La supervisión del uso pacífico de la energía nuclear",
+      "b) La producción de armas nucleares",
+      "c) La gestión de centrales nucleares comerciales",
+      "d) La regulación del precio del uranio"
+    ],
+    correcta: "a) La supervisión del uso pacífico de la energía nuclear",
+    justificacion: "El OIEA promueve el uso seguro y pacífico de la energía nuclear."
+  },
+  {
+    pregunta: "¿Dónde tiene su sede el Organismo Internacional de Energía Atómica (OIEA)?",
+    opciones: [
+      "a) Viena",
+      "b) Ginebra",
+      "c) Londres",
+      "d) París"
+    ],
+    correcta: "a) Viena",
+    justificacion: "El OIEA tiene su sede en Viena, Austria."
+  },
+  {
+    pregunta: "La Oficina de las Naciones Unidas contra la Droga y el Delito (UNODC) tiene su sede en:",
+    opciones: [
+      "a) Ginebra",
+      "b) Viena",
+      "c) Roma",
+      "d) Bruselas"
+    ],
+    correcta: "b) Viena",
+    justificacion: "La UNODC coordina los esfuerzos internacionales contra el crimen y las drogas desde Viena."
+  },
+  {
+    pregunta: "El Fondo de Población de las Naciones Unidas (UNFPA) se centra en:",
+    opciones: [
+      "a) Salud sexual y reproductiva y planificación familiar",
+      "b) Educación y alfabetización",
+      "c) Política energética",
+      "d) Derechos laborales"
+    ],
+    correcta: "a) Salud sexual y reproductiva y planificación familiar",
+    justificacion: "El UNFPA promueve los derechos reproductivos y el acceso a la salud sexual globalmente."
+  },
+  {
+    pregunta: "El Programa Mundial de Alimentos (PMA) recibió el Premio Nobel de la Paz en:",
+    opciones: [
+      "a) 2015",
+      "b) 2017",
+      "c) 2020",
+      "d) 2021"
+    ],
+    correcta: "c) 2020",
+    justificacion: "El PMA fue galardonado en 2020 por su labor contra el hambre y en favor de la paz."
+  },
+  {
+    pregunta: "¿Dónde se encuentra la sede del Programa Mundial de Alimentos (PMA)?",
+    opciones: [
+      "a) Ginebra",
+      "b) Nueva York",
+      "c) Roma",
+      "d) París"
+    ],
+    correcta: "c) Roma",
+    justificacion: "El PMA tiene su sede en Roma, junto a la FAO y el FIDA."
+  },
+  {
+    pregunta: "¿En qué año se firmó el Tratado del Atlántico Norte que dio origen a la OTAN?",
+    opciones: [
+      "a) 1947",
+      "b) 1948",
+      "c) 1949",
+      "d) 1950"
+    ],
+    correcta: "c) 1949",
+    justificacion: "El Tratado del Atlántico Norte se firmó en Washington el 4 de abril de 1949."
+  },
+  {
+    pregunta: "¿Cuál es el principal objetivo de la Organización del Tratado del Atlántico Norte (OTAN)?",
+    opciones: [
+      "a) Garantizar la seguridad colectiva de sus miembros frente a amenazas externas",
+      "b) Coordinar políticas económicas",
+      "c) Regular el comercio internacional",
+      "d) Desarrollar programas educativos conjuntos"
+    ],
+    correcta: "a) Garantizar la seguridad colectiva de sus miembros frente a amenazas externas",
+    justificacion: "La OTAN tiene como principio básico la defensa colectiva según el artículo 5 de su tratado fundacional."
+  },
+  {
+    pregunta: "¿Dónde se encuentra la sede de la OTAN?",
+    opciones: [
+      "a) Londres",
+      "b) París",
+      "c) Bruselas",
+      "d) Washington D.C."
+    ],
+    correcta: "c) Bruselas",
+    justificacion: "La sede de la OTAN está en Bruselas, Bélgica."
+  },
+  {
+    pregunta: "¿Qué artículo del Tratado de Washington establece el principio de defensa colectiva?",
+    opciones: [
+      "a) Artículo 1",
+      "b) Artículo 3",
+      "c) Artículo 5",
+      "d) Artículo 7"
+    ],
+    correcta: "c) Artículo 5",
+    justificacion: "El artículo 5 establece que un ataque contra un miembro será considerado un ataque contra todos."
+  },
+  {
+    pregunta: "¿Qué país fue el primero en solicitar formalmente su ingreso en la OTAN tras la Guerra Fría?",
+    opciones: [
+      "a) España",
+      "b) Polonia",
+      "c) Hungría",
+      "d) República Checa"
+    ],
+    correcta: "b) Polonia",
+    justificacion: "Polonia fue uno de los primeros países de Europa del Este en integrarse en la OTAN tras 1989."
+  },
+  {
+    pregunta: "España ingresó en la OTAN en el año:",
+    opciones: [
+      "a) 1978",
+      "b) 1982",
+      "c) 1986",
+      "d) 1991"
+    ],
+    correcta: "b) 1982",
+    justificacion: "España se incorporó a la OTAN el 30 de mayo de 1982 durante el gobierno de Leopoldo Calvo-Sotelo."
+  },
+  {
+    pregunta: "El referéndum sobre la permanencia de España en la OTAN se celebró en:",
+    opciones: [
+      "a) 1983",
+      "b) 1984",
+      "c) 1986",
+      "d) 1988"
+    ],
+    correcta: "c) 1986",
+    justificacion: "El referéndum se celebró el 12 de marzo de 1986 y confirmó la permanencia de España en la Alianza."
+  },
+  {
+    pregunta: "¿Quién ocupa actualmente el cargo de Secretario General de la OTAN (2025)?",
+    opciones: [
+      "a) Jens Stoltenberg",
+      "b) Mark Rutte",
+      "c) Ursula von der Leyen",
+      "d) Josep Borrell"
+    ],
+    correcta: "b) Mark Rutte",
+    justificacion: "El ex primer ministro neerlandés Mark Rutte fue designado Secretario General de la OTAN en 2024."
+  },
+  {
+    pregunta: "El Consejo del Atlántico Norte es:",
+    opciones: [
+      "a) El órgano supremo de decisión de la OTAN",
+      "b) Un órgano consultivo militar",
+      "c) La asamblea parlamentaria de la OTAN",
+      "d) Un comité económico"
+    ],
+    correcta: "a) El órgano supremo de decisión de la OTAN",
+    justificacion: "El Consejo del Atlántico Norte toma las decisiones políticas y de seguridad de la Alianza."
+  },
+  {
+    pregunta: "¿Qué organismo europeo tiene como objetivo principal la defensa de los derechos humanos y la democracia?",
+    opciones: [
+      "a) Consejo de Europa",
+      "b) Unión Europea",
+      "c) OSCE",
+      "d) OTAN"
+    ],
+    correcta: "a) Consejo de Europa",
+    justificacion: "El Consejo de Europa promueve los derechos humanos, la democracia y el Estado de derecho en Europa."
+  },
+  {
+    pregunta: "¿En qué año se creó el Consejo de Europa?",
+    opciones: [
+      "a) 1945",
+      "b) 1947",
+      "c) 1949",
+      "d) 1951"
+    ],
+    correcta: "c) 1949",
+    justificacion: "El Consejo de Europa fue fundado el 5 de mayo de 1949 en Londres."
+  },
+  {
+    pregunta: "¿Dónde tiene su sede el Consejo de Europa?",
+    opciones: [
+      "a) Bruselas",
+      "b) Estrasburgo",
+      "c) Ginebra",
+      "d) Viena"
+    ],
+    correcta: "b) Estrasburgo",
+    justificacion: "La sede del Consejo de Europa se encuentra en Estrasburgo, Francia."
+  },
+  {
+    pregunta: "¿Qué instrumento jurídico adoptado por el Consejo de Europa es fundamental en materia de derechos humanos?",
+    opciones: [
+      "a) Carta Social Europea",
+      "b) Convenio Europeo de Derechos Humanos",
+      "c) Tratado de Roma",
+      "d) Carta de Niza"
+    ],
+    correcta: "b) Convenio Europeo de Derechos Humanos",
+    justificacion: "Adoptado en 1950, el Convenio Europeo de Derechos Humanos es la base del sistema europeo de protección de derechos."
+  },
+  {
+    pregunta: "¿Qué tribunal vela por el cumplimiento del Convenio Europeo de Derechos Humanos?",
+    opciones: [
+      "a) Tribunal de Justicia de la Unión Europea",
+      "b) Tribunal Europeo de Derechos Humanos",
+      "c) Corte Internacional de Justicia",
+      "d) Tribunal Penal Internacional"
+    ],
+    correcta: "b) Tribunal Europeo de Derechos Humanos",
+    justificacion: "El TEDH, con sede en Estrasburgo, garantiza la aplicación del Convenio Europeo de Derechos Humanos."
+  },
+  {
+    pregunta: "La Organización para la Seguridad y la Cooperación en Europa (OSCE) tiene su origen en:",
+    opciones: [
+      "a) El Acta Final de Helsinki de 1975",
+      "b) El Tratado de Roma de 1957",
+      "c) El Acuerdo de París de 1990",
+      "d) El Tratado de Maastricht de 1992"
+    ],
+    correcta: "a) El Acta Final de Helsinki de 1975",
+    justificacion: "La OSCE surgió de la Conferencia sobre la Seguridad y Cooperación en Europa (CSCE), formalizada en Helsinki."
+  },
+  {
+    pregunta: "¿Cuál es la sede de la Organización para la Seguridad y la Cooperación en Europa (OSCE)?",
+    opciones: [
+      "a) Viena",
+      "b) Estrasburgo",
+      "c) Bruselas",
+      "d) Ginebra"
+    ],
+    correcta: "a) Viena",
+    justificacion: "La OSCE tiene su sede principal en Viena, Austria."
+  },
+  {
+    pregunta: "La OSCE se centra en:",
+    opciones: [
+      "a) Seguridad, derechos humanos y cooperación política",
+      "b) Defensa militar colectiva",
+      "c) Comercio internacional",
+      "d) Desarrollo económico regional"
+    ],
+    correcta: "a) Seguridad, derechos humanos y cooperación política",
+    justificacion: "La OSCE actúa como foro para el diálogo político y la seguridad cooperativa en Europa."
+  },
+  {
+    pregunta: "La Organización para la Cooperación y el Desarrollo Económicos (OCDE) fue creada en:",
+    opciones: [
+      "a) 1947",
+      "b) 1948",
+      "c) 1961",
+      "d) 1970"
+    ],
+    correcta: "c) 1961",
+    justificacion: "La OCDE se creó en 1961 como sucesora de la Organización Europea de Cooperación Económica (OECE)."
+  },
+  {
+    pregunta: "¿Dónde tiene su sede la OCDE?",
+    opciones: [
+      "a) Bruselas",
+      "b) París",
+      "c) Ginebra",
+      "d) Londres"
+    ],
+    correcta: "b) París",
+    justificacion: "La Organización para la Cooperación y el Desarrollo Económicos (OCDE) tiene su sede en París."
+  },
+  {
+    pregunta: "La OCDE promueve principalmente:",
+    opciones: [
+      "a) Políticas económicas y sociales para el crecimiento sostenible",
+      "b) La integración militar europea",
+      "c) El comercio regional",
+      "d) La cooperación judicial"
+    ],
+    correcta: "a) Políticas económicas y sociales para el crecimiento sostenible",
+    justificacion: "Su misión es promover políticas que mejoren el bienestar económico y social de las personas en todo el mundo."
+  },
+  {
+    pregunta: "La Organización de los Estados Americanos (OEA) fue creada en:",
+    opciones: [
+      "a) 1945",
+      "b) 1948",
+      "c) 1950",
+      "d) 1952"
+    ],
+    correcta: "b) 1948",
+    justificacion: "La OEA se fundó en 1948 en Bogotá, Colombia, mediante la Carta de la Organización de los Estados Americanos."
+  },
+  {
+    pregunta: "¿Dónde se encuentra la sede de la OEA?",
+    opciones: [
+      "a) Washington D.C.",
+      "b) Nueva York",
+      "c) Santiago de Chile",
+      "d) Buenos Aires"
+    ],
+    correcta: "a) Washington D.C.",
+    justificacion: "La sede de la OEA está en Washington D.C., Estados Unidos."
+  },
+  {
+    pregunta: "¿Qué objetivo fundamental tiene la OEA?",
+    opciones: [
+      "a) Defender la soberanía y la democracia en América",
+      "b) Crear un mercado común americano",
+      "c) Coordinar políticas militares",
+      "d) Unificar las monedas latinoamericanas"
+    ],
+    correcta: "a) Defender la soberanía y la democracia en América",
+    justificacion: "La OEA promueve la paz, la democracia y los derechos humanos en el continente americano."
+  },
+  {
+    pregunta: "La Unión Africana (UA) sustituyó a la antigua:",
+    opciones: [
+      "a) Liga Árabe",
+      "b) Organización de la Unidad Africana",
+      "c) Comunidad Económica Africana",
+      "d) Conferencia del Magreb Árabe"
+    ],
+    correcta: "b) Organización de la Unidad Africana",
+    justificacion: "La Unión Africana reemplazó a la OUA en 2002 para fortalecer la integración política y económica del continente."
+  },
+  {
+    pregunta: "¿Dónde se encuentra la sede de la Unión Africana?",
+    opciones: [
+      "a) Nairobi",
+      "b) Addis Abeba",
+      "c) Johannesburgo",
+      "d) Dakar"
+    ],
+    correcta: "b) Addis Abeba",
+    justificacion: "La sede de la Unión Africana está en Addis Abeba, capital de Etiopía."
+  },
+  {
+    pregunta: "La Liga de los Estados Árabes (Liga Árabe) fue creada en:",
+    opciones: [
+      "a) 1943",
+      "b) 1945",
+      "c) 1947",
+      "d) 1950"
+    ],
+    correcta: "b) 1945",
+    justificacion: "La Liga Árabe se fundó en El Cairo en 1945 para promover la cooperación entre países árabes."
+  },
+  {
+    pregunta: "¿Dónde tiene su sede la Liga Árabe?",
+    opciones: [
+      "a) Beirut",
+      "b) Damasco",
+      "c) El Cairo",
+      "d) Riad"
+    ],
+    correcta: "c) El Cairo",
+    justificacion: "La sede permanente de la Liga Árabe se encuentra en El Cairo, Egipto."
+  },
+  {
+    pregunta: "La Asociación de Naciones del Sudeste Asiático (ASEAN) se fundó en:",
+    opciones: [
+      "a) 1965",
+      "b) 1967",
+      "c) 1970",
+      "d) 1972"
+    ],
+    correcta: "b) 1967",
+    justificacion: "La ASEAN se creó el 8 de agosto de 1967 en Bangkok con el objetivo de fomentar la cooperación regional."
+  },
+  {
+    pregunta: "¿Dónde tiene su sede la ASEAN?",
+    opciones: [
+      "a) Yakarta",
+      "b) Singapur",
+      "c) Manila",
+      "d) Kuala Lumpur"
+    ],
+    correcta: "a) Yakarta",
+    justificacion: "La sede de la ASEAN se encuentra en Yakarta, Indonesia."
+  },
+  {
+    pregunta: "¿Qué organismo europeo promueve la cooperación económica y política entre Rusia, Asia Central y el Cáucaso?",
+    opciones: [
+      "a) CEI",
+      "b) OSCE",
+      "c) Consejo de Europa",
+      "d) OCDE"
+    ],
+    correcta: "a) CEI",
+    justificacion: "La Comunidad de Estados Independientes (CEI) fue creada en 1991 tras la disolución de la URSS."
+  },
+  {
+    pregunta: "La Comunidad de Estados Independientes (CEI) fue creada en:",
+    opciones: [
+      "a) 1989",
+      "b) 1990",
+      "c) 1991",
+      "d) 1993"
+    ],
+    correcta: "c) 1991",
+    justificacion: "La CEI se formó en diciembre de 1991 por varias repúblicas exsoviéticas tras la disolución de la URSS."
+  },
+  {
+    pregunta: "¿Cuál de los siguientes organismos tiene como objetivo promover la cooperación económica entre países de América Latina?",
+    opciones: [
+      "a) MERCOSUR",
+      "b) OEA",
+      "c) ALBA",
+      "d) UNASUR"
+    ],
+    correcta: "a) MERCOSUR",
+    justificacion: "El Mercado Común del Sur (MERCOSUR) promueve la integración económica regional en América del Sur."
+  },
+  {
+    pregunta: "¿En qué año se creó el MERCOSUR?",
+    opciones: [
+      "a) 1989",
+      "b) 1991",
+      "c) 1994",
+      "d) 1995"
+    ],
+    correcta: "b) 1991",
+    justificacion: "El MERCOSUR se fundó mediante el Tratado de Asunción en 1991."
+  },
+  {
+    pregunta: "¿Qué países fundaron el MERCOSUR?",
+    opciones: [
+      "a) Argentina, Brasil, Paraguay y Uruguay",
+      "b) Chile, Perú, Bolivia y Colombia",
+      "c) Argentina, México, Venezuela y Brasil",
+      "d) Brasil, Ecuador, Bolivia y Paraguay"
+    ],
+    correcta: "a) Argentina, Brasil, Paraguay y Uruguay",
+    justificacion: "Estos cuatro países firmaron el Tratado de Asunción en 1991 dando origen al MERCOSUR."
+  },
+  {
+    pregunta: "¿Qué países fundaron el Fondo Monetario Internacional y el Banco Mundial en 1944?",
+    opciones: [
+      "a) Los miembros de la ONU",
+      "b) 44 países participantes en la Conferencia de Bretton Woods",
+      "c) Los países europeos y Estados Unidos",
+      "d) Los Estados miembros del G7"
+    ],
+    correcta: "b) 44 países participantes en la Conferencia de Bretton Woods",
+    justificacion: "El FMI y el Banco Mundial se fundaron en la Conferencia de Bretton Woods (julio de 1944) con 44 países participantes."
+  },
+  {
+    pregunta: "¿Qué institución forma parte del Grupo Banco Mundial junto con el BIRF y la AIF?",
+    opciones: [
+      "a) CFI (Corporación Financiera Internacional)",
+      "b) FMI",
+      "c) OCDE",
+      "d) BID"
+    ],
+    correcta: "a) CFI (Corporación Financiera Internacional)",
+    justificacion: "La CFI promueve la inversión privada en los países en desarrollo dentro del Grupo Banco Mundial."
+  },
+  {
+    pregunta: "¿Qué organismo financiero internacional se conoce como 'el prestamista de última instancia'?",
+    opciones: [
+      "a) FMI",
+      "b) Banco Mundial",
+      "c) OCDE",
+      "d) BCE"
+    ],
+    correcta: "a) FMI",
+    justificacion: "El FMI actúa como prestamista de última instancia para países con crisis de balanza de pagos."
+  },
+  {
+    pregunta: "El Grupo de los Siete (G7) está formado por:",
+    opciones: [
+      "a) Alemania, Canadá, Estados Unidos, Francia, Italia, Japón y Reino Unido",
+      "b) Alemania, España, Francia, Italia, Portugal, Grecia y Polonia",
+      "c) Estados Unidos, Rusia, China, Japón, India, Francia y Reino Unido",
+      "d) Los países fundadores de la UE"
+    ],
+    correcta: "a) Alemania, Canadá, Estados Unidos, Francia, Italia, Japón y Reino Unido",
+    justificacion: "El G7 agrupa a las principales economías industrializadas del mundo."
+  },
+  {
+    pregunta: "El G7 se amplió temporalmente con Rusia para formar el G8 en el año:",
+    opciones: [
+      "a) 1991",
+      "b) 1994",
+      "c) 1997",
+      "d) 2000"
+    ],
+    correcta: "c) 1997",
+    justificacion: "Rusia se incorporó al G7 en 1997, aunque fue suspendida en 2014 tras la crisis de Crimea."
+  },
+  {
+    pregunta: "¿Qué foro internacional incluye tanto países desarrollados como emergentes para coordinar políticas económicas globales?",
+    opciones: [
+      "a) G20",
+      "b) G7",
+      "c) FMI",
+      "d) OCDE"
+    ],
+    correcta: "a) G20",
+    justificacion: "El G20 reúne a las principales economías del mundo, representando cerca del 85% del PIB global."
+  },
+  {
+    pregunta: "¿En qué año se celebró la primera cumbre del G20 a nivel de jefes de Estado?",
+    opciones: [
+      "a) 1999",
+      "b) 2001",
+      "c) 2008",
+      "d) 2010"
+    ],
+    correcta: "c) 2008",
+    justificacion: "La primera cumbre del G20 de líderes se celebró en Washington D.C. en 2008, durante la crisis financiera."
+  },
+  {
+    pregunta: "¿Qué países integran actualmente el bloque de economías emergentes conocido como BRICS?",
+    opciones: [
+      "a) Brasil, Rusia, India, China y Sudáfrica",
+      "b) Brasil, Rusia, Indonesia, Chile y Sudán",
+      "c) Bélgica, Rumanía, Islandia, Chipre y Serbia",
+      "d) Bangladesh, Rumanía, Irán, Croacia y Singapur"
+    ],
+    correcta: "a) Brasil, Rusia, India, China y Sudáfrica",
+    justificacion: "El grupo BRICS reúne a grandes economías emergentes con creciente influencia global."
+  },
+  {
+    pregunta: "El Nuevo Banco de Desarrollo (NBD) pertenece al grupo:",
+    opciones: [
+      "a) BRICS",
+      "b) G7",
+      "c) OCDE",
+      "d) FMI"
+    ],
+    correcta: "a) BRICS",
+    justificacion: "El NBD fue creado por los BRICS en 2014 para financiar proyectos de infraestructura y desarrollo sostenible."
+  },
+  {
+    pregunta: "¿Dónde tiene su sede el Nuevo Banco de Desarrollo de los BRICS?",
+    opciones: [
+      "a) Pekín",
+      "b) Shanghái",
+      "c) Nueva Delhi",
+      "d) Johannesburgo"
+    ],
+    correcta: "b) Shanghái",
+    justificacion: "El NBD tiene su sede en Shanghái, China."
+  },
+  {
+    pregunta: "¿Qué organismo internacional coordina la política turística global?",
+    opciones: [
+      "a) OMT",
+      "b) OCDE",
+      "c) FMI",
+      "d) FAO"
+    ],
+    correcta: "a) OMT",
+    justificacion: "La Organización Mundial del Turismo (OMT) es la agencia especializada de la ONU encargada del turismo."
+  },
+  {
+    pregunta: "¿Dónde se encuentra la sede de la Organización Mundial del Turismo (OMT)?",
+    opciones: [
+      "a) Ginebra",
+      "b) Roma",
+      "c) Madrid",
+      "d) París"
+    ],
+    correcta: "c) Madrid",
+    justificacion: "La OMT tiene su sede en Madrid, España."
+  },
+  {
+    pregunta: "¿Qué organismo internacional tiene como lema 'Servir a la justicia global'?",
+    opciones: [
+      "a) Corte Penal Internacional",
+      "b) Tribunal de Justicia de la UE",
+      "c) Corte Internacional de Justicia",
+      "d) Consejo de Europa"
+    ],
+    correcta: "a) Corte Penal Internacional",
+    justificacion: "La CPI, con sede en La Haya, se dedica a juzgar crímenes de guerra, genocidio y lesa humanidad."
+  },
+  {
+    pregunta: "¿En qué año se adoptó el Estatuto de Roma que crea la Corte Penal Internacional?",
+    opciones: [
+      "a) 1996",
+      "b) 1998",
+      "c) 2000",
+      "d) 2002"
+    ],
+    correcta: "b) 1998",
+    justificacion: "El Estatuto de Roma fue adoptado en 1998 y la Corte comenzó a funcionar en 2002."
+  },
+  {
+    pregunta: "¿Dónde tiene su sede la Corte Penal Internacional (CPI)?",
+    opciones: [
+      "a) Nueva York",
+      "b) La Haya",
+      "c) Viena",
+      "d) Bruselas"
+    ],
+    correcta: "b) La Haya",
+    justificacion: "La Corte Penal Internacional tiene su sede en La Haya, Países Bajos."
+  },
+  {
+    pregunta: "La Cruz Roja Internacional fue fundada por:",
+    opciones: [
+      "a) Henry Dunant",
+      "b) Louis Pasteur",
+      "c) Franklin Roosevelt",
+      "d) Dag Hammarskjöld"
+    ],
+    correcta: "a) Henry Dunant",
+    justificacion: "Henry Dunant fundó el Comité Internacional de la Cruz Roja tras la batalla de Solferino en 1859."
+  },
+  {
+    pregunta: "¿En qué año se fundó el Comité Internacional de la Cruz Roja (CICR)?",
+    opciones: [
+      "a) 1859",
+      "b) 1863",
+      "c) 1870",
+      "d) 1881"
+    ],
+    correcta: "b) 1863",
+    justificacion: "El CICR se fundó oficialmente en 1863 en Ginebra."
+  },
+  {
+    pregunta: "El emblema original del Comité Internacional de la Cruz Roja es:",
+    opciones: [
+      "a) Una cruz roja sobre fondo blanco",
+      "b) Un círculo azul sobre fondo blanco",
+      "c) Una media luna verde sobre fondo blanco",
+      "d) Una estrella dorada sobre fondo azul"
+    ],
+    correcta: "a) Una cruz roja sobre fondo blanco",
+    justificacion: "El emblema es la cruz roja sobre fondo blanco, invertido de la bandera suiza en honor a su origen."
+  },
+  {
+    pregunta: "¿Dónde tiene su sede el Comité Internacional de la Cruz Roja (CICR)?",
+    opciones: [
+      "a) Viena",
+      "b) Ginebra",
+      "c) París",
+      "d) Bruselas"
+    ],
+    correcta: "b) Ginebra",
+    justificacion: "El CICR tiene su sede en Ginebra, Suiza."
+  },
+  {
+    pregunta: "¿Qué organismo internacional se encarga de la cooperación policial entre países?",
+    opciones: [
+      "a) INTERPOL",
+      "b) EUROPOL",
+      "c) ONUDC",
+      "d) OSCE"
+    ],
+    correcta: "a) INTERPOL",
+    justificacion: "INTERPOL coordina la cooperación policial internacional y la lucha contra el crimen transnacional."
+  },
+  {
+    pregunta: "¿Dónde tiene su sede INTERPOL?",
+    opciones: [
+      "a) Bruselas",
+      "b) Lyon",
+      "c) París",
+      "d) Estrasburgo"
+    ],
+    correcta: "b) Lyon",
+    justificacion: "INTERPOL tiene su sede en Lyon, Francia, desde 1989."
+  },
+  {
+    pregunta: "INTERPOL fue fundada en:",
+    opciones: [
+      "a) 1923",
+      "b) 1945",
+      "c) 1957",
+      "d) 1960"
+    ],
+    correcta: "a) 1923",
+    justificacion: "INTERPOL se fundó en 1923 como la Comisión Internacional de Policía Criminal."
+  },
+  {
+    pregunta: "¿Qué organismo internacional coordina las políticas de telecomunicaciones mundiales?",
+    opciones: [
+      "a) UIT",
+      "b) UNESCO",
+      "c) OCDE",
+      "d) PNUD"
+    ],
+    correcta: "a) UIT",
+    justificacion: "La Unión Internacional de Telecomunicaciones (UIT), con sede en Ginebra, regula las telecomunicaciones globales."
+  },
+  {
+    pregunta: "¿Qué agencia de la ONU supervisa el uso pacífico de la energía nuclear?",
+    opciones: [
+      "a) OIEA",
+      "b) FAO",
+      "c) ONUDI",
+      "d) OMS"
+    ],
+    correcta: "a) OIEA",
+    justificacion: "El Organismo Internacional de Energía Atómica (OIEA), con sede en Viena, controla el uso pacífico de la energía nuclear."
+  },
+  {
+    pregunta: "¿Qué organización de la ONU se encarga de promover el desarrollo industrial?",
+    opciones: [
+      "a) ONUDI",
+      "b) PNUD",
+      "c) OCDE",
+      "d) FAO"
+    ],
+    correcta: "a) ONUDI",
+    justificacion: "La Organización de las Naciones Unidas para el Desarrollo Industrial (ONUDI) impulsa el crecimiento industrial sostenible."
+  },
+  {
+    pregunta: "¿Dónde tiene su sede la ONUDI?",
+    opciones: [
+      "a) Viena",
+      "b) Nueva York",
+      "c) Roma",
+      "d) París"
+    ],
+    correcta: "a) Viena",
+    justificacion: "La ONUDI tiene su sede en Viena, Austria."
+  },
+  {
+    pregunta: "¿Qué tribunal internacional se creó en 1993 para juzgar los crímenes cometidos en la antigua Yugoslavia?",
+    opciones: [
+      "a) Tribunal Penal Internacional para la ex Yugoslavia (TPIY)",
+      "b) Corte Internacional de Justicia",
+      "c) Tribunal de Núremberg",
+      "d) Corte Interamericana de Derechos Humanos"
+    ],
+    correcta: "a) Tribunal Penal Internacional para la ex Yugoslavia (TPIY)",
+    justificacion: "El TPIY fue creado por la ONU en 1993 para juzgar crímenes de guerra en los Balcanes."
+  },
+  {
+    pregunta: "¿En qué ciudad tuvo su sede el Tribunal Penal Internacional para Ruanda (TPIR)?",
+    opciones: [
+      "a) Nairobi",
+      "b) Arusha",
+      "c) Ginebra",
+      "d) Adís Abeba"
+    ],
+    correcta: "b) Arusha",
+    justificacion: "El TPIR, creado por la ONU en 1994, tuvo su sede en Arusha, Tanzania."
+  },
+  {
+    pregunta: "¿Qué organismo internacional elabora estadísticas mundiales sobre educación, ciencia y cultura?",
+    opciones: [
+      "a) UNESCO",
+      "b) ONUDI",
+      "c) OCDE",
+      "d) FAO"
+    ],
+    correcta: "a) UNESCO",
+    justificacion: "La UNESCO recopila y publica datos mundiales sobre educación, ciencia y cultura a través de su Instituto de Estadística."
+  },
+  {
+    pregunta: "¿Qué institución internacional fue creada en 1930 para facilitar la cooperación monetaria global?",
+    opciones: [
+      "a) Banco de Pagos Internacionales (BPI)",
+      "b) FMI",
+      "c) Banco Mundial",
+      "d) OCDE"
+    ],
+    correcta: "a) Banco de Pagos Internacionales (BPI)",
+    justificacion: "El BPI, con sede en Basilea, Suiza, promueve la cooperación entre bancos centrales."
+  },
+  {
+    pregunta: "El Foro Económico Mundial, conocido por sus reuniones en Davos, fue creado en:",
+    opciones: [
+      "a) 1968",
+      "b) 1971",
+      "c) 1975",
+      "d) 1980"
+    ],
+    correcta: "b) 1971",
+    justificacion: "El Foro Económico Mundial se fundó en 1971 para promover la cooperación público-privada en la economía global."
+  },
+  {
+    pregunta: "¿Dónde tiene su sede el Foro Económico Mundial?",
+    opciones: [
+      "a) Basilea",
+      "b) Ginebra",
+      "c) Lausana",
+      "d) Zurich"
+    ],
+    correcta: "b) Ginebra",
+    justificacion: "El Foro Económico Mundial tiene su sede en Ginebra, Suiza, aunque celebra su cumbre anual en Davos."
+  },
+  {
+    pregunta: "¿Qué organismo de la ONU coordina la respuesta internacional ante desastres naturales y crisis humanitarias?",
+    opciones: [
+      "a) ACNUR",
+      "b) OCHA",
+      "c) UNICEF",
+      "d) OMS"
+    ],
+    correcta: "b) OCHA",
+    justificacion: "La Oficina de Coordinación de Asuntos Humanitarios (OCHA) coordina la respuesta de la ONU ante emergencias."
+  },
+  {
+    pregunta: "¿Dónde tiene su sede la Oficina de Coordinación de Asuntos Humanitarios (OCHA)?",
+    opciones: [
+      "a) Nueva York y Ginebra",
+      "b) Viena y Roma",
+      "c) París y Estrasburgo",
+      "d) Nairobi y Addis Abeba"
+    ],
+    correcta: "a) Nueva York y Ginebra",
+    justificacion: "La OCHA cuenta con sedes principales en Nueva York y Ginebra."
+  },
+  {
+    pregunta: "¿Qué organismo internacional fue creado para proteger el medio ambiente y promover el desarrollo sostenible?",
+    opciones: [
+      "a) ONUDI",
+      "b) PNUMA",
+      "c) OMC",
+      "d) OCDE"
+    ],
+    correcta: "b) PNUMA",
+    justificacion: "El Programa de las Naciones Unidas para el Medio Ambiente (PNUMA) se creó en 1972 para coordinar políticas ambientales."
+  },
+  {
+    pregunta: "¿Dónde se encuentra la sede del Programa de las Naciones Unidas para el Medio Ambiente (PNUMA)?",
+    opciones: [
+      "a) Ginebra",
+      "b) Nairobi",
+      "c) Viena",
+      "d) París"
+    ],
+    correcta: "b) Nairobi",
+    justificacion: "El PNUMA tiene su sede en Nairobi, Kenia."
+  },
+  {
+    pregunta: "¿En qué conferencia se adoptó la Declaración de Estocolmo sobre el Medio Humano?",
+    opciones: [
+      "a) Conferencia de Río 1992",
+      "b) Conferencia de Estocolmo 1972",
+      "c) Cumbre de Johannesburgo 2002",
+      "d) Cumbre de París 2015"
+    ],
+    correcta: "b) Conferencia de Estocolmo 1972",
+    justificacion: "La Declaración de Estocolmo de 1972 fue el primer gran documento internacional sobre medio ambiente."
+  },
+  {
+    pregunta: "El Protocolo de Kioto de 1997 tiene como objetivo:",
+    opciones: [
+      "a) Reducir las emisiones de gases de efecto invernadero",
+      "b) Proteger la capa de ozono",
+      "c) Prohibir la deforestación",
+      "d) Regular el comercio del petróleo"
+    ],
+    correcta: "a) Reducir las emisiones de gases de efecto invernadero",
+    justificacion: "El Protocolo de Kioto fue el primer acuerdo vinculante sobre reducción de emisiones contaminantes."
+  },
+  {
+    pregunta: "El Acuerdo de París sobre cambio climático se firmó en el año:",
+    opciones: [
+      "a) 2012",
+      "b) 2014",
+      "c) 2015",
+      "d) 2016"
+    ],
+    correcta: "c) 2015",
+    justificacion: "El Acuerdo de París fue adoptado el 12 de diciembre de 2015 durante la COP21."
+  },
+  {
+    pregunta: "¿Qué organismo de la ONU coordina los esfuerzos para reducir la pobreza y promover el desarrollo humano?",
+    opciones: [
+      "a) FAO",
+      "b) PNUD",
+      "c) OMC",
+      "d) ONUDI"
+    ],
+    correcta: "b) PNUD",
+    justificacion: "El Programa de las Naciones Unidas para el Desarrollo (PNUD) promueve el desarrollo humano y sostenible."
+  },
+  {
+    pregunta: "¿Qué documento establece los 17 Objetivos de Desarrollo Sostenible (ODS)?",
+    opciones: [
+      "a) Agenda 2020",
+      "b) Agenda 2030",
+      "c) Carta de París",
+      "d) Declaración de Río"
+    ],
+    correcta: "b) Agenda 2030",
+    justificacion: "La Agenda 2030 para el Desarrollo Sostenible fue aprobada en 2015 por la ONU con 17 ODS."
+  },
+  {
+    pregunta: "¿Qué organismo coordina la cooperación nuclear civil bajo la ONU?",
+    opciones: [
+      "a) OIEA",
+      "b) OMS",
+      "c) FAO",
+      "d) ONUDI"
+    ],
+    correcta: "a) OIEA",
+    justificacion: "El Organismo Internacional de Energía Atómica (OIEA) supervisa el uso pacífico de la energía nuclear."
+  },
+  {
+    pregunta: "¿Qué organización internacional regula el transporte aéreo civil?",
+    opciones: [
+      "a) OACI",
+      "b) OMI",
+      "c) OMC",
+      "d) UIT"
+    ],
+    correcta: "a) OACI",
+    justificacion: "La Organización de Aviación Civil Internacional (OACI) regula la seguridad aérea y tiene su sede en Montreal."
+  },
+  {
+    pregunta: "¿Dónde tiene su sede la Organización de Aviación Civil Internacional (OACI)?",
+    opciones: [
+      "a) Nueva York",
+      "b) Montreal",
+      "c) Ginebra",
+      "d) Viena"
+    ],
+    correcta: "b) Montreal",
+    justificacion: "La OACI tiene su sede en Montreal, Canadá."
+  },
+  {
+    pregunta: "¿Qué organismo regula el transporte marítimo internacional y la seguridad en el mar?",
+    opciones: [
+      "a) OMI",
+      "b) UIT",
+      "c) FAO",
+      "d) PNUD"
+    ],
+    correcta: "a) OMI",
+    justificacion: "La Organización Marítima Internacional (OMI), con sede en Londres, regula la seguridad y la contaminación marítima."
+  },
+  {
+    pregunta: "¿En qué año se creó la Organización Marítima Internacional (OMI)?",
+    opciones: [
+      "a) 1948",
+      "b) 1958",
+      "c) 1967",
+      "d) 1970"
+    ],
+    correcta: "a) 1948",
+    justificacion: "La OMI fue creada en 1948 y comenzó a operar en 1959."
+  },
+  {
+    pregunta: "¿Qué organismo internacional regula las comunicaciones y tecnologías de la información?",
+    opciones: [
+      "a) UIT",
+      "b) UNESCO",
+      "c) OCDE",
+      "d) OMC"
+    ],
+    correcta: "a) UIT",
+    justificacion: "La Unión Internacional de Telecomunicaciones (UIT) coordina el uso global del espectro radioeléctrico y las telecomunicaciones."
+  },
+  {
+    pregunta: "¿Dónde tiene su sede la Unión Internacional de Telecomunicaciones (UIT)?",
+    opciones: [
+      "a) Ginebra",
+      "b) Viena",
+      "c) París",
+      "d) Roma"
+    ],
+    correcta: "a) Ginebra",
+    justificacion: "La UIT tiene su sede en Ginebra, Suiza."
+  },
+  {
+    pregunta: "¿Qué organización se encarga de coordinar la meteorología mundial?",
+    opciones: [
+      "a) OMM",
+      "b) OMS",
+      "c) FAO",
+      "d) PNUMA"
+    ],
+    correcta: "a) OMM",
+    justificacion: "La Organización Meteorológica Mundial (OMM) coordina la cooperación internacional en materia de meteorología y clima."
+  },
+  {
+    pregunta: "¿Dónde tiene su sede la Organización Meteorológica Mundial (OMM)?",
+    opciones: [
+      "a) Viena",
+      "b) Ginebra",
+      "c) París",
+      "d) Nairobi"
+    ],
+    correcta: "b) Ginebra",
+    justificacion: "La OMM tiene su sede en Ginebra, Suiza."
+  },
+  {
+    pregunta: "¿Qué institución judicial internacional juzga crímenes de guerra, genocidio y lesa humanidad?",
+    opciones: [
+      "a) Corte Penal Internacional",
+      "b) Corte Internacional de Justicia",
+      "c) Tribunal Europeo de Derechos Humanos",
+      "d) Corte Interamericana"
+    ],
+    correcta: "a) Corte Penal Internacional",
+    justificacion: "La CPI, con sede en La Haya, juzga los crímenes más graves contra el derecho internacional."
+  },
+  {
+    pregunta: "El Estatuto de Roma, base de la Corte Penal Internacional, entró en vigor en:",
+    opciones: [
+      "a) 1998",
+      "b) 2000",
+      "c) 2002",
+      "d) 2004"
+    ],
+    correcta: "c) 2002",
+    justificacion: "El Estatuto de Roma entró en vigor el 1 de julio de 2002, creando formalmente la CPI."
+  },
+  {
+    pregunta: "¿Qué organismo internacional coordina la ayuda a refugiados palestinos desde 1949?",
+    opciones: [
+      "a) ACNUR",
+      "b) UNRWA",
+      "c) PNUD",
+      "d) FAO"
+    ],
+    correcta: "b) UNRWA",
+    justificacion: "La Agencia de Naciones Unidas para los Refugiados de Palestina (UNRWA) se creó en 1949 para asistir a refugiados palestinos."
+  },
+  {
+    pregunta: "¿Dónde tiene su sede la UNRWA?",
+    opciones: [
+      "a) Amán",
+      "b) Jerusalén Este",
+      "c) Beirut",
+      "d) El Cairo"
+    ],
+    correcta: "a) Amán",
+    justificacion: "La UNRWA tiene su sede principal en Amán, Jordania."
+  },
+  {
+    pregunta: "¿Qué organización humanitaria adoptó los Convenios de Ginebra?",
+    opciones: [
+      "a) Cruz Roja Internacional",
+      "b) ONU",
+      "c) OEA",
+      "d) OSCE"
+    ],
+    correcta: "a) Cruz Roja Internacional",
+    justificacion: "El Comité Internacional de la Cruz Roja promovió la adopción de los Convenios de Ginebra sobre el derecho humanitario."
+  },
+  {
+    pregunta: "Los Convenios de Ginebra fueron adoptados por primera vez en:",
+    opciones: [
+      "a) 1859",
+      "b) 1864",
+      "c) 1899",
+      "d) 1907"
+    ],
+    correcta: "b) 1864",
+    justificacion: "El primer Convenio de Ginebra fue adoptado en 1864, centrado en la protección de heridos en combate."
+  },
+  {
+    pregunta: "¿Qué organismo internacional promueve la propiedad intelectual y el registro de patentes?",
+    opciones: [
+      "a) OMPI",
+      "b) OCDE",
+      "c) UNESCO",
+      "d) OMC"
+    ],
+    correcta: "a) OMPI",
+    justificacion: "La Organización Mundial de la Propiedad Intelectual (OMPI) promueve la protección de los derechos de propiedad intelectual."
+  },
+  {
+    pregunta: "¿Dónde tiene su sede la Organización Mundial de la Propiedad Intelectual (OMPI)?",
+    opciones: [
+      "a) Ginebra",
+      "b) París",
+      "c) Roma",
+      "d) Bruselas"
+    ],
+    correcta: "a) Ginebra",
+    justificacion: "La OMPI tiene su sede en Ginebra, Suiza."
+  },
+  {
+    pregunta: "¿Qué organismo de la ONU se ocupa de los asentamientos humanos y el desarrollo urbano sostenible?",
+    opciones: [
+      "a) ONU-Hábitat",
+      "b) FAO",
+      "c) PNUD",
+      "d) OMM"
+    ],
+    correcta: "a) ONU-Hábitat",
+    justificacion: "ONU-Hábitat promueve ciudades sostenibles y vivienda adecuada para todos."
+  },
+  {
+    pregunta: "¿Dónde tiene su sede ONU-Hábitat?",
+    opciones: [
+      "a) Nairobi",
+      "b) Viena",
+      "c) Ginebra",
+      "d) París"
+    ],
+    correcta: "a) Nairobi",
+    justificacion: "ONU-Hábitat tiene su sede en Nairobi, Kenia."
+  },
+  {
+    pregunta: "¿Qué organismo de la ONU regula las normas internacionales del trabajo marítimo?",
+    opciones: [
+      "a) OIT",
+      "b) OMI",
+      "c) FAO",
+      "d) UIT"
+    ],
+    correcta: "b) OMI",
+    justificacion: "La OMI establece normas sobre seguridad marítima y condiciones laborales a bordo."
+  },
+  {
+    pregunta: "¿Qué país alberga la sede de la Corte Internacional de Justicia?",
+    opciones: [
+      "a) Países Bajos",
+      "b) Bélgica",
+      "c) Francia",
+      "d) Suiza"
+    ],
+    correcta: "a) Países Bajos",
+    justificacion: "La Corte Internacional de Justicia se encuentra en La Haya, Países Bajos."
+  },
+  {
+    pregunta: "¿Qué documento fundacional creó la ONU tras la Segunda Guerra Mundial?",
+    opciones: [
+      "a) La Carta de San Francisco",
+      "b) El Tratado de Versalles",
+      "c) El Pacto de la Sociedad de Naciones",
+      "d) La Declaración de Helsinki"
+    ],
+    correcta: "a) La Carta de San Francisco",
+    justificacion: "La Carta de San Francisco, firmada en 1945, dio origen a la Organización de las Naciones Unidas."
+  },
+  {
+    pregunta: "¿Qué día se celebra el Día de las Naciones Unidas?",
+    opciones: [
+      "a) 24 de octubre",
+      "b) 10 de diciembre",
+      "c) 9 de mayo",
+      "d) 26 de junio"
+    ],
+    correcta: "a) 24 de octubre",
+    justificacion: "El Día de las Naciones Unidas conmemora la entrada en vigor de la Carta de la ONU en 1945."
+  },
+  {
+    pregunta: "¿Qué tratado internacional estableció la Corte Penal Internacional?",
+    opciones: [
+      "a) Estatuto de Roma",
+      "b) Carta de París",
+      "c) Convenio de Ginebra",
+      "d) Declaración de Viena"
+    ],
+    correcta: "a) Estatuto de Roma",
+    justificacion: "El Estatuto de Roma de 1998 creó la Corte Penal Internacional."
+  },
+  {
+    pregunta: "¿Cuál fue la primera agencia especializada del sistema de Naciones Unidas?",
+    opciones: [
+      "a) OIT",
+      "b) FAO",
+      "c) OMS",
+      "d) UNESCO"
+    ],
+    correcta: "a) OIT",
+    justificacion: "La Organización Internacional del Trabajo (OIT), creada en 1919, fue la primera agencia especializada."
+  },
+  {
+    pregunta: "¿En qué año se creó la Organización Mundial del Comercio (OMC)?",
+    opciones: [
+      "a) 1993",
+      "b) 1995",
+      "c) 1997",
+      "d) 2000"
+    ],
+    correcta: "b) 1995",
+    justificacion: "La OMC fue fundada el 1 de enero de 1995, sustituyendo al GATT."
+  },
+  {
+    pregunta: "¿Dónde tiene su sede la Organización Mundial del Comercio (OMC)?",
+    opciones: [
+      "a) Ginebra",
+      "b) Bruselas",
+      "c) París",
+      "d) Viena"
+    ],
+    correcta: "a) Ginebra",
+    justificacion: "La sede de la OMC se encuentra en Ginebra, Suiza."
+  },
+  {
+    pregunta: "¿Qué acuerdo económico reemplazó al Tratado de Libre Comercio de América del Norte (TLCAN)?",
+    opciones: [
+      "a) T-MEC",
+      "b) MERCOSUR",
+      "c) ALBA",
+      "d) UNASUR"
+    ],
+    correcta: "a) T-MEC",
+    justificacion: "El Tratado entre México, Estados Unidos y Canadá (T-MEC) sustituyó al TLCAN en 2020."
+  },
+  {
+    pregunta: "¿En qué año entró en vigor el Tratado de Libre Comercio de América del Norte (TLCAN)?",
+    opciones: [
+      "a) 1992",
+      "b) 1993",
+      "c) 1994",
+      "d) 1995"
+    ],
+    correcta: "c) 1994",
+    justificacion: "El TLCAN entró en vigor el 1 de enero de 1994."
+  },
+  {
+    pregunta: "¿Qué organismo promueve la cooperación económica en la región Asia-Pacífico?",
+    opciones: [
+      "a) ASEAN",
+      "b) APEC",
+      "c) OCDE",
+      "d) OMC"
+    ],
+    correcta: "b) APEC",
+    justificacion: "La Cooperación Económica Asia-Pacífico (APEC) fomenta el libre comercio entre países de esa región."
+  },
+  {
+    pregunta: "¿Dónde se celebró la primera cumbre de la APEC?",
+    opciones: [
+      "a) Canberra",
+      "b) Seúl",
+      "c) Seattle",
+      "d) Tokio"
+    ],
+    correcta: "c) Seattle",
+    justificacion: "La primera cumbre de líderes de la APEC se celebró en Seattle (EE.UU.) en 1993."
+  },
+  {
+    pregunta: "¿Qué organización regional agrupa a los países del Caribe?",
+    opciones: [
+      "a) CARICOM",
+      "b) ALBA",
+      "c) UNASUR",
+      "d) CELAC"
+    ],
+    correcta: "a) CARICOM",
+    justificacion: "La Comunidad del Caribe (CARICOM) se fundó en 1973 para promover la cooperación económica entre sus miembros."
+  },
+  {
+    pregunta: "¿Qué organización regional agrupa a los países del África Occidental?",
+    opciones: [
+      "a) CEDEAO",
+      "b) UA",
+      "c) COMESA",
+      "d) SADR"
+    ],
+    correcta: "a) CEDEAO",
+    justificacion: "La Comunidad Económica de Estados de África Occidental (CEDEAO) fue fundada en 1975 para impulsar la integración regional."
+  },
+  {
+    pregunta: "¿Qué tratado creó la Comunidad Andina de Naciones (CAN)?",
+    opciones: [
+      "a) Tratado de Montevideo",
+      "b) Acuerdo de Cartagena",
+      "c) Tratado de Asunción",
+      "d) Declaración de Lima"
+    ],
+    correcta: "b) Acuerdo de Cartagena",
+    justificacion: "El Acuerdo de Cartagena de 1969 dio origen a la actual Comunidad Andina de Naciones."
+  },
+  {
+    pregunta: "¿Qué países fueron fundadores de la Comunidad Andina?",
+    opciones: [
+      "a) Bolivia, Chile, Colombia, Ecuador y Perú",
+      "b) Brasil, Argentina, Uruguay y Paraguay",
+      "c) Venezuela, Cuba, Nicaragua y Bolivia",
+      "d) Perú, Chile, México y Argentina"
+    ],
+    correcta: "a) Bolivia, Chile, Colombia, Ecuador y Perú",
+    justificacion: "Estos países firmaron el Acuerdo de Cartagena en 1969, aunque Chile se retiró en 1976."
+  },
+  {
+    pregunta: "¿Qué organización latinoamericana promueve la integración política y social frente a modelos neoliberales?",
+    opciones: [
+      "a) ALBA",
+      "b) MERCOSUR",
+      "c) UNASUR",
+      "d) OEA"
+    ],
+    correcta: "a) ALBA",
+    justificacion: "La Alianza Bolivariana para los Pueblos de Nuestra América (ALBA) fue impulsada en 2004 por Cuba y Venezuela."
+  },
+  {
+    pregunta: "¿Qué organismo latinoamericano promueve la unión política y económica de América del Sur?",
+    opciones: [
+      "a) UNASUR",
+      "b) OEA",
+      "c) CELAC",
+      "d) MERCOSUR"
+    ],
+    correcta: "a) UNASUR",
+    justificacion: "La Unión de Naciones Suramericanas (UNASUR) busca la integración regional política, económica y social."
+  },
+  {
+    pregunta: "¿Qué organización agrupa a todos los países de América Latina y el Caribe sin incluir a EE.UU. ni Canadá?",
+    opciones: [
+      "a) CELAC",
+      "b) OEA",
+      "c) ALBA",
+      "d) MERCOSUR"
+    ],
+    correcta: "a) CELAC",
+    justificacion: "La Comunidad de Estados Latinoamericanos y Caribeños (CELAC) fue creada en 2010."
+  },
+  {
+    pregunta: "¿Qué institución de la ONU se ocupa del comercio y el desarrollo económico mundial?",
+    opciones: [
+      "a) UNCTAD",
+      "b) OCDE",
+      "c) OMC",
+      "d) FMI"
+    ],
+    correcta: "a) UNCTAD",
+    justificacion: "La Conferencia de las Naciones Unidas sobre Comercio y Desarrollo (UNCTAD) promueve el desarrollo a través del comercio."
+  },
+  {
+    pregunta: "¿Dónde tiene su sede la UNCTAD?",
+    opciones: [
+      "a) Ginebra",
+      "b) Viena",
+      "c) París",
+      "d) Nueva York"
+    ],
+    correcta: "a) Ginebra",
+    justificacion: "La sede de la UNCTAD está en Ginebra, Suiza."
+  },
+  {
+    pregunta: "¿Qué organismo de la ONU financia proyectos agrícolas en países en desarrollo?",
+    opciones: [
+      "a) FIDA",
+      "b) FAO",
+      "c) PNUD",
+      "d) PMA"
+    ],
+    correcta: "a) FIDA",
+    justificacion: "El Fondo Internacional de Desarrollo Agrícola (FIDA) se fundó en 1977 para apoyar a comunidades rurales pobres."
+  },
+  {
+    pregunta: "¿Dónde se encuentra la sede del Fondo Internacional de Desarrollo Agrícola (FIDA)?",
+    opciones: [
+      "a) Roma",
+      "b) Ginebra",
+      "c) Viena",
+      "d) Nueva York"
+    ],
+    correcta: "a) Roma",
+    justificacion: "El FIDA, como la FAO y el PMA, tiene su sede en Roma, Italia."
+  },
+  {
+    pregunta: "¿Qué organismo promueve la igualdad de género y el empoderamiento de las mujeres en la ONU?",
+    opciones: [
+      "a) ONU Mujeres",
+      "b) UNICEF",
+      "c) UNESCO",
+      "d) PNUD"
+    ],
+    correcta: "a) ONU Mujeres",
+    justificacion: "ONU Mujeres fue creada en 2010 para coordinar las políticas de igualdad de género en el sistema de Naciones Unidas."
+  },
+  {
+    pregunta: "¿En qué año comenzó a funcionar oficialmente ONU Mujeres?",
+    opciones: [
+      "a) 2008",
+      "b) 2010",
+      "c) 2011",
+      "d) 2012"
+    ],
+    correcta: "c) 2011",
+    justificacion: "ONU Mujeres empezó a operar el 1 de enero de 2011 tras la fusión de varios organismos previos."
+  },
+  {
+    pregunta: "¿Qué organismo de la ONU promueve la salud en el continente americano?",
+    opciones: [
+      "a) OPS",
+      "b) OMS",
+      "c) FAO",
+      "d) PNUD"
+    ],
+    correcta: "a) OPS",
+    justificacion: "La Organización Panamericana de la Salud (OPS) es el organismo regional de la OMS para América."
+  },
+  {
+    pregunta: "¿Dónde tiene su sede la Organización Panamericana de la Salud (OPS)?",
+    opciones: [
+      "a) Washington D.C.",
+      "b) Nueva York",
+      "c) Buenos Aires",
+      "d) México D.F."
+    ],
+    correcta: "a) Washington D.C.",
+    justificacion: "La OPS tiene su sede en Washington D.C., Estados Unidos."
+  },
+  {
+    pregunta: "¿Qué tratado internacional prohíbe las armas químicas?",
+    opciones: [
+      "a) Convención de 1993 sobre Armas Químicas",
+      "b) Tratado de No Proliferación Nuclear",
+      "c) Convención de Viena sobre Armas Biológicas",
+      "d) Protocolo de Ginebra de 1925"
+    ],
+    correcta: "a) Convención de 1993 sobre Armas Químicas",
+    justificacion: "La Convención de 1993 prohíbe el desarrollo y uso de armas químicas bajo supervisión de la OPAQ."
+  },
+  {
+    pregunta: "¿Dónde tiene su sede la Organización para la Prohibición de las Armas Químicas (OPAQ)?",
+    opciones: [
+      "a) Viena",
+      "b) La Haya",
+      "c) Ginebra",
+      "d) Bruselas"
+    ],
+    correcta: "b) La Haya",
+    justificacion: "La OPAQ tiene su sede en La Haya, Países Bajos."
+  },
+  {
+    pregunta: "¿Qué tratado internacional busca evitar la proliferación de armas nucleares?",
+    opciones: [
+      "a) Tratado de No Proliferación Nuclear (TNP)",
+      "b) Protocolo de Kioto",
+      "c) Tratado de Viena",
+      "d) Tratado de Ottawa"
+    ],
+    correcta: "a) Tratado de No Proliferación Nuclear (TNP)",
+    justificacion: "El TNP de 1968 busca evitar la expansión de armas nucleares y promover el desarme."
+  },
+  {
+    pregunta: "¿En qué año se firmó el Tratado de No Proliferación Nuclear?",
+    opciones: [
+      "a) 1967",
+      "b) 1968",
+      "c) 1970",
+      "d) 1972"
+    ],
+    correcta: "b) 1968",
+    justificacion: "El TNP se firmó en 1968 y entró en vigor en 1970."
+  },
+  {
+    pregunta: "¿Qué organismo promueve la cooperación judicial y criminal entre Estados, especialmente en Europa?",
+    opciones: [
+      "a) EUROJUST",
+      "b) INTERPOL",
+      "c) OSCE",
+      "d) OEA"
+    ],
+    correcta: "a) EUROJUST",
+    justificacion: "EUROJUST, con sede en La Haya, coordina la cooperación judicial entre los Estados miembros de la UE."
+  },
+  {
+    pregunta: "¿Qué tratado internacional prohíbe las minas antipersona?",
+    opciones: [
+      "a) Tratado de Ottawa",
+      "b) Protocolo de Ginebra",
+      "c) Tratado de Roma",
+      "d) Convención de Viena"
+    ],
+    correcta: "a) Tratado de Ottawa",
+    justificacion: "El Tratado de Ottawa de 1997 prohíbe el uso, producción y almacenamiento de minas antipersona."
+  },
+  {
+    pregunta: "¿Qué organización científica internacional promueve la cooperación nuclear pacífica y médica?",
+    opciones: [
+      "a) OIEA",
+      "b) OMS",
+      "c) UNESCO",
+      "d) FAO"
+    ],
+    correcta: "a) OIEA",
+    justificacion: "El OIEA impulsa el uso pacífico de la energía nuclear, incluyendo aplicaciones médicas y agrícolas."
+  },
+  {
+    pregunta: "¿Qué agencia de la ONU coordina la lucha contra el narcotráfico y el crimen organizado?",
+    opciones: [
+      "a) UNODC",
+      "b) INTERPOL",
+      "c) OSCE",
+      "d) OEA"
+    ],
+    correcta: "a) UNODC",
+    justificacion: "La Oficina de las Naciones Unidas contra la Droga y el Delito (UNODC) coordina acciones internacionales contra el crimen."
+  },
+  {
+    pregunta: "¿Dónde tiene su sede la UNODC?",
+    opciones: [
+      "a) Viena",
+      "b) Ginebra",
+      "c) París",
+      "d) Nueva York"
+    ],
+    correcta: "a) Viena",
+    justificacion: "La UNODC tiene su sede en Viena, Austria."
+  },
+  {
+    pregunta: "¿Qué organismo coordina la cooperación internacional en materia de propiedad industrial y marcas?",
+    opciones: [
+      "a) OMPI",
+      "b) OMC",
+      "c) UNESCO",
+      "d) OCDE"
+    ],
+    correcta: "a) OMPI",
+    justificacion: "La Organización Mundial de la Propiedad Intelectual (OMPI) protege patentes y marcas a nivel internacional."
+  },
+  {
+    pregunta: "¿Qué organismo internacional coordina la gestión de emergencias sanitarias globales?",
+    opciones: [
+      "a) OMS",
+      "b) OIT",
+      "c) FAO",
+      "d) ONUDI"
+    ],
+    correcta: "a) OMS",
+    justificacion: "La Organización Mundial de la Salud coordina la respuesta sanitaria mundial ante emergencias y pandemias."
+  },
+  {
+    pregunta: "¿Qué año marca la fundación oficial de la ONU?",
+    opciones: [
+      "a) 1943",
+      "b) 1945",
+      "c) 1947",
+      "d) 1949"
+    ],
+    correcta: "b) 1945",
+    justificacion: "La ONU se fundó oficialmente el 24 de octubre de 1945 tras la ratificación de su Carta."
+  },
+  {
+    pregunta: "¿Qué conferencia internacional dio origen a la ONU?",
+    opciones: [
+      "a) Conferencia de San Francisco",
+      "b) Conferencia de Potsdam",
+      "c) Conferencia de Yalta",
+      "d) Conferencia de París"
+    ],
+    correcta: "a) Conferencia de San Francisco",
+    justificacion: "La Conferencia de San Francisco (1945) redactó y aprobó la Carta fundacional de la ONU."
+  },
+  {
+    pregunta: "¿Qué organismo internacional nació en 1919 y fue el antecedente de la ONU?",
+    opciones: [
+      "a) Sociedad de Naciones",
+      "b) Consejo de Europa",
+      "c) OSCE",
+      "d) ONUDI"
+    ],
+    correcta: "a) Sociedad de Naciones",
+    justificacion: "La Sociedad de Naciones fue creada tras la Primera Guerra Mundial como precursora de la ONU."
+  },
+  {
+    pregunta: "¿Dónde tenía su sede la Sociedad de Naciones?",
+    opciones: [
+      "a) Ginebra",
+      "b) Viena",
+      "c) París",
+      "d) Londres"
+    ],
+    correcta: "a) Ginebra",
+    justificacion: "La Sociedad de Naciones tuvo su sede en Ginebra, Suiza."
+  },
+];
+
+let totalPreguntasRenderizadas = 0;
+
+function barajar(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+}
+
+function setProgress(current, total) {
+  const bar = document.getElementById('progressBar');
+  const pct = total > 0 ? Math.round((current / total) * 100) : 0;
+  bar.style.width = pct + '%';
+  bar.title = pct + '%';
+}
+
+function cargarTest() {
+  const seleccionadas = [...preguntasBanco];
+  barajar(seleccionadas);
+  const num = parseInt(document.getElementById("numPreguntas").value);
+  const seleccion = seleccionadas.slice(0, num);
+
+  const testForm = document.getElementById("testForm");
+  const result = document.getElementById("testResult");
+  testForm.innerHTML = '';
+  result.innerHTML = '';
+  totalPreguntasRenderizadas = seleccion.length;
+  setProgress(0, totalPreguntasRenderizadas);
+
+  seleccion.forEach((preg, index) => {
+    const id = `q${index}`;
+    const opciones = [...preg.opciones];
+    barajar(opciones);
+    const opcionesHTML = opciones.map(op => `
+      <label class="option">
+        <input type="radio" name="${id}" value="${op}" data-correcta="${preg.correcta}" data-justificacion="${preg.justificacion}">
+        ${op}
+      </label>
+    `).join('');
+
+    const card = document.createElement('div');
+    card.className = 'question';
+    card.innerHTML = `
+      <div class="q-head">
+        <div class="q-num">Pregunta ${index + 1}:</div>
+        <p class="q-text">${preg.pregunta}</p>
+      </div>
+      <div class="options">${opcionesHTML}</div>
+      <div class="justification" id="j${id}"></div>
+    `;
+    testForm.appendChild(card);
+  });
+
+  // Botonera inferior
+  const actions = document.createElement('div');
+  actions.style.textAlign = 'center';
+  actions.style.marginTop = '14px';
+  actions.innerHTML = '<button class="btn success" type="button" onclick="corregir()">✅ Enviar</button>';
+  testForm.appendChild(actions);
+
+  // Selección visual on click
+  testForm.querySelectorAll('.option input').forEach(inp => {
+    inp.addEventListener('change', (e) => {
+      const group = e.target.name;
+      // Quitar selección previa
+      testForm.querySelectorAll(`input[name="${group}"]`).forEach(i2 => {
+        i2.closest('.option').classList.remove('is-selected');
+      });
+      e.target.closest('.option').classList.add('is-selected');
+
+      // Progreso (contar cuántas preguntas ya tienen marcada una opción)
+      const respondidas = new Set();
+      testForm.querySelectorAll('.option input:checked').forEach(i3 => respondidas.add(i3.name));
+      setProgress(respondidas.size, totalPreguntasRenderizadas);
+    });
+  });
+}
+
+function corregir() {
+  const preguntas = document.querySelectorAll('.question');
+  let aciertos = 0;
+
+  preguntas.forEach(q => {
+    const seleccion = q.querySelector('input[type="radio"]:checked');
+    const justDiv = q.querySelector('.justification');
+
+    // Limpiar estilos previos
+    q.querySelectorAll('.option').forEach(lbl => {
+      lbl.classList.remove('correct-option', 'wrong-option');
+    });
+
+    // Marcar siempre la opción correcta
+    q.querySelectorAll('.option input').forEach(inp => {
+      if (inp.value === inp.dataset.correcta) {
+        inp.closest('.option').classList.add('correct-option');
+      }
+    });
+
+    if (seleccion) {
+      if (seleccion.value === seleccion.dataset.correcta) {
+        aciertos++;
+        justDiv.innerHTML = `<span class="correct">✔ ${seleccion.dataset.justificacion}</span>`;
+      } else {
+        // Señalar la opción elegida como errónea
+        seleccion.closest('.option').classList.add('wrong-option');
+        justDiv.innerHTML = `<span class="incorrect">✘ ${seleccion.dataset.justificacion}</span>`;
+      }
+    } else {
+      justDiv.innerHTML = `<span class="incorrect">✘ No contestada</span>`;
+    }
+  });
+
+  const result = document.getElementById('testResult');
+  const total = preguntas.length;
+  const pct = Math.round((aciertos / total) * 100);
+  const emoji = pct >= 70 ? "🎉" : (pct >= 50 ? "🙂" : "💪");
+  result.innerHTML = `
+    <div class="result-card">
+      <div class="muted">Resultado</div>
+      <div class="score">${emoji} ${aciertos} / ${total} (${pct}%)</div>
+      <div class="muted">Puedes cambiar tus respuestas y volver a pulsar <strong>Enviar</strong>.</div>
+    </div>
+  `;
+}
+
+function reiniciarTest() {
+  document.getElementById('testForm').innerHTML = '';
+  document.getElementById('testResult').innerHTML = '';
+  setProgress(0, 0);
+}
+</script>
+</body>
+</html>
