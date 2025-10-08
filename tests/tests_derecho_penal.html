@@ -1,1 +1,1622 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test de Penal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --card: #ffffff;
+      --text: #111827;
+      --muted: #6b7280;
+      --primary: #2563eb;
+      --primary-dark: #1e40af;
+      --success: #059669;
+      --danger: #dc2626;
+      --ring: rgba(37, 99, 235, 0.25);
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: 'Roboto', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      padding: 24px;
+    }
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+    header.hero {
+      text-align: center;
+      margin-bottom: 16px;
+    }
+    .title {
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--primary-dark);
+      margin: 0 0 8px;
+    }
+    .subtitle {
+      color: var(--muted);
+      margin: 0;
+    }
+    .controls {
+      background: var(--card);
+      border-radius: 14px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.06);
+      padding: 16px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      justify-content: center;
+      position: sticky;
+      top: 12px;
+      z-index: 5;
+    }
+    .controls label { font-weight: 500; }
+    select {
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid #e5e7eb;
+      background: #fff;
+      outline: none;
+      transition: box-shadow .2s, border-color .2s;
+    }
+    select:focus { border-color: var(--primary); box-shadow: 0 0 0 4px var(--ring); }
 
+    .btn {
+      cursor: pointer;
+      border: none;
+      border-radius: 10px;
+      padding: 12px 18px;
+      font-weight: 700;
+      transition: transform .15s, background .2s, box-shadow .2s;
+      color: #fff;
+      background: var(--primary);
+      box-shadow: 0 6px 14px rgba(37,99,235,.2);
+    }
+    .btn:hover { transform: translateY(-1px); background: var(--primary-dark); }
+    .btn.secondary { background: #6b7280; }
+    .btn.secondary:hover { background: #374151; }
+    .btn.success { background: var(--success); }
+    .btn.success:hover { background: #047857; }
+    .btn.danger { background: var(--danger); }
+    .btn.danger:hover { background: #b91c1c; }
+
+    .progress {
+      width: 100%;
+      height: 10px;
+      background: #e5e7eb;
+      border-radius: 999px;
+      overflow: hidden;
+      margin-top: 8px;
+    }
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--primary), #60a5fa);
+      transition: width .3s ease;
+    }
+
+    .question {
+      margin: 14px 0;
+      padding: 18px;
+      background: var(--card);
+      border-radius: 14px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.06);
+    }
+    .q-head {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+    }
+    .q-num {
+      font-weight: 800;
+      color: var(--primary-dark);
+    }
+    .q-text { margin: 0; }
+
+    .options { margin-top: 10px; display: grid; gap: 8px; }
+    .option {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid #e5e7eb;
+      background: #fff;
+      transition: background .15s, border-color .15s, box-shadow .15s;
+      cursor: pointer;
+    }
+    .option input { transform: scale(1.2); }
+    .option:hover { background: #f9fafb; border-color: #d1d5db; }
+    .option.is-selected { box-shadow: 0 0 0 4px var(--ring); border-color: var(--primary); }
+
+    .justification {
+      margin-top: 10px; color: var(--muted);
+    }
+    .correct { color: var(--success); font-weight: 700; }
+    .incorrect { color: var(--danger); font-weight: 700; }
+
+    .option.correct-option {
+      border-color: rgba(5,150,105,.4);
+      background: #ecfdf5;
+    }
+    .option.wrong-option {
+      border-color: rgba(220,38,38,.4);
+      background: #fef2f2;
+    }
+
+    .result-card {
+      margin: 18px 0;
+      padding: 16px;
+      background: var(--card);
+      border-radius: 14px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.06);
+      text-align: center;
+    }
+    .score {
+      font-size: 22px;
+      font-weight: 800;
+      margin: 8px 0;
+    }
+    .muted { color: var(--muted); }
+    footer { text-align: center; margin-top: 24px; color: var(--muted); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="hero">
+      <h1 class="title">Test de Derecho Penal</h1>
+      <p class="subtitle">Selecciona cuántas preguntas quieres y pulsa <strong>Comenzar</strong>.</p>
+    </header>
+
+    <div class="controls">
+      <label for="numPreguntas">Número de preguntas:</label>
+      <select id="numPreguntas">
+        <option value="10">10</option>
+        <option value="20">20</option>
+        <option value="30">30</option>
+        <option value="40">40</option>
+        <option value="50" selected>50</option>
+      </select>
+      <button class="btn" type="button" onclick="cargarTest()">Comenzar</button>
+      <button class="btn secondary" type="button" onclick="reiniciarTest()">Reiniciar</button>
+      <div class="progress" style="flex-basis: 100%;">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+    </div>
+
+    <form id="testForm"></form>
+
+    <div id="testResult"></div>
+    <footer>© Test de práctica — Derecho Penal</footer>
+  </div>
+
+<script>
+const preguntasBanco = [
+  {
+  pregunta: "¿Qué principio impide que una persona sea condenada por un hecho que no esté definido como delito en la ley antes de cometerse?",
+  opciones: ["a) Principio de presunción de inocencia.", "b) Principio de legalidad penal.", "c) Principio de proporcionalidad.", "d) Principio de intervención mínima."],
+  correcta: "b) Principio de legalidad penal.",
+  justificacion: "El principio de legalidad penal exige que solo puedan ser castigados los hechos tipificados previamente como delito en la ley."
+},
+{
+  pregunta: "La pena que impide a una persona realizar determinados actos o emplear ciertos derechos, sin privarla de libertad, es:",
+  opciones: ["a) Pena de prisión permanente revisable.", "b) Pena de multa.", "c) Pena privativa de derechos.", "d) Pena de trabajos en beneficio de la comunidad."],
+  correcta: "c) Pena privativa de derechos.",
+  justificacion: "La pena privativa de derechos limita ciertos derechos (por ejemplo para profesión u ocupación) sin suponer privación de libertad."
+},
+{
+  pregunta: "La rehabilitación, como forma de extinción de la responsabilidad penal, consiste en:",
+  opciones: ["a) El cumplimiento de la pena de forma íntegra y que no existan condenas posteriores en un plazo legal.", "b) La indemnización a la víctima.", "c) La remisión automática de penas antes de su cumplimiento.", "d) La concesión de indulto sin condena previa."],
+  correcta: "a) El cumplimiento de la pena de forma íntegra y que no existan condenas posteriores en un plazo legal.",
+  justificacion: "La rehabilitación opera una vez cumplida la pena y transcurrido el plazo en el que no haya reincidencia, restableciendo ciertos derechos."
+},
+{
+  pregunta: "Una persona es penalmente responsable si actúa con dolo o imprudencia, lo que exige que:",
+  opciones: ["a) Solo haya resultado dañoso, sin importar la intención.", "b) Haya localizable autor, causa, y tipicidad del hecho además del grado de culpa.", "c) Solo exista dolo, nunca imprudencia.", "d) La autoridad prevea la pena a aplicar sin juicio."],
+  correcta: "b) Haya localizable autor, causa, y tipicidad del hecho además del grado de culpa.",
+  justificacion: "La responsabilidad criminal exige un hecho típico, antijurídico, culpable, con sujeto capaz y sancionable."
+},
+{
+  pregunta: "La prescripción de la acción penal significa que:",
+  opciones: ["a) Nunca se olvida un delito.", "b) El delito ya no puede ser perseguido judicialmente pasados los plazos legales.", "c) La pena se reduce automáticamente.", "d) Solo aplica para delitos leves."],
+  correcta: "b) El delito ya no puede ser perseguido judicialmente pasados los plazos legales.",
+  justificacion: "La prescripción extingue la acción penal cuando ha transcurrido el plazo previsto sin que se haya iniciado o concluido el proceso."
+},
+{
+  pregunta: "¿Cuál de las siguientes es una medida de seguridad y no una pena?",
+  opciones: ["a) Pena de multa.", "b) Trabajo en beneficio de la comunidad.", "c) Prohibición de residir en determinados lugares.", "d) Pena de prisión permanente revisable."],
+  correcta: "c) Prohibición de residir en determinados lugares.",
+  justificacion: "Las medidas de seguridad buscan prevenir la peligrosidad del autor, no castigarlo por el hecho mismo; algunas limitan derechos como la residencia, sin constituir pena clásica."
+},
+{
+  pregunta: "El principio que exige una valoración de la pena según la gravedad del hecho, la culpa del autor y las circunstancias personales se denomina:",
+  opciones: ["a) Principio de culpabilidad.", "b) Principio de proporcionalidad.", "c) Principio de intervención mínima.", "d) Principio de presunción de inocencia."],
+  correcta: "b) Principio de proporcionalidad.",
+  justificacion: "La pena debe ser proporcional al delito cometido y a la culpabilidad del autor, evitando excesos o injusticias."
+},
+{
+  pregunta: "Cuando una persona es autora de varios delitos, debe aplicarse la pena correspondiente a cada uno, pero con las reglas legales que evitan penas desmesuradas. Esto forma parte del principio de:",
+  opciones: ["a) Unidad de acción.", "b) Indivisibilidad de la pena.", "c) Concurrencia de penas.", "d) Continuidad del delito."],
+  correcta: "c) Concurrencia de penas.",
+  justificacion: "La concurrencia de penas regula cómo se acumulan o combinan las penas cuando hay múltiples delitos."
+},
+{
+  pregunta: "El derecho penal no puede sancionar cualquier comportamiento socialmente inaceptable, solo aquellos que la ley considere suficientes para afectar a bienes jurídicos fundamentales. Este criterio expresa el principio de:",
+  opciones: ["a) Subsidiariedad o intervención mínima.", "b) Lesividad.", "c) Inmediatez.", "d) Equidad."],
+  correcta: "b) Lesividad.",
+  justificacion: "El principio de lesividad exige que el hecho cause un daño o riesgo relevante para bienes jurídicos dignos de protección penal."
+},
+{
+  pregunta: "La infracción penal que se castiga con pena de hasta tres años de prisión o multa es considerada:",
+  opciones: ["a) Delito.", "b) Faltas.", "c) Infracción administrativa.", "d) Atentado."],
+  correcta: "a) Delito.",
+  justificacion: "En la legislación penal moderna, muchas infracciones antes calificadas como faltas han sido integradas como delitos de menor entidad."
+},
+{
+  pregunta: "En el derecho penal, el dolo eventual ocurre cuando:",
+  opciones: ["a) Hay intención directa clara de causar el resultado.", "b) El autor no previó la posibilidad del resultado.", "c) El autor prevé la posibilidad del resultado y, aun así, procede aceptando el riesgo.", "d) Solo hay culpa grave."],
+  correcta: "c) El autor prevé la posibilidad del resultado y, aun así, procede aceptando el riesgo.",
+  justificacion: "El dolo eventual implica una aceptación del riesgo, aun sin intención directa de producir el resultado."
+},
+{
+  pregunta: "La imprudencia penal (leve o grave) se diferencia del dolo porque:",
+  opciones: ["a) Supone intención de causar daño.", "b) No hay previsión del resultado, o hay previsión pero de forma negligente, no con aceptación deliberada.", "c) Solo se aplica en delitos económicos.", "d) Siempre conlleva pena de prisión."],
+  correcta: "b) No hay previsión del resultado, o hay previsión pero de forma negligente, no con aceptación deliberada.",
+  justificacion: "La culpa (imprudencia) se basa en falta de diligencia, no en intención de producir el resultado."
+},
+{
+  pregunta: "La pena de multa exige que se fije una cuantía según la capacidad económica del condenado. Con ello se cumple el principio de:",
+  opciones: ["a) Igualdad en la sanción.", "b) Generalidad del derecho penal.", "c) Proporcionalidad.", "d) Equidad."],
+  correcta: "c) Proporcionalidad.",
+  justificacion: "La multa debe calibrarse según los medios del condenado para que la pena tenga eficacia real y sea justa."
+},
+{
+  pregunta: "El principio de presunción de inocencia implica que:",
+  opciones: ["a) El investigado es culpable hasta que pruebe lo contrario.", "b) Toda duda beneficia al acusado; debe demostrarse su culpabilidad más allá de una duda razonable.", "c) El acusado debe mostrar su inocencia inicialmente.", "d) Se puede condenar sin pruebas si el delito es grave."],
+  correcta: "b) Toda duda beneficia al acusado; debe demostrarse su culpabilidad más allá de una duda razonable.",
+  justificacion: "La presunción de inocencia obliga al Estado a acreditar la culpa; la duda razonable es favorable al acusado."
+},
+{
+  pregunta: "La acción penal pública puede ser perseguida de oficio por la autoridad, incluso sin que exista una denuncia formal. Esta característica depende del tipo de delito, y se denomina:",
+  opciones: ["a) Acción pública propiamente dicha.", "b) Acción pública condicionada o a instancia de parte.", "c) Acción privada.", "d) Acción civil subsidiaria."],
+  correcta: "a) Acción pública propiamente dicha.",
+  justificacion: "En delitos de gravedad, la autoridad puede iniciar la persecución independientemente del deseo de la víctima, salvo que la ley exija instar la acción."
+},
+{
+  pregunta: "El indulto es una medida que:",
+  opciones: ["a) Sustituye la pena por otra más grave.", "b) Supone perdón de la pena o reducción de la misma por decisión del Gobierno u órgano competente, aunque no extingue el delito.", "c) Afecta al procedimiento penal antes del juicio.", "d) Siempre conlleva la rehabilitación."],
+  correcta: "b) Supone perdón de la pena o reducción de la misma por decisión del Gobierno u órgano competente, aunque no extingue el delito.",
+  justificacion: "El indulto es un acto de gracia que puede suavizar la pena, pero la condena sigue existiendo."
+},
+{
+  pregunta: "La reincidencia penal puede agravar la pena porque indica:",
+  opciones: ["a) Que el autor no ha sido juzgado antes.", "b) Que el autor ha sido condenado anteriormente y esto afecta su peligrosidad y cumplimiento.", "c) Que siempre hay dolo.", "d) Que el delito actual es irresoluble."],
+  correcta: "b) Que el autor ha sido condenado anteriormente y esto afecta su peligrosidad y cumplimiento.",
+  justificacion: "La reincidencia revela antecedentes penales, lo cual suele implicar un mayor grado de sanción."
+},
+{
+  pregunta: "Una medida cautelar penal que consiste en la privación provisional de libertad mientras se investiga un delito se denomina:",
+  opciones: ["a) Fianza.", "b) Prisión provisional.", "c) Multa anticipada.", "d) Suspensión del procedimiento."],
+  correcta: "b) Prisión provisional.",
+  justificacion: "La prisión provisional es una medida cautelar que busca asegurar la presencia del investigado, evitar obstaculización de la investigación o prevenir nuevos delitos."
+},
+{
+  pregunta: "El tipo penal describe los elementos esenciales del delito. ¿Qué parte del tipo penal incluye la descripción del resultado que el legislador quiere sancionar?",
+  options: ["a) La pena.", "b) La tipicidad.", "c) La antijuridicidad.", "d) La culpabilidad."],
+  correcta: "b) La tipicidad.",
+  justificacion: "La tipicidad incluye la descripción del hecho prohibido, incluidos los medios, el resultado y la relación de causalidad."
+},
+{
+  pregunta: "¿Qué significa que un hecho sea “antijurídico” en el ámbito penal?",
+  opciones: ["a) Que esté tipificado como delito en la ley.", "b) Que no esté permitido por la norma y carezca de causa de justificación.", "c) Que sea cometido con dolo.", "d) Que tenga pena leve."],
+  correcta: "b) Que no esté permitido por la norma y carezca de causa de justificación.",
+  justificacion: "La antijuridicidad es la oposición del hecho al ordenamiento jurídico, salvo que exista una causa de exculpación o justificación."
+},
+{
+  pregunta: "La libertad vigilada o seguimiento posterior permite a la autoridad supervisar al condenado tras su cumplimiento y puede incluir obligaciones específicas, siendo una medida de:",
+  opciones: ["a) Pena.", "b) Medida accesoria.", "c) Medida de seguridad.", "d) Derecho civil."],
+  correcta: "c) Medida de seguridad.",
+  justificacion: "La libertad vigilada busca prevenir riesgos futuros del condenado; es parte de la ejecución de la pena bajo vigilancia."
+},
+{
+  pregunta: "El principio de igualdad ante la ley significa que todas las personas sometidas al derecho penal deberán ser tratadas:",
+  options: ["a) Con criterios arbitrarios según caso.", "b) Según su capacidad económica únicamente.", "c) Igualmente ante normas comparables y sin discriminación injusta.", "d) Diferentemente si conocen al juez."],
+  correcta: "c) Igualmente ante normas comparables y sin discriminación injusta.",
+  justificacion: "La igualdad es un principio constitucional que también impregna el derecho penal, asegurando que personas en igual situación sean tratadas igual."
+},
+{
+  pregunta: "Una causa de justificación que excluye la antijuridicidad del hecho es, entre otras:",
+  options: ["a) Error de tipo persistente.", "b) Intimidación psicológica.", "c) Estado de necesidad.", "d) Falla mecánica involuntaria."],
+  correcta: "c) Estado de necesidad.",
+  justificacion: "El estado de necesidad permite cometer un hecho típico si era imprescindible para evitar un mal mayor al que se pretendía proteger."
+},
+{
+  pregunta: "El dolo directo difiere del dolo eventual en que el autor:",
+  options: ["a) No prevé el resultado.", "b) Solo actúa con imprudencia.", "c) Tiene la intención clara de provocar el resultado.", "d) Actúa sin conocimiento del riesgo."],
+  correcta: "c) Tiene la intención clara de provocar el resultado.",
+  justificacion: "En el dolo directo el autor no solo prevé el resultado, sino que busca específicamente su consecución."
+},
+{
+  pregunta: "La pena que impide la salida del país al condenado es un ejemplo de:",
+  options: ["a) Pena de prisión.", "b) Pena de multa.", "c) Pena privativa de derechos.", "d) Medida de seguridad."],
+  correcta: "c) Pena privativa de derechos.",
+  justificacion: "Se restringe un derecho (salir del territorio) sin privar de libertad; es parte de las penas limitadoras de derechos."
+},
+{
+  pregunta: "Para que una pena sea aplicable es necesario, entre otras condiciones, que el hecho esté vigente en el momento del delito; este principio se llama:",
+  options: ["a) Irretroactividad de la ley penal desfavorable.", "b) Principio de proporcionalidad.", "c) Principio de lesividad.", "d) Principio de culpabilidad."],
+  correcta: "a) Irretroactividad de la ley penal desfavorable.",
+  justificacion: "Una persona no puede ser sancionada con una pena que no estaba vigente al cometer el hecho, salvo si una ley posterior lo beneficia (retroactividad benigna)."
+},
+{
+  pregunta: "Una pena que impone privación de libertad de forma permanente hasta revisión judicial es:",
+  options: ["a) Pena de prisión corta.", "b) Pena de trabajos comunitarios.", "c) Pena de prisión permanente revisable.", "d) Pena de multa reforzada."],
+  correcta: "c) Pena de prisión permanente revisable.",
+  justificacion: "Es la pena más grave del sistema, sujeta a revisión para valorar la continuación o suspenso."
+},
+{
+  pregunta: "La culpabilidad supone que el autor del hecho haya actuado con:",
+  options: ["a) Intención o negligencia, sin justificación ni excusa.", "b) Sólo imprudencia.", "c) Omisión únicamente.", "d) Indeterminación."],
+  correcta: "a) Intención o negligencia, sin justificación ni excusa.",
+  justificacion: "La culpabilidad exige actuación voluntaria o negligente, sin causas de exención o justificación."
+},
+{
+  pregunta: "El autor mediato es aquel que ejecuta el delito mediante otra persona o instrumento, aprovechando la vulnerabilidad de esta. Esto muestra que el derecho penal:",
+  options: ["a) Solo sanciona al que directamente realiza la acción física.", "b) Puede sancionar a quien utiliza a otros como instrumentos para la comisión del delito.", "c) No sanciona en ausencia de dolo.", "d) No sanciona la cooperación."],
+  correcta: "b) Puede sancionar a quien utiliza a otros como instrumentos para la comisión del delito.",
+  justificacion: "El autor mediato aprovecha la subordinación u otro estado de dependencia para cometer el delito a través de tercero."
+},
+{
+  pregunta: "La tentativa criminal se produce cuando:",
+  options: ["a) El delito se consuma con éxito.", "b) El autor desiste antes de empezar.", "c) El autor inicia la ejecución del delito pero no lo consuma por causas independientes a su voluntad.", "d) La víctima no denuncia."],
+  correcta: "c) El autor inicia la ejecución del delito pero no lo consuma por causas independientes a su voluntad.",
+  justificacion: "La tentativa permite sancionar la conducta cuando no llega al resultado, pero se ha dado una ejecución clara y próxima a la consumación."
+},
+{
+  pregunta: "El juez o tribunal puede aplicar circunstancias modificativas de la responsabilidad penal que atenúen o agraven la pena. Estas circunstancias se califican como:",
+  options: ["a) Causas de justificación.", "b) Causas de exención.", "c) Agravantes o atenuantes.", "d) Errores de tipo."],
+  correcta: "c) Agravantes o atenuantes.",
+  justificacion: "Las agravantes aumentan la pena, las atenuantes la reducen, conforme al tipo y circunstancias del hecho y autor."
+},
+{
+  pregunta: "La pena accesoria es aquella que:",
+    opciones: ["a) Sustituye la pena principal.", "b) Se impone junto con la pena principal como complemento, como la inhabilitación especial.", "c) Se desvincula del delito.", "d) Equipara al indulto."],
+  correcta: "b) Se impone junto con la pena principal como complemento, como la inhabilitación especial.",
+  justificacion: "Las penas accesorias se añaden a la pena principal cuando la ley lo exige o lo permite, como la inhabilitación o pérdida de derechos."
+},
+{
+  pregunta: "¿Qué concepto penal se refiere a la relación directa entre la conducta del autor y el resultado producido?",
+  options: ["a) Tipicidad.", "b) Causalidad.", "c) Antijuridicidad.", "d) Responsabilidad civil."],
+  correcta: "b) Causalidad.",
+  justificacion: "La relación de causalidad conecta la acción u omisión con el resultado típico, siendo necesaria para la responsabilidad penal."
+},
+{
+  pregunta: "Una persona que coopera con los autores del delito, sin ser la principal ejecutora, puede ser considerada:",
+  options: ["a) Autor directo.", "b) Víctima.", "c) Cómplice o colaborador.", "d) Testigo."],
+  correcta: "c) Cómplice o colaborador.",
+  justificacion: "Existen distintos grados de participación delictiva: autor, coautor, cómplice; todos pueden ser sancionados conforme al grado de implicación."
+},
+{
+  pregunta: "Los delitos contra la integridad física, la libertad, la seguridad pública o el patrimonio están tipificados para proteger bienes jurídicos básicos. La elección de qué bienes proteger y cómo hacerlo es una manifestación del principio:",
+  options: ["a) Principio de intervención mínima.", "b) Principio de proporcionalidad.", "c) Principio de lesividad.", "d) Principio de culpabilidad."],
+  correcta: "c) Principio de lesividad.",
+  justificacion: "El legislador decide qué conductas lesionan bienes jurídicos relevantes; ese discernimiento forma parte del principio de lesividad."
+},
+{
+  pregunta: "La persona que comete un delito por miedo intenso e injusto provocado por otra persona, puede alegar:",
+  options: ["a) Estado de necesidad.", "b) Coacción u intimidación.", "c) Dolo eventual.", "d) Indulto."],
+  correcta: "b) Coacción u intimidación.",
+  justificacion: "La coacción justifica o atenúa la responsabilidad si media amenaza grave que impide la voluntad libre."
+},
+{
+  pregunta: "Una acción penal privada solo puede iniciarse por la víctima o persona legitimada expresamente, y en su caso requiere querella. Esto ocurre en delitos:",
+  options: ["a) Muy graves como homicidio.", "b) Que la ley decide perseguir a instancia de parte.", "c) Que siempre el Ministerio Fiscal investiga.", "d) Sancionados con pena de multa leve."],
+  correcta: "b) Que la ley decide perseguir a instancia de parte.",
+  justificacion: "Algunos delitos menos graves solo se persiguen si la persona ofendida lo solicita mediante querella u otros medios."
+},
+{
+  pregunta: "Una causa de exención de responsabilidad penal que excluye la culpabilidad es:",
+  opciones: ["a) Culpa leve.", "b) Estado de necesidad.", "c) Error de tipo invencible.", "d) Dolo eventual aceptado."],
+  correcta: "c) Error de tipo invencible.",
+  justificacion: "El error de tipo invencible impide conocer o valorar correctamente los elementos del tipo penal, excluyendo la culpabilidad."
+},
+{
+  pregunta: "La sedición se castiga porque afecta a bienes jurídicos como la seguridad constitucional o el orden público. ¿Qué característica del derecho penal está presente aquí?",
+  opciones: ["a) La inmediatez.", "b) La subsidiariedad.", "c) La tipicidad abierta.", "d) La eficacia retroactiva."],
+  correcta: "b) La subsidiariedad.",
+  justificacion: "Se sancionan aquellas conductas más graves para las que otras normas menos limitadoras no son suficientes; el derecho penal actúa como último recurso."
+},
+{
+  pregunta: "El principio de oportunidad permite al fiscal:",
+  opciones: ["a) Decidir no perseguir ciertos delitos en determinados supuestos legales establecidos.", "b) Fijar la pena a aplicar al acusado.", "c) Conceder el indulto directamente.", "d) Actuar sin pruebas."],
+  correcta: "a) Decidir no perseguir ciertos delitos en determinados supuestos legales establecidos.",
+  justificacion: "El principio de oportunidad se aplica solo cuando la ley lo permite expresamente, absteniéndose de iniciar o continuar la acción penal."
+},
+{
+  pregunta: "El silencio en la declaración del investigado —sin contestar preguntas— es un derecho porque:",
+  opciones: ["a) Indica culpabilidad.", "b) Puede ser interpretado negativamente.", "c) Está protegido por el principio de presunción de inocencia.", "d) Obliga a firmar reconocimiento inmediato."],
+  correcta: "c) Está protegido por el principio de presunción de inocencia.",
+  justificacion: "El derecho a no declarar frente a la policía o en juicio se basa en la presunción de inocencia y en que no puede obligarse a confesarse culpable."
+},
+{
+  pregunta: "La responsabilidad penal de personas jurídicas exige que la conducta del representante u órgano haya sido:",
+  opciones: ["a) Siempre dolosa.", "b) Que exista autor identificable y la conducta esté vinculada al objeto social o interés empresarial.", "c) Que la empresa tenga deudas.", "d) Que haya sentencia previa contra un empleado."],
+  correcta: "b) Que exista autor identificable y la conducta esté vinculada al objeto social o interés empresarial.",
+  justificacion: "Las personas jurídicas solo son responsables cuando su conducta es atribuible al órgano o representante y favorece directa o indirectamente la consecución de los fines de la entidad."
+},
+{
+  pregunta: "La pena de trabajos en beneficio de la comunidad se aplica como sanción alternativa o complementaria, y su duración se mide en:",
+  opciones: ["a) Meses.", "b) Días.", "c) Años.", "d) Horas."],
+  correcta: "b) Días.",
+  justificacion: "La duración de los trabajos comunitarios se establece en días u horas según la ley, no en años."
+},
+{
+  pregunta: "La prisión preventiva puede acordarse si:",
+  opciones: ["a) No hay riesgo alguno de que el investigado falte al juicio.", "b) Existe riesgo de fuga, destrucción de pruebas o reiteración delictiva.", "c) Solo si hay condena firme.", "d) Automáticamente en todos los delitos."],
+  correcta: "b) Existe riesgo de fuga, destrucción de pruebas o reiteración delictiva.",
+  justificacion: "Las razones que justifican la prisión provisional están orientadas a garantizar el proceso y la seguridad pública."
+},
+{
+  pregunta: "Cuando un delito exige dolo especial (intención o finalidad adicional), sin esa finalidad no hay delito, incluso si se ha producido el acto básico. Esto indica que el tipo penal es:",
+  opciones: ["a) Culposo.", "b) Simple.", "c) Plural.", "d) Complejo o doloso especial."],
+  correcta: "d) Complejo o doloso especial.",
+  justificacion: "La existencia de un dolo adicional condiciona la tipicidad del delito; sin él el tipo no queda completo."
+},
+{
+  pregunta: "La remisión de la pena consiste en:",
+  opciones: ["a) Eximir del delito.", "b) Reducir la pena por cumplimiento de exigencias específicas como buena conducta.", "c) Suprimir el registro de antecedentes.", "d) Otorgar libertad absoluta tras el juicio."],
+  correcta: "b) Reducir la pena por cumplimiento de exigencias específicas como buena conducta.",
+  justificacion: "La remisión permite obtener una reducción de pena bajo determinadas condiciones."
+},
+{
+  pregunta: "La reincidencia puede ser:",
+  opciones: ["a) Solo simple.", "b) Simple o cualificada, incrementando la sanción si se dan condiciones agravantes.", "c) Únicamente tenida en cuenta para delitos leves.", "d) Siempre obligatoria."],
+  correcta: "b) Simple o cualificada, incrementando la sanción si se dan condiciones agravantes.",
+  justificacion: "La reincidencia cualificada se da cuando concurren ciertos elementos que la hacen más grave, por ejemplo, habitualidad o especial peligrosidad."
+},
+{
+  pregunta: "La acción civil derivada del delito permite a la víctima:",
+  opciones: ["a) Exigir indemnización únicamente fuera del proceso penal.", "b) Reclamar reparación económica dentro del proceso penal o de manera simultánea.", "c) No reclamar si hay condena penal.", "d) Demandar solo daños morales."],
+  correcta: "b) Reclamar reparación económica dentro del proceso penal o de manera simultánea.",
+  justificacion: "El sistema penal admite la responsabilidad civil conjunta, de modo que las víctimas pueden reclamar daños y perjuicios en el mismo juicio o procedimiento civil conexo."
+},
+{
+  pregunta: "El derecho al juez ordinario predeterminado por la ley implica que:",
+  opciones: ["a) El juez es elegido por las partes.", "b) Los tribunales se establecen preexistente y legalmente; no pueden depender de elección posterior arbitraria.", "c) Cualquiera puede convertirse en juez.", "d) Se puede variar el juez sin causa."],
+  correcta: "b) Los tribunales se establecen preexistente y legalmente; no pueden depender de elección posterior arbitraria.",
+  justificacion: "La garantía del juez legal protege frente a juicios especiales, tribunales de excepción o árbitros no previstos por la ley."
+},
+{
+  pregunta: "La vigilancia del condenado después del cumplimiento de la pena puede implicar:",
+  opciones: ["a) Libertad plena sin restricciones.", "b) Obligaciones como no residir en lugares determinados o no contactar con personas vulnerables.", "c) Expulsión del país siempre.", "d) Cancelación automática de antecedentes."],
+  correcta: "b) Obligaciones como no residir en lugares determinados o no contactar con personas vulnerables.",
+  justificacion: "El seguimiento posterior o libertad vigilada busca reducir riesgos sociales, con medidas específicas."
+},
+{
+  pregunta: "La cooperación judicial internacional en materia penal puede realizarse mediante:",
+  opciones: ["a) Extradición, asistencia judicial mutua, comiso, etc.", "b) Sólo por decisión interna del país sin convenios.", "c) Únicamente a petición privada.", "d) Solo si hay pena de prisión mayor a cinco años."],
+  correcta: "a) Extradición, asistencia judicial mutua, comiso, etc.",
+  justificacion: "La colaboración entre Estados abarca múltiples mecanismos, incluidos extradición, ayuda procesal, comiso de bienes, etc."
+},
+{
+  pregunta: "La cadena de custodia de los objetos o pruebas busca:",
+  opciones: ["a) Que cualquiera pueda manipularlas libremente.", "b) Preservar su integridad, origen y autenticidad durante todo el proceso penal.", "c) Que no se utilicen en el juicio.", "d) Que se destruyan tras dictarse sentencia."],
+  correcta: "b) Preservar su integridad, origen y autenticidad durante todo el proceso penal.",
+  justificacion: "Garantiza que las pruebas no hayan sido alteradas, contaminadas o manipuladas, salvaguardando el derecho a la defensa y la credibilidad del proceso."
+},
+{
+  pregunta: "La pena que consiste en trabajos no remunerados para la comunidad implica como ventaja:",
+  opciones: ["a) Que no exige ningún grado de cumplimiento.", "b) Que se puede ejecutar en días u horas sin privación de libertad.", "c) Que no es sancionable.", "d) Que solo la impone el juez de oficio."],
+  correcta: "b) Que se puede ejecutar en días u horas sin privación de libertad.",
+  justificacion: "Evita la prisión, al tiempo que sanciona socialmente mediante una obligación laboral al servicio de la comunidad."
+},
+{
+  pregunta: "La exención de responsabilidad penal del menor por edad se denomina:",
+  opciones: ["a) Inimputabilidad.", "b) Reincidencia.", "c) Delito leve.", "d) Fianza."],
+  correcta: "a) Inimputabilidad.",
+  justificacion: "El menor de cierta edad no puede ser penalmente responsable por no alcanzar la edad legal mínima que exige imputabilidad."
+},
+{
+  pregunta: "La ley que tipifica un delito, la pena y sus circunstancias debe ser clara y previsible para los ciudadanos. Este principio se llama:",
+  opciones: ["a) Principio de seguridad jurídica.", "b) Principio de silencio penal.", "c) Principio de equidad.", "d) Principio de confidencialidad."],
+  correcta: "a) Principio de seguridad jurídica.",
+  justificacion: "La claridad normativa y previsibilidad son esenciales para que las personas conozcan las consecuencias de sus actos."
+},
+{
+  pregunta: "La extradición puede ser denegada si:",
+  opciones: ["a) El delito no está previsto en ambas legislaciones (principio de doble tipicidad).", "b) El solicitante tiene pasaporte válido.", "c) La víctima lo pide.", "d) El acusado no viaja frecuentemente."],
+  correcta: "a) El delito no está previsto en ambas legislaciones (principio de doble tipicidad).",
+  justificacion: "En la extradición se exige generalmente que el hecho esté tipificado como delito en ambos países, salvo excepciones previstas en los tratados."
+},
+{
+  pregunta: "La acción pública condicionada solo puede ejercerse si:",
+  opciones: ["a) Siempre, sin restricciones.", "b) Existe una denuncia o querella o requisito legal que la active.", "c) Se acuerda con el Fiscal.", "d) Hay condena previa."],
+  correcta: "b) Existe una denuncia o querella o requisito legal que la active.",
+  justificacion: "No basta que exista el delito; la ley prevé que la acción debe ser instada en ciertos casos."
+},
+{
+  pregunta: "La incitación al odio, violencia o discriminación puede ser sancionada como delito. Representa una forma de protección de:",
+  opciones: ["a) La mera moral pública.", "b) Bienes jurídicos como la dignidad, la igualdad y la convivencia.", "c) Solo la seguridad vial.", "d) La privacidad exclusivamente."],
+  correcta: "b) Bienes jurídicos como la dignidad, la igualdad y la convivencia.",
+  justificacion: "Este tipo penal persigue efectos sociales negativos y vulneraciones de valores fundamentales."
+},
+{
+  pregunta: "La tentativa es punible cuando la ejecución ha sido iniciada y:",
+  opciones: ["a) El resultado no se produce por causas independientes a la voluntad del autor.", "b) El autor lo abandona antes de iniciarla.", "c) No hay peligro.", "d) Solo si lo pide la víctima."],
+  correcta: "a) El resultado no se produce por causas independientes a la voluntad del autor.",
+  justificacion: "La tentativa exige que el autor haya comenzado la ejecución del delito y que la consumación no haya ocurrido por circunstancias extrañas al autor."
+},
+{
+  pregunta: "El coautor es quien participa activamente con otro u otros en la comisión del delito, compartiendo la intención. A diferencia del cómplice, el coautor:",
+  opciones: ["a) Solo ayuda sin intención.", "b) Tiene la misma relevancia que el autor principal en la planificación o decisión.", "c) No participa del resultado.", "d) Ignora el plan delictivo."],
+  correcta: "b) Tiene la misma relevancia que el autor principal en la planificación o decisión.",
+  justificacion: "El coautor contribuye decisivamente al delito; su responsabilidad es parecida a la del autor."
+},
+{
+  pregunta: "La pena de multa se calcula con base en la capacidad económica del condenado. Además, puede establecer un número de días multa. Esto permite:",
+  opciones: ["a) Que la multa sea idéntica para todos los condenados.", "b) Ajustar la sanción pecuniaria a la situación del condenado, haciéndola proporcional.", "c) Sustituir automáticamente la prisión.", "d) Evitar la responsabilidad civil."],
+  correcta: "b) Ajustar la sanción pecuniaria a la situación del condenado, haciéndola proporcional.",
+  justificacion: "El sistema busca que la multa tenga sentido punitivo y general preventivo, sin resultar imposible o insignificante para el penado."
+},
+{
+  pregunta: "La pena de prisión permanente revisable obliga al tribunal a:",
+  opciones: ["a) Fijar un tiempo fijo sin supervisión futura.", "b) Revisar periódicamente si deben mantenerse las medidas de internamiento o suspenderlas por reinserción.", "c) Conceder libertad automática al cabo de 10 años.", "d) No permitir recursos."],
+  correcta: "b) Revisar periódicamente si deben mantenerse las medidas de internamiento o suspenderlas por reinserción.",
+  justificacion: "La revisión es esencial para valorar la evolución del penado y la peligrosidad residual."
+},
+{
+  pregunta: "La justificación por legítima defensa se configura cuando:",
+  opciones: ["a) Hay cualquier tipo de respuesta violenta ante agresión.", "b) Existe una agresión ilegítima, inmediata, la defensa es necesaria y proporcionada.", "c) Siempre que se rechace el uso de armas.", "d) Solo si lo autoriza el juez previamente."],
+  correcta: "b) Existe una agresión ilegítima, inmediata, la defensa es necesaria y proporcional.",
+  justificacion: "La legítima defensa exige proporcionalidad, ilegitimidad del ataque, necesidad y simultaneidad."
+},
+{
+  pregunta: "La pena accesoria de inhabilitación especial para el derecho al sufragio implica:",
+  opciones: ["a) Suspensión automática del sufragio para todos los condenados.", "b) Que quede sin efecto mientras dure la pena principal o el tiempo que se fije.", "c) Que nunca se imponga junto con pena de prisión.", "d) Que no pueda ser revisada."],
+  correcta: "b) Que quede sin efecto mientras dure la pena principal o el tiempo que se fije.",
+  justificacion: "La inhabilitación especial priva del ejercicio de un derecho concreto, por tiempo determinado o ligado a la pena principal."
+},
+{
+  pregunta: "La excepción de prescripción de la acción penal puede invocarse:",
+  opciones: ["a) Solo tras la condena definitiva.", "b) En cualquier momento del proceso, siempre que el plazo de prescripción se haya cumplido.", "c) Nunca; la acción penal siempre es perseguible.", "d) Solo cuando hay pena de prisión mayor a cinco años."],
+  correcta: "b) En cualquier momento del proceso, siempre que el plazo de prescripción se haya cumplido.",
+  justificacion: "La prescripción puede operar como defensa procesal en cualquier fase del procedimiento si se acredita su cumplimiento."
+},
+{
+  pregunta: "¿Cuál es la consecuencia de que una ley penal disponga una pena más benigna para un hecho consumado después de haberse cometido (y mientras estaba vigente la ley antigua)?",
+  opciones: ["a) La pena más grave sigue aplicándose.", "b) La pena más benigna se aplica retroactivamente (principio de retroactividad benigna).", "c) Se suman ambas penas.", "d) No se puede aplicar la nueva pena."],
+  correcta: "b) La pena más benigna se aplica retroactivamente (principio de retroactividad benigna).",
+  justificacion: "Cuando la ley posterior impone una pena menos gravosa, puede beneficiar al autor aunque el hecho se haya cometido antes de su entrada en vigor."
+},
+{
+  pregunta: "La «doble incriminación» exige que el hecho por el que se solicita la extradición:",
+  opciones: ["a) Sea delito solo en el país requirente.", "b) Sea delito en ambos Estados (solicitante y requerido).", "c) No esté tipificado en ninguno de los países.", "d) Sea un delito menor exclusivamente."],
+  correcta: "b) Sea delito en ambos Estados (solicitante y requerido).",
+  justificacion: "El principio de doble incriminación exige que el comportamiento esté sancionado como delito en los dos ordenamientos jurídicos implicados."
+},
+{
+  pregunta: "El desistimiento voluntario del delito antes de su consumación puede:",
+  opciones: ["a) Agravar la pena.", "b) Anular automáticamente el proceso.", "c) Atenuar la responsabilidad si la legislación lo prevé.", "d) Sustituirla por multa."],
+  correcta: "c) Atenuar la responsabilidad si la legislación lo prevé.",
+  justificacion: "La normativa penal puede contemplar el desistimiento como causa de atenuación o incluso exención, según el momento y condiciones."
+},
+{
+  pregunta: "La acción pública inmediatamente perseguible sin necesidad de querella es característica de:",
+  opciones: ["a) Delitos leves exclusivamente.", "b) Delitos más graves que afectan bienes públicos o constitucionales.", "c) Delitos contra la propiedad únicamente.", "d) Solo delitos económicos."],
+  correcta: "b) Delitos más graves que afectan bienes públicos o constitucionales.",
+  justificacion: "Muchos delitos de especial gravedad se persiguen de oficio sin necesidad de que la víctima presente querella."
+},
+{
+  pregunta: "La responsabilidad penal de los menores se regula atendiendo a su edad y grado de desarrollo, lo que implica que:",
+  opciones: ["a) Siempre se castigan como adultos.", "b) En algunos casos son inimputables o sometidos a sistema diferenciado.", "c) No pueden ser sancionados de ninguna forma.", "d) Tienen penas arbitrarias."],
+  correcta: "b) En algunos casos son inimputables o sometidos a sistema diferenciado.",
+  justificacion: "El derecho penal menor prevé criterios especiales para la imputabilidad, medidas educativas o sancionadoras adaptadas."
+},
+{
+  pregunta: "La prisión provisional debe ser revisada periódicamente, pues debe evitarse la privación de libertad excesiva sin justificar. Este requisito está asociado al principio de:",
+  opciones: ["a) Inmediación procesal.", "b) Publicidad del procedimiento.", "c) Proporcionalidad y revisión judicial.", "d) Celeridad esclusivamente."],
+  correcta: "c) Proporcionalidad y revisión judicial.",
+  justificacion: "La prisión preventiva no puede alargarse indefinidamente sin justificación razonada; debe revisarse para ponderar derechos y eficacia."
+},
+{
+  pregunta: "En el ámbito penal, la reparación del daño consiste en:",
+  opciones: ["a) Solo la imposición de la pena.", "b) Indemnizar económicamente o restituir lo perdido, además de sancionar.", "c) Obligar al autor a felicitar a la víctima.", "d) Sustituir la multa por caridad."],
+  correcta: "b) Indemnizar económicamente o restituir lo perdido, además de sancionar.",
+  justificacion: "La responsabilidad civil derivada del delito busca reparar el daño causado, complementando la sanción penal."
+},
+{
+  pregunta: "La confesión voluntaria del autor del delito puede influir en:",
+  opciones: ["a) No tener ningún efecto.", "b) Agravar siempre la pena.", "c) Atenuar la pena o como prueba, si es legal y está debidamente valorada.", "d) Sustituir la sentencia."],
+  correcta: "c) Atenuar la pena o como prueba, si es legal y está debidamente valorada.",
+  justificacion: "La confesión puede favorecer ciertos beneficios procesales o atenuar responsabilidades, según el marco legal."
+},
+{
+  pregunta: "La medida cautelar de intervención de comunicaciones busca:",
+  opciones: ["a) Restringir todo tipo de libertad sin límites.", "b) Asegurar la investigación de delitos graves mediante interceptación de llamadas o mensajes, con autorización judicial.", "c) Libertad absoluta de expresión.", "d) Que no haya prueba."],
+  correcta: "b) Asegurar la investigación de delitos graves mediante interceptación de llamadas o mensajes, con autorización judicial.",
+  justificacion: "La intervención de comunicaciones es un medio de investigación, pero exige garantías legales y autorización previa."
+},
+{
+  pregunta: "La autoridad que dirige la investigación penal y decide si procede proceder contra un imputado es:",
+  opciones: ["a) El Ministerio Fiscal.", "b) Un alcalde.", "c) El condenado.", "d) El abogado defensor."],
+  correcta: "a) El Ministerio Fiscal.",
+  justificacion: "El Ministerio Fiscal tiene facultades para promover o ejercitar la acción penal, salvo en los casos en que la acción privada sea exclusiva."
+},
+{
+  pregunta: "La legitimación activa para presentar querella corresponde generalmente a:",
+  opciones: ["a) Cualquier ciudadano.", "b) La persona agraviada o sus representantes legales.", "c) Solo al juez.", "d) Al Ministerio de Defensa."],
+  correcta: "b) La persona agraviada o sus representantes legales.",
+  justificacion: "La querella está reservada a quien ha sufrido directamente el perjuicio o está autorizado legalmente a intervenir."
+},
+{
+  pregunta: "El principio de intervención mínima o subsidiariedad implica que el derecho penal debe:",
+  opciones: ["a) Estar presente en todas las relaciones sociales.", "b) Sustituir siempre al derecho administrativo.", "c) Intervenir solo cuando otros mecanismos no bastan o cuando haya un daño relevante.", "d) No tener límites."],
+  correcta: "c) Intervenir solo cuando otros mecanismos no bastan o cuando haya un daño relevante.",
+  justificacion: "El derecho penal es el último recurso: solo debe aplicarse cuando sea estrictamente necesario para proteger bienes jurídicos esenciales."
+},
+{
+  pregunta: "El principio de especialidad en materia de extradición implica que:",
+  opciones: ["a) La persona sólo puede ser juzgada por los delitos distintos de los que motivaron la extradición.", "b) Puede juzgarse por cualquier delito sin limitación.", "c) Sólo se aplica en delitos leves.", "d) No existe en los convenios internacionales."],
+  correcta: "a) La persona sólo puede ser juzgada por los delitos distintos de los que motivaron la extradición.",
+  justificacion: "El principio de especialidad evita que la persona extraditada sea procesada o sancionada por delitos distintos de los comprendidos en la petición originaria, salvo autorización del Estado requerente."
+},
+{
+  pregunta: "El arrepentimiento eficaz (“colaboración eficaz”) puede atenuar o eximir la pena cuando el autor:",
+  opciones: ["a) Confiesa el delito sólo al juez sin pruebas adicionales.", "b) Proporciona información veraz que facilita la investigación o evita el consumarse del delito.", "c) Desiste tras el resultado.", "d) No tiene consecuencias legales."],
+  correcta: "b) Proporciona información veraz que facilita la investigación o evita el consumarse del delito.",
+  justificacion: "La colaboración eficaz permite beneficios al autor cuando su información ayuda significativamente a esclarecer el delito o a detenerlo antes de consumarse."
+},
+{
+  pregunta: "La medida de prohibitión de residir en determinados lugares tras condena es un ejemplo de:",
+  opciones: ["a) Pena de multa.", "b) Pena privativa de libertad.", "c) Pena privativa de derechos.", "d) Indulto."],
+  correcta: "c) Pena privativa de derechos.",
+  justificacion: "Se trata de una restricción de un derecho concreto, sin necesidad de internamiento."
+},
+{
+  pregunta: "El principio de equidad no puede dispensar del cumplimiento de una norma penal imperativa porque la equidad:",
+  options: ["a) Tiene mayor jerarquía que la ley.", "b) Pueda substituir la ley en algunos casos, solo cuando ésta lo permita o haya laguna normativa.", "c) Siempre imponga sanciones.", "d) Deroga la norma penal."],
+  correcta: "b) Pueda substituir la ley en algunos casos, solo cuando ésta lo permita o haya laguna normativa.",
+  justificacion: "La equidad no es fuente autónoma del derecho penal, salvo autorización legal expresa; no puede contradecir normas imperativas."
+},
+{
+  pregunta: "La neutralidad axiológica del juez penal implica que:",
+  opciones: ["a) El juez aplique su criterio moral personal sin limitaciones.", "b) El juez debe aplicar la ley sin introducir juicios de valor arbitrarios o sesgados.", "c) Solo puede aplicar la buena fe.", "d) Puede variar la pena según simpatía personal."],
+  correcta: "b) El juez debe aplicar la ley sin introducir juicios de valor arbitrarios o sesgados.",
+  justificacion: "La imparcialidad exige que el juez no imponga sanciones basadas en prejuicios o criterios morales subjetivos no contemplados por la ley."
+},
+{
+  pregunta: "El delito imposible (o error de ejecución sobre imposibilidad de consumación) puede excluir la punibilidad si:",
+  opciones: ["a) El autor no quiso cometer el delito.", "b) El hecho es irrelevante aunque hubiera intento.", "c) La consumación era realmente imposible aunque el autor creyera que era posible y actuó con dolo.", "d) Siempre se condena igual."],
+  correcta: "c) La consumación era realmente imposible aunque el autor creyera que era posible y actuó con dolo.",
+  justificacion: "El delito imposible puede eximir de pena si la consumación era objetivamente imposible y no había dolo sobre la imposibilidad."
+},
+{
+  pregunta: "El principio de oportunidad puede generar decisiones de archivo o desistimiento en ciertos procesos cuando:",
+  opciones: ["a) Siempre que lo decida el juez.", "b) Cuando se cumple algún requisito legal como poca entidad del hecho, reparación, colaboración o carácter preferente.", "c) Únicamente si hay condena previa.", "d) Nunca; la acción penal es obligatoria siempre."],
+  correcta: "b) Cuando se cumple algún requisito legal como poca entidad del hecho, reparación, colaboración o carácter preferente.",
+  justificacion: "El principio de oportunidad se sustenta en criterios de eficiencia, proporcionalidad y gravedad, recogidos en la ley para supuestos concretos."
+},
+{
+  pregunta: "La condena por tentativa puede imponer pena menor que la del delito consumado, conforme al grado de ejecución alcanzado. Esto refleja el principio de:",
+  opciones: ["a) Equidad irrestricta.", "b) Proporcionalidad.", "c) Doble juzgamiento.", "d) Compensación automática."],
+  correcta: "b) Proporcionalidad.",
+  justificacion: "Las penas deben adaptarse al alcance de la ejecución; la tentativa implica menor peligrosidad o eficacia del resultado."
+},
+{
+  pregunta: "La pena mínima de prisión para ciertos delitos no puede ser sustituida por multa si la ley lo impone expresamente como pena principal. Esto significa que:",
+  options: ["a) Todas las penas son sustituibles.", "b) La sustitución depende del tipo de delito y de lo que prescribe la norma.", "c) La multa es siempre preferible.", "d) No existen penas mínimas."],
+  correcta: "b) La sustitución depende del tipo de delito y de lo que prescribe la norma.",
+  justificacion: "Algunos delitos exigen la privación de libertad; no siempre la pena puede sustituirse por otras menos gravosas si la ley no lo autoriza."
+},
+{
+  pregunta: "La ejecución de la pena debe respetar los derechos fundamentales del condenado, incluido el trato digno y la dignidad humana. Este límite radica en el principio de:",
+  opciones: ["a) Legalidad únicamente.", "b) Humanidad del derecho penal.", "c) Celeridad procesal.", "d) Universalidad del delito."],
+  correcta: "b) Humanidad del derecho penal.",
+  justificacion: "El tratamiento del condenado, condiciones de detención, duraciones, revisiones y medidas deben ajustarse al respeto de los derechos humanos y la dignidad."
+},
+{
+  pregunta: "El delito de omisión del deber de socorro se consuma cuando:",
+  opciones: ["a) No existe peligro.", "b) La persona no realiza actos razonables para socorrer a quien se encuentra en grave situación cuando puede hacerlo sin riesgo propio grave.", "c) Solo si hay muerte.", "d) Es un ilícito administrativo únicamente."],
+  correcta: "b) La persona no realiza actos razonables para socorrer a quien se encuentra en grave situación cuando puede hacerlo sin riesgo propio grave.",
+  justificacion: "La omisión de socorro se castiga cuando quien puede actuar no lo hace, y la omisión puede agravar su responsabilidad."
+},
+{
+  pregunta: "El delito continuado reconoce que la repetición de actos constitutivos del mismo delito puede considerarse una unidad delictiva si:",
+  opciones: ["a) Cada acto es juzgado por separado sin vinculación.", "b) Hay identidad de sujeto, tipo y forma de comisión, concurriendo circunstancias de tiempo o lugar y unidad de acción.", "c) Los actos no se parecen entre sí.", "d) Nunca procede."],
+  correcta: "b) Hay identidad de sujeto, tipo y forma de comisión, concurriendo circunstancias de tiempo o lugar y unidad de acción.",
+  justificacion: "En el delito continuado, varias acciones similares se valoran como un solo delito con la agravación de la repetición, si concurren los requisitos legales."
+},
+{
+  pregunta: "El concurso ideal de delitos ocurre cuando:",
+  opciones: ["a) Se cometen dos delitos por separado con diferentes acciones.", "b) Una acción infringe varias normas penales diferentes, recibiendo sanción por todos.", "c) No hay daño.", "d) La pena es nula automáticamente."],
+  correcta: "b) Una acción infringe varias normas penales diferentes, recibiendo sanción por todos.",
+  justificacion: "El concurso ideal permite sancionar múltiples tipos penales en una sola conducta si está previsto en la ley."
+},
+{
+  pregunta: "Los antecedentes penales pueden influir en la determinación de la pena, especialmente en presencia de reincidencia, porque:",
+  opciones: ["a) Siempre agravan sin excepción.", "b) Son irrelevantes.", "c) Ofrecen información sobre el comportamiento anterior, peligrosidad y cumplimiento de obligaciones.", "d) Sustituyen a la prueba de dolo."],
+  correcta: "c) Ofrecen información sobre el comportamiento anterior, peligrosidad y cumplimiento de obligaciones.",
+  justificacion: "La valoración del historial penal es relevante para fijar la gravedad de la pena y la aplicación de atenuantes o agravantes."
+},
+{
+  pregunta: "El juicio ordinario por jurado es aplicable en:",
+  opciones: ["a) Todos los delitos.", "b) Delitos exclusivamente de tipo económico.", "c) Delitos graves tipificados en la ley para los que está prevista esta modalidad.", "d) Sólo faltas menores."],
+  correcta: "c) Delitos graves tipificados en la ley para los que está prevista esta modalidad.",
+  justificacion: "La participación de jurados está prevista legalmente solo para ciertos tipos de delitos, no para todo el proceso penal."
+},
+{
+  pregunta: "La prisión provisional puede acordarse aunque el investigado no haya sido aún condenado, si existe peligro de reiteración delictiva. Esta medida debe revisarse periódicamente para:",
+  options: ["a) Aumentar la pena.", "b) Justificar la continuidad o la excarcelación según la evolución del riesgo.", "c) Cambiar de juez.", "d) Sustituirla siempre por multa."],
+  correcta: "b) Justificar la continuidad o la excarcelación según la evolución del riesgo.",
+  justificacion: "La revisión evita que la prisión preventiva sea excesiva o injustificada, garantizando proporcionalidad y derechos del detenido."
+},
+{
+  pregunta: "La prueba ilícita (obtenida violando derechos fundamentales) puede implicar que:",
+  options: ["a) Siempre sea válida.", "b) Sea excluida del proceso y no valorada para condenar.", "c) Sea la única base de la condena.", "d) No afecte al veredicto si hay otras pruebas."],
+  correcta: "b) Sea excluida del proceso y no valorada para condenar.",
+  justificacion: "Las normas protegen los derechos fundamentales, y la utilización de pruebas obtenidas ilícitamente puede ser inadmisible."
+},
+{
+  pregunta: "El deber del Estado de investigar los delitos conocidos, perseguir a los autores y garantizar la reparación a la víctima forma parte de:",
+  options: ["a) Principio de pasividad judicial.", "b) Principio de eficacia penal.", "c) Principio de secreto profesional.", "d) Principio de alteridad."],
+  correcta: "b) Principio de eficacia penal.",
+  justificacion: "La eficacia penal exige que el sistema actúe con diligencia, que se investiguen los delitos, no quede impune el autor y se garantice la reparación del daño."
+},
+{
+  pregunta: "La responsabilidad civil derivada del delito puede exigir que el autor repare los daños económicos o morales, y puede asegurarse mediante:",
+  options: ["a) Fianza o caución, embargo de bienes, medidas cautelares.", "b) Donación voluntaria.", "c) Exclusivamente multa.", "d) Renuncia del acusado."],
+  correcta: "a) Fianza o caución, embargo de bienes, medidas cautelares.",
+  justificacion: "Para garantizar la eficacia de la reparación, pueden adoptarse medidas cautelares que aseguren la disponibilidad de bienes suficientes."
+},
+{
+  pregunta: "El derecho al recurso de apelación permite:",
+  options: ["a) Que la parte contraria imponga la pena.", "b) Revisar los fundamentos de hecho y derecho de la sentencia dictada por un tribunal inferior.", "c) Interrumpir el proceso sin razón.", "d) Que el condenado elija otro juez."],
+  correcta: "b) Revisar los fundamentos de hecho y derecho de la sentencia dictada por un tribunal inferior.",
+  justificacion: "El recurso de apelación asegura el doble grado de jurisdicción o una revisión homologada, corrigiendo errores o injusticias."
+},
+{
+  pregunta: "La condena firme puede generar antecedentes penales, salvo que la ley disponga su cancelación tras cierto tiempo. Esto afecta a:",
+  options: ["a) Derechos como contratación, empleo público, etc.", "b) Exclusivamente al derecho a circular.", "c) Solo importa para delitos menores.", "d) Nunca se puede cancelar."],
+  correcta: "a) Derechos como contratación, empleo público, etc.",
+  justificacion: "La ficha de antecedentes penales puede impedir ciertos derechos o actividades, por lo que la ley prevé plazos y condiciones de cancelación."
+},
+{
+  pregunta: "La pena de prisión con alternativa de multa significa que:",
+  opciones: ["a) Se impone ambas sanciones simultáneamente.", "b) Solo se aplica la que la víctima elija.", "c) Al condenado se le impone la pena de prisión, pero puede sustituirse por multa si cumple los requisitos legales.", "d) La multa paga la prisión del condenado."],
+  correcta: "c) Al condenado se le impone la pena de prisión, pero puede sustituirse por multa si cumple los requisitos legales.",
+  justificacion: "Algunos delitos permiten la sustitución de la pena privativa de libertad por multa, cuando la ley lo contempla y se dan las condiciones."
+},
+{
+  pregunta: "La ejecución de la pena de multa requiere que el condenado:",
+  opciones: ["a) No pague nunca.", "b) Pague la cantidad fijada o se le embarguen los bienes en su caso.", "c) Realice trabajos comunitarios en sustitución.", "d) Pierda su derecho al voto automáticamente."],
+  correcta: "b) Pague la cantidad fijada o se le embarguen los bienes en su caso.",
+  justificacion: "La multa debe ser satisfecha; si no, se procede a su ejecución mediante embargo u otros mecanismos legales."
+},
+{
+  pregunta: "Cuando un juez aprecia que la conducta no era típica, debe absolver al acusado. Esto es exigido por el principio de:",
+  opciones: ["a) Culpabilidad.", "b) Proporcionalidad.", "c) Tipicidad legal.", "d) Inmediatez."],
+  correcta: "c) Tipicidad legal.",
+  justificacion: "La tipicidad es requisito esencial: si el hecho no está descrito por la ley como delito, no puede haber condena."
+},
+{
+  pregunta: "El delito contra la salud pública por tráfico de drogas se agrava si existe la participación de menores, lo que constituye una circunstancia:",
+  opciones: ["a) Atenuante.", "b) Agravante.", "c) Independiente.", "d) Sustitutorio."],
+  correcta: "b) Agravante.",
+  justificacion: "La participación de menores en delitos como el tráfico de drogas suele considerarse agravante, porque incrementa la gravedad y los riesgos sociales."
+},
+{
+  pregunta: "La prisión provisional comunicada significa que:",
+  opciones: ["a) El investigado no puede hablar con nadie.", "b) El investigado puede recibir visitas y comunicarse con su abogado.", "c) No puede recibir correspondencia.", "d) Está incomunicado."],
+  correcta: "b) El investigado puede recibir visitas y comunicarse con su abogado.",
+  justificacion: "La prisión comunicada permite comunicación con su entorno, abogados y servicios, sin las restricciones de la incomunicación."
+},
+{
+  pregunta: "El delito de lesiones implica causar daño en la integridad corporal o salud física o mental de otra persona, lo que afecta un bien jurídico como:",
+  opciones: ["a) La libertad económica.", "b) El honor únicamente.", "c) La integridad física y psíquica.", "d) La propiedad."],
+  correcta: "c) La integridad física y psíquica.",
+  justificacion: "Las lesiones protegen la salud y la integridad psíquica y física de las personas como bienes jurídicos dignos de tutela."
+},
+{
+  pregunta: "El principio de intervención mínima significa que una conducta solo debe castigarse penalmente si:",
+  opciones: ["a) Resulta útil para cualquier procedimiento público.", "b) No puede ser sancionada administrativamente o civilmente y supone daño serio.", "c) Siempre afecta a la moral.", "d) Es fácil de demostrar."],
+  correcta: "b) No puede ser sancionada administrativamente o civilmente y supone daño serio.",
+  justificacion: "El derecho penal debe reservarse para casos donde otros mecanismos (civiles, administrativos) no bastan o no son suficientes para proteger bienes jurídicos importantes."
+},
+{
+  pregunta: "El procedimiento abreviado sirve para juzgar delitos de menor gravedad con rapidez. Una de sus características es que:",
+  opciones: ["a) No admite recurso alguno.", "b) Ofrece plazos más reducidos y simplificación procesal respecto al juicio ordinario.", "c) Siempre lleva aparejada prisión provisional.", "d) Solo se aplica en delitos económicos."],
+  correcta: "b) Ofrece plazos más reducidos y simplificación procesal respecto al juicio ordinario.",
+  justificacion: "El procedimiento abreviado agiliza la tramitación de ciertos delitos, generalmente menos graves, permitiendo resolución más rápida."
+},
+{
+  pregunta: "En los delitos económicos, la multa coercitiva puede imponerse para:",
+  opciones: ["a) Castigar sin detener al autor.", "b) Obligar al cumplimiento de una obligación durante la ejecución de la pena.", "c) Pagar directamente a la víctima.", "d) Evitar el uso de pruebas."],
+  correcta: "b) Obligar al cumplimiento de una obligación durante la ejecución de la pena.",
+  justificacion: "La multa coercitiva funciona como medio para presionar al condenado a cumplir una obligación, por ejemplo devolver cantidades, renunciar a bienes, etc."
+},
+{
+  pregunta: "La pérdida de la nacionalidad suele no ser una pena en derecho penal español porque:",
+  opciones: ["a) Es facultativo del juez.", "b) Atenta contra derechos fundamentales y es considerada incompatible con la constitución.", "c) Siempre se concede al condenado.", "d) No existe normativa al respecto."],
+  correcta: "b) Atenta contra derechos fundamentales y es considerada incompatible con la constitución.",
+  justificacion: "La privación de nacionalidad es incompatible con la protección de los derechos fundamentales, salvo casos muy excepcionales o conforme a tratados internacionales."
+},
+{
+  pregunta: "El coautoría recae sobre quienes contribuyen a la planificación, organización o decisión del delito. Esto significa que la responsabilidad penal:",
+  opciones: ["a) Solo afecta al ejecutor físico.", "b) Puede extenderse a quienes actúan detrás de escena si su aporte es esencial.", "c) No considera a los jefes de redes criminales.", "d) Siempre es menor que la del autor directo."],
+  correcta: "b) Puede extenderse a quienes actúan detrás de escena si su aporte es esencial.",
+  justificacion: "El delito no solo se comete con la acción física, sino también con la colaboración intelectual, organizativa o decisoria que hace posible la comisión del ilícito."
+},
+{
+  pregunta: "La tutela judicial efectiva exige que los procesos penales:",
+  opciones: ["a) Puedan durar indefinidamente.", "b) Respecten plazos razonables, independencia judicial, igualdad de armas, defensa adecuada, etc.", "c) Solo protejan al Estado.", "d) No sean públicos."],
+  correcta: "b) Respecten plazos razonables, independencia judicial, igualdad de armas, defensa adecuada, etc.",
+  justificacion: "La tutela judicial efectiva es un derecho fundamental que garantiza que todas las partes tengan un proceso justo, sin dilaciones indebidas y con igualdad de condiciones."
+},
+{
+  pregunta: "La concurrencia real de delitos implica que:",
+  opciones: ["a) Los delitos se suman y el autor recibe múltiples penas por cada uno.", "b) Solo se impone una pena única.", "c) Los delitos se comparten entre acusador y acusado.", "d) No hay sanción si uno es leve."],
+  correcta: "a) Los delitos se suman y el autor recibe múltiples penas por cada uno.",
+  justificacion: "Cuando se cometen delitos diferentes con acciones distintas, cada uno puede sancionarse, aunque las penas se acumulen o se moderen conforme al sistema legal."
+},
+{
+  pregunta: "La medida de internamiento cautelar puede ser acordada aun sin condena firme cuando:",
+  opciones: ["a) El investigado la solicite.", "b) No existe otra medida adecuada para asegurar su comparecencia, evitar peligro, reiteración delictiva o destrucción de pruebas.", "c) Siempre haya prisión previa.", "d) Sólo si hay víctimas."],
+  correcta: "b) No existe otra medida adecuada para asegurar su comparecencia, evitar peligro, reiteración delictiva o destrucción de pruebas.",
+  justificacion: "Es una medida excepcional, justificada en la necesidad de garantizar el proceso y la seguridad pública."
+},
+{
+  pregunta: "La inhabilitación como pena consisten en privar al condenado de:",
+  opciones: ["a) La nacionalidad.", "b) El uso de ciertos derechos o ejercicios específicos (como el derecho a conducir, a empleo público, a la profesión, etc.).", "c) La libertad inmediata sólo.", "d) Todo contacto con el exterior."],
+  correcta: "b) El uso de ciertos derechos o ejercicios específicos (como el derecho a conducir, a empleo público, a la profesión, etc.).",
+  justificacion: "La inhabilitación restringe el ejercicio de ciertos derechos, con efectos durante el tiempo fijado o ligado a la pena principal."
+},
+{
+  pregunta: "La imposición de pena debe ir acompañada de determinación clara sobre su cuantía, duración o efectos accesorias; de lo contrario:",
+  options: ["a) Pasa automáticamente al juez.", "b) Es nula o incompleta.", "c) Se puede improvisar después.", "d) No tiene consecuencias."],
+  correcta: "b) Es nula o incompleta.",
+  justificacion: "La pena debe estar expresamente definida para garantizar seguridad jurídica y que el condenado conozca los efectos."
+},
+{
+  pregunta: "El principio de legalidad penal protege al ciudadano frente a:",
+  opciones: ["a) Función legislativa excesiva.", "b) Ser sancionado arbitrariamente con normas que no estaban vigentes o no describían su conducta.", "c) La actuación de la policía.", "d) Las resoluciones judiciales."],
+  correcta: "b) Ser sancionado arbitrariamente con normas que no estaban vigentes o no describían su conducta.",
+  justificacion: "Solo lo que la ley describa como delito puede ser sancionable; la legalidad protege contra la arbitrariedad."
+},
+{
+  pregunta: "El desistimiento imprudente del delito antes de consumarse (cuando no depende únicamente de la voluntad del autor) puede:",
+  opciones: ["a) Siempre eximir de pena.", "b) No eximir, pero puede atenuar la responsabilidad.", "c) Agravar la pena.", "d) Sustituir la responsabilidad civil."],
+  correcta: "b) No eximir, pero puede atenuar la responsabilidad.",
+  justificacion: "Cuando el desistimiento no es eficaz o depende de circunstancias ajenas, no siempre exime del delito, pero la ley puede prever atenuantes."
+},
+{
+  pregunta: "Los medios de prueba reconocidos en el proceso penal pueden incluir testigos, peritos, documentos, inspecciones, reconocimiento judicial; cada uno debe cumplir:",
+  options: ["a) Formalidad arbitraria.", "b) Validez, autenticidad, relación con el hecho y legalidad.", "c) Solo valor probatorio si lo impone la parte.", "d) Ser siempre escritos."],
+  correcta: "b) Validez, autenticidad, relación con el hecho y legalidad.",
+  justificacion: "Para que una prueba sea admisible debe reunir requisitos de veracidad, pertinencia y legalidad, garantizando el derecho a la defensa."
+},
+{
+  pregunta: "El solo hecho de estar afiliado a una organización terrorista puede constituir delito si se demuestra:",
+  options: ["a) Que la persona tiene carnet.", "b) Que hay participación, financiamiento, adoctrinamiento o colaboración activa con la organización.", "c) Que simpatiza con la ideología.", "d) Que paga una cuota."],
+  correcta: "b) Que hay participación, financiamiento, adoctrinamiento o colaboración activa con la organización.",
+  justificacion: "El mero apoyo ideológico no basta; se exige actividad concreta colaborativa para tipificar la conducta como delito."
+},
+{
+  pregunta: "La detención policial debe comunicarse al juez competente y al Ministerio Fiscal en un plazo breve para evitar irregularidades. Este requisito corresponde a:",
+  opciones: ["a) Celeridad del delito.", "b) Principio de inmediación.", "c) Plazo de puesta a disposición judicial.", "d) Derecho a consulta privada."],
+  correcta: "c) Plazo de puesta a disposición judicial.",
+  justificacion: "El detenido debe ser puesto a disposición judicial en un plazo legalmente previsto para salvaguardar sus derechos y garantizar el control de la libertad."
+},
+{
+  pregunta: "El encarcelamiento en espera de juicio solo puede decretarse si hay indicios razonables de culpa (imputación) junto con motivos como riesgo de fuga, destrucción de pruebas o reiteración en la actividad delictiva. Esto refleja:",
+  opciones: ["a) El principio de inocencia absoluta.", "b) La cautela del juez sin motivación.", "c) La necesidad de motivación y proporcionalidad en la prisión provisional.", "d) La discrecionalidad ilimitada de la policía."],
+  correcta: "c) La necesidad de motivación y proporcionalidad en la prisión provisional.",
+  justificacion: "La prisión provisional exige que el juez razone su decisión, identifique los riesgos concretos y valore otras medidas menos gravosas."
+},
+{
+  pregunta: "La pena accesoria de inhabilitación para empleo u oficio puede tener como consecuencia:",
+  options: ["a) Que el condenado quede incapacitado legalmente.", "b) Que no pueda trabajar en ciertas funciones o empleos públicos o privados mientras dure dicha inhabilitación.", "c) Que el delito sea considerado menos grave.", "d) Que no pueda votar."],
+  correcta: "b) Que no pueda trabajar en ciertas funciones o empleos públicos o privados mientras dure dicha inhabilitación.",
+  justificacion: "La inhabilitación para empleo u oficio limita la capacidad de ejercer determinadas actividades profesionales o administrativas como consecuencia de la condena."
+},
+{
+  pregunta: "La prisión provisional no debe exceder del tiempo necesario para la formación de la convicción y la realización del juicio, ya que la prolongación injustificada puede vulnerar:",
+  options: ["a) El derecho de iniciativa fiscal.", "b) La libertad personal.", "c) La potestad legislativa.", "d) El secreto de sumario."],
+  correcta: "b) La libertad personal.",
+  justificacion: "La libertad es un derecho fundamental, por lo que la prisión preventiva debe ser aplicada con moderación, justificación concreta y revisión periódica para evitar detención indebida."
+},
+{
+  pregunta: "La reparación del daño constituye un deber complementario al castigo, de modo que el autor del delito debe responder civilmente por los perjuicios causados, salvo que:",
+  options: ["a) La víctima no lo solicite.", "b) Los bienes del autor sean insuficientes.", "c) Una norma legal lo excluya expresamente o se insolvencia del condenado lo impida.", "d) Sea reincidente."],
+  correcta: "c) Una norma legal lo excluya expresamente o la insolvencia del condenado lo impida.",
+  justificacion: "La responsabilidad civil derivada del delito puede quedar limitada o suspendida por circunstancias legales como la insolvencia."
+},
+{
+  pregunta: "El principio de doble conformidad informa a la negociación de conformidades en la que el imputado acepta los hechos a cambio de una pena. Este principio debe respetar:",
+  options: ["a) Que la pena no esté sometida a ratificación judicial.", "b) Que la aceptación del hecho y la pena sean voluntarias, conscientes y con asesoramiento, y que el juez revise si cabe homologación.", "c) Que se imponga siempre multa.", "d) Que no haya víctimas."],
+  correcta: "b) Que la aceptación del hecho y la pena sean voluntarias, conscientes y con asesoramiento, y que el juez revise si cabe homologación.",
+  justificacion: "En los mecanismos como el juicio por conformidad, debe asegurarse la voluntariedad, asesoramiento y que el juez compruebe que lo aceptado no sea injusto o excesivo."
+},
+{
+  pregunta: "La colaboración con la justicia puede dar lugar a rebajar la pena si se trata de hechos graves, siempre que la información sea veraz, relevante y útil. Esta figura se conoce como:",
+  options: ["a) Atenuación automática.", "b) Recurso penal directo.", "c) Colaboración eficaz o arrepentimiento eficaz.", "d) Indulto parcial."],
+  correcta: "c) Colaboración eficaz o arrepentimiento eficaz.",
+  justificacion: "La colaboración eficaz permite beneficios penales al autor del delito si ayuda eficazmente a la investigación, detención o esclarecimiento del delito."
+},
+{
+  pregunta: "La orden de detención europea (euroorden) es un mecanismo de cooperación penal en la UE que permite:",
+  options: ["a) Detención sin juicio alguno.", "b) Que un Estado miembro solicite la entrega de una persona a otro Estado miembro para ser juzgada o cumplir pena.", "c) Que un ciudadano sea juzgado en cualquier país.", "d) Que no haya doble tipicidad requerida."],
+  correcta: "b) Que un Estado miembro solicite la entrega de una persona a otro Estado miembro para ser juzgada o cumplir pena.",
+  justificacion: "La euroorden facilita la extradición dentro de la UE mediante procedimientos más ágiles y sin requerir formalidades diplomáticas complejas."
+},
+{
+  pregunta: "La actuación conjunta de varias personas para conseguir un fin delictivo, sin consumarse necesariamente un resultado lesivo, puede constituir:",
+  options: ["a) Un mero plan sin relevancia penal.", "b) Asociación ilícita o colaboración criminal prevista por la ley.", "c) Contra todos los acusados.", "d) Una infracción administrativa."],
+  correcta: "b) Asociación ilícita o colaboración criminal prevista por la ley.",
+  justificacion: "Cuando la ley sanciona la mera planificación, financiación o promoción de actividades delictivas, actúa sobre la peligrosidad potencial incluso antes de consumar el delito."
+},
+{
+  pregunta: "El principio de especialidad en la imposición de penas accesorias dicta que:",
+  options: ["a) Las penas accesorias se pueden imponer cualquier derecho sin limitación.", "b) Sólo se imponen cuando la ley lo exige o permite, y deben ser proporcionales y necesarias al tipo penal.", "c) Sustituyen siempre a la pena principal.", "d) Pueden evitarse si el condenado no quiere."],
+  correcta: "b) Sólo se imponen cuando la ley lo exige o permite, y deben ser proporcionales y necesarias al tipo penal.",
+  justificacion: "Las penas accesorias no están disponibles en todos los casos, su imposición exige previsión legal y proporcionalidad respecto al delito cometido."
+},
+{
+  pregunta: "El principio de intervención mínima implica que el derecho penal debe reservarse para proteger bienes jurídicos esenciales cuando los mecanismos civiles o administrativos no sean adecuados para prevenir o sancionar la conducta. Esto significa que:",
+  options: ["a) El derecho penal debe aplicarse a cualquier conducta reprobable.", "b) Debe aplicarse sólo cuando existan daños o riesgos serios y no existan otras vías eficaces.", "c) No puede sancionar delitos económicos.", "d) Siempre debe imponerse pena de prisión."],
+  correcta: "b) Debe aplicarse sólo cuando existan daños o riesgos serios y no existan otras vías eficaces.",
+  justificacion: "El derecho penal es la ultima ratio: debe actuar solo cuando otras respuestas legales no bastan para proteger el interés social."
+},
+{
+  pregunta: "El principio de proporcionalidad en la pena exige que ésta no sea excesiva respecto al daño o al grado de culpabilidad. Si resultara desproporcionada, podría vulnerar:",
+  options: ["a) La presunción de inocencia.", "b) El derecho a una indemnidad indebida.", "c) Derechos fundamentales como la igualdad, la dignidad y la prohibición de tratos inhumanos o degradantes.", "d) El secreto profesional."],
+  correcta: "c) Derechos fundamentales como la igualdad, la dignidad y la prohibición de tratos inhumanos o degradantes.",
+  justificacion: "Una pena desproporcionada puede equivaler a un castigo cruel o degradante, lo que está prohibido constitucionalmente."
+},
+{
+  pregunta: "La piratería aérea (cuando se apodera ilegalmente de una aeronave) causa un riesgo para bienes jurídicos como la seguridad de la aviación y la vida humana, y es sancionable. Este tipo de delito es un ejemplo de:",
+  options: ["a) Delito leve sin importancia.", "b) Delito contra la seguridad pública y bienes colectivos especialmente protegidos.", "c) Solo un caso civil.", "d) Asociación ilícita únicamente."],
+  correcta: "b) Delito contra la seguridad pública y bienes colectivos especialmente protegidos.",
+  justificacion: "Los delitos que afectan gravemente a la seguridad colectiva, la vida humana o la integridad del sistema de transporte reciben una mayor protección normativa penal."
+},
+{
+  pregunta: "El derecho penal sanciona también las omisiones cuando existe un deber jurídico de actuar, y la omisión genera un resultado lesivo o riesgo. Esto significa que:",
+  options: ["a) Solo se castigan las acciones positivas.", "b) Las omisiones voluntarias o imprudentes pueden ser punibles cuando la ley lo establece.", "c) Nunca deben sancionarse las omisiones.", "d) Solo el juez puede determinarlo sin ley previa."],
+  correcta: "b) Las omisiones voluntarias o imprudentes pueden ser punibles cuando la ley lo establece.",
+  justificacion: "La ausencia de actuación puede constituir delito si existe obligación legal o contractual de actuar, y el resultado lesiona bienes jurídicos o genera riesgo."
+},
+{
+  pregunta: "El principio de legalidad estricto implica que la ley penal debe definir con claridad la descripción del hecho prohibido, la sanción y los elementos del tipo, de modo que las personas puedan prever la consecuencias de sus actos. Esto contribuye a:",
+  options: ["a) La arbitrariedad.", "b) La aplicación retroactiva desfavorable.", "c) La seguridad jurídica y la igualdad ante la ley.", "d) La imposición de penas excesivas."],
+  correcta: "c) La seguridad jurídica y la igualdad ante la ley.",
+  justificacion: "La previsibilidad del derecho penal protege a los ciudadanos frente a sanciones arbitrarias e injustas."
+},
+{
+  pregunta: "La confiscación o decomiso de instrumentos, productos o beneficios del delito puede imponerse como medida judicial para:",
+  options: ["a) Aumentar la pena sin razón.", "b) Evitar la obtención de ventajas económicas ilícitas por parte del autor o tercero.", "c) Sustituir la pena principal automáticamente.", "d) Obligar al Estado a pagar."],
+  correcta: "b) Evitar la obtención de ventajas económicas ilícitas por parte del autor o tercero.",
+  justificacion: "El decomiso persigue restituir la parte económica ilícita o impedir que el delincuente se beneficie del delito, sin importar si fue condenado o no."
+},
+{
+  pregunta: "La pena de trabajos en beneficio de la comunidad puede contemplar desplazamientos, horarios, obligaciones concretas. Su imposición exige que:",
+  options: ["a) No haya requisitos legales.", "b) Se definan claramente las condiciones, duración y responsabilidades, para que sea eficaz y no arbitraria.", "c) Sea automática para todos los delitos.", "d) Solo sea aplicada a condenados sin recursos."],
+  correcta: "b) Se definan claramente las condiciones, duración y responsabilidades, para que sea eficaz y no arbitraria.",
+  justificacion: "Una ejecución clara del trabajo comunitario permite su supervisión, cumplimiento controlado y garantía de derechos del condenado."
+},
+{
+  pregunta: "El consentimiento del ofendido puede excluir la antijuridicidad o atenuar la pena solo cuando la ley lo permite expresamente, y siempre y cuando no se vulneren bienes jurídicos fundamentales o el orden público. Esto significa que:",
+  options: ["a) El consentimiento lo justifica todo.", "b) No hay delito si ambas partes consienten, sin excepciones.", "c) En ciertos casos la voluntad del ofendido no basta para legitimar la conducta, y la ley limita su efecto.", "d) Solo aplica en delitos económicos."],
+  correcta: "c) En ciertos casos la voluntad del ofendido no basta para legitimar la conducta, y la ley limita su efecto.",
+  justificacion: "Algunos delitos afectan bienes jurídicos tan esenciales que no pueden liberarse solo por consentimiento, como lesiones graves, coacción, abuso, etc."
+},
+{
+  pregunta: "La ejecución de una pena debe respetar el principio de dignidad, lo que excluye tratamientos crueles, inhumanos o degradantes, incluso si la pena fue acordada válidamente. Esto corresponde al principio de:",
+  options: ["a) Proporcionalidad únicamente.", "b) Humanidad del derecho penal.", "c) Arbitrariedad.", "d) Paso del tiempo."],
+  correcta: "b) Humanidad del derecho penal.",
+  justificacion: "El respeto a los derechos humanos impone límites al trato, condiciones de reclusión, revisiones y duración, para evitar tratos inhumanos o degradantes."
+},
+{
+  pregunta: "La pena de prisión puede cumplir funciones de retribución, prevención general, prevención especial y reinserción. La función de reinserción se refiere a:",
+  opciones: ["a) Castigar únicamente.", "b) Recuperar al penado para la sociedad mediante educación, trabajo, tratamiento, supervisión, etc.", "c) Dejarlo sin vigilancia alguna.", "d) Sustituirla por multa siempre."],
+  correcta: "b) Recuperar al penado para la sociedad mediante educación, trabajo, tratamiento, supervisión, etc.",
+  justificacion: "La reinserción es uno de los fines esenciales del derecho penal moderno, busca preparar al condenado para su vuelta a la convivencia civil."
+},
+{
+  pregunta: "La conducta omisiva puede ser punible cuando existe deber jurídico de actuar. Un ejemplo de ello es:",
+  opciones: ["a) Que alguien no le preste un libro a otro.", "b) Que no se socorra a una persona en grave peligro si es razonablemente posible hacerlo sin riesgo propio grave.", "c) Que no se pague una multa.", "d) Que no se vote en unas elecciones."],
+  correcta: "b) Que no se socorra a una persona en grave peligro si es razonablemente posible hacerlo sin riesgo propio grave.",
+  justificacion: "La omisión del deber de socorro es punible porque descuida un deber legal de protección a los demás."
+},
+{
+  pregunta: "Una causa de exención de la responsabilidad penal por error puede ser el error de tipo invencible. Pero si el error era vencible (se pudo evitar con diligencia), entonces:",
+  options: ["a) No tiene efecto alguno.", "b) Se puede considerar imprudencia o atenuante.", "c) El delito se anula automáticamente.", "d) Se sustituye la pena por multa."],
+  correcta: "b) Se puede considerar imprudencia o atenuante.",
+  justificacion: "El error vencible no exime generalmente de responsabilidad, pero puede servir como causa de atenuación si la ley lo permite."
+},
+{
+  pregunta: "La prisión provisional debe ser fundada en hechos concretos y tener duración limitada. Si se prorroga sin justificación, se vulnera el derecho a:",
+  opciones: ["a) Libre circulación internacional.", "b) Libertad personal y los plazos razonables.", "c) Ser indiferente al proceso penal.", "d) No declarar en juicio."],
+  correcta: "b) Libertad personal y los plazos razonables.",
+  justificacion: "La detención preventiva excesiva puede vulnerar derechos fundamentales vinculados a la libertad y al procedimiento justo."
+},
+{
+  pregunta: "El concepto de autoría incluye tanto al autor directo como al autor mediato y al coautor. Es decir que:",
+  options: ["a) Solo el que comete físicamente el acto es autor.", "b) También lo es quien realiza el plan, manipula a otro o decide el delito aunque no ejecute materialmente.", "c) Nunca lo es quien financia.", "d) Solo se aplica a delitos menores."],
+  correcta: "b) También lo es quien realiza el plan, manipula a otro o decide el delito aunque no ejecute materialmente.",
+  justificacion: "La autoría recae en quienes tienen la capacidad de dirigir, usar medios ajenos o decidir el acto, no solo en el que lo ejecuta físicamente."
+},
+{
+  pregunta: "El efecto suspensivo del recurso de apelación en el procedimiento penal puede depender de la normativa aplicable; en algunos casos, la ejecución de la pena queda aplazada hasta resolverse la apelación, pero en otros:",
+  options: ["a) El condenado ya cumple la pena aunque recurra.", "b) El recurso impide siempre la ejecución.", "c) La pena se reduce automáticamente.", "d) El tribunal inferior decide de nuevo la pena."],
+  correcta: "a) El condenado ya cumple la pena aunque recurra.",
+  justificacion: "No todos los recursos tienen automáticamente efecto suspensivo; depende de la normativa y de si se concede suspensión."
+},
+{
+  pregunta: "Las penas que consisten en prohibiciones (como residir en un lugar, salir del país o aproximarse a la víctima) son:",
+  options: ["a) Medidas de inseguridad.", "b) Penas privativas de derechos.", "c) Siempre penas de prisión.", "d) Imposibles de condicionar."],
+  correcta: "b) Penas privativas de derechos.",
+  justificacion: "Restringen derechos específicos sin implicar privación de libertad."
+},
+{
+  pregunta: "La acción judicial contra delitos de lesa humanidad puede ser ejercida incluso si el autor no es nacional, ni residente, ni cometió el delito en territorio nacional, cuando la legislación lo permite y los tratados lo prevén. Esto refleja el principio de:",
+  options: ["a) Territorialidad absoluta.", "b) Nacionalidad exclusivamente.", "c) Universalidad o principio de jurisdicción universal.", "d) Inimputabilidad."],
+  correcta: "c) Universalidad o principio de jurisdicción universal.",
+  justificacion: "El derecho penal internacional permite perseguir ciertos delitos gravísimos aún cuando no tengan conexión directa con el país, como genocidio, tortura o crímenes de guerra."
+},
+{
+  pregunta: "La revisión de la pena privativa de libertad por parte de los tribunales debe tener en cuenta la evolución del condenado, grado de reinserción, peligrosidad residual y circunstancias de la ejecución. Este procedimiento permite:",
+  options: ["a) Liberar a todos automáticamente a los 5 años.", "b) Suspender la ejecución de forma automática sin control.", "c) Asegurar que la pena sigue siendo necesaria y no desproporcionada.", "d) Prolongar la pena sin límite."],
+  correcta: "c) Asegurar que la pena sigue siendo necesaria y no desproporcionada.",
+  justificacion: "La revisión periódica permite adaptar la situación del condenado al riesgo real y evitar castigos excesivos o innecesarios."
+},
+{
+  pregunta: "La pena que contempla el cumplimiento de trabajo sin remuneración para la sociedad es:",
+  options: ["a) Condena civil.", "b) Pena de multa exclusivamente.", "c) Pena de trabajos en beneficio de la comunidad.", "d) Pena de inhabilitación únicamente."],
+  correcta: "c) Pena de trabajos en beneficio de la comunidad.",
+  justificacion: "Este tipo de pena sanciona la conducta obligando a reparar parte del daño social mediante trabajo útil para la comunidad."
+},
+{
+  pregunta: "La ley penal puede prever que actos preparatorios de un delito (como la compra de instrumentos) no sean punibles si no existe voluntad real de consumar el resultado. Este criterio depende de:",
+  options: ["a) Interpretación libre del juez.", "b) Lo que disponga la ley específica para cada delito.", "c) Siempre serán punibles.", "d) Solo si hay daños materiales."],
+  correcta: "b) Lo que disponga la ley específica para cada delito.",
+  justificacion: "La punibilidad de los preparativos depende de la normativa: algunos los sancionan como delito de conspiración o asociación ilícita, otros solo consideran punible la consumación, tentativa o actos próximos."
+},
+{
+  pregunta: "La omisión de la denuncia de un delito grave puede ser punible si la ley lo exige. Esto se conoce como:",
+  options: ["a) Omisión del deber de socorro únicamente.", "b) Omisión de denunciar o colaborar.", "c) Perjurio.", "d) Instrucción criminal."],
+  correcta: "b) Omisión de denunciar o colaborar.",
+  justificacion: "En ciertos delitos, la ley impone la obligación legal de denunciar; el incumplimiento puede constituir infracción penal."
+},
+{
+  pregunta: "La pena de prisión permanente revisable debe ser revisada tras un periodo mínimo fijado, y puede ser excarcelada si se considera que el riesgo del condenado ha cesado o es asumible por la sociedad. La decisión depende de:",
+  options: ["a) Una votación popular.", "b) Un informe médico exclusivamente.", "c) La valoración del tribunal sobre la peligrosidad, la evolución del penado, la reinserción y el cumplimiento.", "d) La petición expresa del Ministerio Fiscal únicamente."],
+  correcta: "c) La valoración del tribunal sobre la peligrosidad, la evolución del penado, la reinserción y el cumplimiento.",
+  justificacion: "La revisión es un acto de valoración judicial sobre diversos elementos y no depende únicamente de la sola existencia de un plazo cumplido."
+},
+{
+  pregunta: "El abuso de autoridad puede agravar la responsabilidad penal de funcionarios cuando el delito se comete en ejercicio de funciones con aprovechamiento del cargo. Esto corresponde a una circunstancia:",
+  options: ["a) Atenuante.", "b) Independiente.", "c) Agravante.", "d) Sustitutiva."],
+  correcta: "c) Agravante.",
+  justificacion: "El uso del cargo o de la autoridad para cometer o facilitar un delito muestra un mayor grado de reproche social y peligro, lo que suele agravar la pena."
+},
+{
+  pregunta: "La extradición puede suspenderse o denegarse si el fiscal estima que:",
+  options: ["a) El fugitivo tiene dos pasaportes.", "b) Existe riesgo de trato degradante, tortura, pena de muerte o vulneración de garantías en el Estado requirente.", "c) El delito es leve únicamente.", "d) No hay testigos."],
+  correcta: "b) Existe riesgo de trato degradante, tortura, pena de muerte o vulneración de garantías en el Estado requirente.",
+  justificacion: "La protección de los derechos humanos y garantías procesales puede impedir la entrega si hay riesgo grave de vulneración."
+},
+{
+  pregunta: "El principio de obligatoriedad de la acción penal obliga al órgano público a investigar y perseguir los delitos públicos declarados. No obstante, la ley puede prever excepciones, como el archivo o desistimiento mediante:",
+  options: ["a) Decisión arbitraria del juez sin motivo.", "b) El uso del principio de oportunidad o causas de extinción de la acción penal.", "c) La impunidad automática.", "d) La petición exclusiva de la víctima en todos los casos."],
+  correcta: "b) El uso del principio de oportunidad o causas de extinción de la acción penal.",
+  justificacion: "Aunque la acción penal suele ser obligatoria, la ley puede permitir no perseguir ciertos hechos atendiendo a criterios de oportunidad o extinción legal."
+},
+{
+  pregunta: "La pena de multa diaria se calcula fijando un número de días multa y una cuota diaria que depende de la capacidad económica del condenado. Esto permite que la sanción:",
+  opciones: ["a) Sea igual para todos independientemente de sus ingresos.", "b) Sea proporcional y adaptada a los medios económicos del penado.", "c) Sea arbitraria.", "d) Sustituya siempre la prisión."],
+  correcta: "b) Sea proporcional y adaptada a los medios económicos del penado.",
+  justificacion: "El sistema de días multa ajusta la sanción pecuniaria a la situación económica del condenado, lo que contribuye a su eficacia y justicia."
+},
+{
+  pregunta: "El arrepentimiento posterior, cuando el autor del delito intenta reparar el daño causado sin haber sido instado previamente, puede ser valorado como:",
+  opciones: ["a) Causa de exención de pena.", "b) Atenuante.", "c) Agravante.", "d) Sustitutiva de la pena de prisión."],
+  correcta: "b) Atenuante.",
+  justificacion: "El arrepentimiento posterior y la reparación voluntaria del daño pueden atenuar la responsabilidad penal, según lo que establezca la ley."
+},
+{
+  pregunta: "La medida de seguridad puede ser impuesta cuando la pena no basta para prevenir el riesgo de repetición delictiva, en especial si hay peligrosidad del autor. Esto significa que:",
+  options: ["a) La medida de seguridad suplanta siempre la pena.", "b) Es independiente de la pena y puede aplicarse aunque no haya pena.", "c) Solo se aplica a delitos leves.", "d) Es una decisión del acusado."],
+  correcta: "b) Es independiente de la pena y puede aplicarse aunque no haya pena.",
+  justificacion: "Las medidas de seguridad no buscan castigar sino prevenir futuros riesgos delictivos; pueden utilizarse en casos en que la pena por sí sola no es suficiente o en situaciones específicas (como inimputabilidad o trastornos mentales)."
+},
+{
+  pregunta: "La extinción de la responsabilidad penal también puede producirse por la muerte del autor. Esto implica que:",
+  options: ["a) El proceso continúa normalmente.", "b) Quede sin efecto la ejecución de la pena.", "c) El condenado debe dejar bienes para reparar.", "d) Se convierte automáticamente en medida de seguridad."],
+  correcta: "b) Quede sin efecto la ejecución de la pena.",
+  justificacion: "Cuando muere el autor del delito, deja de tener sentido imponer o ejecutar una pena privativa de libertad u otras sanciones personales."
+},
+{
+  pregunta: "La nulidad del proceso penal puede decretarse cuando:",
+  opciones: ["a) Siempre que lo pida la defensa sin motivación.", "b) Si hay vulneración de derechos esenciales del acusado, como falta de audiencia, indefensión, falta de motivación, juez no competente, etc.", "c) Si no hay víctimas.", "d) Cuando el acusado cambia de domicilio."],
+  correcta: "b) Si hay vulneración de derechos esenciales del acusado, como falta de audiencia, indefensión, falta de motivación, juez no competente, etc.",
+  justificacion: "La nulidad busca restablecer la legalidad del procedimiento cuando se vulneran garantías constitucionales o normativas fundamentales."
+},
+{
+  pregunta: "El principio de inmediación en el juicio penal implica que:",
+  opciones: ["a) El juez no necesita presenciar la prueba directa.", "b) Las decisiones deben basarse en prueba directa en audiencia, salvo excepciones legalmente previstas.", "c) El abogado defensor puede sustituirse.", "d) El proceso puede prolongarse indefinidamente."],
+  correcta: "b) Las decisiones deben basarse en prueba directa en audiencia, salvo excepciones legalmente previstas.",
+  justificacion: "El juez debe valorar personalmente la prueba principal, observar al testigo o la víctima, su declaración, expresiones y credibilidad; evita decisiones basadas solo en informes lejanos o sin contradicción."
+},
+{
+  pregunta: "La acción delictiva continua en el tiempo puede determinar un delito continuado o reiterado. En estos casos, el legislador puede considerar elementos como la duración, frecuencia o estabilidad. Esto obedece al principio de:",
+  opciones: ["a) Especialidad.", "b) Unidad normativa.", "c) Proporcionalidad en la pena.", "d) Indefensión."],
+  correcta: "c) Proporcionalidad en la pena.",
+  justificacion: "La pena debe adecuarse a la gravedad real del comportamiento continuado y su peligrosidad social, considerando la duración y frecuencia delictiva."
+},
+{
+  pregunta: "La defensa técnica, como derecho del investigado o acusado, implica que:",
+    opciones: ["a) Solo se necesita abogado si hay pena de prisión.", "b) Puede elegir abogado, ser asistido por él desde el primer acto y prepararse debidamente para el juicio.", "c) No necesita representación si tiene medios.", "d) El fiscal puede actuar como abogado defensor."],
+  correcta: "b) Puede elegir abogado, ser asistido por él desde el primer acto y prepararse debidamente para el juicio.",
+  justificacion: "La defensa técnica garantiza la igualdad de armas, posibilidad de alegar, recurrir y presentar prueba; es parte del derecho fundamental a un proceso justo."
+},
+{
+  pregunta: "El motivo del delito puede afectar al ámbito penal cuando hay agravantes específicas, como comisión por razón de discriminación, odio, o vulnerabilidad de la víctima. Esto muestra que:",
+  options: ["a) El motivo siempre es irrelevante.", "b) El motivo puede agravar la sanción si la ley lo contempla.", "c) El motivo sirve para absolver al acusado.", "d) Siempre sustituye la pena."],
+  correcta: "b) El motivo puede agravar la sanción si la ley lo contempla.",
+  justificacion: "La motivación delictiva —como odio, discriminación, uso de superioridad o debilidad de la víctima— puede ser valorada como circunstancia agravante."
+},
+{
+  pregunta: "El principio non bis in idem en el derecho penal internacional significa que:",
+  opciones: ["a) Una persona puede ser juzgada varias veces por el mismo hecho en distintos países sin limitación.", "b) Una persona no puede ser juzgada ni sancionada dos veces por la misma conducta con los mismos elementos esenciales.", "c) Siempre hay extradición doble.", "d) Solo se aplica en delitos leves."],
+  correcta: "b) Una persona no puede ser juzgada ni sancionada dos veces por la misma conducta con los mismos elementos esenciales.",
+  justificacion: "Este principio protege frente a la doble persecución o doble sanción por el mismo hecho, asegurando seguridad jurídica y evitando indefensión."
+},
+{
+  pregunta: "La prisión incondicional como pena solo puede reemplazarse (cuando lo permita la ley) por otras sanciones menos gravosas si:",
+  options: ["a) El condenado lo solicita.", "b) La pena lo permite y el juez avala la sustitución tras valorar circunstancias personales, peligrosidad, gravedad del delito y finalidad de la pena.", "c) No hay testigos.", "d) Siempre que haya reparación del daño."],
+  correcta: "b) La pena lo permite y el juez avala la sustitución tras valorar circunstancias personales, peligrosidad, gravedad del delito y finalidad de la pena.",
+  justificacion: "La sustitución de penas exige autorización legal y valoración judicial de los riesgos, dignidad, proporcionalidad y reinserción."
+},
+{
+  pregunta: "La figura del colaborador necesario implica que:",
+  options: ["a) Solo el autor principal puede ser sancionado.", "b) Quien coopera esencialmente al desarrollo del delito, sin ser el ejecutor físico, puede tener responsabilidad similar al autor.", "c) El colaborador no tiene responsabilidad penal.", "d) Siempre es castigado con multa."],
+  correcta: "b) Quien coopera esencialmente al desarrollo del delito, sin ser el ejecutor físico, puede tener responsabilidad similar al autor.",
+  justificacion: "El colaborador necesario facilita o hace posible el delito; su participación es clave y puede ser valorada como coautoría funcional."
+},
+{
+  pregunta: "La acción de revisitar sentencia firme es posible si aparecen hechos o pruebas nuevas, o errores constitucionales. Esta figura se denomina:",
+  options: ["a) Apelación.", "b) Queja.", "c) Revisión.", "d) Indulto."],
+  correcta: "c) Revisión.",
+  justificacion: "La revisión permite corregir injusticias o errores incluso después de que la sentencia haya adquirido firmeza, garantizando un recurso adicional excepcional."
+},
+{
+  pregunta: "El derecho penal sanciona también el engaño o fraude cuando afecta bienes jurídicos patrimoniales. En estos casos, el resultado puede ser:",
+  options: ["a) Solo pena de prisión.", "b) Multa, pena de prisión, devolución del patrimonio, decomiso, y otros accesorios.", "c) Solo sanción civil.", "d) Ninguna sanción si el engaño es leve."],
+  correcta: "b) Multa, pena de prisión, devolución del patrimonio, decomiso, y otros accesorios.",
+  justificacion: "Los delitos patrimoniales incluyen sanciones tanto penales como civiles y medidas accesorias para recuperar lo sustraído o dañado."
+},
+{
+  pregunta: "La correcta valoración de la prueba exige que el tribunal actúe con sufiente motivación y explicite por qué considera creíble unas pruebas y no otras. Si no justifica esto, puede existir:",
+  options: ["a) Sentencia indiscutible.", "b) Sentencia nula o vulneradora de la tutela judicial efectiva.", "c) Absolución automática.", "d) Duplicación del juicio."],
+  correcta: "b) Sentencia nula o vulneradora de la tutela judicial efectiva.",
+  justificacion: "La motivación del fallo es requisito constitucional y procesal: sin ella se impide comprender los criterios del juez y se vulnera la igualdad de armas y la defensa."
+},
+{
+  pregunta: "La medida de libertad condicional permite que el condenado cumpla la pena supervisado externamente si reúne determinados requisitos de conducta, reinserción y cumplimiento. Esta medida busca:",
+  options: ["a) Que el condenado nunca vuelva a la sociedad.", "b) Facilitar la reinserción y reducir la duración de la reclusión efectiva cuando es compatible con la seguridad pública.", "c) Castigar más al penado.", "d) Sustituir la ejecución de la pena principal."],
+  correcta: "b) Facilitar la reinserción y reducir la duración de la reclusión efectiva cuando es compatible con la seguridad pública.",
+  justificacion: "La libertad condicional es una fórmula para equilibrar la pena con la reinserción, autorizando salidas con supervisión si concurren buenas condiciones."
+},
+{
+  pregunta: "El control administrativo y judicial de los centros penitenciarios es obligatorio para garantizar los derechos de los reclusos. Esta supervisión contribuye al principio de:",
+  options: ["a) Arbitrariedad institucional.", "b) Transparencia, humanidad y dignidad en el sistema penitenciario.", "c) Condena prolongada.", "d) Privacidad absoluta del centro."],
+  correcta: "b) Transparencia, humanidad y dignidad en el sistema penitenciario.",
+  justificacion: "La supervisión evita abusos, garantiza condiciones dignas, el acceso a la salud, el régimen, tratamiento y respeto de los derechos fundamentales en prisión."
+},
+{
+  pregunta: "Los juicios penales deben ser públicos, salvo excepciones legalmente justificadas (por ejemplo, protección de la intimidad o secretos fundamentales). Esto se debe a que:",
+  options: ["a) El público puede intervenir en la decisión.", "b) La publicidad favorece la transparencia, la legitimidad del proceso, el control social y la confianza en la justicia.", "c) Siempre hay cámaras de televisión.", "d) Solo aplica en delitos leves."],
+  correcta: "b) La publicidad favorece la transparencia, la legitimidad del proceso, el control social y la confianza en la justicia.",
+  justificacion: "La publicidad del juicio es una garantía del procedimiento justo, al permitir el control público, evitar arbitrariedad y fomentar la credibilidad del sistema judicial."
+},
+{
+  pregunta: "La pena de prisión puede ser provisional (preventiva) o definitiva. Cuando es definitiva, corresponde a:",
+  opciones: ["a) Medida cautelar.", "b) Pena principal resultante de condena firme.", "c) Pena sustitutiva.", "d) Pena accesoria."],
+  correcta: "b) Pena principal resultante de condena firme.",
+  justificacion: "La prisión definitiva es la sanción impuesta tras la condena y firmada, como pena principal, no una medida cautelar."
+},
+{
+  pregunta: "El recurso extraordinario de casación penal sirve para:",
+  opciones: ["a) Revisar solo los hechos probados.", "b) Revisar el derecho aplicado si afecta a intereses generales, unidad de doctrina, vulneración de ley, contradicción jurisprudencial, etc.", "c) Solicitar indulto.", "d) Cancelar la pena."],
+  correcta: "b) Revisar el derecho aplicado si afecta a intereses generales, unidad de doctrina, vulneración de ley, contradicción jurisprudencial, etc.",
+  justificacion: "La casación penal permite controlar la aplicación uniforme del derecho y corregir errores en la interpretación legal, no revalorar la prueba en la mayoría de los casos."
+},
+{
+  pregunta: "El delito de enaltecimiento del terrorismo atenta contra bienes jurídicos como la dignidad de las víctimas y la seguridad colectiva. Además, puede promover el odio o la legitimación de conductas violentas, por lo que suele considerarse:",
+  opciones: ["a) De delito leve.", "b) Infracción administrativa.", "c) Delito especialmente grave u agravado si recae sobre menores, cargos públicos, etc.", "d) Siempre absuelto si hay libertad de expresión."],
+  correcta: "c) Delito especialmente grave u agravado si recae sobre menores, cargos públicos, etc.",
+  justificacion: "Las legislaciones establecen agravantes para este tipo de delitos cuando se usan en contextos sensibles o con especial impacto social."
+},
+{
+  pregunta: "El error de prohibición ocurre cuando el autor actúa pensando erróneamente que su conducta no está prohibida. Si el error es invencible, puede:",
+  opciones: ["a) Agravar la pena.", "b) Ser causa de exención de responsabilidad penal.", "c) Sustituir la pena por multa.", "d) No tener ningún efecto."],
+  correcta: "b) Ser causa de exención de responsabilidad penal.",
+  justificacion: "El error de prohibición invencible impide conocer que la conducta era ilegal, lo que excluye la culpabilidad si la persona no pudo razonablemente saberlo."
+},
+{
+  pregunta: "En los casos de delitos financieros o corrupción, la responsabilidad penal puede extenderse a los partícipes de hechos preparatorios o de ocultación de fondos. Esta ampliación de responsabilidad busca:",
+  opciones: ["a) Castigar únicamente al autor directo.", "b) Reducir el número de acusados.", "c) Evitar que quienes facilitan o encubren el delito queden impunes.", "d) Sustituir la multa por trabajo comunitario."],
+  correcta: "c) Evitar que quienes facilitan o encubren el delito queden impunes.",
+  justificacion: "Para combatir eficazmente delitos complejos, la ley admite sancionar no solo al ejecutor sino a quien contribuye de modo esencial o encubre."
+},
+{
+  pregunta: "La pena de multa impaga se puede ejecutar mediante:",
+  opciones: ["a) Trabajo comunitario automáticamente.", "b) Cambio de nacionalidad.", "c) Embargo de bienes o ingresos del condenado.", "d) Cancelación del proceso."],
+  correcta: "c) Embargo de bienes o ingresos del condenado.",
+  justificacion: "Si el condenado no paga la multa fijada, se procede al embargo de bienes o ingresos para satisfacerla."
+},
+{
+  pregunta: "La prisión provisional de carácter incomunicado puede establecerse cuando:",
+  opciones: ["a) Siempre que lo decida el juez sin motivación.", "b) Cuando esté justificada la necesidad de evitar que el detenido se comunique con otros para preparar la huida, destruir pruebas o afectar a víctimas o testigos.", "c) Si lo pide el abogado defensor.", "d) Siempre en delitos menores."],
+  correcta: "b) Cuando esté justificada la necesidad de evitar que el detenido se comunique con otros para preparar la huida, destruir pruebas o afectar a víctimas o testigos.",
+  justificacion: "La incomunicación es una medida excepcional; requiere motivación concreta sobre riesgos procesales graves."
+},
+{
+  pregunta: "La absolución del acusado implica que:",
+  opciones: ["a) Quede probado que es culpable, pero se le perdona.", "b) No hay condena penal, se le considera inocente o exento de responsabilidad; puede tener reparaciones o costas según el caso.", "c) Sea equivalente al indulto.", "d) Siempre implica que la acción penal prescribe."],
+  correcta: "b) No hay condena penal, se le considera inocente o exento de responsabilidad; puede tener reparaciones o costas según el caso.",
+  justificacion: "La absolución pone fin al proceso en ese sentido, sin pena, aunque puede haber efectos derivados de la decisión judicial como costas o responsabilidades civiles distintas."
+},
+{
+  pregunta: "La pena de suspensión de empleo o cargo público limita la actividad de quien ocupa cargo estatal o función pública; se considera:",
+  opciones: ["a) Pena privativa de libertad.", "b) Pena privativa de derechos.", "c) Medida cautelar sin efectos penales.", "d) Inhabilitación perpetua automáticamente."],
+  correcta: "b) Pena privativa de derechos.",
+  justificacion: "Se priva al condenado del ejercicio del cargo o empleo público por un tiempo o condiciones específicas, pero no se le priva de libertad necesariamente."
+},
+{
+  pregunta: "Las penas pueden tener un carácter acumulativo (varias aplicadas al mismo hecho), pero deben evitarse redundancias innecesarias o exceso, cumpliéndose el principio de:",
+  opciones: ["a) Indeterminación.", "b) Proporcionalidad.", "c) Anticipación.", "d) Impunidad."],
+  correcta: "b) Proporcionalidad.",
+  justificacion: "Incluso cuando varias sanciones son aplicables, la pena total no debe ser excesiva ni desproporcionada al hecho y a la culpabilidad del autor."
+},
+{
+  pregunta: "El delito de omisión del deber de socorro exige que quien no socorre esté en condiciones de hacerlo sin riesgo grave. En caso de peligro real, la omisión puede ser castigada con:",
+  options: ["a) Siempre multa solo.", "b) Pena o medida sancionadora según la legislación vigente, pudiendo incluir prisión o multa.", "c) Expulsión del país.", "d) Solo sanción administrativa."],
+  correcta: "b) Pena o medida sancionadora según la legislación vigente, pudiendo incluir prisión o multa.",
+  justificacion: "La omisión de socorro es delito penalizable en muchos ordenamientos, con sanción proporcional al peligro y al grado de capacidad del agente para actuar."
+},
+{
+  pregunta: "El principio de congruencia en el proceso penal implica que la resolución judicial debe ajustarse:",
+  opciones: ["a) Solo a las pretensiones del fiscal.", "b) A los hechos alegados, a las pruebas practicadas y a los penales o mode de responsabilidad invocados; no puede desviarse arbitrariamente.", "c) Siempre a la voluntad del acusado.", "d) A la prisa procesal."],
+  correcta: "b) A los hechos alegados, a las pruebas practicadas y a los penales o modos de responsabilidad invocados; no puede desviarse arbitrariamente.",
+  justificacion: "El juez no puede condenar por hechos no sometidos a contradicción, ni imponer penas o responsabilidades distintas a las planteadas; debe respetar la lógica del debate procesal."
+},
+{
+  pregunta: "La legislación penal puede prever tratamientos especiales o atenuados para personas con enfermedad mental o discapacidad, lo que significa que la capacidad penal puede ser modificada. Una consecuencia es:",
+  options: ["a) Que nunca se les imponga pena.", "b) Que puedan aplicarse medidas de seguridad en lugar de o junto con penas, y, en algunos casos, exención si carecen de imputabilidad.", "c) Que siempre queden libres.", "d) Que no haya juicio."],
+  correcta: "b) Que puedan aplicarse medidas de seguridad en lugar de o junto con penas, y, en algunos casos, exención si carecen de imputabilidad.",
+  justificacion: "El sistema penal moderno contempla la inimputabilidad o la disminución de capacidad, adaptando sanciones o sustituyéndolas por medidas de tratamiento y control."
+},
+{
+  pregunta: "La ley penal debe respetar los derechos humanos y los tratados internacionales firmados por el Estado, lo que puede influir en la interpretación o la imposición de penas. Este principio es conocido como:",
+  opciones: ["a) Autonomía del legislador.", "b) Principio de legalidad exclusivo.", "c) Principio de convencionalidad o subordinación al bloque de constitucionalidad y tratados internacionales de derechos humanos.", "d) Principio de arbitrariedad."],
+  correcta: "c) Principio de convencionalidad o subordinación al bloque de constitucionalidad y tratados internacionales de derechos humanos.",
+  justificacion: "La interpretación y aplicación penal deben ser compatibles con la Constitución y los tratados internacionales ratificados, garantizando derechos fundamentales."
+},
+{
+  pregunta: "La acción o resultado de la conducta típica debe ser humana. Si hay un ser vivo no humano, la conducta puede ser considerada por otras normas (ambientales, animales) y no siempre como delito penal. Este requisito expresa que:",
+  options: ["a) La tipicidad debe referirse a un bien jurídico protegido por el derecho penal.", "b) Cualquier acción contra animales es automáticamente penal.", "c) Solo los humanos pueden ser víctimas.", "d) Siempre hay daño."],
+  correcta: "a) La tipicidad debe referirse a un bien jurídico protegido por el derecho penal.",
+  justificacion: "No todo daño o riesgo es tipificado penalmente; debe existir una norma que defina la conducta como ilícita y lo proteja como bien digno de sanción penal."
+},
+{
+  pregunta: "La pena de trabajos en beneficio de la comunidad puede incluir obligaciones formativas, de reinserción y de reparación indirecta del daño. Su eficacia exige control y supervisión, lo que corresponde a:",
+  options: ["a) Que el condenado elija sus horarios sin supervisión.", "b) Que haya mecanismos de seguimiento, verificación del cumplimiento, sanción por incumplimiento, y valoración adecuada.", "c) Que nunca se informe al juez.", "d) Que no importe la reincidencia."],
+  correcta: "b) Que haya mecanismos de seguimiento, verificación del cumplimiento, sanción por incumplimiento, y valoración adecuada.",
+  justificacion: "Para que el trabajo comunitario sea útil y sancionador, debe existir un sistema que asegure que se cumple de forma adecuada, con condiciones claras y control."
+},
+{
+  pregunta: "En los juicios con jurado, la decisión del jurado sobre los hechos debe ser motivada o fundamentada por el tribunal presidido, para garantizar la:",
+  opciones: ["a) Publicidad.", "b) Transparencia, imparcialidad y control jurídico de las decisiones que solo evalúan la veracidad de los hechos.", "c) Vaguedad del veredicto.", "d) Velocidad exclusivamente."],
+  correcta: "b) Transparencia, imparcialidad y control jurídico de las decisiones que solo evalúan la veracidad de los hechos.",
+  justificacion: "Aunque el jurado decida sobre hechos, el tribunal debe fundamentar la resolución para asegurar que las conclusiones se ajustan a la ley y los hechos probados."
+},
+{
+  pregunta: "La pena de inhabilitación absoluta priva al condenado de la mayoría de derechos públicos y constituye una sanción muy grave. Esta pena:",
+  options: ["a) Está siempre vigente.", "b) Solo se impone si la ley lo permite expresamente, y debe equilibrarse con la dignidad y los derechos del penado.", "c) Sustituye la prisión siempre.", "d) No requiere motivación."],
+  correcta: "b) Solo se impone si la ley lo permite expresamente, y debe equilibrarse con la dignidad y los derechos del penado.",
+  justificacion: "La inhabilitación extrema tiene consecuencias profundas; su aplicación debe estar legalmente prevista, suficientemente motivada y proporcionada."
+},
+{
+  pregunta: "El reformismo penal que busca priorizar sanciones no privativas de libertad para delitos de menor entidad se apoya en el principio de:",
+  opciones: ["a) Arbitrariedad.", "b) Proporcionalidad y pena mínima necesaria.", "c) Impunidad.", "d) Exclusividad de la prisión."],
+  correcta: "b) Proporcionalidad y pena mínima necesaria.",
+  justificacion: "El derecho penal moderno tiende a aplicar sanciones más leves o alternativas cuando el delito no compromete gravemente los bienes jurídicos esenciales."
+},
+{
+  pregunta: "El principio de oportunidad muestra su mayor utilidad en delitos con excesiva congestión procesal, medidas móviles, etc., ya que permite:",
+  opciones: ["a) Decretar indulto.", "b) Archivar o desistir ante delitos de baja entidad o con reparación previa, si lo permite la ley.", "c) Evitar la acción civil.", "d) Reducir los costes judiciales pagados por el Estado únicamente."],
+  correcta: "b) Archivar o desistir ante delitos de baja entidad o con reparación previa, si lo permite la ley.",
+  justificacion: "El archivo o desistimiento por oportunidad es útil para focalizar recursos hacia delitos más graves o urgentes, priorizando eficiencia y proporcionalidad."
+},
+{
+  pregunta: "La pena de multa puede tener dos componentes principales: los días multa y la cuota diaria. La cuota se determina en función de:",
+  opciones: ["a) La capacidad económica del Ministerio Fiscal.", "b) La situación patrimonial y medios del condenado (ingresos, patrimonio, obligaciones familiares, etc.).", "c) Un importe fijo para todos.", "d) El monto que la víctima demande."],
+  correcta: "b) La situación patrimonial y medios del condenado (ingresos, patrimonio, obligaciones familiares, etc.).",
+  justificacion: "La multa debe ser proporcional a los recursos del penado para garantizar que cumple su función sancionadora sin incurrir en insolvencia irreversible."
+},
+{
+  pregunta: "El desistimiento voluntario eficaz permite que:",
+  opciones: ["a) El autor abandone el plan delictivo antes de consumarlo y colabore a impedir la consumación, lo que puede eximir de pena o atenuarla.", "b) Siempre se condene igual.", "c) Solo se reduzca la pena cinco años más tarde.", "d) Sustituya la multa por prisión."],
+  correcta: "a) El autor abandone el plan delictivo antes de consumarlo y colabore a impedir la consumación, lo que puede eximir de pena o atenuarla.",
+  justificacion: "El desistimiento efectivamente demostrado reduce la culpabilidad social y puede recibir un tratamiento distinto o más benigno en la pena."
+},
+{
+  pregunta: "La sanción penal puede incluir pena principal, accesoria y medidas de seguridad. Una medida de seguridad impuesta por enfermedad mental implica que:",
+  opciones: ["a) Sustituye automáticamente la pena.", "b) Puede ser impuesta junto con la pena o, si hay inimputabilidad, en lugar de la pena.", "c) Solo se aplica tras múltiples condenas.", "d) Siempre implica internamiento indefinido."],
+  correcta: "b) Puede ser impuesta junto con la pena o, si hay inimputabilidad, en lugar de la pena.",
+  justificacion: "Cuando el autor tiene enfermedad mental, la medida de seguridad es el mecanismo preferente para proteger al individuo y la sociedad, pudiendo evitar pena clásica si no es imputable."
+},
+{
+  pregunta: "La doble incriminación en la extradición exige que el hecho sea delito tipificado en los dos Estados, salvo que el tratado indique lo contrario. Si no hay doble incriminación, se puede denegar la extradición, lo que protege:",
+  opciones: ["a) La impunidad automática.", "b) La seguridad jurídica y la soberanía penal del Estado requerido.", "c) Que siempre se conceda la extradición.", "d) Que no haya acuerdos internacionales."],
+  correcta: "b) La seguridad jurídica y la soberanía penal del Estado requerido.",
+  justificacion: "El Estado no puede entregar a una persona por hechos que no estén sancionados como delito también en su legislación o conforme al tratado aplicable."
+},
+{
+  pregunta: "El principio de humanidad exige que las penas y medidas sean:",
+  opciones: ["a) Arbitrarias.", "b) Dignas, no crueles, no inhumanas, no degradantes, y proporcionales al delito y culpabilidad.", "c) Máximas posibles.", "d) Indiscriminadas."],
+  correcta: "b) Dignas, no crueles, no inhumanas, no degradantes, y proporcionales al delito y culpabilidad.",
+  justificacion: "Los derechos humanos limitan el ejercicio del poder punitivo del Estado y requieren un tratamiento justo del condenado."
+},
+{
+  pregunta: "La pena de prisión condicionada (o suspensión de la pena de prisión) puede otorgarse si:",
+  opciones: ["a) El acusado paga una multa antes del juicio.", "b) El delito es leve, hay buena conducta, no hay antecedentes graves y el juez lo concede como medida alternativa.", "c) El juez lo hace automáticamente en todos los casos.", "d) El procesado lo solicita sin condiciones."],
+  correcta: "b) El delito es leve, hay buena conducta, no hay antecedentes graves y el juez lo concede como medida alternativa.",
+  justificacion: "La suspensión facilita la reinserción y descongestiona presos, pero exige condiciones objetivas y valoración judicial."
+},
+{
+  pregunta: "La pena de multa que no es pagada puede generar la sustitución por prisión si la ley lo contempla, lo que debe ser:",
+  opciones: ["a) Automático sin control.", "b) Proporcional al impago y los medios del condenado, revisable, y sin exceso.", "c) Ilimitado en duración.", "d) Decidido por el propio condenado."],
+  correcta: "b) Proporcional al impago y los medios del condenado, revisable, y sin exceso.",
+  justificacion: "La sustitución no puede significar un castigo desproporcionado o inhumano frente a la imposibilidad real de pago del condenado."
+},
+{
+  pregunta: "La persona que ayuda a preparar el delito, pero no colabora en la consumación, puede ser sancionada por:",
+  opciones: ["a) Nada.", "b) Asociación ilícita, conspiran, encubrimiento o colaboración, si la ley tipifica esos supuestos.", "c) Solo delito de autoría directa.", "d) Pena de prisión perpetua."],
+  correcta: "b) Asociación ilícita, conspiración, encubrimiento o colaboración, si la ley tipifica esos supuestos.",
+  justificacion: "El derecho penal sanciona no solo la consumación sino los apoyos que facilitan el delito, para atacar la estructura criminal."
+},
+{
+  pregunta: "El principio de obligatoriedad de la acción penal significa que:",
+  opciones: ["a) Fiscalía puede decidir libremente perseguir o no delitos sin base legal.", "b) Los órganos públicos deben investigar y perseguir los delitos públicos, salvo excepciones legales.", "c) Solo la víctima decide si se persigue.", "d) No hay posibilidad de archivo."],
+  correcta: "b) Los órganos públicos deben investigar y perseguir los delitos públicos, salvo excepciones legales.",
+  justificacion: "La obligatoriedad evita que delitos públicos queden impunes, aunque prevé mecanismos de archivo o desistimiento si la ley lo permite."
+},
+{
+  pregunta: "El recurso de apelación en el proceso penal permite revisar:",
+  opciones: ["a) Solo los argumentos de la defensa.", "b) Los hechos y el derecho; puede modificar, confirmar o anular la sentencia del tribunal inferior.", "c) Solo la condena, no la absolución.", "d) Solo decisiones procedimentales menores."],
+  correcta: "b) Los hechos y el derecho; puede modificar, confirmar o anular la sentencia del tribunal inferior.",
+  justificacion: "El apelación proporciona un segundo control sobre la decisión, corrigiendo errores tanto de hecho como de derecho, garantizando justicia."
+},
+{
+  pregunta: "El derecho a la asistencia letrada desde el primer acto exige que:",
+  options: ["a) Sólo haya abogado si la persona lo nombra tras la detención.", "b) El detenido pueda designar o se le asigne abogado desde el momento de la detención, con información de sus derechos y facultades.", "c) El fiscal asista como defensor.", "d) No haya plazos."],
+  correcta: "b) El detenido pueda designar o se le asigne abogado desde el momento de la detención, con información de sus derechos y facultades.",
+  justificacion: "Garantiza el derecho a la defensa, evita interrogatorios abusivos, asegura información del proceso y condiciones de igualdad."
+},
+{
+  pregunta: "La pena de inhabilitación para empleo o cargo público impide al condenado:",
+  options: ["a) Cambiar de domicilio.", "b) Ejercer el oficio, profesión o cargo público designado por la sentencia durante el tiempo que la misma fije.", "c) Tener nacionalidad extranjera.", "d) Votar únicamente."],
+  correcta: "b) Ejercer el oficio, profesión o cargo público designado por la sentencia durante el tiempo que la misma fije.",
+  justificacion: "Se priva al condenado del ejercicio de funciones específicas como parte del reproche penal, separándolo de puestos de responsabilidad."
+},
+{
+  pregunta: "Los delitos de lesa humanidad están sometidos al principio de universalidad, lo que permite que:",
+  options: ["a) Solo el Estado afectado los persiga.", "b) Poder ser juzgados por cualquier Estado que tenga jurisdicción o competencia según tratados internacionales, independientemente del lugar del hecho o la nacionalidad del autor.", "c) Que nunca se investiguen si ocurrieron en otro país.", "d) Que solo se les aplique sanción administrativa."],
+  correcta: "b) Poder ser juzgados por cualquier Estado que tenga jurisdicción o competencia según tratados internacionales, independientemente del lugar del hecho o la nacionalidad del autor.",
+  justificacion: "La gravedad extrema de estos delitos justifica su persecución universal para evitar impunidad."
+},
+{
+  pregunta: "El principio de legalidad penal requiere que las penas estén previstas por la ley. Si la ley posterior rebaja la pena aplicable al delito ya cometido, debe aplicarse la nueva pena. Esto es el principio de:",
+  opciones: ["a) Retroactividad desfavorable.", "b) Retroactividad benigna de la ley penal.", "c) Irretroactividad absoluta.", "d) Indefinición legal."],
+  correcta: "b) Retroactividad benigna de la ley penal.",
+  justificacion: "Cuando la ley posterior reduce sanciones, favorece al penado; es una garantía de justicia y equidad en materia penal."
+},
+{
+  pregunta: "La pena de suspensión de empleo o cargo público impide al condenado desempeñar dicho empleo o cargo, lo cual constituye una pena privativa de derechos, y su finalidad es:",
+  options: ["a) Castigar el delito sin limitaciones.", "b) Proteger la confianza pública, evitar que delincuentes ocupen puestos sensibles o responsabilidad pública, y servir como reproche.", "c) Sustituir las penas de prisión solo.", "d) Imponer sanción administrativa solamente."],
+  correcta: "b) Proteger la confianza pública, evitar que delincuentes ocupen puestos sensibles o responsabilidad pública, y servir como reproche.",
+  justificacion: "La sanción busca prevenir el ejercicio del poder o funciones en manos de personas condenadas, manteniendo la dignidad y seguridad del servicio público."
+},
+{
+  pregunta: "La pena de trabajos en beneficio de la comunidad debe ser supervisada para evitar abusos, garantizar cumplimiento y control judicial. La falta de supervisión puede resultar en:",
+  options: ["a) Mejora de los derechos del condenado.", "b) Vulneración del derecho al trabajo, condiciones dignas, igualdad de trato y seguridad jurídica.", "c) Sustitución automática por multa.", "d) No tiene consecuencias."],
+  correcta: "b) Vulneración del derecho al trabajo, condiciones dignas, igualdad de trato y seguridad jurídica.",
+  justificacion: "La ejecución de la pena comunitaria debe respetar derechos fundamentales: horario, condiciones, prevención de explotación, seguridad, etc."
+},
+{
+  pregunta: "El principio de non bis in idem impide que una persona sea juzgada o sancionada dos veces por el mismo hecho; esto se extiende también al plano internacional cuando existe:",
+  opciones: ["a) Ningún tratado firmado.", "b) Convención de extradición o acuerdos que lo permitan, salvo excepciones específicas.", "c) Libertad condicional.", "d) Indulto automático."],
+  correcta: "b) Convención de extradición o acuerdos que lo permitan, salvo excepciones específicas.",
+  justificacion: "El derecho penal internacional reconoce la necesidad de evitar persecuciones múltiples por el mismo hecho, equilibrando el interés de los diversos Estados implicados."
+},
+{
+  pregunta: "El delito de encubrimiento requiere que la conducta del encubridor sea consciente y deliberada, con conocimiento de que se ha cometido un delito, y su finalidad sea ayudar al autor a eludir la acción de la justicia. Esto implica:",
+  options: ["a) Que cualquiera que encuentre un objeto robado es automáticamente encubridor.", "b) Que debe existir dolo en la conducta de ayuda o colaboración para ser sancionable.", "c) Que basta con la ignorancia para sancionar.", "d) Que sea sancionado sin valoración del contexto."],
+  correcta: "b) Que debe existir dolo en la conducta de ayuda o colaboración para ser sancionable.",
+  justificacion: "El encubrimiento se basa en cooperación consciente aludir a las consecuencias del delito; no basta con ignorancia o mera coincidencia."
+},
+{
+  pregunta: "El procesamiento de menores suele ajustarse a una legislación penal especial o diferenciada, que da prioridad a medidas educativas o protectoras sobre el castigo severo, siempre que sea posible. Esto evidencia el principio de:",
+  options: ["a) Igualdad de trato con adultos.", "b) Injusticia reparativa.", "c) Protección del menor y reinserción.", "d) Indefensión."],
+  correcta: "c) Protección del menor y reinserción.",
+  justificacion: "El sistema reconoce la mayor posibilidad de cambio y vulnerabilidad de los menores, por lo que busca medidas menos gravosas pero eficaces en prevención y reeducación."
+},
+{
+  pregunta: "El principio de mínima intervención exige que el derecho penal actúe sólo cuando sea necesario, dejando margen para otros mecanismos (administrativos, civiles, sociales). Cuando no es necesario, debe evitarse la sanción penal, lo cual promueve:",
+  options: ["a) El castigo arbitrario.", "b) La selectividad del derecho penal para casos realmente graves.", "c) La renuncia a perseguir delitos.", "d) La imposición de pena máxima siempre."],
+  correcta: "b) La selectividad del derecho penal para casos realmente graves.",
+  justificacion: "El derecho penal no debe emplearse como solución automática ante cualquier conflicto social; debe reservarse para los casos que exigen protección especial."
+},
+{
+  pregunta: "La pena de prisión permanente revisable es compatible con el derecho a la libertad si se prevé un sistema de revisión que permita valorar la evolución del penado. Esto constituye un garante del derecho constitucional de:",
+  options: ["a) Pena ilimitada.", "b) Derechos humanos y dignidad; tratamiento proporcional y oportunidad de reinserción.", "c) Jubilación anticipada.", "d) Pena exclusivamente administrativa."],
+  correcta: "b) Derechos humanos y dignidad; tratamiento proporcional y oportunidad de reinserción.",
+  justificacion: "El sistema de revisión busca evitar la prisión eterna automática y garantizar que solo permanezcan privados de libertad quienes representen un riesgo real, respetando derechos fundamentales."
+},
+{
+  pregunta: "La detención sin orden judicial debe respetar plazos y condiciones legales, y ser comunicada al detenido y a su abogado. Su finalidad es:",
+  options: ["a) Castigar inmediatamente.", "b) Garantizar seguridad pública, prevenir fuga, destrucción de pruebas o reiteración delictiva, siempre con respeto de los derechos básicos.", "c) Hacer un interrogatorio amplio sin asistencia.", "d) Suspender el juicio."],
+  correcta: "b) Garantizar seguridad pública, prevenir fuga, destrucción de pruebas o reiteración delictiva, siempre con respeto de los derechos básicos.",
+  justificacion: "La detención preventiva debe conjugar eficiencia policial con protección de derechos mínimos del detenido (información, asistencia legal, comunicación, plazo de puesta a disposición judicial)."
+},
+{
+  pregunta: "La prisión provisional debe ser objeto de revisión periódica e incluso de excarcelación, si cambia la situación del investigado (riesgo, conducta, garantías). Esto evita:",
+  options: ["a) Que la prisión preventiva dure eternamente sin control.", "b) Que el proceso finalice.", "c) Que haya policía involucrada.", "d) Que se archive todo."],
+  correcta: "a) Que la prisión preventiva dure eternamente sin control.",
+  justificacion: "La revisión garantiza que la medida cautelar no se prolongue más allá de lo necesario, evitando detenciones arbitrarias prolongadas."
+},
+];
+
+let totalPreguntasRenderizadas = 0;
+
+function barajar(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+}
+
+function setProgress(current, total) {
+  const bar = document.getElementById('progressBar');
+  const pct = total > 0 ? Math.round((current / total) * 100) : 0;
+  bar.style.width = pct + '%';
+  bar.title = pct + '%';
+}
+
+function cargarTest() {
+  const seleccionadas = [...preguntasBanco];
+  barajar(seleccionadas);
+  const num = parseInt(document.getElementById("numPreguntas").value);
+  const seleccion = seleccionadas.slice(0, num);
+
+  const testForm = document.getElementById("testForm");
+  const result = document.getElementById("testResult");
+  testForm.innerHTML = '';
+  result.innerHTML = '';
+  totalPreguntasRenderizadas = seleccion.length;
+  setProgress(0, totalPreguntasRenderizadas);
+
+  seleccion.forEach((preg, index) => {
+    const id = `q${index}`;
+    const opciones = [...preg.opciones];
+    barajar(opciones);
+    const opcionesHTML = opciones.map(op => `
+      <label class="option">
+        <input type="radio" name="${id}" value="${op}" data-correcta="${preg.correcta}" data-justificacion="${preg.justificacion}">
+        ${op}
+      </label>
+    `).join('');
+
+    const card = document.createElement('div');
+    card.className = 'question';
+    card.innerHTML = `
+      <div class="q-head">
+        <div class="q-num">Pregunta ${index + 1}:</div>
+        <p class="q-text">${preg.pregunta}</p>
+      </div>
+      <div class="options">${opcionesHTML}</div>
+      <div class="justification" id="j${id}"></div>
+    `;
+    testForm.appendChild(card);
+  });
+
+  // Botonera inferior
+  const actions = document.createElement('div');
+  actions.style.textAlign = 'center';
+  actions.style.marginTop = '14px';
+  actions.innerHTML = '<button class="btn success" type="button" onclick="corregir()">✅ Enviar</button>';
+  testForm.appendChild(actions);
+
+  // Selección visual on click
+  testForm.querySelectorAll('.option input').forEach(inp => {
+    inp.addEventListener('change', (e) => {
+      const group = e.target.name;
+      // Quitar selección previa
+      testForm.querySelectorAll(`input[name="${group}"]`).forEach(i2 => {
+        i2.closest('.option').classList.remove('is-selected');
+      });
+      e.target.closest('.option').classList.add('is-selected');
+
+      // Progreso (contar cuántas preguntas ya tienen marcada una opción)
+      const respondidas = new Set();
+      testForm.querySelectorAll('.option input:checked').forEach(i3 => respondidas.add(i3.name));
+      setProgress(respondidas.size, totalPreguntasRenderizadas);
+    });
+  });
+}
+
+function corregir() {
+  const preguntas = document.querySelectorAll('.question');
+  let aciertos = 0;
+
+  preguntas.forEach(q => {
+    const seleccion = q.querySelector('input[type="radio"]:checked');
+    const justDiv = q.querySelector('.justification');
+
+    // Limpiar estilos previos
+    q.querySelectorAll('.option').forEach(lbl => {
+      lbl.classList.remove('correct-option', 'wrong-option');
+    });
+
+    // Marcar siempre la opción correcta
+    q.querySelectorAll('.option input').forEach(inp => {
+      if (inp.value === inp.dataset.correcta) {
+        inp.closest('.option').classList.add('correct-option');
+      }
+    });
+
+    if (seleccion) {
+      if (seleccion.value === seleccion.dataset.correcta) {
+        aciertos++;
+        justDiv.innerHTML = `<span class="correct">✔ ${seleccion.dataset.justificacion}</span>`;
+      } else {
+        // Señalar la opción elegida como errónea
+        seleccion.closest('.option').classList.add('wrong-option');
+        justDiv.innerHTML = `<span class="incorrect">✘ ${seleccion.dataset.justificacion}</span>`;
+      }
+    } else {
+      justDiv.innerHTML = `<span class="incorrect">✘ No contestada</span>`;
+    }
+  });
+
+  const result = document.getElementById('testResult');
+  const total = preguntas.length;
+  const pct = Math.round((aciertos / total) * 100);
+  const emoji = pct >= 70 ? "🎉" : (pct >= 50 ? "🙂" : "💪");
+  result.innerHTML = `
+    <div class="result-card">
+      <div class="muted">Resultado</div>
+      <div class="score">${emoji} ${aciertos} / ${total} (${pct}%)</div>
+      <div class="muted">Puedes cambiar tus respuestas y volver a pulsar <strong>Enviar</strong>.</div>
+    </div>
+  `;
+}
+
+function reiniciarTest() {
+  document.getElementById('testForm').innerHTML = '';
+  document.getElementById('testResult').innerHTML = '';
+  setProgress(0, 0);
+}
+</script>
+</body>
+</html>
