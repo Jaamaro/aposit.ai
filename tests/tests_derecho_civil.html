@@ -1,0 +1,1454 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test de Derecho Civil</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --card: #ffffff;
+      --text: #111827;
+      --muted: #6b7280;
+      --primary: #2563eb;
+      --primary-dark: #1e40af;
+      --success: #059669;
+      --danger: #dc2626;
+      --ring: rgba(37, 99, 235, 0.25);
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: 'Roboto', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      padding: 24px;
+    }
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+    header.hero {
+      text-align: center;
+      margin-bottom: 16px;
+    }
+    .title {
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--primary-dark);
+      margin: 0 0 8px;
+    }
+    .subtitle {
+      color: var(--muted);
+      margin: 0;
+    }
+    .controls {
+      background: var(--card);
+      border-radius: 14px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.06);
+      padding: 16px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      justify-content: center;
+      position: sticky;
+      top: 12px;
+      z-index: 5;
+    }
+    .controls label { font-weight: 500; }
+    select {
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid #e5e7eb;
+      background: #fff;
+      outline: none;
+      transition: box-shadow .2s, border-color .2s;
+    }
+    select:focus { border-color: var(--primary); box-shadow: 0 0 0 4px var(--ring); }
+
+    .btn {
+      cursor: pointer;
+      border: none;
+      border-radius: 10px;
+      padding: 12px 18px;
+      font-weight: 700;
+      transition: transform .15s, background .2s, box-shadow .2s;
+      color: #fff;
+      background: var(--primary);
+      box-shadow: 0 6px 14px rgba(37,99,235,.2);
+    }
+    .btn:hover { transform: translateY(-1px); background: var(--primary-dark); }
+    .btn.secondary { background: #6b7280; }
+    .btn.secondary:hover { background: #374151; }
+    .btn.success { background: var(--success); }
+    .btn.success:hover { background: #047857; }
+    .btn.danger { background: var(--danger); }
+    .btn.danger:hover { background: #b91c1c; }
+
+    .progress {
+      width: 100%;
+      height: 10px;
+      background: #e5e7eb;
+      border-radius: 999px;
+      overflow: hidden;
+      margin-top: 8px;
+    }
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--primary), #60a5fa);
+      transition: width .3s ease;
+    }
+
+    .question {
+      margin: 14px 0;
+      padding: 18px;
+      background: var(--card);
+      border-radius: 14px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.06);
+    }
+    .q-head {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+    }
+    .q-num {
+      font-weight: 800;
+      color: var(--primary-dark);
+    }
+    .q-text { margin: 0; }
+
+    .options { margin-top: 10px; display: grid; gap: 8px; }
+    .option {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid #e5e7eb;
+      background: #fff;
+      transition: background .15s, border-color .15s, box-shadow .15s;
+      cursor: pointer;
+    }
+    .option input { transform: scale(1.2); }
+    .option:hover { background: #f9fafb; border-color: #d1d5db; }
+    .option.is-selected { box-shadow: 0 0 0 4px var(--ring); border-color: var(--primary); }
+
+    .justification {
+      margin-top: 10px; color: var(--muted);
+    }
+    .correct { color: var(--success); font-weight: 700; }
+    .incorrect { color: var(--danger); font-weight: 700; }
+
+    .option.correct-option {
+      border-color: rgba(5,150,105,.4);
+      background: #ecfdf5;
+    }
+    .option.wrong-option {
+      border-color: rgba(220,38,38,.4);
+      background: #fef2f2;
+    }
+
+    .result-card {
+      margin: 18px 0;
+      padding: 16px;
+      background: var(--card);
+      border-radius: 14px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.06);
+      text-align: center;
+    }
+    .score {
+      font-size: 22px;
+      font-weight: 800;
+      margin: 8px 0;
+    }
+    .muted { color: var(--muted); }
+    footer { text-align: center; margin-top: 24px; color: var(--muted); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="hero">
+      <h1 class="title">Test de Derecho Civil</h1>
+      <p class="subtitle">Selecciona cuántas preguntas quieres y pulsa <strong>Comenzar</strong>.</p>
+    </header>
+
+    <div class="controls">
+      <label for="numPreguntas">Número de preguntas:</label>
+      <select id="numPreguntas">
+        <option value="10">10</option>
+        <option value="20">20</option>
+        <option value="30">30</option>
+        <option value="40">40</option>
+        <option value="50" selected>50</option>
+      </select>
+      <button class="btn" type="button" onclick="cargarTest()">Comenzar</button>
+      <button class="btn secondary" type="button" onclick="reiniciarTest()">Reiniciar</button>
+      <div class="progress" style="flex-basis: 100%;">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+    </div>
+
+    <form id="testForm"></form>
+
+    <div id="testResult"></div>
+    <footer>© Test de práctica — Derecho Civil</footer>
+  </div>
+
+<script>
+const preguntasBanco = [
+{
+  pregunta: "¿Cuáles son las fuentes del ordenamiento jurídico español según el artículo 1 del Código Civil?",
+  opciones: ["a) La ley, la jurisprudencia y la equidad.", "b) La ley, la costumbre y los principios generales del derecho.", "c) La costumbre, la doctrina y los tratados internacionales.", "d) La ley, los reglamentos y los usos sociales."],
+  correcta: "b) La ley, la costumbre y los principios generales del derecho.",
+  justificacion: "El artículo 1 del Código Civil establece que las fuentes del ordenamiento jurídico español son la ley, la costumbre y los principios generales del derecho."
+},
+{
+  pregunta: "Según el artículo 1 del Código Civil, ¿cuándo carecerán de validez las disposiciones?",
+  opciones: ["a) Cuando sean contrarias a la moral.", "b) Cuando contradigan otra de igual rango.", "c) Cuando contradigan otra de rango superior.", "d) Cuando no se publiquen en el BOE."],
+  correcta: "c) Cuando contradigan otra de rango superior.",
+  justificacion: "El Código Civil dispone que carecerán de validez las disposiciones que contradigan otra de rango superior."
+},
+{
+  pregunta: "¿Cuándo regirá la costumbre como fuente del derecho?",
+  opciones: ["a) Siempre que exista.", "b) En defecto de ley aplicable, si no es contraria a la moral o al orden público y resulta probada.", "c) Cuando el juez lo considere conveniente.", "d) Únicamente si hay acuerdo entre las partes."],
+  correcta: "b) En defecto de ley aplicable, si no es contraria a la moral o al orden público y resulta probada.",
+  justificacion: "La costumbre solo se aplica en defecto de ley aplicable, siempre que no sea contraria a la moral o al orden público."
+},
+{
+  pregunta: "¿Qué carácter tienen los principios generales del derecho según el artículo 1.4 del Código Civil?",
+  opciones: ["a) Son normas jurídicas.", "b) Son orientadores sin naturaleza normativa.", "c) Son fuentes principales del derecho.", "d) Son de aplicación obligatoria en todo caso."],
+  correcta: "b) Son orientadores sin naturaleza normativa.",
+  justificacion: "Los principios generales del derecho se aplican en defecto de ley o costumbre, pero carecen de naturaleza normativa."
+},
+{
+  pregunta: "¿Qué función cumple la jurisprudencia según el artículo 1.6 del Código Civil?",
+  opciones: ["a) Es fuente directa del derecho.", "b) Complementa el ordenamiento jurídico.", "c) Deroga las normas inferiores.", "d) Tiene valor vinculante en todos los casos."],
+  correcta: "b) Complementa el ordenamiento jurídico.",
+  justificacion: "La jurisprudencia complementa el ordenamiento jurídico con la doctrina que de modo reiterado establezca el Tribunal Supremo."
+},
+{
+  pregunta: "Según el artículo 2.1 del Código Civil, salvo disposición contraria, las leyes entran en vigor:",
+  opciones: ["a) A los diez días de su publicación en el BOE.", "b) A los veinte días de su completa publicación en el BOE.", "c) Al mes de su publicación.", "d) El mismo día de su publicación."],
+  correcta: "b) A los veinte días de su completa publicación en el BOE.",
+  justificacion: "El artículo 2.1 del Código Civil establece un plazo general de veinte días salvo que la ley disponga otra cosa."
+},
+{
+  pregunta: "¿Cómo se derogan las leyes según el artículo 2.2 del Código Civil?",
+  opciones: ["a) Por decisión judicial.", "b) Por normas de igual rango.", "c) Solo por leyes posteriores.", "d) Por costumbre contraria."],
+  correcta: "c) Solo por leyes posteriores.",
+  justificacion: "Las leyes solo se derogan por otras posteriores y la derogación tiene el alcance que expresamente se disponga."
+},
+{
+  pregunta: "Según el artículo 2.3 del Código Civil, las leyes no tendrán efecto retroactivo:",
+  opciones: ["a) Nunca.", "b) Salvo que lo dispongan expresamente.", "c) Cuando afecten derechos fundamentales.", "d) Cuando el juez así lo determine."],
+  correcta: "b) Salvo que lo dispongan expresamente.",
+  justificacion: "Las leyes no tendrán efecto retroactivo si no dispusieren lo contrario."
+},
+{
+  pregunta: "¿Qué criterios deben tenerse en cuenta para interpretar las normas según el artículo 3 del Código Civil?",
+  opciones: ["a) El sentido literal de las palabras únicamente.", "b) El sentido propio de las palabras, contexto, antecedentes y realidad social.", "c) La costumbre vigente en el momento.", "d) La intención de las partes."],
+  correcta: "b) El sentido propio de las palabras, contexto, antecedentes y realidad social.",
+  justificacion: "El artículo 3.1 establece que las normas se interpretan atendiendo al sentido propio de las palabras y su contexto."
+},
+{
+  pregunta: "¿Cuándo puede fundarse exclusivamente una resolución judicial en la equidad según el artículo 3.2 del Código Civil?",
+  opciones: ["a) Siempre que el juez lo considere justo.", "b) Cuando la ley expresamente lo permita.", "c) En defecto de ley o costumbre.", "d) Solo en materia civil."],
+  correcta: "b) Cuando la ley expresamente lo permita.",
+  justificacion: "Las resoluciones judiciales solo pueden basarse exclusivamente en la equidad cuando la ley lo autoriza expresamente."
+},
+{
+  pregunta: "¿Qué es la aplicación analógica de las normas según el artículo 4.1 del Código Civil?",
+  opciones: ["a) Aplicar una norma distinta por equidad.", "b) Aplicar una norma a un supuesto semejante cuando haya identidad de razón.", "c) Aplicar una norma derogada.", "d) Interpretar una ley de forma literal."],
+  correcta: "b) Aplicar una norma a un supuesto semejante cuando haya identidad de razón.",
+  justificacion: "La aplicación analógica procede cuando la norma regula un caso semejante y existe identidad de razón."
+},
+{
+  pregunta: "¿Qué leyes no pueden aplicarse a supuestos distintos de los comprendidos expresamente en ellas según el artículo 4.2 del Código Civil?",
+  opciones: ["a) Las leyes civiles y mercantiles.", "b) Las leyes penales, excepcionales y temporales.", "c) Las leyes orgánicas.", "d) Las leyes administrativas."],
+  correcta: "b) Las leyes penales, excepcionales y temporales.",
+  justificacion: "El artículo 4.2 prohíbe aplicar por analogía las leyes penales, excepcionales y de ámbito temporal."
+},
+{
+  pregunta: "Según el artículo 5 del Código Civil, ¿se excluyen los días inhábiles en el cómputo civil de los plazos?",
+  opciones: ["a) Sí, siempre.", "b) No, nunca.", "c) Solo si el juez lo permite.", "d) Solo en materia laboral."],
+  correcta: "b) No, nunca.",
+  justificacion: "El artículo 5.2 establece que en el cómputo civil de los plazos no se excluyen los días inhábiles."
+},
+{
+  pregunta: "¿Qué efecto tiene la ignorancia de las leyes según el artículo 6.1 del Código Civil?",
+  opciones: ["a) Excusa su cumplimiento.", "b) No excusa su cumplimiento.", "c) Solo excusa en casos de buena fe.", "d) Solo excusa si hay error material."],
+  correcta: "b) No excusa su cumplimiento.",
+  justificacion: "La ignorancia de las leyes no excusa de su cumplimiento."
+},
+{
+  pregunta: "¿Cuándo es válida la renuncia a los derechos reconocidos por ley según el artículo 6.2 del Código Civil?",
+  opciones: ["a) Siempre.", "b) Nunca.", "c) Solo cuando no contraríe el interés u orden público ni perjudique a terceros.", "d) Si se hace por escrito ante notario."],
+  correcta: "c) Solo cuando no contraríe el interés u orden público ni perjudique a terceros.",
+  justificacion: "La renuncia a derechos solo es válida si no contraviene el orden público ni perjudica a terceros."
+},
+{
+  pregunta: "¿Qué son los actos contrarios a normas imperativas o prohibitivas según el artículo 6.3 del Código Civil?",
+  opciones: ["a) Anulables.", "b) Ineficaces.", "c) Nulos de pleno derecho.", "d) Válidos si hay consentimiento."],
+  correcta: "c) Nulos de pleno derecho.",
+  justificacion: "Los actos contrarios a normas imperativas o prohibitivas son nulos de pleno derecho."
+},
+{
+  pregunta: "¿Qué ocurre con los actos realizados en fraude de ley según el artículo 6.4 del Código Civil?",
+  opciones: ["a) Son válidos.", "b) Son anulables.", "c) Se consideran ejecutados en fraude de ley y no impiden la aplicación de la norma eludida.", "d) Quedan sin efecto automáticamente."],
+  correcta: "c) Se consideran ejecutados en fraude de ley y no impiden la aplicación de la norma eludida.",
+  justificacion: "Los actos en fraude de ley no impiden la aplicación de la norma que se intentó eludir."
+},
+{
+  pregunta: "¿Qué principio rige el ejercicio de los derechos según el artículo 7.1 del Código Civil?",
+  opciones: ["a) Buena fe.", "b) Legalidad.", "c) Proporcionalidad.", "d) Seguridad jurídica."],
+  correcta: "a) Buena fe.",
+  justificacion: "El artículo 7.1 establece que los derechos deben ejercitarse conforme a las exigencias de la buena fe."
+},
+{
+  pregunta: "El abuso de derecho da lugar según el artículo 7.2 del Código Civil a:",
+  opciones: ["a) La nulidad del acto.", "b) Indemnización y medidas para impedir su persistencia.", "c) La sanción penal.", "d) La ineficacia del derecho."],
+  correcta: "b) Indemnización y medidas para impedir su persistencia.",
+  justificacion: "Todo acto que sobrepase los límites normales del ejercicio del derecho da lugar a indemnización y medidas correctoras."
+},
+{
+  pregunta: "¿A quién obligan las leyes penales, las de policía y las de seguridad pública según el artículo 8 del Código Civil?",
+  opciones: ["a) Solo a los españoles.", "b) Solo a los residentes legales.", "c) A todos los que se hallen en territorio español.", "d) A los ciudadanos de la UE."],
+  correcta: "c) A todos los que se hallen en territorio español.",
+  justificacion: "El artículo 8 establece que estas leyes obligan a todos los que se encuentren en territorio español."
+},
+{
+  pregunta: "El principio de jerarquía normativa implica que:",
+  opciones: ["a) Todas las disposiciones tienen el mismo valor legal.", "b) Las normas de rango inferior prevalecen sobre las de mayor rango.", "c) Las disposiciones de rango superior prevalecen sobre las inferiores.", "d) La costumbre siempre se aplica antes que la ley."],
+  correcta: "c) Las disposiciones de rango superior prevalecen sobre las inferiores.",
+  justificacion: "El principio de jerarquía normativa establece que las normas de rango inferior deben adaptarse a las de rango superior, y que estas últimas prevalecen ante contradicciones."
+},
+{
+  pregunta: "La retroactividad de la ley implica:",
+  opciones: ["a) Que la ley produzca efectos para hechos ocurridos con anterioridad, si la propia ley lo prevé.", "b) Que la ley solo afecte a hechos futuros.", "c) Que la ley se aplique desde su publicación sin excepciones.", "d) Que se ignore la voluntad del legislador."],
+  correcta: "a) Que la ley produzca efectos para hechos ocurridos con anterioridad, si la propia ley lo prevé.",
+  justificacion: "La retroactividad permite que la ley influya sobre situaciones pasadas cuando así lo disponga expresamente."
+},
+{
+  pregunta: "La interpretación de una norma jurídica debe tener en cuenta:",
+  opciones: ["a) Solo el texto literal.", "b) El texto, su contexto, antecedentes legislativos y la realidad social.", "c) Únicamente la intención del legislador antiguo.", "d) La opinión de las partes implicadas."],
+  correcta: "b) El texto, su contexto, antecedentes legislativos y la realidad social.",
+  justificacion: "Una buena interpretación exige mirar más allá del texto literal y considerar el contexto, la evolución legal y la realidad social del momento."
+},
+{
+  pregunta: "¿Qué ocurre cuando la ley no regula expresamente un caso concreto pero hay otra norma parecida cuya razón subyacente es aplicable?",
+  opciones: ["a) No puede resolverse el caso.", "b) Se aplica arbitrariamente lo que el juez considere más justo.", "c) Se aplica la norma semejante mediante analogía.", "d) Se espera a que otra ley lo regule futuro."],
+  correcta: "c) Se aplica la norma semejante mediante analogía.",
+  justificacion: "La aplicación analógica se justifica cuando existe identidad de razón entre el caso no previsto y uno regulado, y ello no está prohibido por la ley."
+},
+{
+  pregunta: "La costumbre es aplicable cuando:",
+  opciones: ["a) Siempre que exista la costumbre.", "b) Cuando no haya una ley aplicable, no sea contraria al orden público ni a la moral, y esté probada.", "c) Aunque la ley tenga una norma aplicable.", "d) Nunca; sólo se aplica la ley escrita."],
+  correcta: "b) Cuando no haya una ley aplicable, no sea contraria al orden público ni a la moral, y esté probada.",
+  justificacion: "La costumbre sólo actúa supletoriamente, si no existe norma aplicable, y siempre que respete la moral y el orden público."
+},
+{
+  pregunta: "Los principios generales del derecho sirven para:",
+  opciones: ["a) Sustituir siempre a la ley.", "b) Interpretar la ley, cubrir lagunas, y completar el ordenamiento cuando no hay otra fuente.", "c) Regular únicamente los derechos derivados del derecho romano.", "d) Sustituir la voluntad de las partes."],
+  correcta: "b) Interpretar la ley, cubrir lagunas, y completar el ordenamiento cuando no hay otra fuente.",
+  justificacion: "Los principios generales del derecho actúan cuando la ley y la costumbre no regulan un caso concreto o ofrecen una solución clara."
+},
+{
+  pregunta: "¿Qué consecuencia tiene cometer un acto contrario a las normas imperativas o prohibitivas?",
+  opciones: ["a) El acto es válido pero sancionable.", "b) El acto es anulable si alguna parte lo solicita.", "c) El acto es nulo de pleno derecho.", "d) El acto carece de sanción."],
+  correcta: "c) El acto es nulo de pleno derecho.",
+  justificacion: "Los actos contrarios a normas imperativas o prohibitivas no producen efectos jurídicos, son nulos de pleno derecho."
+},
+{
+  pregunta: "La buena fe en el ejercicio de los derechos implica que:",
+  opciones: ["a) Se puedan realizar actos abusivos si están previstos en la ley.", "b) No hay límites al ejercicio del derecho.", "c) El derecho debe ejercer-se conforme al uso honesto, leal y razonable.", "d) Solo importa lo que diga la ley escrita, no la conducta."],
+  correcta: "c) El derecho debe ejercer-se conforme al uso honesto, leal y razonable.",
+  justificacion: "La buena fe exige que el ejercicio de los derechos no tenga carácter abusivo y respete la lealtad y la honradez."
+},
+{
+  pregunta: "El abuso del derecho puede dar lugar a:",
+  opciones: ["a) Que el acto sea válido sin repercusiones.", "b) Indemnización o medidas para impedir que persista.", "c) Sanción penal automática.", "d) Reconocimiento de un nuevo derecho."],
+  correcta: "b) Indemnización o medidas para impedir que persista.",
+  justificacion: "El abuso del derecho puede generar responsabilidades frente a terceros y actuaciones destinadas a evitar su persistencia."
+},
+{
+  pregunta: "Las leyes de orden público tienen un carácter:",
+  opciones: ["a) Supletorio.", "b) Dispositivo.", "c) Imperativo.", "d) Opcional."],
+  correcta: "c) Imperativo.",
+  justificacion: "Las normas de orden público no pueden ser dejadas a la voluntad individual porque afectan al interés general o al funcionamiento del sistema jurídico."
+},
+{
+  pregunta: "En el cómputo de plazos civiles se excluyen los días inhábiles:",
+  opciones: ["a) Sí, siempre.", "b) No, nunca.", "c) Solo si lo expresa una ley especial.", "d) Solo en el ámbito administrativo."],
+  correcta: "b) No, nunca.",
+  justificacion: "Para el cómputo de los plazos civiles, los días inhábiles cuentan como parte del plazo."
+},
+{
+  pregunta: "La ignorancia de una ley recién publicada exime de su cumplimiento:",
+  opciones: ["a) Sí, si la persona no la conoce.", "b) Sí, si hay buena fe.", "c) No, no exime de su cumplimiento.", "d) Sí, si se prueba que no se tuvo acceso."],
+  correcta: "c) No, no exime de su cumplimiento.",
+  justificacion: "La normativa parte del principio de que todos deben cumplir la ley, incluso si no conocen su contenido."
+},
+{
+  pregunta: "La renuncia a un derecho reconocido legalmente es válida si:",
+  opciones: ["a) Siempre que haya consentimiento.", "b) No contravenga el orden público ni perjudique a terceros.", "c) Solo si se hace ante notario.", "d) Solo si no tiene efectos económicos."],
+  correcta: "b) No contravenga el orden público ni perjudique a terceros.",
+  justificacion: "Debe respetarse el interés público y los derechos de terceros para que la renuncia sea válida."
+},
+{
+  pregunta: "Los actos realizados en fraude de ley tienen como efecto:",
+  opciones: ["a) Que no impidan la aplicación de la norma eludida.", "b) Que sean completamente válidos si hay pacto.", "c) Que sean sancionados penalmente.", "d) Que cancelen la norma eludida."],
+  correcta: "a) Que no impidan la aplicación de la norma eludida.",
+  justificacion: "El fraude de ley no libera al obligado de la aplicación de la norma que trata de eludir."
+},
+{
+  pregunta: "Las leyes penales, de policía y de seguridad pública obligan a:",
+  opciones: ["a) Solo a los nacionales.", "b) Solo a los residentes legales.", "c) A todos los que se encuentren en territorio español.", "d) A los ciudadanos de la Unión Europea únicamente."],
+  correcta: "c) A todos los que se encuentren en territorio español.",
+  justificacion: "Estas leyes tienen ámbito de aplicación territorial general, independientemente del estatus de la persona."
+},
+{
+  pregunta: "La publicación de una ley es necesaria para:",
+  opciones: ["a) Que tenga efectos solo si alguien la conoce.", "b) Que produzca efectos jurídicos.", "c) Que sea conforme a la moral pública.", "d) Que sean revisadas por los tribunales."],
+  correcta: "b) Que produzca efectos jurídicos.",
+  justificacion: "Una ley no es eficaz o vinculante hasta que se ha publicado debidamente y ha entrado en vigor."
+},
+{
+  pregunta: "¿Qué significa que una norma jurídica es de aplicación supletoria?",
+  opciones: ["a) Que siempre prevalece sobre la voluntad de las partes.", "b) Que solo se aplica si las partes no pactan algo distinto y no contravenga el orden público.", "c) Que no tiene importancia real.", "d) Que solo la usan los jueces cuando les conviene."],
+  correcta: "b) Que solo se aplica si las partes no pactan algo distinto y no contravenga el orden público.",
+  justificacion: "La supletoriedad permite que la norma actúe como relleno cuando no hay pacto o regulación expresa."
+},
+{
+  pregunta: "En materia civil, la aplicación retroactiva de una norma sólo se permite cuando:",
+  opciones: ["a) Siempre que el juez lo decida.", "b) Cuando la propia norma lo prevé expresamente.", "c) Si no perjudica a nadie.", "d) Cuando lo solicita una de las partes."],
+  correcta: "b) Cuando la propia norma lo prevé expresamente.",
+  justificacion: "La retroactividad debe estar prevista por la propia ley para ser válida."
+},
+{
+  pregunta: "Cuando una ley deroga expresamente otra, se dice que la derogación es:",
+  opciones: ["a) Implícita.", "b) Total.", "c) Temporal.", "d) Limitada al ámbito penal."],
+  correcta: "b) Total.",
+  justificacion: "La derogación expresa supone que la ley nueva sustituye totalmente la anterior en los términos convenidos."
+},
+{
+  pregunta: "La interpretación extensiva de una norma implica:",
+  opciones: ["a) Aplicar la norma solo al supuesto expresamente señalado.", "b) Extender la aplicación de la norma a supuestos no previstos, siempre que vaya en contra de la voluntad del legislador.", "c) Ampliar el alcance de la norma para abarcar casos no contemplados, cuando la razón jurídic­a lo justifique y no lo prohíba.", "d) Restringir el ámbito de la norma."],
+  correcta: "c) Ampliar el alcance de la norma para abarcar casos no contemplados, cuando la razón jurídica lo justifique y no lo prohíba.",
+  justificacion: "La interpretación extensiva busca aplicar la norma de forma más amplia, siempre que respete su lógica y los límites legales."
+},
+{
+  pregunta: "La interpretación restrictiva de una norma supone:",
+  opciones: ["a) Ampliar el significado exacto del texto.", "b) Limitar la aplicación de la norma solo a los supuestos expresamente previstos si existe duda.", "c) Aplicar la norma a otros supuestos por analogía automáticamente.", "d) Obligar al juez a crear nuevos derechos."],
+  correcta: "b) Limitar la aplicación de la norma solo a los supuestos expresamente previstos si existe duda.",
+  justificacion: "La interpretación restrictiva busca reducir el alcance a lo estrictamente previsto cuando existan dudas razonables sobre su extensión."
+},
+{
+  pregunta: "La equidad en la resolución judicial permite:",
+  opciones: ["a) Sustituir siempre el texto legal.", "b) Aplicar soluciones justas cuando la ley lo prevea o permita expresamente.", "c) Ignorar completamente la ley en casos especiales.", "d) Solo sugiere sanciones penales."],
+  correcta: "b) Aplicar soluciones justas cuando la ley lo prevea o permita expresamente.",
+  justificacion: "La equidad no puede suplantar la ley salvo que esta lo permita explícitamente; sirve para adaptar la aplicación del derecho a casos concretos."
+},
+{
+  pregunta: "La facultad del juez de fundar su decisión únicamente en la equidad es posible cuando:",
+  opciones: ["a) Siempre que considere que es más justo.", "b) Cuando la ley lo autoriza expresamente.", "c) Solo si las partes lo acuerdan.", "d) Nunca."],
+  correcta: "b) Cuando la ley lo autoriza expresamente.",
+  justificacion: "La equidad solo puede ser fuente exclusiva de decisión si la ley lo establece expresamente."
+},
+{
+  pregunta: "El orden público en el derecho civil actúa como límite a los pactos privados porque:",
+  opciones: ["a) Siempre prevalece la autonomía de la voluntad.", "b) Tiene carácter supeditado al interés particular.", "c) Protege la estructura del orden social, la moral y los derechos básicos.", "d) Solo afecta a los contratos estatales."],
+  correcta: "c) Protege la estructura del orden social, la moral y los derechos básicos.",
+  justificacion: "El orden público limita la autonomía privada para asegurar que los pactos no atenten contra valores fundamentales y la convivencia social."
+},
+{
+  pregunta: "¿Se pueden pactar libremente todos los derechos civiles entre particulares?",
+  opciones: ["a) Sí, sin limitaciones.", "b) Sí, siempre que ambos sean mayores de edad.", "c) No, cuando los pactos contradigan normas imperativas, el orden público o la moral.", "d) Sólo cuando lo apruebe un juez."],
+  correcta: "c) No, cuando los pactos contradigan normas imperativas, el orden público o la moral.",
+  justificacion: "La autonomía de la voluntad tiene límites cuando la voluntad de las partes se enfrenta a normas imperativas o al bien común."
+},
+{
+  pregunta: "El instante en que una ley se convierte en obligatoria para los ciudadanos es cuando:",
+  opciones: ["a) Se publica en cualquier medio.", "b) Se acuerda por el gobierno.", "c) Entra en vigor tras su publicación y el transcurso (si es obligatorio) del plazo legal correspondiente.", "d) Después de que los tribunales la utilicen."],
+  correcta: "c) Entra en vigor tras su publicación y el transcurso (si es obligatorio) del plazo legal correspondiente.",
+  justificacion: "Una ley debe ser publicada y esperar el plazo que establezca la propia ley para que entre en vigor; de lo contrario, no produce efectos jurídicos."
+},
+{
+  pregunta: "La regla de que una ley nueva deroga la anterior cuando ambos preceptos son incompatibles se denomina:",
+  opciones: ["a) Principio de equidad.", "b) Principio de analogía.", "c) Principio de derogación.", "d) Principio de interpretación."],
+  correcta: "c) Principio de derogación.",
+  justificacion: "El principio de derogación establece que cuando dos normas son incompatibles, la posterior anula la anterior en lo que contradice."
+},
+{
+  pregunta: "Si dos leyes regulan lo mismo pero de manera distinta, la que debe aplicarse es:",
+  opciones: ["a) La más antigua.", "b) La más reciente.", "c) La que mejor convenga al interesado.", "d) Ninguna."],
+  correcta: "b) La más reciente.",
+  justificacion: "Cuando hay conflicto entre leyes, la ley posterior prevalece sobre la anterior en lo que se contradiga."
+},
+{
+  pregunta: "¿Puede una disposición legal establecer que parte de ella entre en vigor antes que otra parte?",
+  opciones: ["a) No, las leyes deben entrar en vigor en su conjunto.", "b) Sí, puede establecer diferentes plazos para distintas partes según su redacción.", "c) No, salvo que lo apruebe un juez.", "d) Sí, pero solo si es una ley pen­al."],
+  correcta: "b) Sí, puede establecer diferentes plazos para distintas partes según su redacción.",
+  justificacion: "Una ley puede disponerse por partes y cada parte puede tener un plazo distinto para entrar en vigor."
+},
+{
+  pregunta: "La seguridad jurídica exige que las leyes sean:",
+  opciones: ["a) Inciertas para favorecer la flexibilidad.", "b) Claras, accesibles y previsibles en su aplicación.", "c) Interpretadas libremente por cada persona.", "d) Cambiadas con frecuencia."],
+  correcta: "b) Claras, accesibles y previsibles en su aplicación.",
+  justificacion: "La seguridad jurídica es un valor esencial que exige que las normas sean claras, conocidas por los ciudadanos y aplicadas de forma estable y coherente."
+},
+{
+  pregunta: "La coherencia interna del ordenamiento jurídico significa que:",
+  opciones: ["a) Las leyes pueden contradecirse libremente.", "b) Las normas deben ser entendidas como un conjunto armónico.", "c) Cada norma actúa de forma aislada.", "d) Solo la jurisprudencia es coherente."],
+  correcta: "b) Las normas deben ser entendidas como un conjunto armónico.",
+  justificacion: "El ordenamiento jurídico busca la unidad y la coherencia entre sus distintas normas, evitando contradicciones injustificadas."
+},
+{
+  pregunta: "¿Qué papel tiene la costumbre en relación con la ley escrita?",
+  opciones: ["a) Tiene prevalencia sobre la ley en todos los casos.", "b) Se aplica de forma automática sin comprobar si contradice una ley.", "c) Es secundaria respecto a la ley, solo se aplica cuando la ley no regula el caso.", "d) Sustituye siempre a la jurisprudencia."],
+  correcta: "c) Es secundaria respecto a la ley, solo se aplica cuando la ley no regula el caso.",
+  justificacion: "La costumbre actúa como fuente supletoria del derecho; es menos preponderante que la ley escrita."
+},
+{
+  pregunta: "¿Las interpretaciones judiciales reiteradas tienen valor jurídico práctico aunque no sean estrictamente una fuente de derecho primaria?",
+  opciones: ["a) No, carecen de importancia.", "b) Sí, contribuyen a la seguridad jurídica y a la orientación sobre cómo se aplica el derecho.", "c) Solo son vinculantes si lo decide el Parlamento.", "d) Solo sirven para casos penales."],
+  correcta: "b) Sí, contribuyen a la seguridad jurídica y a la orientación sobre cómo se aplica el derecho.",
+  justificacion: "Aunque la jurisprudencia no es fuente primaria de derecho, su reiteración aporta criterios interpretativos que son útiles para la resolución de casos semejantes."
+},
+{
+  pregunta: "¿Es posible modificar el derecho privado (por ejemplo, obligaciones) mediante costumbres locales?",
+  opciones: ["a) Sí, siempre que la costumbre esté probada y no contradiga la ley ni el orden público.", "b) No, nunca.", "c) Solo si ambas partes lo desean.", "d) Solo en territorios con régimen especial."],
+  correcta: "a) Sí, siempre que la costumbre esté probada y no contradiga la ley ni el orden público.",
+  justificacion: "Las costumbres pueden tener eficacia cuando cumplen los requisitos legales y no contravienen el marco jurídico superior."
+},
+{
+  pregunta: "¿Un juez puede crear nuevos derechos mediante la interpretación si la ley es ambigua?",
+  opciones: ["a) Sí, en todo caso.", "b) Sólo en los casos expresamente autorizados por la ley o cuando la ley permite una aplicación equitativa.", "c) Nunca.", "d) Sí, si lo aprueba una parte."],
+  correcta: "b) Sólo en los casos expresamente autorizados por la ley o cuando la ley permite una aplicación equitativa.",
+  justificacion: "El juez no puede inventar normas, pero puede adaptar la aplicación conforme a los principios y finalidades del derecho, si la ley lo permite."
+},
+{
+  pregunta: "¿La aplicación de la equidad puede contradecir una norma imperativa?",
+  opciones: ["a) Sí, si la parte lo solicita.", "b) No, nunca.", "c) Sí, si se considera justo.", "d) Solo en derecho penal."],
+  correcta: "b) No, nunca.",
+  justificacion: "Las normas imperativas no pueden ser dejadas de lado mediante equidad; la equidad solo complementa la aplicación legal dentro de los límites autorizados."
+},
+{
+  pregunta: "¿Qué aspecto es básico para evitar conflictos en la aplicación de normas de diferente rango?",
+  opciones: ["a) Interpretar flexible-mente sin respeto al texto.", "b) Priorizar la costumbre sobre la ley.", "c) Respetar la jerarquía normativa y la coherencia del ordenamiento.", "d) Dejar la decisión a la discreción del juez sin criterios."],
+  correcta: "c) Respetar la jerarquía normativa y la coherencia del ordenamiento.",
+  justificacion: "Mantener la jerarquía normativa y la coherencia evita contradicciones injustificadas y asegura una aplicación estable del derecho."
+},
+{
+  pregunta: "¿Qué valor tiene la declaración de los principios generales del derecho para resolver lagunas normativas?",
+  opciones: ["a) Ninguno.", "b) Fundamental, porque inspiran y orientan la resolución cuando no hay otra fuente aplicable.", "c) Solo sirven para casos penales.", "d) Solo sirven para crear nuevas leyes."],
+  correcta: "b) Fundamental, porque inspiran y orientan la resolución cuando no hay otra fuente aplicable.",
+  justificacion: "Los principios generales del derecho completan la regulación, orientan la interpretación y ayudan a resolver los casos no previstos."
+},
+{
+  pregunta: "¿Es posible que una norma de rango inferior contravenga por completo otra de rango superior?",
+  opciones: ["a) Sí, si beneficia al interesado.", "b) No, debe adaptarse o ser declarada inaplicable.", "c) Sí, si existe consenso social.", "d) Sí, si el juez lo autoriza."],
+  correcta: "b) No, debe adaptarse o ser declarada inaplicable.",
+  justificacion: "El ordenamiento jurídico impide que normas inferiores contradigan normas superiores, por lo que deben dejar de aplicarse o interpretarse de modo conforme."
+},
+{
+  pregunta: "La obligatoriedad general de las leyes implica que:",
+  opciones: ["a) Solo aplican a quienes las conocen.", "b) Se consideran conocidas por todos desde su publicación.", "c) Solo aplican si se notifican a la persona.", "d) Solo aplican a ciudadanos activos."],
+  correcta: "b) Se consideran conocidas por todos desde su publicación.",
+  justificacion: "El principio general del derecho exige que una ley publicada pueda ser exigida legalmente frente a todos, aunque no la conozcan personalmente."
+},
+{
+  pregunta: "¿Qué distingue a una norma dispositiva de una norma imperativa?",
+  opciones: ["a) La dispositiva siempre es obligatoria.", "b) La imperativa no puede ser modificada por pacto entre partes.", "c) La dispositiva contradice al orden público.", "d) No hay diferencias reales."],
+  correcta: "b) La imperativa no puede ser modificada por pacto entre partes.",
+  justificacion: "Las normas dispositivas permiten que las partes pacten eliminar o adaptar su contenido, mientras que las imperativas no admiten renuncia o modificación de su naturaleza esencial."
+},
+{
+  pregunta: "¿Cuál es el efecto de la derogación tácita de una norma?",
+  opciones: ["a) Que la norma sigue vigente pero sin aplicarse.", "b) Que otra norma posterior la contradice, aunque no la nombre, y los tribunales dejan de aplicarla.", "c) Que la norma es invalidada judicialmente.", "d) Que la norma pierde eficacia solo en materia penal."],
+  correcta: "b) Que otra norma posterior la contradice, aunque no la nombre, y los tribunales dejan de aplicarla.",
+  justificacion: "La derogación tácita aparece cuando una ley más reciente contiene disposiciones incompatibles con una anterior, sin necesidad de mencionarla expresamente."
+},
+{
+  pregunta: "¿Puede una norma temporal tener efectos indefinidos si no se especifica una fecha sujeta a su vigencia?",
+  opciones: ["a) Sí, si no se establece fecha de terminación o condición para su cese.", "b) No, debe caducar automáticamente.", "c) Sí, pero sólo si lo aprueba un juez.", "d) No, debe renovarse cada año."],
+  correcta: "a) Sí, si no se establece fecha de terminación o condición para su cese.",
+  justificacion: "Una ley diseñada como temporal puede permanecer mientras no expire o se sustituya por otra, si no se impone limitación explícita."
+},
+{
+  pregunta: "El carácter público de la publicación legal sirve para:",
+  opciones: ["a) Informar sólo al Estado.", "b) Garantizar que todos puedan acceder al contenido y conocer las normas que les afectan.", "c) Asegurar la recaudación de impuestos.", "d) Facilitar la censura previa."],
+  correcta: "b) Garantizar que todos puedan acceder al contenido y conocer las normas que les afectan.",
+  justificacion: "La publicación oficial permite la transparencia del ordenamiento jurídico y asegura que los ciudadanos puedan conocer sus obligaciones legales."
+},
+{
+  pregunta: "¿Cuándo cabe la aplicación de una disposición derivada de la costumbre aunque haya una ley aplicable?",
+  opciones: ["a) Siempre que lo acuerden las partes.", "b) Nunca, la ley siempre prevalece aunque no la conozcan.", "c) Si la ley lo permite expresamente y no contradice la costumbre.", "d) Si un juez lo estima justo, sin más requisito."],
+  correcta: "b) Nunca, la ley siempre prevalece aunque no la conozcan.",
+  justificacion: "La costumbre no puede ser aplicada si ya hay una ley aplicable, puesto que esta es de rango superior y obliga pese al desconocimiento."
+},
+{
+  pregunta: "¿Cuál es uno de los fines principales de la técnica legislativa de establecer plazos de entrada en vigor distintos para las distintas partes de una ley?",
+  opciones: ["a) Crear confusión.", "b) Facilitar su aplicación gradual o escalonada.", "c) Obligar a consultar a un juez.", "d) Evitar su cumplimiento."],
+  correcta: "b) Facilitar su aplicación gradual o escalonada.",
+  justificacion: "Establecer diferentes plazos de entrada permite adaptar la aplicación de las disposiciones conforme a necesidades organizativas, administrativas o sociales."
+},
+{
+  pregunta: "Cuando una norma jurídica es ambigua y admite más de una interpretación razonable, el juez debe optar por:",
+  opciones: ["a) La interpretación más favorable al demandante.", "b) La interpretación literal sin tener en cuenta el contexto.", "c) La interpretación conforme al fin y finalidad de la norma.", "d) La que menos afecte al interés público."],
+  correcta: "c) La interpretación conforme al fin y finalidad de la norma.",
+  justificacion: "El juez debe interpretar la norma teniendo en cuenta su finalidad y finalidad social, no sólo el sentido literal."
+},
+{
+  pregunta: "El principio de igualdad ante la ley implica que:",
+  opciones: ["a) Todos los ciudadanos tienen los mismos derechos sin excepción.", "b) No puede haber distinción alguna en ningún caso.", "c) Se prohíben discriminaciones ilimitadas, pero admite diferencias justificadas en razón de servicio o función.", "d) Solo se aplica a ciudadanos españoles."],
+  correcta: "c) Se prohíben discriminaciones ilimitadas, pero admite diferencias justificadas en razón de servicio o función.",
+  justificacion: "El principio de igualdad permite diferencias si tienen justificación objetiva, razonable y proporcional."
+},
+{
+  pregunta: "¿Qué rol tiene la seguridad jurídica en el derecho civil?",
+  opciones: ["a) Permite cambios frecuentes sin advertencia.", "b) Obliga a los ciudadanos a adaptarse continuamente sin norma clara.", "c) Exige previsibilidad, estabilidad y claridad en las normas para que las personas conozcan las consecuencias legales de sus actos.", "d) Impide la creación de nuevas leyes."],
+  correcta: "c) Exige previsibilidad, estabilidad y claridad en las normas para que las personas conozcan las consecuencias legales de sus actos.",
+  justificacion: "La seguridad jurídica es un valor fundamental para garantizar que los ciudadanos puedan prever el efecto de sus acciones y confiar en la continuidad legal."
+},
+{
+  pregunta: "Las normas de orden público no pueden ser dejadas de lado por los particulares mediante pacto, porque:",
+  opciones: ["a) Son opcionales para las relaciones civiles.", "b) Solo importan en el ámbito penal.", "c) Protegen intereses colectivos y valores fundamentales que trascienden la voluntad individual.", "d) No están escritas en la ley."],
+  correcta: "c) Protegen intereses colectivos y valores fundamentales que trascienden la voluntad individual.",
+  justificacion: "El orden público fija límites al pacto privado para garantizar que no se vulneren derechos o valores básicos de la sociedad."
+},
+{
+  pregunta: "Cuando la ley no exige una forma especial para un negocio jurídico, se dice que el negocio:",
+  opciones: ["a) Es nulo.", "b) Es anulable.", "c) Es válido aunque no esté formalizado de un modo concreto.", "d) Está suspendido."],
+  correcta: "c) Es válido aunque no esté formalizado de un modo concreto.",
+  justificacion: "La forma escrita, notarial, etc., sólo es exigible si la ley lo prescribe; si no, el negocio es válido sin formalidad especial."
+},
+{
+  pregunta: "¿Qué ocurre si un negocio jurídico carece de algún requisito esencial exigido por la ley?",
+  opciones: ["a) Será válido siempre que haya acuerdo entre las partes.", "b) Será anulable si hay vicio subsanable.", "c) Será nulo si falta un requisito esencial, sin posibilidad de subsanación.", "d) Solo aplicará la equidad."],
+  correcta: "c) Será nulo si falta un requisito esencial, sin posibilidad de subsanación.",
+  justificacion: "La ausencia de un requisito esencial provoca la nulidad del negocio jurídico; no puede convertirse en válido por acuerdo posterior."
+},
+{
+  pregunta: "El negocio jurídico puede modificarse o dejar de producir efectos mediante la voluntad de las partes cuando:",
+  opciones: ["a) Siempre que lo deseen sin limitaciones.", "b) Si la ley lo permite y no se vulneran derechos de terceros ni el orden público.", "c) Solo si lo solicita el juez.", "d) Nunca; una vez establecido no puede cambiarse."],
+  correcta: "b) Si la ley lo permite y no se vulneran derechos de terceros ni el orden público.",
+  justificacion: "La autonomía de la voluntad permite modificar negocios jurídicos en la medida que la ley lo admita, respetando límites legales y sociales."
+},
+{
+  pregunta: "En un negocio jurídico, la voluntad de las partes debe manifestarse de forma:",
+  opciones: ["a) Siempre escrita y ante notario.", "b) Conforme a la forma que la ley exija o, si no exige forma especial, de modo libre.", "c) Oral, preferiblemente.", "d) Siempre vía judicial."],
+  correcta: "b) Conforme a la forma que la ley exija o, si no exige forma especial, de modo libre.",
+  justificacion: "La ley determina la forma exigida para determinados negocios; cuando no lo hace, la forma puede ser libre."
+},
+{
+  pregunta: "El error, el dolo o la intimidación que impidan la voluntad real en un negocio jurídico constituyen:",
+  opciones: ["a) Motivos de nulidad absoluta.", "b) Motivos de nulidad relativa (anulabilidad).", "c) Motivos para aplicar la equidad.", "d) Solo afectan a los contratos mercantiles."],
+  correcta: "b) Motivos de nulidad relativa (anulabilidad).",
+  justificacion: "Cuando la voluntad no es libre o está viciada, el negocio puede ser anulado a instancia de quien sufrió el vicio."
+},
+{
+  pregunta: "La cláusula abusiva en un contrato puede producir efectos jurídicos nulos si:",
+  opciones: ["a) Solo cuando ambas partes estén de acuerdo.", "b) Cuando limita injustamente los derechos del adherente o cliente y es contraria a la buena fe.", "c) Solo en los contratos estatales.", "d) Nunca, si fue firmada."],
+  correcta: "b) Cuando limita injustamente los derechos del adherente o cliente y es contraria a la buena fe.",
+  justificacion: "Las cláusulas abusivas vulneran el equilibrio del contrato y la buena fe, pudiendo ser declaradas nulas."
+},
+{
+  pregunta: "¿Puede un negocio jurídico válido producir efectos frente a terceros si no se da publicidad exigida por la ley?",
+  opciones: ["a) Sí, si las partes lo desean.", "b) Sí, en todo caso.", "c) No, si la ley exige la publicidad para que afecte a terceros.", "d) Solo si lo acuerda el juez."],
+  correcta: "c) No, si la ley exige la publicidad para que afecte a terceros.",
+  justificacion: "La publicidad de determinados actos (como inscripciones, registros, anuncios públicos) es requisito para que tengan efectos frente a terceros."
+},
+{
+  pregunta: "La ley puede imponer sanciones o consecuencias si una parte actúa de mala fe en la ejecución del negocio jurídico, aún cuando el negocio sea válido. Esto se debe a:",
+  opciones: ["a) La equidad únicamente.", "b) La buena fe y el principio general del derecho.", "c) Solo la voluntad de las partes.", "d) La costumbre local."],
+  correcta: "b) La buena fe y el principio general del derecho.",
+  justificacion: "La buena fe es un principio básico que rige todo el ejercicio de los derechos y obligaciones, incluso tras la validez inicial del negocio."
+},
+{
+  pregunta: "La nulidad absoluta opera cuando el error, dolo o intimidación:",
+  opciones: ["a) Afecten de modo grave el consentimiento y así lo califique la ley como absoluto.", "b) Sean leves y sin importancia.", "c) Sean conocidos de antemano por ambas partes.", "d) Aún cuando hayan ocurrido de forma leve y no influyan en el resultado."],
+  correcta: "a) Afecten de modo grave el consentimiento y así lo califique la ley como absoluto.",
+  justificacion: "La nulidad absoluta se aplica cuando la voluntad está viciada gravemente o el negocio está prohibido por ley o afecta al orden público."
+},
+{
+  pregunta: "La anulabilidad (nulidad relativa) requiere generalmente que quien ha sufrido el vicio actúe para pedir la declaración, porque:",
+  opciones: ["a) Porque el juez lo hará de oficio siempre.", "b) Porque protege sólo los intereses del sujeto afectado.", "c) Porque siempre requiere sanción penal.", "d) Porque la anulabilidad depende del registro público."],
+  correcta: "b) Porque protege sólo los intereses del sujeto afectado.",
+  justificacion: "La anulabilidad es una acción personal; quien sufre el vicio es quien debe solicitar la corrección judicial."
+},
+{
+  pregunta: "Un negocio jurídico puede quedar sin efecto aunque las partes lo hayan dejado sin ejecutarlo, como consecuencia de:",
+  opciones: ["a) Incumplimiento de la publicidad.", "b) Muerte de uno de los contratantes.", "c) Resolución judicial que declare su nulidad o anulabilidad.", "d) Cambio de costumbres."],
+  correcta: "c) Resolución judicial que declare su nulidad o anulabilidad.",
+  justificacion: "El juez puede declarar que un negocio se anule, con efectos de retroacción del negocio desde su origen si procede."
+},
+{
+  pregunta: "La lesión, como vicio del consentimiento, se produce cuando:",
+  opciones: ["a) Una de las partes sufre un desequilibrio patrimonial injusto, conocido por la otra al hacer el negocio.", "b) Existe dolo.", "c) Hay intimidación.", "d) Hay un acuerdo completo explícito entre ambas partes."],
+  correcta: "a) Una de las partes sufre un desequilibrio patrimonial injusto, conocido por la otra al hacer el negocio.",
+  justificacion: "La lesión protege a la parte más débil frente a situaciones de fuerte desequilibrio, cuando la otra parte lo sabía y abusó."
+},
+{
+  pregunta: "La resolución del negocio jurídico puede obtenerse por:",
+  opciones: ["a) Sólo el abandono.", "b) La resolución judicial o el acuerdo entre partes si la ley lo permite.", "c) La voluntad unilateral sin causa legal.", "d) La costumbre únicamente."],
+  correcta: "b) La resolución judicial o el acuerdo entre partes si la ley lo permite.",
+  justificacion: "La extinción de los efectos de un negocio puede provenir tanto de lo pactado por las partes como de decisión judicial cuando exista causa legal."
+},
+{
+  pregunta: "Un negocio jurídico puede ser enmascarado para encubrir otro realmente perseguido, y si se demuestra este segundo negocio, el primero será considerado:",
+  opciones: ["a) Totalmente válido.", "b) Inexistente o nulo con arreglo al verdadero negocio.", "c) Válido sólo entre las partes.", "d) Ilegítimo pero eficaz."],
+  correcta: "b) Inexistente o nulo con arreglo al verdadero negocio.",
+  justificacion: "Cuando hay simulación, lo esencial es la realidad del negocio encubierto; lo actuado superficialmente queda al margen si es ficticio."
+},
+{
+  pregunta: "¿Es posible que un juez aplique una sanción o corrija un negocio jurídico por incongruencia entre la declaración real de la voluntad y el efecto buscado, aunque éste no esté previsto exactamente en la ley?",
+  opciones: ["a) No, nunca.", "b) Sí, si la situación vulnera los principios generales del derecho y la buena fe.", "c) Sólo si hay dolo explícito.", "d) Sólo en contratos públicos."],
+  correcta: "b) Sí, si la situación vulnera los principios generales del derecho y la buena fe.",
+  justificacion: "Los tribunales pueden intervenir para evitar abusos, simulaciones o contradicciones frente a la voluntad real, aun cuando la ley no prevea exactamente esa hipótesis."
+},
+{
+  pregunta: "El negocio jurídico puede ser una declaración de voluntad generadora de efectos jurídicos. Esto significa que:",
+  opciones: ["a) Solo los contratos generan efectos.", "b) Otros actos o declaraciones pueden producir efectos (como regalos, donaciones, testamentos si estuviese incluido, etc.).", "c) Sólo los actos públicos generan efectos.", "d) Sólo los actos comerciales tienen efecto."],
+  correcta: "b) Otros actos o declaraciones pueden producir efectos (como regalos, donaciones, testamentos si estuviese incluido, etc.).",
+  justificacion: "El concepto de negocio jurídico es amplio: basta que haya manifestación de voluntad con intención de producir efectos jurídicos, aunque no sea un contrato clásico."
+},
+{
+  pregunta: "Para distinguir un negocio jurídico válido de uno inválido no basta con verificar la forma, también es necesario comprobar:",
+  opciones: ["a) Sólo la voluntad.", "b) La voluntad, la legitimidad del objeto, la causa si exige la ley, y que no haya vicios.", "c) Solo que haya acuerdo escrito.", "d) Solo la publicidad del negocio."],
+  correcta: "b) La voluntad, la legitimidad del objeto, la causa si exige la ley, y que no haya vicios.",
+  justificacion: "Además de la manifestación de voluntad, debe existir objeto lícito y causa, si la ley lo exige, y ausencia de error, dolo, intimidación u otros vicios."
+},
+{
+  pregunta: "¿Puede un negocio jurídico tener efectos antes de su inscripción o registro si la ley exige dicho requisito?",
+  opciones: ["a) Sí, siempre.", "b) No, los efectos frente a terceros normalmente requieren la inscripción.", "c) Sí, si ambas partes lo acuerdan.", "d) Solo si lo reconoce el juez."],
+  correcta: "b) No, los efectos frente a terceros normalmente requieren la inscripción.",
+  justificacion: "Cuando la ley exige publicidad registral, la eficacia frente a terceros depende de dicha inscripción."
+},
+{
+  pregunta: "La nulidad relativa sólo puede ser ejercitada:",
+  opciones: ["a) A instancia del juez de oficio sin condicion.", "b) Por cualquier persona interesada igualmente.", "c) Por la persona afectada por el vicio o el problema que motiva la nulidad, dentro del plazo legal previsto.", "d) Siempre fuera de plazo."],
+  correcta: "c) Por la persona afectada por el vicio o el problema que motiva la nulidad, dentro del plazo legal previsto.",
+  justificacion: "La nulidad relativa está condicionada al ejercicio de la acción correspondiente por quien tiene interés legítimo, dentro del plazo fijado."
+},
+{
+  pregunta: "El negocio jurídico puede extinguirse por incumplimiento, mutuo acuerdo, resolución judicial o:",
+  opciones: ["a) Por la costumbre.", "b) Por la voluntad unilateral libre sin causa.", "c) Por la imposibilidad sobrevenida del cumplimiento si no es culpa del deudor.", "d) Nunca; una vez celebrado solo termina por mutuo acuerdo."],
+  correcta: "c) Por la imposibilidad sobrevenida del cumplimiento si no es culpa del deudor.",
+  justificacion: "La imposibilidad sobrevenida exime del cumplimiento cuando nadie tiene la culpa, lo cual extingue el negocio jurídico."
+},
+{
+  pregunta: "Un negocio jurídico puede quedar sin efecto aunque no se declare nulidad si las partes acuerdan su extinción y la ley lo permite. Esta figura se denomina:",
+  opciones: ["a) Simulación.", "b) Resolución o rescisión contractual.", "c) Lesión.", "d) Derogación."],
+  correcta: "b) Resolución o rescisión contractual.",
+  justificacion: "La rescisión o resolución supone la extinción del negocio por acuerdo o por incumplimiento o causa legal, sin que necesariamente haya nulidad."
+},
+{
+  pregunta: "Una cláusula abusiva puede entenderse inexistente si:",
+  opciones: ["a) Afecta sólo a la parte fuerte del contrato.", "b) Solo se pactó una vez.", "c) Crea un desequilibrio entre los derechos y obligaciones.", "d) Fue firmada."],
+  correcta: "c) Crea un desequilibrio entre los derechos y obligaciones.",
+  justificacion: "El desequilibrio, cuando perjudica al adherente o consumidor, puede hacer que la cláusula abusiva no produzca efectos."
+},
+{
+  pregunta: "¿Puede una cláusula abusiva afectar la validez del contrato entero?",
+  opciones: ["a) Sí, siempre que el desequilibrio sea esencial y no pueda separarse.", "b) No, sólo la cláusula queda sin efecto.", "c) Sí, si ambas partes lo piden.", "d) No, nunca influye en el resto del contrato."],
+  correcta: "a) Sí, siempre que el desequilibrio sea esencial y no pueda separarse.",
+  justificacion: "En casos graves, la abusividad de una cláusula puede afectar la totalidad del contrato si no es posible aislarla sin perjudicar la voluntad general del contrato."
+},
+{
+  pregunta: "Los efectos del negocio jurídico respecto de terceros están condicionados a:",
+  opciones: ["a) Que las partes lo acuerden libremente.", "b) Los requisitos de forma y publicidad que la ley exija.", "c) Que exista dolo.", "d) Que se haya inscrito sin coste alguno."],
+  correcta: "b) Los requisitos de forma y publicidad que la ley exija.",
+  justificacion: "La eficacia frente a terceros no depende únicamente del acuerdo de las partes, sino del cumplimiento de los requisitos legales aplicables."
+},
+{
+  pregunta: "La nulidad absoluta puede ser declarada de oficio por los tribunales, lo que permite:",
+  opciones: ["a) Que siempre lo solicite una de las partes.", "b) Que los tribunales no intervengan si nadie lo pide.", "c) Que los tribunales actúen cuando el orden público o normas imperativas están en juego, aunque no haya petición de parte.", "d) Que no tenga efectos retroactivos."],
+  correcta: "c) Que los tribunales actúen cuando el orden público o normas imperativas están en juego, aunque no haya petición de parte.",
+  justificacion: "La nulidad absoluta protege el interés general, por lo que los tribunales pueden declararla por iniciativa propia."
+},
+{
+  pregunta: "En caso de partos múltiples, la prioridad del nacimiento determina que:",
+  opciones: ["a) Todos los nacidos tienen los mismos derechos específicos del primogénito.", "b) El primero en nacer ostenta los derechos que la ley atribuye al primogénito.", "c) El último en nacer es considerado primogénito por razones médicas.", "d) No existe diferencia alguna entre los nacidos."],
+  correcta: "b) El primero en nacer ostenta los derechos que la ley atribuye al primogénito.",
+  justificacion: "La prioridad del nacimiento confiere al primer nacido las prerrogativas propias del primogénito cuando proceda."
+},
+{
+  pregunta: "Si se desconoce el orden de fallecimiento entre varias personas llamadas a sucederse recíprocamente, la regla general es:",
+  opciones: ["a) Presumir que murió antes la de mayor edad.", "b) Considerar que murieron al mismo tiempo, sin transmisión de derechos entre ellas.", "c) Hereda el pariente más próximo de cualquiera de ellas.", "d) Presumir que murió antes la de menor edad."],
+  correcta: "b) Considerar que murieron al mismo tiempo, sin transmisión de derechos entre ellas.",
+  justificacion: "Ante la duda, no hay sucesión entre quienes se presumen fallecidos simultáneamente."
+},
+{
+  pregunta: "Respecto del concebido, el ordenamiento civil establece que:",
+  opciones: ["a) No produce efectos jurídicos hasta su inscripción.", "b) Se le tiene por nacido para efectos favorables si finalmente nace con vida.", "c) Solo produce efectos en materia alimenticia.", "d) No produce ningún efecto civil."],
+  correcta: "b) Se le tiene por nacido para efectos favorables si finalmente nace con vida.",
+  justificacion: "La eficacia está condicionada a que el nacimiento se produzca con vida."
+},
+{
+  pregunta: "La extinción de la personalidad civil de la persona física se produce por:",
+  opciones: ["a) Pérdida de nacionalidad.", "b) Muerte.", "c) Cambio de domicilio.", "d) Emigración definitiva."],
+  correcta: "b) Muerte.",
+  justificacion: "La muerte pone fin a la personalidad civil de las personas naturales."
+},
+{
+  pregunta: "El domicilio civil de una persona natural es, con carácter general:",
+  opciones: ["a) El lugar de nacimiento.", "b) El lugar de residencia habitual.", "c) El municipio donde tribute.", "d) El que conste en el documento de identidad."],
+  correcta: "b) El lugar de residencia habitual.",
+  justificacion: "El domicilio civil se vincula a la residencia efectiva y estable."
+},
+{
+  pregunta: "Las personas jurídicas adquieren personalidad cuando:",
+  opciones: ["a) Comienzan su actividad económica.", "b) Se constituyen válidamente conforme a derecho y, en su caso, se inscriben.", "c) Lo autoriza un juez.", "d) Lo publican en prensa oficial."],
+  correcta: "b) Se constituyen válidamente conforme a derecho y, en su caso, se inscriben.",
+  justificacion: "La personalidad nace con la válida constitución y las formalidades exigidas."
+},
+{
+  pregunta: "La capacidad de las personas jurídicas está limitada por:",
+  opciones: ["a) La voluntad de sus miembros en cada momento.", "b) La ley, sus estatutos y sus fines fundacionales o sociales.", "c) Sus ingresos anuales.", "d) La localización de su sede."],
+  correcta: "b) La ley, sus estatutos y sus fines fundacionales o sociales.",
+  justificacion: "Solo pueden actuar dentro del marco legal y del objeto previsto."
+},
+{
+  pregunta: "Tras la disolución de una persona jurídica:",
+  opciones: ["a) Desaparece de inmediato sin más trámites.", "b) Se inicia la liquidación para pagar deudas y aplicar el remanente conforme a las normas aplicables.", "c) Los socios asumen automáticamente todas las deudas.", "d) No puede realizar ya acto alguno."],
+  correcta: "b) Se inicia la liquidación para pagar deudas y aplicar el remanente conforme a las normas aplicables.",
+  justificacion: "La entidad mantiene personalidad para operaciones de liquidación."
+},
+{
+  pregunta: "Las asociaciones lícitas se caracterizan por:",
+  opciones: ["a) Perseguir fines lucrativos para sus socios.", "b) Agrupar personas para fines comunes lícitos sin ánimo de lucro.", "c) Ser siempre públicas.", "d) No tener estatutos."],
+  correcta: "b) Agrupar personas para fines comunes lícitos sin ánimo de lucro.",
+  justificacion: "El elemento asociativo es personal y su fin no es el lucro repartible."
+},
+{
+  pregunta: "Las fundaciones se definen por:",
+  opciones: ["a) Un patrimonio afecto de modo duradero a fines de interés general.", "b) La reunión de varias personas con fines privados.", "c) La búsqueda de lucro mercantil.", "d) La ausencia de controles públicos."],
+  correcta: "a) Un patrimonio afecto de modo duradero a fines de interés general.",
+  justificacion: "El rasgo esencial es la afección patrimonial a un fin altruista."
+},
+{
+  pregunta: "El órgano de gobierno y representación de una fundación es:",
+  opciones: ["a) La asamblea general.", "b) El patronato.", "c) La junta de socios.", "d) El consejo sindical."],
+  correcta: "b) El patronato.",
+  justificacion: "Es quien gestiona y representa a la fundación conforme a la ley y sus estatutos."
+},
+{
+  pregunta: "El protectorado de fundaciones tiene como función principal:",
+  opciones: ["a) Administrar el patrimonio fundacional.", "b) Supervisar la legalidad y el adecuado cumplimiento de fines.", "c) Representar a la fundación ante terceros.", "d) Nombrar a los patronos discrecionalmente."],
+  correcta: "b) Supervisar la legalidad y el adecuado cumplimiento de fines.",
+  justificacion: "Ejerce labores de control y tutela administrativa de legalidad."
+},
+{
+  pregunta: "Los acuerdos de una asociación contrarios a la ley o a sus estatutos son:",
+  opciones: ["a) Válidos si hay mayoría suficiente.", "b) Impugnables y, en su caso, nulos.", "c) Simples recomendaciones internas.", "d) Eficaces solo frente a terceros."],
+  correcta: "b) Impugnables y, en su caso, nulos.",
+  justificacion: "La legalidad y los estatutos limitan el poder de la mayoría."
+},
+{
+  pregunta: "La responsabilidad patrimonial de una persona jurídica, con carácter general, recae sobre:",
+  opciones: ["a) Los bienes personales de sus miembros o socios.", "b) Su propio patrimonio.", "c) El Estado, subsidiariamente.", "d) Los administradores siempre, de forma objetiva."],
+  correcta: "b) Su propio patrimonio.",
+  justificacion: "La personalidad separa patrimonios, sin perjuicio de responsabilidades específicas."
+},
+{
+  pregunta: "La nacionalidad opera como vínculo jurídico que:",
+  opciones: ["a) Solo tiene efectos políticos.", "b) Une a la persona con el Estado, con derechos y deberes.", "c) Únicamente sirve para viajar.", "d) Carece de relevancia civil."],
+  correcta: "b) Une a la persona con el Estado, con derechos y deberes.",
+  justificacion: "La nacionalidad determina el estatuto personal y ciertos derechos civiles."
+},
+{
+  pregunta: "La adquisición de la nacionalidad por residencia requiere, en general:",
+  opciones: ["a) Cualquier tiempo de estancia.", "b) Un periodo legal de residencia continuada e inmediatamente anterior a la solicitud y acreditación de integración.", "c) Únicamente aprobar un examen.", "d) Un permiso judicial."],
+  correcta: "b) Un periodo legal de residencia continuada e inmediatamente anterior a la solicitud y acreditación de integración.",
+  justificacion: "La residencia debe ser legal, continuada y previa, además de buena conducta e integración."
+},
+{
+  pregunta: "La pérdida de la nacionalidad española puede producirse, entre otros supuestos, por:",
+  opciones: ["a) Cambio de domicilio dentro de España.", "b) Adquirir y usar exclusivamente otra nacionalidad residiendo habitualmente en el extranjero durante un tiempo legal.", "c) Trasladarse temporalmente al extranjero por estudios.", "d) No votar en elecciones."],
+  correcta: "b) Adquirir y usar exclusivamente otra nacionalidad residiendo habitualmente en el extranjero durante un tiempo legal.",
+  justificacion: "El uso exclusivo de otra nacionalidad puede desencadenar la pérdida si concurren los requisitos legales."
+},
+{
+  pregunta: "La recuperación de la nacionalidad española exige, en términos generales:",
+  opciones: ["a) Únicamente solicitarla por internet.", "b) Residir legalmente en España, declarar la voluntad de recuperar e inscribir la recuperación cuando proceda.", "c) Presentar el pasaporte caducado.", "d) Un proceso judicial inevitable."],
+  correcta: "b) Residir legalmente en España, declarar la voluntad de recuperar e inscribir la recuperación cuando proceda.",
+  justificacion: "Se trata de un procedimiento registral con requisitos tasados."
+},
+{
+  pregunta: "La vecindad civil determina:",
+  opciones: ["a) La nacionalidad.", "b) El derecho civil aplicable dentro del territorio español.", "c) El domicilio fiscal.", "d) La condición laboral."],
+  correcta: "b) El derecho civil aplicable dentro del territorio español.",
+  justificacion: "La vecindad civil vincula a un determinado derecho civil común o foral."
+},
+{
+  pregunta: "El cambio de vecindad civil puede producirse:",
+  opciones: ["a) Automáticamente al empadronarse.", "b) Por residencia continuada con declaración de voluntad o por el simple transcurso de un periodo más largo sin declaración en contrario.", "c) Solo por matrimonio.", "d) Únicamente por decisión judicial."],
+  correcta: "b) Por residencia continuada con declaración de voluntad o por el simple transcurso de un periodo más largo sin declaración en contrario.",
+  justificacion: "La ley prevé supuestos con declaración expresa o por el transcurso del tiempo."
+},
+{
+  pregunta: "El matrimonio en derecho civil exige, esencialmente:",
+  opciones: ["a) Una fiesta pública.", "b) Consentimiento matrimonial libre y forma legal de celebración.", "c) Aprobación del ayuntamiento.", "d) Contrato privado sin autoridad competente."],
+  correcta: "b) Consentimiento matrimonial libre y forma legal de celebración.",
+  justificacion: "Sin consentimiento no hay matrimonio; además debe observarse la forma prevista."
+},
+{
+  pregunta: "No pueden contraer matrimonio entre sí, con carácter general:",
+  opciones: ["a) Personas del mismo sexo.", "b) Parientes en línea recta y ciertos colaterales próximos.", "c) Personas de distinta nacionalidad.", "d) Mayores de edad sin autorización paterna."],
+  correcta: "b) Parientes en línea recta y ciertos colaterales próximos.",
+  justificacion: "Los impedimentos por parentesco protegen la institución y la familia."
+},
+{
+  pregunta: "El consentimiento matrimonial sujeto a condición o término:",
+  opciones: ["a) Es válido si la condición es posible.", "b) Se tiene por no puesto.", "c) Requiere autorización judicial.", "d) Suspende la eficacia del matrimonio."],
+  correcta: "b) Se tiene por no puesto.",
+  justificacion: "El consentimiento ha de ser puro y simple."
+},
+{
+  pregunta: "La promesa de matrimonio produce:",
+  opciones: ["a) Obligación de casarse.", "b) Solo la obligación de resarcir gastos si se incumple sin causa, en los supuestos legalmente previstos.", "c) Nulidad del futuro matrimonio.", "d) Responsabilidad penal."],
+  correcta: "b) Solo la obligación de resarcir gastos si se incumple sin causa, en los supuestos legalmente previstos.",
+  justificacion: "La promesa no obliga a contraer matrimonio, pero puede generar responsabilidad por gastos."
+},
+{
+  pregunta: "La inscripción del matrimonio en el Registro Civil:",
+  opciones: ["a) Es irrelevante jurídicamente.", "b) Tiene efectos de publicidad y prueba del estado civil.", "c) Sustituye al acto de celebración.", "d) Solo sirve para estadísticas."],
+  correcta: "b) Tiene efectos de publicidad y prueba del estado civil.",
+  justificacion: "Acredita y publica la situación matrimonial frente a terceros."
+},
+{
+  pregunta: "La nulidad matrimonial se declara cuando:",
+  opciones: ["a) Las partes desean divorciarse.", "b) Falta algún requisito esencial del matrimonio.", "c) No hay convivencia durante seis meses.", "d) Se discute el régimen económico."],
+  correcta: "b) Falta algún requisito esencial del matrimonio.",
+  justificacion: "La nulidad afecta a la existencia misma del vínculo por falta de requisitos esenciales."
+},
+{
+  pregunta: "La separación conyugal implica:",
+  opciones: ["a) Disolución del vínculo matrimonial.", "b) Cese de la convivencia y ciertos efectos, manteniéndose el vínculo.", "c) Nulidad del matrimonio.", "d) Cambios automáticos en apellidos."],
+  correcta: "b) Cese de la convivencia y ciertos efectos, manteniéndose el vínculo.",
+  justificacion: "La separación no disuelve el matrimonio; el divorcio sí lo hace."
+},
+{
+  pregunta: "El divorcio produce:",
+  opciones: ["a) Una mera suspensión temporal.", "b) La disolución del vínculo matrimonial con efectos civiles plenos.", "c) Solo efectos patrimoniales.", "d) La nulidad del matrimonio desde el principio."],
+  correcta: "b) La disolución del vínculo matrimonial con efectos civiles plenos.",
+  justificacion: "Extingue el vínculo y permite contraer nuevo matrimonio."
+},
+{
+  pregunta: "Los hijos tienen derecho a alimentos entre parientes, lo cual comprende:",
+  opciones: ["a) Únicamente dinero para ocio.", "b) Lo indispensable para sustento, habitación, vestido, asistencia médica y educación o instrucción.", "c) Solo manutención alimentaria.", "d) Exclusivamente vivienda."],
+  correcta: "b) Lo indispensable para sustento, habitación, vestido, asistencia médica y educación o instrucción.",
+  justificacion: "El concepto legal de alimentos es amplio y abarca necesidades básicas y educativas."
+},
+{
+  pregunta: "El orden de preferencia para prestar alimentos entre parientes se determina en función de:",
+  opciones: ["a) La edad.", "b) El grado de parentesco y posibilidades de los obligados.", "c) La voluntad del acreedor de alimentos.", "d) El lugar de residencia."],
+  correcta: "b) El grado de parentesco y posibilidades de los obligados.",
+  justificacion: "Se atiende a la proximidad familiar y a la capacidad económica."
+},
+{
+  pregunta: "La filiación puede ser:",
+  opciones: ["a) Únicamente matrimonial.", "b) Por naturaleza o por adopción, con iguales efectos en cuanto a la relación paterno-filial.", "c) Solo por reconocimiento voluntario.", "d) Exclusivamente por sentencia."],
+  correcta: "b) Por naturaleza o por adopción, con iguales efectos en cuanto a la relación paterno-filial.",
+  justificacion: "Ambas filiaciones despliegan efectos equiparables en el ámbito civil."
+},
+{
+  pregunta: "En la determinación de la filiación, la prueba puede basarse en:",
+  opciones: ["a) Únicamente documentos notariales.", "b) Medios legales como reconocimiento, posesión de estado o pruebas biológicas según proceda.", "c) Solo testigos.", "d) Exclusivamente la voluntad del presunto progenitor."],
+  correcta: "b) Medios legales como reconocimiento, posesión de estado o pruebas biológicas según proceda.",
+  justificacion: "El ordenamiento contempla diversos medios probatorios para acreditar la filiación."
+},
+{
+  pregunta: "La patria potestad se ejerce:",
+  opciones: ["a) Únicamente por el padre.", "b) Por ambos progenitores en interés de los hijos, con deberes de cuidado, representación y administración de bienes según la ley.", "c) Por los abuelos automáticamente.", "d) Solo por la madre hasta la mayoría de edad."],
+  correcta: "b) Por ambos progenitores en interés de los hijos, con deberes de cuidado, representación y administración de bienes según la ley.",
+  justificacion: "Es una función conjunta que atiende al interés superior del menor."
+},
+{
+  pregunta: "La adopción exige, entre otros requisitos generales:",
+  opciones: ["a) La mera voluntad del adoptante.", "b) Que responda al interés superior del menor y se cumplan los consentimientos y valoraciones previstos.", "c) Que el menor tenga patrimonio propio.", "d) Que el adoptante sea pariente de sangre."],
+  correcta: "b) Que responda al interés superior del menor y se cumplan los consentimientos y valoraciones previstos.",
+  justificacion: "La adopción es una medida de protección sujeta a estrictos requisitos y controles."
+},
+{
+  pregunta: "El acogimiento de menores es una medida que:",
+  opciones: ["a) Sustituye definitivamente a la adopción.", "b) Persigue la guarda y cuidado temporal del menor, priorizando su interés.", "c) Solo afecta a mayores de edad.", "d) Es un contrato mercantil."],
+  correcta: "b) Persigue la guarda y cuidado temporal del menor, priorizando su interés.",
+  justificacion: "Es una medida de protección distinta de la adopción, normalmente temporal y revisable."
+},
+{
+  pregunta: "La ausencia legal se declara para:",
+  opciones: ["a) Sancionar a una persona por no presentarse a juicio.", "b) Proteger los intereses de quien ha desaparecido sin noticias durante un tiempo, asegurando la administración de sus bienes.", "c) Privar de derechos políticos al ausente.", "d) Disolver automáticamente su matrimonio."],
+  correcta: "b) Proteger los intereses de quien ha desaparecido sin noticias durante un tiempo, asegurando la administración de sus bienes.",
+  justificacion: "Se designa representante o administrador y se salvaguarda el patrimonio."
+},
+{
+  pregunta: "La declaración de fallecimiento del ausente permite:",
+  opciones: ["a) Únicamente cerrar cuentas bancarias.", "b) Abrir la sucesión y producir efectos civiles equiparables a la muerte real, con las cautelas legales.", "c) Sancionar penalmente al ausente.", "d) Cambiar la vecindad civil del ausente."],
+  correcta: "b) Abrir la sucesión y producir efectos civiles equiparables a la muerte real, con las cautelas legales.",
+  justificacion: "Se asimilan los efectos de la muerte para resolver situaciones pendientes."
+},
+{
+  pregunta: "Si el declarado fallecido reaparece, podrá:",
+  opciones: ["a) Recuperar automáticamente todos los bienes con independencia de terceros.", "b) Solicitar la nulidad de la declaración y recuperar los bienes existentes o el valor recibido por terceros de buena fe.", "c) Exigir daños punitivos.", "d) Mantenerse la declaración sin remedio."],
+  correcta: "b) Solicitar la nulidad de la declaración y recuperar los bienes existentes o el valor recibido por terceros de buena fe.",
+  justificacion: "El reaparecido tiene acciones para recomponer su patrimonio dentro de los límites legales."
+},
+{
+  pregunta: "La tutela se establece principalmente para:",
+  opciones: ["a) Personas adultas con discapacidad.", "b) Menores no emancipados cuando no estén bajo patria potestad.", "c) Cualquier mayor de edad.", "d) Funcionarios públicos."],
+  correcta: "b) Menores no emancipados cuando no estén bajo patria potestad.",
+  justificacion: "En el régimen vigente, la tutela se vincula al menor sin patria potestad."
+},
+{
+  pregunta: "La curatela en el sistema de apoyos a personas con discapacidad tiene por objeto:",
+  opciones: ["a) Sustituir completamente la voluntad de la persona.", "b) Prestar apoyo en el ejercicio de la capacidad jurídica, con alcance fijado judicialmente.", "c) Limitar derechos políticos.", "d) Ser una mera formalidad sin efectos."],
+  correcta: "b) Prestar apoyo en el ejercicio de la capacidad jurídica, con alcance fijado judicialmente.",
+  justificacion: "La curatela es medida de apoyo proporcional y respetuosa con la voluntad y preferencias."
+},
+{
+  pregunta: "La guarda de hecho de personas con discapacidad es:",
+  opciones: ["a) Una situación siempre ilícita.", "b) Una realidad fáctica reconocida que puede ser objeto de control y adecuación judicial.", "c) Un contrato mercantil de administración.", "d) Sin efectos jurídicos."],
+  correcta: "b) Una realidad fáctica reconocida que puede ser objeto de control y adecuación judicial.",
+  justificacion: "El ordenamiento la reconoce y articula su supervisión para protección de la persona."
+},
+{
+  pregunta: "Los poderes y mandatos preventivos permiten:",
+  opciones: ["a) Evitar cualquier control judicial.", "b) Prever apoyos voluntarios para el caso de futuras necesidades, respetando la autonomía de la persona.", "c) Actuar sin límites frente a terceros.", "d) Anular el resto de medidas legales."],
+  correcta: "b) Prever apoyos voluntarios para el caso de futuras necesidades, respetando la autonomía de la persona.",
+  justificacion: "Son medidas voluntarias de apoyo anticipado y personalizadas."
+},
+{
+  pregunta: "La emancipación del menor produce, por regla general:",
+  opciones: ["a) Capacidad de obrar plena en todo caso.", "b) Ampliación de su capacidad para actuar por sí, con limitaciones en actos especialmente trascendentes.", "c) Pérdida de todos los apoyos familiares.", "d) Efectos únicamente laborales."],
+  correcta: "b) Ampliación de su capacidad para actuar por sí, con limitaciones en actos especialmente trascendentes.",
+  justificacion: "La emancipación no equipara totalmente al mayor de edad; persisten límites legales."
+},
+{
+  pregunta: "En las medidas de apoyo a personas con discapacidad rigen, entre otros, los principios de:",
+  opciones: ["a) Sustitución automática de la voluntad y rigidez.", "b) Proporcionalidad, mínima intervención y respeto a la voluntad y preferencias.", "c) Intervención generalizada y abstracta.", "d) Uniformidad sin adaptación individual."],
+  correcta: "b) Proporcionalidad, mínima intervención y respeto a la voluntad y preferencias.",
+  justificacion: "El sistema actual prioriza apoyos ajustados y respetuosos con la autonomía personal."
+},
+{
+  pregunta: "El régimen económico matrimonial por defecto, cuando la ley no exige uno especial, es:",
+  opciones: ["a) Separación absoluta de bienes.", "b) Sociedad de gananciales.", "c) Comunidad de bienes limitada.", "d) Régimen mixto."],
+  correcta: "b) Sociedad de gananciales.",
+  justificacion: "El régimen ordinario en muchas legislaciones es el de gananciales, salvo pacto en contrario o régimen especial."
+},
+{
+  pregunta: "El pacto prematrimonial o capitulaciones matrimoniales permiten que los cónyuges:",
+  opciones: ["a) Solo decidan quién paga los gastos del matrimonio.", "b) Establezcan de forma previa un régimen económico diferente al régimen legal supletorio.", "c) Fijen la nacionalidad de los hijos.", "d) Modifiquen los derechos políticos del otro."],
+  correcta: "b) Establezcan de forma previa un régimen económico diferente al régimen legal supletorio.",
+  justificacion: "Las capitulaciones permiten que los futuros cónyuges pacten un régimen distinto al que legalmente correspondería si no pactaran."
+},
+{
+  pregunta: "En el régimen de sociedad de gananciales, los bienes adquiridos durante el matrimonio se presumen:",
+  opciones: ["a) Propios de cada cónyuge por separado.", "b) Gananciales, salvo prueba de que sean privativos.", "c) Siempre privativos.", "d) Inembargables."],
+  correcta: "b) Gananciales, salvo prueba de que sean privativos.",
+  justificacion: "La presunción favorece el carácter compartido de los bienes adquiridos durante la vigencia del matrimonio."
+},
+{
+  pregunta: "Los bienes privativos dentro del régimen matrimonial son aquellos que:",
+  opciones: ["a) Se adquieren durante el matrimonio al contado.", "b) Preexistían al matrimonio, provenían de herencia o donación, o eran excluidos expresamente por ley.", "c) Carecen de valor.", "d) Son de uso común sin título."],
+  correcta: "b) Preexistían al matrimonio, provenían de herencia o donación, o eran excluidos expresamente por ley.",
+  justificacion: "La ley distingue los bienes propios si provienen de actos anteriores, legado, donación o pactos que excluyan su ganancialización."
+},
+{
+  pregunta: "El patrimonio de gananciales se divide:",
+  opciones: ["a) Solo al morir uno de los cónyuges.", "b) Siempre que ambos cónyuges lo acuerden o por causa legal (divorcio, separación, nulidad, disolución, liquidación).", "c) Solo al divorciarse.", "d) Nunca."],
+  correcta: "b) Siempre que ambos cónyuges lo acuerden o por causa legal (divorcio, separación, nulidad, disolución, liquidación).",
+  justificacion: "La división puede hacerse por mutuo pacto o por resolución judicial conforme a los supuestos legales."
+},
+{
+  pregunta: "El consentimiento para contraer matrimonio exige, entre otros extremos, que sea libre y sin vicios, lo que implica que:",
+  opciones: ["a) Pueda estar condicionado a términos variables.", "b) No puede contener error, dolo ni intimidación que afecte gravemente a la voluntad.", "c) Puede omitirse si ambos cónyuges confían el uno en el otro.", "d) Solo se analice tras el matrimonio."],
+  correcta: "b) No puede contener error, dolo ni intimidación que afecte gravemente a la voluntad.",
+  justificacion: "La validez del matrimonio requiere que el consentimiento sea auténtico y no esté viciado."
+},
+{
+  pregunta: "El divorcio sin culpabilidad implica que:",
+  opciones: ["a) Uno de los cónyuges debe demostrar culpa del otro.", "b) Basta con voluntad de disolver el vínculo, sin necesidad de causar culpabilidad.", "c) Solo puede obtenerse si media mutuo acuerdo.", "d) No es posible si hay hijos comunes."],
+  correcta: "b) Basta con voluntad de disolver el vínculo, sin necesidad de causar culpabilidad.",
+  justificacion: "El sistema actual permite el divorcio mediante decisión unilateral o mutua, sin necesidad de demostrar culpa o hechos negativos del otro cónyuge."
+},
+{
+  pregunta: "El deber de socorro entre cónyuges comprende:",
+  opciones: ["a) Que uno mantenga económicamente al otro sin límite alguno.", "b) Que ambos contribuyan mutuamente al sostenimiento y necesidades comunes según sus capacidades.", "c) Solo en bienes, no en atención personal.", "d) Solo si hay acuerdo expreso."],
+  correcta: "b) Que ambos contribuyan mutuamente al sostenimiento y necesidades comunes según sus capacidades.",
+  justificacion: "El deber de socorro no es unilateral ni ilimitado, sino acorde a los medios y necesidades de cada uno."
+},
+{
+  pregunta: "La modificación de medidas acordadas en procesos matrimoniales puede solicitarse cuando:",
+  opciones: ["a) Nunca; están fijadas para siempre.", "b) Cuando cambien las circunstancias de uno o ambos cónyuges o de los hijos.", "c) Solo si lo aprueba el juez de oficio.", "d) Solo al cabo de diez años."],
+  correcta: "b) Cuando cambien las circunstancias de uno o ambos cónyuges o de los hijos.",
+  justificacion: "El sistema prevé la revisión de medidas para adaptarlas a la realidad cambiante de los afectados."
+},
+{
+  pregunta: "La intimación de herencia sin testamento genera herederos según líneas de parentesco. ¿Cómo se denominan los herederos en este caso?",
+  opciones: ["a) Abintestatos o legales.", "b) Testados.", "c) Unilaterales.", "d) Excepcionales."],
+  correcta: "a) Abintestatos o legales.",
+  justificacion: "Cuando no hay voluntad testamentaria, la ley designa herederos legales según la cercanía del parentesco."
+},
+{
+  pregunta: "El testamento es un acto jurídico importante porque:",
+  opciones: ["a) No admite forma escrita ni requisitos.", "b) Permite al testador disponer libremente de sus bienes para después de su muerte, dentro de los límites legales.", "c) Sustituye el matrimonio.", "d) Siempre es anulable."],
+  correcta: "b) Permite al testador disponer libremente de sus bienes para después de su muerte, dentro de los límites legales.",
+  justificacion: "El testamento es fundamental para expresar la voluntad post mortem, aunque sujeto a legítimas y formalidades."
+},
+{
+  pregunta: "La legítima es:",
+  opciones: ["a) La parte de la herencia que el testador puede asignar libremente sin límites.", "b) La porción mínima legal reservada a determinados herederos forzosos.", "c) Un impuesto.", "d) Un privilegio del cónyuge únicamente."],
+  correcta: "b) La porción mínima legal reservada a determinados herederos forzosos.",
+  justificacion: "La legítima protege a los parientes más cercanos, garantizando que no sean desheredados arbitrariamente."
+},
+{
+  pregunta: "El albacea es:",
+  opciones: ["a) El heredero universal.", "b) La persona designada por el testador para ejecutar las disposiciones testamentarias.", "c) El juez que abre el testamento.", "d) Un tipo de donación."],
+  correta: "b) La persona designada por el testador para ejecutar las disposiciones testamentarias.",
+  justificacion: "El albacea cumple funciones de administración, conservación e impulso del reparto conforme al testamento."
+},
+{
+  pregunta: "La aceptación de la herencia puede ser:",
+  opciones: ["a) Solo expresa y en documento público.", "b) Expresa o tácita, siempre que se manifieste clara intención de tomar la herencia.", "c) Automática sin deseo del heredero.", "d) Irreversible desde el momento del fallecimiento."],
+  correcta: "b) Expresa o tácita, siempre que se manifieste clara intención de tomar la herencia.",
+  justificacion: "La aceptación puede ser por actos claros que equivalen a aceptar o mediante declaración formal."
+},
+{
+  pregunta: "La partición de herencia consiste en:",
+  opciones: ["a) El reparto de bienes y derechos entre los herederos.", "b) La venta obligatoria de todos los bienes.", "c) La intervención judicial siempre.", "d) La transmisión al Estado."],
+  correcta: "a) El reparto de bienes y derechos entre los herederos.",
+  justificacion: "La partición es la distribución real del patrimonio heredado conforme a la voluntad del testador o la ley."
+},
+{
+  pregunta: "La acción de petición de herencia permite:",
+  opciones: ["a) Que un extraño reclame una herencia.", "b) Reclamar la herencia ante quienes la detenten tras la muerte del causante.", "c) Vender la herencia sin conocimiento.", "d) Excluir a otros herederos."],
+  correcta: "b) Reclamar la herencia ante quienes la detenten tras la muerte del causante.",
+  justificacion: "Sirve para exigir que los bienes o derechos que corresponden al heredero le sean entregados o reconocidos."
+},
+{
+  pregunta: "La donación es un contrato mediante el cual:",
+  opciones: ["a) Una persona transmite una parte de su patrimonio a otra de forma gratuita y con la intención de donar.", "b) Una empresa vende un bien a precio simbólico.", "c) Un tercero impone un legado.", "d) Solo se transmite dinero."],
+  correcta: "a) Una persona transmite una parte de su patrimonio a otra de forma gratuita y con la intención de donar.",
+  justificacion: "La esencia de la donación es la liberalidad sin contraprestación, manifestada en la voluntad de donar."
+},
+{
+  pregunta: "La revocación de la donación puede tener lugar si:",
+  opciones: ["a) El donante cambia de domicilio.", "b) Existen causas legales previstas como ingratitud o no cumplimiento de cargas impuestas, si la ley lo permite.", "c) El donatario no usa bien el bien.", "d) Siempre, sin motivo."],
+  correcta: "b) Existen causas legales previstas como ingratitud o no cumplimiento de cargas impuestas, si la ley lo permite.",
+  justificacion: "La ley regula supuestos de revocación para proteger al donante, equilibrando la libertad y la protección legal."
+},
+{
+  pregunta: "La responsabilidad civil extracontractual consiste en:",
+  opciones: ["a) Asumir daños causados en cumplimiento de contrato.", "b) Reparar los daños o perjuicios causados a otros por acción u omisión, incluso sin relación contractual, si hay culpabilidad o riesgo.", "c) Solo indemnizar lesiones físicas.", "d) Excluir los daños morales."],
+  correcta: "b) Reparar los daños o perjuicios causados a otros por acción u omisión, incluso sin relación contractual, si hay culpabilidad o riesgo.",
+  justificacion: "La responsabilidad civil extracontractual protege del daño causado independientemente de la existencia de vínculo previo."
+},
+{
+  pregunta: "La prescripción es:",
+  opciones: ["a) La eliminación automática de obligaciones bancarias.", "b) La extinción del derecho a reclamar judicialmente pasados determinados años, salvo interrupción o suspensión.", "c) Un procedimiento penal.", "d) Solo aplicable a deudas menores."],
+  correcta: "b) La extinción del derecho a reclamar judicialmente pasados determinados años, salvo interrupción o suspensión.",
+  justificacion: "La prescripción limita temporalmente la eficacia de los derechos de acción."
+},
+{
+  pregunta: "La nulidad de actos jurídicos puede ser absoluta o relativa, y la diferencia principal entre ambas es:",
+  opciones: ["a) Que la absoluta es más leve.", "b) Que la absoluta protege el interés general y puede ser declarada de oficio, mientras la relativa protege el interés particular y exige solicitud.", "c) Que la relativa siempre caduca en un año.", "d) Solo se aplica en contratos comerciales."],
+  correcta: "b) Que la absoluta protege el interés general y puede ser declarada de oficio, mientras la relativa protege el interés particular y exige solicitud.",
+  justificacion: "La nulidad absoluta asegura el cumplimiento de normas imperativas; la anulabilidad protege al sujeto damnificado."
+},
+{
+  pregunta: "La cesión de bienes entre vivos puede producir efectos semejantes a los de la herencia si se pacta una reserva de usufructo, porque:",
+  opciones: ["a) Transfiere la propiedad sin reserva alguna.", "b) Permite disfrutar ciertos derechos del bien mientras otro tiene la propiedad.", "c) Evita siempre impuestos.", "d) Sustituye al testamento."],
+  correcta: "b) Permite disfrutar ciertos derechos del bien mientras otro tiene la propiedad.",
+  justificacion: "La reserva de usufructo separa la propiedad de la posesión, disfrutando de beneficios mientras se conserva la titularidad."
+},
+{
+  pregunta: "El usufructo es:",
+  opciones: ["a) La propiedad absoluta de un bien.", "b) El derecho a usar y disfrutar de un bien ajeno con obligación de conservar su forma y sustancia.", "c) Un tipo de hipoteca.", "d) Una cláusula abusiva."],
+  correcta: "b) El derecho a usar y disfrutar de un bien ajeno con obligación de conservar su forma y sustancia.",
+  justificacion: "El usufructuario puede disponer de los frutos del bien, pero debe conservarlo."
+},
+{
+  pregunta: "La extinción del usufructo puede producirse por:",
+  opciones: ["a) Muerte del usufructuario o del titular de la propiedad, vencimiento del plazo, renuncia, consolidación, destrucción del bien o por resolución judicial, cuando proceda.", "b) Solo por vencimiento de plazo.", "c) Siempre al cabo de diez años.", "d) Nunca; es vitalicio."],
+  correcta: "a) Muerte del usufructuario o del titular de la propiedad, vencimiento del plazo, renuncia, consolidación, destrucción del bien o por resolución judicial, cuando proceda.",
+  justificacion: "La extinción puede derivarse de múltiples causas legalmente previstas."
+},
+  {
+  pregunta: "El derecho real de hipoteca implica:",
+  opciones: ["a) Que el deudor pierde la propiedad del bien hipotecado.", "b) Que un tercero puede usar el bien si incumple el deudor.", "c) Que se grava un bien con la garantía del cumplimiento de una obligación, sin perder la propiedad.", "d) Que la hipoteca es un contrato obligatorio para todos."],
+  correcta: "c) Que se grava un bien con la garantía del cumplimiento de una obligación, sin perder la propiedad.",
+  justificacion: "La hipoteca es un derecho real accesorio que asegura una obligación, manteniéndose la propiedad del bien con el deudor salvo ejecución."
+},
+{
+  pregunta: "La obligación principal del hipotecado es:",
+  opciones: ["a) Pagar la deuda en el plazo convenido.", "b) Ceder la posesión del bien.", "c) Renunciar al derecho de uso.", "d) Realizar todas las reparaciones del bien."],
+  correcta: "a) Pagar la deuda en el plazo convenido.",
+  justificacion: "La obligación garantizada por la hipoteca es el cumplimiento de la deuda; la garantía actúa si el deudor no cumple."
+},
+{
+  pregunta: "La ejecución de la hipoteca puede producirse cuando:",
+  opciones: ["a) El bien no está inscrito en el registro.", "b) El deudor incumple la obligación garantizada.", "c) Un tercero lo solicita.", "d) El deudor renuncia voluntariamente a la propiedad."],
+  correcta: "b) El deudor incumple la obligación garantizada.",
+  justificacion: "La hipoteca se ejecuta para satisfacer la deuda cuando hay mora u otro incumplimiento."
+},
+{
+  pregunta: "El bien inmueble hipotecado pierde la carga hipotecaria cuando:",
+  opciones: ["a) Se vende a un tercero.", "b) Se extingue la deuda garantizada y la hipoteca se cancela.", "c) El deudor cambia de ciudadanía.", "d) El bien se devalúa."],
+  correcta: "b) Se extingue la deuda garantizada y la hipoteca se cancela.",
+  justificacion: "Una vez satisfecha la obligación, la garantía ya no es necesaria y debe cancelarse formalmente."
+},
+{
+  pregunta: "El registro de la propiedad cumple una función fundamental de:",
+  opciones: ["a) Inscripción voluntaria sin efectos jurídicos relevantes.", "b) Publicidad, otorgando conocimiento y seguridad a los terceros sobre los derechos inscritos.", "c) Fiscalidad automática.", "d) Control administrativo directo de las transacciones."],
+  correcta: "b) Publicidad, otorgando conocimiento y seguridad a los terceros sobre los derechos inscritos.",
+  justificacion: "El objetivo del registro es que los derechos reales y su situación sean públicos, creíbles y protegidos frente a terceros."
+},
+{
+  pregunta: "La prioridad registral se determina por:",
+  opciones: ["a) El orden alfabético de los titulares.", "b) El orden temporal de los asientos inscritos.", "c) La importancia del titular.", "d) La cuantía de la obligación."],
+  correcta: "b) El orden temporal de los asientos inscritos.",
+  justificacion: "El registro asigna preferencia al que primero inscribió frente a los posteriores, salvo excepciones previstas."
+},
+{
+  pregunta: "La inscripción puede ser constitutiva cuando:",
+  opciones: ["a) La ley exige que exista inscripción para que nazca el derecho real.", "b) La inscripción es simplemente informativa.", "c) Siempre que lo decida el juez.", "d) Nunca."],
+  correcta: "a) La ley exige que exista inscripción para que nazca el derecho real.",
+  justificacion: "En ciertos casos (por ejemplo, creación de determinadas cargas, protección frente a terceros), la inscripción es constitutiva del derecho."
+},
+{
+  pregunta: "En los contratos de compraventa, la transmisión de la propiedad respecto de bienes muebles ocurre:",
+  opciones: ["a) Al momento del acuerdo de voluntades, aunque no haya entrega.", "b) Sólo tras entregar el bien.", "c) Sólo cuando el comprador lo inscribe.", "d) Cuando el vendedor aprueba."],
+  correcta: "a) Al momento del acuerdo de voluntades, aunque no haya entrega.",
+  justificacion: "En general, la tradición (entrega) no es necesaria para la transmisión de la propiedad en la compraventa de bienes muebles salvo que la ley lo exija o se pacte lo contrario."
+},
+{
+  pregunta: "La compraventa exige como requisitos esenciales:",
+  opciones: ["a) Consentimiento, objeto lícito y precio cierto.", "b) Forma pública obligatoria.", "c) Entrega inmediata del bien.", "d) Que ambas partes sean mayores de 21 años."],
+  correcta: "a) Consentimiento, objeto lícito y precio cierto.",
+  justificacion: "Son los elementos esenciales sin los cuales no puede entenderse válidamente constituido el contrato de compraventa."
+},
+{
+  pregunta: "La compraventa puede ser rescindida cuando:",
+  opciones: ["a) Siempre que uno de los contratantes lo desee.", "b) Solo en los supuestos legales expresamente previstos o por acuerdo entre partes.", "c) Si hay demora en la entrega superior a un día.", "d) Nunca."],
+  correcta: "b) Solo en los supuestos legales expresamente previstos o por acuerdo entre partes.",
+  justificacion: "La rescisión exige causa o pacto, no es automática salvo normativa concreta."
+},
+{
+  pregunta: "El contrato de arrendamiento otorga al arrendatario:",
+  opciones: ["a) La propiedad del bien.", "b) El uso y disfrute del bien por tiempo y condiciones pactadas, con obligación de devolverlo.", "c) Libertad para subarrendar sin límite.", "d) Derecho a modificar el bien sin autorización."],
+  correcta: "b) El uso y disfrute del bien por tiempo y condiciones pactadas, con obligación de devolverlo.",
+  justificacion: "El arrendamiento es un contrato real de uso con obligaciones de cuidado y devolución."
+},
+{
+  pregunta: "El arrendador puede exigir al arrendatario:",
+  opciones: ["a) El pago de la renta y la conservación de la cosa arrendada.", "b) Que gestione la propiedad del bien.", "c) Que venda el bien.", "d) Que ceda la posesión a terceros."],
+  correcta: "a) El pago de la renta y la conservación de la cosa arrendada.",
+  justificacion: "Son obligaciones típicas del arrendatario, definidas en la legislación civil."
+},
+{
+  pregunta: "El contrato de comodato consiste en:",
+  opciones: ["a) Un arrendamiento sin renta.", "b) Un contrato por el cual una persona presta gratuitamente un bien para que otro lo use y devuelva.", "c) Una venta inmediata.", "d) Una sociedad mercantil."],
+  correcta: "b) Un contrato por el cual una persona presta gratuitamente un bien para que otro lo use y devuelva.",
+  justificacion: "El comodato es préstamo gratuito de uso; su carácter gratuito lo diferencia del arrendamiento."
+},
+{
+  pregunta: "El depósito es un contrato por el cual:",
+  opciones: ["a) El depositario adquiere el bien.", "b) El depositario guarda un bien ajeno y se obliga a restituirlo.", "c) El depositante pierde el bien.", "d) El bien pasa al Estado automáticamente."],
+  correcta: "b) El depositario guarda un bien ajeno y se obliga a restituirlo.",
+  justificacion: "El depósito implica custodia sin transferencia de propiedad."
+},
+{
+  pregunta: "La fianza es un contrato accesorio mediante el cual:",
+  opciones: ["a) Un tercero garantiza el cumplimiento de una obligación ajena, respondiendo si el deudor principal no cumple.", "b) Se presta un bien sin contrato.", "c) El acreedor paga la deuda.", "d) El deudor queda exonerado automáticamente."],
+  correcta: "a) Un tercero garantiza el cumplimiento de una obligación ajena, respondiendo si el deudor principal no cumple.",
+  justificacion: "La fianza permite asegurar obligaciones ajenas, con responsabilidad subsidiaria del fiador."
+},
+{
+  pregunta: "La legitimación para reclamar el cumplimiento de una obligación recae en:",
+  opciones: ["a) Cualquier persona.", "b) El propio acreedor o su representante legal.", "c) Solo en el juez.", "d) En el funcionario público correspondiente."],
+  correcta: "b) El propio acreedor o su representante legal.",
+  justificacion: "Solo quien tiene derecho puede reclamar su cumplimiento."
+},
+{
+  pregunta: "Las obligaciones de hacer o no hacer son aquellas cuyo cumplimiento consiste en:",
+  opciones: ["a) Entregar una suma de dinero exclusivamente.", "b) Ejecutar una determinada conducta (posible y lícita) o abstenerse de realizarla.", "c) Vender un bien inmueble.", "d) Renunciar a un derecho."],
+  correcta: "b) Ejecutar una determinada conducta (posible y lícita) o abstenerse de realizarla.",
+  justificacion: "Son obligaciones de carácter activo (hacer) o pasivo (no hacer)."
+},
+{
+  pregunta: "La mora del deudor consiste en:",
+  opciones: ["a) La imposibilidad de cumplir la obligación.", "b) El retraso culpable en el cumplimiento de la obligación vencida.", "c) Que el acreedor no reclame.", "d) Que el deudor cambie de domicilio."],
+  correcta: "b) El retraso culpable en el cumplimiento de la obligación vencida.",
+  justificacion: "La mora implica culpa o falta de diligencia al no cumplir en el término acordado."
+},
+{
+  pregunta: "La condición resolutoria en una obligación implica que:",
+  opciones: ["a) La obligación es firme e inmodificable.", "b) La obligación puede quedar extinguida si concurren los hechos previstos en la condición.", "c) Nunca opera.", "d) Sustituye al contrato."],
+  correcta: "b) La obligación puede quedar extinguida si concurren los hechos previstos en la condición.",
+  justificacion: "Es cláusula suspensiva-resolutoria que condiciona la continuidad del vínculo jurídico a un hecho futuro."
+},
+{
+  pregunta: "La compensación de deudas entre dos personas consiste en que:",
+  opciones: ["a) Solo una parte puede compensar.", "b) Las deudas recíprocas quedan extinguidas hasta el límite del menor importe.", "c) Nunca se permite en derecho civil.", "d) Solo si hay contrato de por medio."],
+  correcta: "b) Las deudas recíprocas quedan extinguidas hasta el límite del menor importe.",
+  justificacion: "La compensación es mecanismo automático de extinción parcial al existir obligaciones recíprocas."
+},
+{
+  pregunta: "El derecho de retención permite que:",
+  opciones: ["a) Un deudor se quede con el bien del acreedor sin obligación de devolución.", "b) Un tercero retenga un bien mueble hasta que se pague una deuda relacionada con ese bien.", "c) Cualquiera conserve cosas sin causa.", "d) El bien quede embargado permanentemente."],
+  correcta: "b) Un tercero retenga un bien mueble hasta que se pague una deuda relacionada con ese bien.",
+  justificacion: "El derecho de retención protege los créditos vinculados al bien retenido."
+},
+{
+  pregunta: "El embargo es:",
+  opciones: ["a) Una forma de donación forzosa.", "b) Una medida cautelar o ejecutiva por la cual determinados bienes del deudor quedan asegurados judicialmente para responder a deudas u obligaciones.", "c) Un contrato.", "d) Una sanción penal."],
+  correcta: "b) Una medida cautelar o ejecutiva por la cual determinados bienes del deudor quedan asegurados judicialmente para responder a deudas u obligaciones.",
+  justificacion: "El embargo asegura la satisfacción de la obligación, limitando la disposición del deudor sobre ciertos bienes."
+},
+{
+  pregunta: "El recurso de simulación en los actos jurídicos sirve para:",
+  opciones: ["a) Aumentar la apariencia de validez.", "b) Encubrir un acto verdadero distinto del aparente, pudiendo declararse el acto real como nulo o inaplicable.", "c) Otorgar seguridad jurídica automática.", "d) Justificar cláusulas abusivas."],
+  correcta: "b) Encubrir un acto verdadero distinto del aparente, pudiendo declararse el acto real como nulo o inaplicable.",
+  justificacion: "La simulación perjudica a terceros o al orden público y el juez puede mirar la realidad del negocio por encima de la forma aparente."
+},
+];
+
+let totalPreguntasRenderizadas = 0;
+
+function barajar(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+}
+
+function setProgress(current, total) {
+  const bar = document.getElementById('progressBar');
+  const pct = total > 0 ? Math.round((current / total) * 100) : 0;
+  bar.style.width = pct + '%';
+  bar.title = pct + '%';
+}
+
+function cargarTest() {
+  const seleccionadas = [...preguntasBanco];
+  barajar(seleccionadas);
+  const num = parseInt(document.getElementById("numPreguntas").value);
+  const seleccion = seleccionadas.slice(0, num);
+
+  const testForm = document.getElementById("testForm");
+  const result = document.getElementById("testResult");
+  testForm.innerHTML = '';
+  result.innerHTML = '';
+  totalPreguntasRenderizadas = seleccion.length;
+  setProgress(0, totalPreguntasRenderizadas);
+
+  seleccion.forEach((preg, index) => {
+    const id = `q${index}`;
+    const opciones = [...preg.opciones];
+    barajar(opciones);
+    const opcionesHTML = opciones.map(op => `
+      <label class="option">
+        <input type="radio" name="${id}" value="${op}" data-correcta="${preg.correcta}" data-justificacion="${preg.justificacion}">
+        ${op}
+      </label>
+    `).join('');
+
+    const card = document.createElement('div');
+    card.className = 'question';
+    card.innerHTML = `
+      <div class="q-head">
+        <div class="q-num">Pregunta ${index + 1}:</div>
+        <p class="q-text">${preg.pregunta}</p>
+      </div>
+      <div class="options">${opcionesHTML}</div>
+      <div class="justification" id="j${id}"></div>
+    `;
+    testForm.appendChild(card);
+  });
+
+  // Botonera inferior
+  const actions = document.createElement('div');
+  actions.style.textAlign = 'center';
+  actions.style.marginTop = '14px';
+  actions.innerHTML = '<button class="btn success" type="button" onclick="corregir()">✅ Enviar</button>';
+  testForm.appendChild(actions);
+
+  // Selección visual on click
+  testForm.querySelectorAll('.option input').forEach(inp => {
+    inp.addEventListener('change', (e) => {
+      const group = e.target.name;
+      // Quitar selección previa
+      testForm.querySelectorAll(`input[name="${group}"]`).forEach(i2 => {
+        i2.closest('.option').classList.remove('is-selected');
+      });
+      e.target.closest('.option').classList.add('is-selected');
+
+      // Progreso (contar cuántas preguntas ya tienen marcada una opción)
+      const respondidas = new Set();
+      testForm.querySelectorAll('.option input:checked').forEach(i3 => respondidas.add(i3.name));
+      setProgress(respondidas.size, totalPreguntasRenderizadas);
+    });
+  });
+}
+
+function corregir() {
+  const preguntas = document.querySelectorAll('.question');
+  let aciertos = 0;
+
+  preguntas.forEach(q => {
+    const seleccion = q.querySelector('input[type="radio"]:checked');
+    const justDiv = q.querySelector('.justification');
+
+    // Limpiar estilos previos
+    q.querySelectorAll('.option').forEach(lbl => {
+      lbl.classList.remove('correct-option', 'wrong-option');
+    });
+
+    // Marcar siempre la opción correcta
+    q.querySelectorAll('.option input').forEach(inp => {
+      if (inp.value === inp.dataset.correcta) {
+        inp.closest('.option').classList.add('correct-option');
+      }
+    });
+
+    if (seleccion) {
+      if (seleccion.value === seleccion.dataset.correcta) {
+        aciertos++;
+        justDiv.innerHTML = `<span class="correct">✔ ${seleccion.dataset.justificacion}</span>`;
+      } else {
+        // Señalar la opción elegida como errónea
+        seleccion.closest('.option').classList.add('wrong-option');
+        justDiv.innerHTML = `<span class="incorrect">✘ ${seleccion.dataset.justificacion}</span>`;
+      }
+    } else {
+      justDiv.innerHTML = `<span class="incorrect">✘ No contestada</span>`;
+    }
+  });
+
+  const result = document.getElementById('testResult');
+  const total = preguntas.length;
+  const pct = Math.round((aciertos / total) * 100);
+  const emoji = pct >= 70 ? "🎉" : (pct >= 50 ? "🙂" : "💪");
+  result.innerHTML = `
+    <div class="result-card">
+      <div class="muted">Resultado</div>
+      <div class="score">${emoji} ${aciertos} / ${total} (${pct}%)</div>
+      <div class="muted">Puedes cambiar tus respuestas y volver a pulsar <strong>Enviar</strong>.</div>
+    </div>
+  `;
+}
+
+function reiniciarTest() {
+  document.getElementById('testForm').innerHTML = '';
+  document.getElementById('testResult').innerHTML = '';
+  setProgress(0, 0);
+}
+</script>
+</body>
+</html>
