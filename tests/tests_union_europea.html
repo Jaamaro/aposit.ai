@@ -2245,7 +2245,6 @@ function setProgress(current, total) {
 
 function cargarTest() {
   const seleccionadas = [...preguntasBanco];
-  barajar(seleccionadas);
   const num = parseInt(document.getElementById("numPreguntas").value);
   const seleccion = seleccionadas.slice(0, num);
 
