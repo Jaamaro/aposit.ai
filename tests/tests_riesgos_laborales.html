@@ -1285,7 +1285,6 @@ function cargarTest() {
   seleccion.forEach((preg, index) => {
     const id = `q${index}`;
     const opciones = [...preg.opciones];
-    barajar(opciones);
     const opcionesHTML = opciones.map(op => `
       <label class="option">
         <input type="radio" name="${id}" value="${op}" data-correcta="${preg.correcta}" data-justificacion="${preg.justificacion}">
