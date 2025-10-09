@@ -1786,6 +1786,7 @@ const selectTiempo = document.createElement('select');
 selectTiempo.id = 'tiempoSeleccionado';
 selectTiempo.innerHTML = `
   <option value="0">Sin límite</option>
+  <option value="1">1 minuto</option>
   <option value="5">5 minutos</option>
   <option value="10" selected>10 minutos</option>
   <option value="15">15 minutos</option>
@@ -1864,27 +1865,49 @@ evaluarTest = function() {
 
 // Cuando el tiempo se agota automáticamente
 function finalizarTestPorTiempo() {
+  // Evita que se ejecute dos veces
+  if (window.__finalizadoPorTiempo__) return;
+  window.__finalizadoPorTiempo__ = true;
+
   detenerTemporizador();
-  temporizadorDiv.textContent = '⏰ ¡Tiempo agotado!';
+  temporizadorDiv.textContent = '⏰ ¡Tiempo agotado! Corrigiendo…';
 
-  // 🔒 Desactivar todos los inputs para impedir más respuestas
-  const radios = document.querySelectorAll('input[type="radio"]');
-  radios.forEach(r => {
-    r.disabled = true;
-    // Opcional: quitarle la clase "hover" visual
-    if (r.parentElement) r.parentElement.style.opacity = '0.6';
-  });
+  const form = document.getElementById('testForm');
 
-  // Desactivar también el botón de enviar si existe
-  const btnEnviar = document.querySelector('button.btn.success');
-  if (btnEnviar) {
-    btnEnviar.disabled = true;
-    btnEnviar.style.opacity = '0.5';
-    btnEnviar.style.cursor = 'not-allowed';
+  // 1️⃣ Intenta enviar el formulario (forma más limpia si tu botón "Enviar" usa submit)
+  if (form) {
+    if (typeof form.requestSubmit === 'function') {
+      form.requestSubmit(); // moderno y fiable
+    } else {
+      const submitBtn = form.querySelector('button[type="submit"], input[type="submit"], button.btn.success');
+      if (submitBtn) submitBtn.click();
+    }
   }
 
-  // 🧾 Corregir automáticamente el test
-  evaluarTest();
+  // 2️⃣ Si por cualquier motivo no se envió, ejecuta manualmente la función de corrección
+  if (typeof window.evaluarTest === 'function') {
+    try { window.evaluarTest(); } catch (err) { console.error(err); }
+  }
+
+  // 3️⃣ Bloquea toda la interfaz tras corregir (un pequeño retardo para no interferir)
+  setTimeout(() => {
+    const radios = document.querySelectorAll('input[type="radio"]');
+    radios.forEach(r => {
+      r.disabled = true;
+      const opt = r.closest('.option');
+      if (opt) {
+        opt.style.opacity = '0.6';
+        opt.style.pointerEvents = 'none';
+      }
+    });
+
+    const btnEnviar = document.querySelector('button[type="submit"], input[type="submit"], button.btn.success');
+    if (btnEnviar) {
+      btnEnviar.disabled = true;
+      btnEnviar.style.opacity = '0.5';
+      btnEnviar.style.cursor = 'not-allowed';
+    }
+  }, 50);
 }
 </script>
 </body>
