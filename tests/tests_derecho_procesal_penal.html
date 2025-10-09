@@ -1,0 +1,1670 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test de Derecho Procesal Penal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --card: #ffffff;
+      --text: #111827;
+      --muted: #6b7280;
+      --primary: #2563eb;
+      --primary-dark: #1e40af;
+      --success: #059669;
+      --danger: #dc2626;
+      --ring: rgba(37, 99, 235, 0.25);
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: 'Roboto', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      padding: 24px;
+    }
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+    header.hero {
+      text-align: center;
+      margin-bottom: 16px;
+    }
+    .title {
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--primary-dark);
+      margin: 0 0 8px;
+    }
+    .subtitle {
+      color: var(--muted);
+      margin: 0;
+    }
+    .controls {
+      background: var(--card);
+      border-radius: 14px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.06);
+      padding: 16px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      justify-content: center;
+      position: sticky;
+      top: 12px;
+      z-index: 5;
+    }
+    .controls label { font-weight: 500; }
+    select {
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid #e5e7eb;
+      background: #fff;
+      outline: none;
+      transition: box-shadow .2s, border-color .2s;
+    }
+    select:focus { border-color: var(--primary); box-shadow: 0 0 0 4px var(--ring); }
+
+    .btn {
+      cursor: pointer;
+      border: none;
+      border-radius: 10px;
+      padding: 12px 18px;
+      font-weight: 700;
+      transition: transform .15s, background .2s, box-shadow .2s;
+      color: #fff;
+      background: var(--primary);
+      box-shadow: 0 6px 14px rgba(37,99,235,.2);
+    }
+    .btn:hover { transform: translateY(-1px); background: var(--primary-dark); }
+    .btn.secondary { background: #6b7280; }
+    .btn.secondary:hover { background: #374151; }
+    .btn.success { background: var(--success); }
+    .btn.success:hover { background: #047857; }
+    .btn.danger { background: var(--danger); }
+    .btn.danger:hover { background: #b91c1c; }
+
+    .progress {
+      width: 100%;
+      height: 10px;
+      background: #e5e7eb;
+      border-radius: 999px;
+      overflow: hidden;
+      margin-top: 8px;
+    }
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--primary), #60a5fa);
+      transition: width .3s ease;
+    }
+
+    .question {
+      margin: 14px 0;
+      padding: 18px;
+      background: var(--card);
+      border-radius: 14px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.06);
+    }
+    .q-head {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+    }
+    .q-num {
+      font-weight: 800;
+      color: var(--primary-dark);
+    }
+    .q-text { margin: 0; }
+
+    .options { margin-top: 10px; display: grid; gap: 8px; }
+    .option {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid #e5e7eb;
+      background: #fff;
+      transition: background .15s, border-color .15s, box-shadow .15s;
+      cursor: pointer;
+    }
+    .option input { transform: scale(1.2); }
+    .option:hover { background: #f9fafb; border-color: #d1d5db; }
+    .option.is-selected { box-shadow: 0 0 0 4px var(--ring); border-color: var(--primary); }
+
+    .justification {
+      margin-top: 10px; color: var(--muted);
+    }
+    .correct { color: var(--success); font-weight: 700; }
+    .incorrect { color: var(--danger); font-weight: 700; }
+
+    .option.correct-option {
+      border-color: rgba(5,150,105,.4);
+      background: #ecfdf5;
+    }
+    .option.wrong-option {
+      border-color: rgba(220,38,38,.4);
+      background: #fef2f2;
+    }
+
+    .result-card {
+      margin: 18px 0;
+      padding: 16px;
+      background: var(--card);
+      border-radius: 14px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.06);
+      text-align: center;
+    }
+    .score {
+      font-size: 22px;
+      font-weight: 800;
+      margin: 8px 0;
+    }
+    .muted { color: var(--muted); }
+    footer { text-align: center; margin-top: 24px; color: var(--muted); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="hero">
+      <h1 class="title">Test de Derecho Procesal Penal</h1>
+      <p class="subtitle">Selecciona cuántas preguntas quieres y pulsa <strong>Comenzar</strong>.</p>
+    </header>
+
+    <div class="controls">
+      <label for="numPreguntas">Número de preguntas:</label>
+      <select id="numPreguntas">
+        <option value="10">10</option>
+        <option value="20">20</option>
+        <option value="30">30</option>
+        <option value="40">40</option>
+        <option value="50" selected>50</option>
+      </select>
+      <button class="btn" type="button" onclick="cargarTest()">Comenzar</button>
+      <button class="btn secondary" type="button" onclick="reiniciarTest()">Reiniciar</button>
+      <div class="progress" style="flex-basis: 100%;">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+    </div>
+
+    <form id="testForm"></form>
+
+    <div id="testResult"></div>
+    <footer>© Test de práctica — Derecho Procesal Penal</footer>
+  </div>
+
+<script>
+const preguntasBanco = [
+  {
+    "pregunta": "Según el artículo 1 de la Ley de Enjuiciamiento Criminal, ninguna pena podrá imponerse sino en virtud de:",
+    "opciones": ["a) Resolución administrativa.", "b) Sentencia dictada por juez competente conforme a la ley.", "c) Decreto del Ministerio Fiscal.", "d) Acuerdo entre las partes."],
+    "correcta": "b) Sentencia dictada por juez competente conforme a la ley.",
+    "justificacion": "El artículo 1 LECrim establece el principio de legalidad penal y la garantía jurisdiccional: solo un juez competente puede imponer pena conforme a la ley."
+  },
+  {
+    "pregunta": "El deber de investigar en el proceso penal, recogido en el artículo 2 LECrim, obliga a las autoridades a:",
+    "opciones": ["a) Actuar solo en favor del presunto reo.", "b) Investigar únicamente los hechos denunciados.", "c) Consignar circunstancias adversas y favorables al reo.", "d) Detener a toda persona sospechosa sin excepciones."],
+    "correcta": "c) Consignar circunstancias adversas y favorables al reo.",
+    "justificacion": "El art. 2 LECrim impone a las autoridades el deber de recoger todas las circunstancias relevantes, sean favorables o adversas al acusado."
+  },
+  {
+    "pregunta": "El derecho a ser juzgado por un juez ordinario predeterminado por la ley se encuentra en el artículo:",
+    "opciones": ["a) 24.2 de la Constitución Española.", "b) 14 LECrim.", "c) 10 LOPJ.", "d) 2 de la LECrim."],
+    "correcta": "a) 24.2 de la Constitución Española.",
+    "justificacion": "El artículo 24.2 CE reconoce el derecho al juez ordinario predeterminado por la ley, que se concreta en las reglas de competencia procesal."
+  },
+  {
+    "pregunta": "La competencia jurisdiccional es:",
+    "opciones": ["a) La capacidad de dictar leyes penales.", "b) La capacidad de un órgano jurisdiccional para conocer de una causa concreta.", "c) La potestad del fiscal para intervenir en juicio.", "d) Una función exclusiva del Ministerio de Justicia."],
+    "correcta": "b) La capacidad de un órgano jurisdiccional para conocer de una causa concreta.",
+    "justificacion": "La competencia determina qué órgano judicial tiene atribución para conocer un caso concreto dentro de la jurisdicción penal."
+  },
+  {
+    "pregunta": "La jurisdicción criminal es siempre:",
+    "opciones": ["a) Renunciable.", "b) Improrrogable.", "c) Discrecional.", "d) Delegable."],
+    "correcta": "b) Improrrogable.",
+    "justificacion": "El art. 8 LECrim dispone que la jurisdicción criminal es siempre improrrogable, es decir, no puede ser cedida a otro órgano."
+  },
+  {
+    "pregunta": "Según el artículo 10 LECrim, el conocimiento de las causas criminales corresponde a:",
+    "opciones": ["a) Las autoridades administrativas.", "b) La jurisdicción ordinaria salvo excepciones legales.", "c) El Tribunal Constitucional.", "d) El Ministerio Fiscal."],
+    "correcta": "b) La jurisdicción ordinaria salvo excepciones legales.",
+    "justificacion": "El artículo 10 establece que corresponde a la jurisdicción ordinaria conocer de las causas criminales, salvo los casos expresamente reservados por ley."
+  },
+  {
+    "pregunta": "La competencia objetiva se determina principalmente por:",
+    "opciones": ["a) El territorio donde se cometió el delito.", "b) La gravedad del delito y la pena asociada.", "c) El estado civil del acusado.", "d) La nacionalidad del juez."],
+    "correcta": "b) La gravedad del delito y la pena asociada.",
+    "justificacion": "La competencia objetiva fija qué órgano conoce según la materia o la gravedad de la pena aplicable."
+  },
+  {
+    "pregunta": "La competencia territorial se fija con carácter general según:",
+    "opciones": ["a) El domicilio del acusado.", "b) El lugar donde se cometió el delito.", "c) El lugar de detención del acusado.", "d) La sede del tribunal superior."],
+    "correcta": "b) El lugar donde se cometió el delito.",
+    "justificacion": "El art. 14 LECrim establece el criterio del fuero territorial: será competente el juez del lugar de comisión del hecho."
+  },
+  {
+    "pregunta": "El conocimiento de las causas en que intervengan aforados corresponde:",
+    "opciones": ["a) Siempre a la jurisdicción ordinaria.", "b) Al tribunal competente según la ley para aforados.", "c) A la Audiencia Provincial.", "d) Al Juzgado de Instrucción de guardia."],
+    "correcta": "b) Al tribunal competente según la ley para aforados.",
+    "justificacion": "Las personas aforadas son juzgadas por órganos específicos como el Tribunal Supremo o los Tribunales Superiores de Justicia, según su cargo."
+  },
+  {
+    "pregunta": "Las primeras diligencias o diligencias de prevención son:",
+    "opciones": ["a) Las que ejecuta el fiscal al final del procedimiento.", "b) Las actuaciones iniciales para asegurar pruebas y detener al sospechoso.", "c) Las resoluciones dictadas por el juez tras el juicio.", "d) Las medidas cautelares económicas."],
+    "correcta": "b) Las actuaciones iniciales para asegurar pruebas y detener al sospechoso.",
+    "justificacion": "El art. 13 LECrim define las primeras diligencias como las dirigidas a conservar pruebas, detener al infractor y proteger a las víctimas."
+  },
+  {
+    "pregunta": "¿Qué órgano es competente para instruir las causas penales según la LECrim?",
+    "opciones": ["a) El Juez de lo Penal.", "b) El Juez de Instrucción del partido donde se cometió el delito.", "c) El Ministerio Fiscal.", "d) El Tribunal Supremo."],
+    "correcta": "b) El Juez de Instrucción del partido donde se cometió el delito.",
+    "justificacion": "El art. 14 LECrim atribuye la instrucción de las causas al juez de instrucción del partido judicial correspondiente al lugar del delito."
+  },
+  {
+    "pregunta": "Los Juzgados de Violencia sobre la Mujer son competentes para:",
+    "opciones": ["a) Todos los delitos contra la Administración Pública.", "b) Delitos cometidos con violencia o intimidación contra la pareja o expareja.", "c) Los delitos de terrorismo.", "d) Delitos económicos complejos."],
+    "correcta": "b) Delitos cometidos con violencia o intimidación contra la pareja o expareja.",
+    "justificacion": "El art. 14.6 LECrim asigna a los Juzgados de Violencia sobre la Mujer los delitos cometidos en ese contexto afectivo con violencia o intimidación."
+  },
+  {
+    "pregunta": "El Tribunal del Jurado conocerá de las causas:",
+    "opciones": ["a) Que le asigne expresamente la ley.", "b) De todos los delitos leves.", "c) Solo de delitos de terrorismo.", "d) Exclusivamente de faltas administrativas."],
+    "correcta": "a) Que le asigne expresamente la ley.",
+    "justificacion": "El art. 14.5 LECrim dispone que si el delito es de los atribuidos al Tribunal del Jurado, éste conocerá del juicio."
+  },
+  {
+    "pregunta": "El principio de legalidad penal se refleja en la LECrim a través de:",
+    "opciones": ["a) El art. 1.", "b) El art. 24 CE.", "c) El art. 10 LOPJ.", "d) El art. 544 bis LECrim."],
+    "correcta": "a) El art. 1.",
+    "justificacion": "El art. 1 LECrim recoge que no puede imponerse pena alguna sin conformidad con las disposiciones legales y por juez competente."
+  },
+  {
+    "pregunta": "La competencia funcional determina:",
+    "opciones": ["a) Qué órgano interviene en cada fase procesal.", "b) Qué juez aplica la pena.", "c) Qué órgano dicta la sentencia firme.", "d) Qué tribunal conoce por razón del territorio."],
+    "correcta": "a) Qué órgano interviene en cada fase procesal.",
+    "justificacion": "La competencia funcional define la intervención de los distintos órganos jurisdiccionales según la fase procesal: instrucción, enjuiciamiento o recurso."
+  },
+  {
+    "pregunta": "La competencia distributiva se refiere a:",
+    "opciones": ["a) La asignación de causas entre órganos de igual categoría.", "b) La asignación por razón del territorio.", "c) El reparto de competencias entre jurisdicciones civil y penal.", "d) La designación del juez instructor."],
+    "correcta": "a) La asignación de causas entre órganos de igual categoría.",
+    "justificacion": "La competencia distributiva fija cuál de los órganos del mismo nivel conoce un asunto, según las normas de reparto del tribunal."
+  },
+  {
+    "pregunta": "Los autos de inhibición dictados por jueces instructores son:",
+    "opciones": ["a) Irrecurribles.", "b) Apelables ante la Audiencia Provincial.", "c) Revisados por el Tribunal Supremo.", "d) Competencia del Ministerio de Justicia."],
+    "correcta": "b) Apelables ante la Audiencia Provincial.",
+    "justificacion": "Los autos de inhibición de jueces instructores pueden ser recurridos en apelación ante la Audiencia Provincial."
+  },
+  {
+    "pregunta": "El artículo 13 LECrim considera primeras diligencias, entre otras:",
+    "opciones": ["a) La ejecución de la sentencia.", "b) La detención de los responsables y la protección de las víctimas.", "c) La declaración de los testigos.", "d) La lectura de cargos."],
+    "correcta": "b) La detención de los responsables y la protección de las víctimas.",
+    "justificacion": "El art. 13 LECrim incluye entre las primeras diligencias la detención del sospechoso y la protección de víctimas y familiares."
+  },
+  {
+    "pregunta": "El reparto de los asuntos entre órganos judiciales del mismo nivel se realiza por:",
+    "opciones": ["a) Las Salas de Gobierno de los tribunales.", "b) El Consejo General del Poder Judicial.", "c) El Ministerio Fiscal.", "d) El Ministerio de Justicia."],
+    "correcta": "a) Las Salas de Gobierno de los tribunales.",
+    "justificacion": "Las Salas de Gobierno fijan las normas de reparto entre órganos judiciales del mismo nivel para distribuir los asuntos."
+  },
+  {
+    "pregunta": "La función principal del Derecho Procesal Penal es:",
+    "opciones": ["a) Establecer las normas del proceso penal y garantizar el ius puniendi del Estado.", "b) Tipificar los delitos.", "c) Regular la ejecución de sanciones administrativas.", "d) Crear las leyes penales."],
+    "correcta": "a) Establecer las normas del proceso penal y garantizar el ius puniendi del Estado.",
+    "justificacion": "El Derecho Procesal Penal regula la actividad jurisdiccional del Estado para ejercer su poder punitivo respetando las garantías procesales."
+  },
+{
+    "pregunta": "El derecho de ejercer acciones derivadas de delitos y faltas corresponde, según la LECrim, a:",
+    "opciones": ["a) Solo al Ministerio Fiscal.", "b) A las personas que se consideren ofendidas o perjudicadas.", "c) A cualquier ciudadano español.", "d) Al juez instructor de oficio."],
+    "correcta": "b) A las personas que se consideren ofendidas o perjudicadas.",
+    "justificacion": "El Título IV de la LECrim atribuye el ejercicio de las acciones penales a quienes resulten ofendidos o perjudicados por el delito."
+  },
+  {
+    "pregunta": "¿Qué es la acción penal?",
+    "opciones": ["a) El derecho a solicitar la imposición de una pena por un hecho delictivo.", "b) La fase de instrucción del proceso penal.", "c) La potestad judicial de dictar sentencia.", "d) La denuncia pública de un delito."],
+    "correcta": "a) El derecho a solicitar la imposición de una pena por un hecho delictivo.",
+    "justificacion": "La acción penal es el derecho subjetivo procesal para provocar la actuación jurisdiccional en materia penal."
+  },
+  {
+    "pregunta": "El ejercicio de la acción penal puede realizarse de oficio por:",
+    "opciones": ["a) Las víctimas solamente.", "b) El Ministerio Fiscal.", "c) Los jueces de lo civil.", "d) Los abogados defensores."],
+    "correcta": "b) El Ministerio Fiscal.",
+    "justificacion": "El Ministerio Fiscal está legitimado para ejercer la acción penal de oficio en defensa del interés público y la legalidad."
+  },
+  {
+    "pregunta": "Según la LECrim, el derecho y deber de denunciar corresponde:",
+    "opciones": ["a) Únicamente a funcionarios públicos.", "b) A todo ciudadano que presencie un delito público.", "c) Solo a las víctimas directas.", "d) A los jueces y fiscales."],
+    "correcta": "b) A todo ciudadano que presencie un delito público.",
+    "justificacion": "El art. 259 LECrim impone la obligación de denunciar los delitos públicos de los que se tenga conocimiento."
+  },
+  {
+    "pregunta": "Las denuncias pueden interponerse ante:",
+    "opciones": ["a) Solo ante el juez.", "b) Ante juez, fiscal o autoridad policial.", "c) Solo ante el Ministerio Fiscal.", "d) Solo ante la Guardia Civil."],
+    "correcta": "b) Ante juez, fiscal o autoridad policial.",
+    "justificacion": "La LECrim permite formular denuncias ante juez, Ministerio Fiscal o autoridad de policía judicial."
+  },
+  {
+    "pregunta": "La denuncia puede formularse:",
+    "opciones": ["a) Solo por escrito.", "b) Oralmente o por escrito.", "c) Únicamente ante notario.", "d) Mediante correo certificado."],
+    "correcta": "b) Oralmente o por escrito.",
+    "justificacion": "La LECrim admite ambas formas: oral o escrita, dejando constancia de su contenido."
+  },
+  {
+    "pregunta": "El denunciante está obligado a:",
+    "opciones": ["a) Probar los hechos denunciados.", "b) Comparecer ante el juez si es llamado.", "c) Mantener el anonimato.", "d) Presentar abogado y procurador."],
+    "correcta": "b) Comparecer ante el juez si es llamado.",
+    "justificacion": "El denunciante debe ratificar su denuncia y comparecer cuando sea citado judicialmente."
+  },
+  {
+    "pregunta": "La querella, a diferencia de la denuncia, requiere:",
+    "opciones": ["a) Que el querellante se persone en el proceso.", "b) Que sea presentada ante la policía judicial.", "c) Que sea anónima.", "d) Que se interponga verbalmente."],
+    "correcta": "a) Que el querellante se persone en el proceso.",
+    "justificacion": "La querella implica la personación del querellante como parte en el proceso, a diferencia de la simple denuncia."
+  },
+  {
+    "pregunta": "Para interponer una querella es necesario:",
+    "opciones": ["a) Estar asistido de abogado y procurador.", "b) Tener nacionalidad española.", "c) Haber sido víctima directa.", "d) Contar con la aprobación del fiscal."],
+    "correcta": "a) Estar asistido de abogado y procurador.",
+    "justificacion": "La LECrim exige la intervención de abogado y procurador en la presentación de la querella, al tener efectos procesales formales."
+  },
+  {
+    "pregunta": "El Ministerio Fiscal puede interponer querella:",
+    "opciones": ["a) Solo con autorización judicial.", "b) Cuando proceda legalmente en defensa de la ley y el interés público.", "c) Si lo solicita la víctima.", "d) Únicamente en delitos de terrorismo."],
+    "correcta": "b) Cuando proceda legalmente en defensa de la ley y el interés público.",
+    "justificacion": "El fiscal puede presentar querella en representación de la legalidad y defensa del interés público, según la LECrim."
+  },
+  {
+    "pregunta": "El derecho a la defensa en el proceso penal se garantiza mediante:",
+    "opciones": ["a) El derecho a un abogado defensor.", "b) El silencio del acusado.", "c) La intervención del juez instructor.", "d) La publicidad del juicio."],
+    "correcta": "a) El derecho a un abogado defensor.",
+    "justificacion": "El derecho de defensa exige la asistencia de un abogado para garantizar la igualdad de armas en el proceso penal."
+  },
+  {
+    "pregunta": "El derecho a la asistencia jurídica gratuita se reconoce a:",
+    "opciones": ["a) Solo a ciudadanos españoles.", "b) Quienes acrediten insuficiencia de recursos.", "c) Víctimas únicamente.", "d) Funcionarios públicos."],
+    "correcta": "b) Quienes acrediten insuficiencia de recursos.",
+    "justificacion": "La LECrim, junto con la Ley 1/1996, reconoce asistencia jurídica gratuita a quienes no puedan afrontar los gastos del proceso."
+  },
+  {
+    "pregunta": "El derecho a la traducción e interpretación en los juicios penales garantiza:",
+    "opciones": ["a) Que toda la documentación se traduzca al inglés.", "b) Que el acusado comprenda y participe efectivamente en el proceso.", "c) Que el juez hable varios idiomas.", "d) La anulación del proceso si no hay traductor."],
+    "correcta": "b) Que el acusado comprenda y participe efectivamente en el proceso.",
+    "justificacion": "El derecho a traducción e interpretación busca que el acusado entienda el proceso y ejerza su defensa adecuadamente."
+  },
+  {
+    "pregunta": "El detenido deberá ser informado de sus derechos:",
+    "opciones": ["a) En el momento de su detención.", "b) Solo en presencia del juez.", "c) Al finalizar la declaración.", "d) Cuando lo solicite el abogado."],
+    "correcta": "a) En el momento de su detención.",
+    "justificacion": "El art. 520 LECrim obliga a informar al detenido de sus derechos en el momento mismo de la detención."
+  },
+  {
+    "pregunta": "El atestado policial tiene carácter:",
+    "opciones": ["a) De prueba plena.", "b) De denuncia con valor probatorio limitado.", "c) De resolución judicial.", "d) De acto procesal definitivo."],
+    "correcta": "b) De denuncia con valor probatorio limitado.",
+    "justificacion": "El atestado es una denuncia documentada que carece de valor probatorio pleno hasta que se ratifica en el proceso."
+  },
+  {
+    "pregunta": "El valor probatorio del atestado depende de:",
+    "opciones": ["a) Su presentación ante el juez.", "b) Su ratificación en juicio por sus autores.", "c) El sello del Ministerio del Interior.", "d) La firma del abogado defensor."],
+    "correcta": "b) Su ratificación en juicio por sus autores.",
+    "justificacion": "Para adquirir valor probatorio, el atestado debe ser ratificado por los agentes actuantes en el juicio oral."
+  },
+  {
+    "pregunta": "La policía judicial actúa bajo la dependencia funcional de:",
+    "opciones": ["a) El Ministerio del Interior.", "b) Los jueces, tribunales y Ministerio Fiscal.", "c) El Consejo General del Poder Judicial.", "d) Las Delegaciones del Gobierno."],
+    "correcta": "b) Los jueces, tribunales y Ministerio Fiscal.",
+    "justificacion": "La dependencia funcional de la policía judicial se ejerce por jueces, tribunales y fiscales durante la investigación penal."
+  },
+  {
+    "pregunta": "El sumario es:",
+    "opciones": ["a) La fase de ejecución de la sentencia.", "b) La fase de instrucción del proceso penal.", "c) El recurso contra la sentencia.", "d) Un tipo de juicio oral simplificado."],
+    "correcta": "b) La fase de instrucción del proceso penal.",
+    "justificacion": "El sumario comprende la fase de investigación dirigida a comprobar el delito y la autoría."
+  },
+  {
+    "pregunta": "El derecho a no declarar contra sí mismo y a no confesarse culpable se recoge en:",
+    "opciones": ["a) Art. 24.2 de la Constitución Española.", "b) Art. 1 LECrim.", "c) Art. 14 LECrim.", "d) Art. 520 bis LECrim."],
+    "correcta": "a) Art. 24.2 de la Constitución Española.",
+    "justificacion": "Este derecho constitucional protege la integridad moral del acusado y garantiza su defensa libre de coacción."
+  },
+  {
+    "pregunta": "En el proceso penal español, el principio acusatorio implica que:",
+    "opciones": ["a) El juez no puede acusar y juzgar a la vez.", "b) El juez puede iniciar el proceso de oficio.", "c) El acusado debe probar su inocencia.", "d) El fiscal dicta la sentencia."],
+    "correcta": "a) El juez no puede acusar y juzgar a la vez.",
+    "justificacion": "El principio acusatorio exige separación entre las funciones de acusar y juzgar, garantizando imparcialidad judicial."
+  },
+    {
+    "pregunta": "El procedimiento de Habeas Corpus tiene por objeto:",
+    "opciones": ["a) Garantizar la libertad personal frente a detenciones ilegales.", "b) Revisar las condenas firmes.", "c) Determinar la competencia del juez.", "d) Controlar la instrucción del sumario."],
+    "correcta": "a) Garantizar la libertad personal frente a detenciones ilegales.",
+    "justificacion": "El Habeas Corpus protege el derecho fundamental a la libertad personal frente a detenciones ilegales o arbitrarias."
+  },
+  {
+    "pregunta": "La Ley Orgánica que regula el procedimiento de Habeas Corpus es:",
+    "opciones": ["a) La Ley Orgánica 6/1984, de 24 de mayo.", "b) La Ley Orgánica 6/1985, de 1 de julio.", "c) El Real Decreto de 1882.", "d) La Ley Orgánica 1/1996, de asistencia jurídica gratuita."],
+    "correcta": "a) La Ley Orgánica 6/1984, de 24 de mayo.",
+    "justificacion": "La Ley Orgánica 6/1984 regula el procedimiento de Habeas Corpus en España."
+  },
+  {
+    "pregunta": "¿Quién puede solicitar el procedimiento de Habeas Corpus?",
+    "opciones": ["a) Solo el detenido.", "b) El detenido, su abogado, el Ministerio Fiscal o cualquier ciudadano en su nombre.", "c) Únicamente el juez de instrucción.", "d) Solo el Ministerio Fiscal."],
+    "correcta": "b) El detenido, su abogado, el Ministerio Fiscal o cualquier ciudadano en su nombre.",
+    "justificacion": "La Ley 6/1984 permite que cualquier persona o autoridad interesada lo solicite en defensa de la libertad del detenido."
+  },
+  {
+    "pregunta": "La autoridad competente para resolver el procedimiento de Habeas Corpus es:",
+    "opciones": ["a) El Ministerio del Interior.", "b) El juez de instrucción del lugar donde se encuentre el detenido.", "c) La Audiencia Provincial.", "d) El Tribunal Constitucional."],
+    "correcta": "b) El juez de instrucción del lugar donde se encuentre el detenido.",
+    "justificacion": "Corresponde al juez de instrucción del lugar de la detención resolver el Habeas Corpus."
+  },
+  {
+    "pregunta": "El procedimiento de Habeas Corpus debe tramitarse:",
+    "opciones": ["a) En un plazo máximo de 24 horas.", "b) Con carácter urgente y preferente.", "c) En un plazo de 10 días.", "d) Tras autorización del fiscal."],
+    "correcta": "b) Con carácter urgente y preferente.",
+    "justificacion": "La Ley establece la tramitación urgente del Habeas Corpus para garantizar la libertad personal."
+  },
+  {
+    "pregunta": "El procedimiento de Habeas Corpus puede iniciarse de oficio por:",
+    "opciones": ["a) El juez competente.", "b) El Ministerio Fiscal únicamente.", "c) La policía judicial.", "d) El abogado defensor."],
+    "correcta": "a) El juez competente.",
+    "justificacion": "El juez puede iniciar de oficio el Habeas Corpus si aprecia detención ilegal o arbitraria."
+  },
+  {
+    "pregunta": "Durante la tramitación del Habeas Corpus, el juez puede ordenar:",
+    "opciones": ["a) El archivo inmediato.", "b) Que se ponga al detenido a su disposición.", "c) La prisión provisional del denunciante.", "d) La suspensión del procedimiento penal principal."],
+    "correcta": "b) Que se ponga al detenido a su disposición.",
+    "justificacion": "El juez ordena la inmediata presentación del detenido para comprobar la legalidad de su situación."
+  },
+  {
+    "pregunta": "El Habeas Corpus no procede cuando:",
+    "opciones": ["a) Exista una detención legal con mandato judicial.", "b) Se trate de detenciones de menores.", "c) La detención dure menos de 6 horas.", "d) La detención sea administrativa."],
+    "correcta": "a) Exista una detención legal con mandato judicial.",
+    "justificacion": "El Habeas Corpus no procede si la detención ha sido acordada judicialmente y se encuentra dentro de la legalidad."
+  },
+  {
+    "pregunta": "La resolución del Habeas Corpus puede ordenar:",
+    "opciones": ["a) La puesta en libertad del detenido o el mantenimiento de la detención.", "b) La condena al Estado por daños y perjuicios.", "c) La apertura de un procedimiento disciplinario.", "d) La suspensión de garantías constitucionales."],
+    "correcta": "a) La puesta en libertad del detenido o el mantenimiento de la detención.",
+    "justificacion": "La resolución judicial puede declarar ilegal la detención y ordenar la libertad o mantenerla si es legal."
+  },
+  {
+    "pregunta": "El Habeas Corpus se basa en el derecho fundamental reconocido en el artículo:",
+    "opciones": ["a) 17 de la Constitución Española.", "b) 24 de la Constitución Española.", "c) 25 de la Constitución Española.", "d) 18 de la Constitución Española."],
+    "correcta": "a) 17 de la Constitución Española.",
+    "justificacion": "El derecho a la libertad personal y a no ser detenido ilegalmente se reconoce en el artículo 17 CE."
+  },
+  {
+    "pregunta": "La Ley Orgánica del Poder Judicial (LOPJ) fue aprobada en:",
+    "opciones": ["a) 1984.", "b) 1985.", "c) 1882.", "d) 1995."],
+    "correcta": "b) 1985.",
+    "justificacion": "La LOPJ fue aprobada por Ley Orgánica 6/1985, de 1 de julio."
+  },
+  {
+    "pregunta": "El órgano superior en todos los órdenes jurisdiccionales, salvo lo dispuesto en materia de garantías constitucionales, es:",
+    "opciones": ["a) El Consejo General del Poder Judicial.", "b) El Tribunal Supremo.", "c) La Audiencia Nacional.", "d) El Tribunal Constitucional."],
+    "correcta": "b) El Tribunal Supremo.",
+    "justificacion": "El Tribunal Supremo es el órgano jurisdiccional superior en todos los órdenes salvo lo dispuesto en materia constitucional."
+  },
+  {
+    "pregunta": "La Audiencia Nacional tiene competencia para conocer de:",
+    "opciones": ["a) Delitos comunes de ámbito local.", "b) Delitos de terrorismo, crimen organizado y contra la Corona.", "c) Asuntos civiles ordinarios.", "d) Delitos de tráfico y seguridad vial."],
+    "correcta": "b) Delitos de terrorismo, crimen organizado y contra la Corona.",
+    "justificacion": "La Audiencia Nacional conoce de delitos de especial gravedad y repercusión nacional o internacional."
+  },
+  {
+    "pregunta": "Los Tribunales Superiores de Justicia ejercen su jurisdicción:",
+    "opciones": ["a) En toda España.", "b) En su respectiva Comunidad Autónoma.", "c) Solo en su provincia.", "d) En Europa."],
+    "correcta": "b) En su respectiva Comunidad Autónoma.",
+    "justificacion": "Los Tribunales Superiores de Justicia son el máximo órgano judicial dentro de cada Comunidad Autónoma."
+  },
+  {
+    "pregunta": "Las Audiencias Provinciales conocen de:",
+    "opciones": ["a) Juicios por delitos graves cometidos en la provincia.", "b) Recursos contra resoluciones de Juzgados de lo Penal.", "c) Juicios civiles y mercantiles.", "d) Solo delitos leves."],
+    "correcta": "a) Juicios por delitos graves cometidos en la provincia.",
+    "justificacion": "Las Audiencias Provinciales conocen del enjuiciamiento de delitos graves y de los recursos contra juzgados inferiores."
+  },
+  {
+    "pregunta": "El Tribunal de Instancia sustituirá progresivamente a:",
+    "opciones": ["a) Los Juzgados de Instrucción y de lo Penal.", "b) La Audiencia Nacional.", "c) El Tribunal Supremo.", "d) Las Audiencias Provinciales."],
+    "correcta": "a) Los Juzgados de Instrucción y de lo Penal.",
+    "justificacion": "La Ley Orgánica 1/2025 prevé la creación del Tribunal de Instancia en sustitución de los juzgados unipersonales."
+  },
+  {
+    "pregunta": "El Tribunal del Jurado forma parte de:",
+    "opciones": ["a) La Audiencia Nacional.", "b) La jurisdicción ordinaria penal.", "c) El Tribunal Constitucional.", "d) La Fiscalía General del Estado."],
+    "correcta": "b) La jurisdicción ordinaria penal.",
+    "justificacion": "El Tribunal del Jurado es un órgano de la jurisdicción ordinaria penal, regulado por la Ley Orgánica 5/1995."
+  },
+  {
+    "pregunta": "El Ministerio Fiscal actúa conforme a los principios de:",
+    "opciones": ["a) Autonomía y discrecionalidad.", "b) Unidad de actuación y dependencia jerárquica.", "c) Independencia total del Gobierno.", "d) Neutralidad política absoluta."],
+    "correcta": "b) Unidad de actuación y dependencia jerárquica.",
+    "justificacion": "El Ministerio Fiscal se organiza bajo los principios de unidad de actuación y dependencia jerárquica, según la LOPJ."
+  },
+  {
+    "pregunta": "La función del Ministerio Fiscal es:",
+    "opciones": ["a) Dictar sentencia en causas penales.", "b) Promover la acción de la justicia y velar por la legalidad.", "c) Ejercer funciones legislativas.", "d) Representar a las víctimas en todo caso."],
+    "correcta": "b) Promover la acción de la justicia y velar por la legalidad.",
+    "justificacion": "El Ministerio Fiscal tiene como misión promover la acción de la justicia y defender el interés público conforme a la ley."
+  },
+  {
+    "pregunta": "La Policía Judicial depende orgánicamente de:",
+    "opciones": ["a) El Ministerio del Interior.", "b) El Consejo General del Poder Judicial.", "c) El Ministerio de Justicia.", "d) Las Cortes Generales."],
+    "correcta": "a) El Ministerio del Interior.",
+    "justificacion": "La dependencia orgánica de la Policía Judicial es del Ministerio del Interior, aunque funcionalmente depende de jueces y fiscales."
+  },
+    {
+    "pregunta": "El Real Decreto 769/1987, de 19 de junio, regula:",
+    "opciones": ["a) El procedimiento de Habeas Corpus.", "b) La función y organización de la Policía Judicial.", "c) La actuación del Ministerio Fiscal.", "d) Los recursos de apelación en materia penal."],
+    "correcta": "b) La función y organización de la Policía Judicial.",
+    "justificacion": "El Real Decreto 769/1987 establece las normas sobre la función y las unidades de Policía Judicial."
+  },
+  {
+    "pregunta": "La Policía Judicial tiene por objeto:",
+    "opciones": ["a) Dirigir la instrucción de los procesos penales.", "b) Auxiliar a los jueces, tribunales y Ministerio Fiscal en la investigación de delitos.", "c) Sustituir al juez en casos urgentes.", "d) Garantizar el orden público en manifestaciones."],
+    "correcta": "b) Auxiliar a los jueces, tribunales y Ministerio Fiscal en la investigación de delitos.",
+    "justificacion": "La función principal de la Policía Judicial es auxiliar a la autoridad judicial y fiscal en la investigación de delitos."
+  },
+  {
+    "pregunta": "La dependencia funcional de la Policía Judicial recae sobre:",
+    "opciones": ["a) El Ministerio del Interior exclusivamente.", "b) Los jueces, tribunales y Ministerio Fiscal.", "c) Las Delegaciones del Gobierno.", "d) El Consejo General del Poder Judicial."],
+    "correcta": "b) Los jueces, tribunales y Ministerio Fiscal.",
+    "justificacion": "Según el RD 769/1987, la dependencia funcional de la Policía Judicial es respecto a jueces, tribunales y fiscales."
+  },
+  {
+    "pregunta": "La dependencia orgánica de la Policía Judicial corresponde a:",
+    "opciones": ["a) El Ministerio de Justicia.", "b) El Ministerio del Interior.", "c) El Consejo General del Poder Judicial.", "d) El Tribunal Supremo."],
+    "correcta": "b) El Ministerio del Interior.",
+    "justificacion": "La dependencia orgánica recae en el Ministerio del Interior, por ser el responsable de las Fuerzas y Cuerpos de Seguridad."
+  },
+  {
+    "pregunta": "Las Unidades de Policía Judicial se integran en:",
+    "opciones": ["a) El Ministerio de Justicia.", "b) La Guardia Civil y la Policía Nacional.", "c) Los Tribunales de Instancia.", "d) El Consejo General del Poder Judicial."],
+    "correcta": "b) La Guardia Civil y la Policía Nacional.",
+    "justificacion": "El RD 769/1987 establece que las unidades de Policía Judicial forman parte de la Guardia Civil y la Policía Nacional."
+  },
+  {
+    "pregunta": "Las Unidades de Policía Judicial actúan bajo dirección:",
+    "opciones": ["a) Del Juez Instructor o del Ministerio Fiscal.", "b) Del Ministro del Interior.", "c) Del Secretario de Estado de Seguridad.", "d) De la Audiencia Nacional."],
+    "correcta": "a) Del Juez Instructor o del Ministerio Fiscal.",
+    "justificacion": "En las investigaciones judiciales, la Policía Judicial actúa bajo dirección inmediata del juez o fiscal competente."
+  },
+  {
+    "pregunta": "El principio que obliga a la Policía Judicial a actuar con imparcialidad es el de:",
+    "opciones": ["a) Neutralidad y objetividad.", "b) Jerarquía y obediencia.", "c) Celeridad procesal.", "d) Oportunidad y discrecionalidad."],
+    "correcta": "a) Neutralidad y objetividad.",
+    "justificacion": "El RD 769/1987 establece que la actuación de la Policía Judicial debe regirse por los principios de neutralidad y objetividad."
+  },
+  {
+    "pregunta": "Cuando la Policía Judicial actúa en una investigación penal, lo hace:",
+    "opciones": ["a) Como policía administrativa.", "b) Como auxiliar de la autoridad judicial o fiscal.", "c) Por orden del Ministerio del Interior.", "d) De forma autónoma e independiente."],
+    "correcta": "b) Como auxiliar de la autoridad judicial o fiscal.",
+    "justificacion": "En el ámbito penal, la Policía Judicial actúa como auxiliar directo de los jueces, tribunales y fiscales."
+  },
+  {
+    "pregunta": "El principio de legalidad en la actuación de la Policía Judicial implica que:",
+    "opciones": ["a) Puede actuar discrecionalmente.", "b) Solo actúa conforme a la ley y órdenes de autoridad competente.", "c) Tiene autonomía procesal plena.", "d) Puede decidir qué delitos investigar."],
+    "correcta": "b) Solo actúa conforme a la ley y órdenes de autoridad competente.",
+    "justificacion": "El principio de legalidad obliga a la Policía Judicial a actuar exclusivamente según la ley y bajo autoridad judicial o fiscal."
+  },
+  {
+    "pregunta": "Las Unidades Orgánicas de Policía Judicial se ubican:",
+    "opciones": ["a) En las sedes judiciales exclusivamente.", "b) En las Comandancias de la Guardia Civil y Jefaturas de Policía.", "c) En el Ministerio de Justicia.", "d) En las Audiencias Provinciales."],
+    "correcta": "b) En las Comandancias de la Guardia Civil y Jefaturas de Policía.",
+    "justificacion": "Las Unidades Orgánicas de Policía Judicial están integradas en las Comandancias de Guardia Civil y Jefaturas de Policía Nacional."
+  },
+  {
+    "pregunta": "El objetivo principal de las Unidades de Policía Judicial es:",
+    "opciones": ["a) Garantizar el orden público.", "b) Investigar delitos y descubrir a sus autores.", "c) Vigilar el tráfico rodado.", "d) Custodiar edificios públicos."],
+    "correcta": "b) Investigar delitos y descubrir a sus autores.",
+    "justificacion": "Su finalidad es investigar los delitos y poner a disposición judicial las pruebas y a los responsables."
+  },
+  {
+    "pregunta": "El RD 769/1987 establece que los miembros de la Policía Judicial deben:",
+    "opciones": ["a) Actuar con independencia total del juez.", "b) Comunicar los hechos investigados a sus superiores jerárquicos policiales.", "c) Guardar reserva y sigilo en las actuaciones judiciales.", "d) Informar a los medios de comunicación de los avances."],
+    "correcta": "c) Guardar reserva y sigilo en las actuaciones judiciales.",
+    "justificacion": "El principio de reserva obliga a mantener la confidencialidad en las actuaciones de investigación."
+  },
+  {
+    "pregunta": "El principio de colaboración interinstitucional obliga a la Policía Judicial a:",
+    "opciones": ["a) Actuar solo bajo mando policial.", "b) Coordinarse con otros cuerpos y autoridades judiciales.", "c) Depender jerárquicamente del juez.", "d) Subordinarse a la policía autonómica."],
+    "correcta": "b) Coordinarse con otros cuerpos y autoridades judiciales.",
+    "justificacion": "La colaboración interinstitucional busca la cooperación entre cuerpos y autoridades para la eficacia de la investigación penal."
+  },
+  {
+    "pregunta": "El incumplimiento de las órdenes de un juez o fiscal por parte de un miembro de la Policía Judicial constituye:",
+    "opciones": ["a) Falta disciplinaria o delito de desobediencia.", "b) Infracción administrativa leve.", "c) Conducta sin relevancia jurídica.", "d) Motivo de traslado de destino."],
+    "correcta": "a) Falta disciplinaria o delito de desobediencia.",
+    "justificacion": "La negativa a cumplir órdenes judiciales puede constituir delito de desobediencia según el Código Penal."
+  },
+  {
+    "pregunta": "Las actuaciones de la Policía Judicial deben documentarse mediante:",
+    "opciones": ["a) Informes internos.", "b) Atestados policiales.", "c) Partes administrativos.", "d) Autos judiciales."],
+    "correcta": "b) Atestados policiales.",
+    "justificacion": "Toda actuación de investigación policial se documenta mediante un atestado, que se remite a la autoridad judicial o fiscal."
+  },
+  {
+    "pregunta": "El valor probatorio del atestado policial es:",
+    "opciones": ["a) De prueba plena por sí mismo.", "b) Limitado hasta su ratificación en sede judicial.", "c) Nulo sin presencia del juez.", "d) Equivalente a una sentencia."],
+    "correcta": "b) Limitado hasta su ratificación en sede judicial.",
+    "justificacion": "El atestado no tiene valor probatorio pleno si no es ratificado por sus autores en juicio."
+  },
+  {
+    "pregunta": "La función general de la Policía Judicial es una función:",
+    "opciones": ["a) Exclusiva del juez.", "b) General atribuida a todas las Fuerzas y Cuerpos de Seguridad.", "c) Limitada a la Policía Nacional.", "d) Reservada a la Audiencia Nacional."],
+    "correcta": "b) General atribuida a todas las Fuerzas y Cuerpos de Seguridad.",
+    "justificacion": "El RD 769/1987 indica que toda la Policía Nacional y la Guardia Civil tienen funciones generales de policía judicial."
+  },
+  {
+    "pregunta": "El principio de subordinación jerárquica de la Policía Judicial se entiende sin perjuicio de:",
+    "opciones": ["a) La independencia judicial.", "b) La obediencia ciega a sus mandos policiales.", "c) La primacía de la autoridad gubernativa.", "d) Las órdenes de los fiscales generales."],
+    "correcta": "a) La independencia judicial.",
+    "justificacion": "Aunque existe jerarquía interna, la actuación judicial prevalece sobre la orgánica cuando se ejerce como Policía Judicial."
+  },
+  {
+    "pregunta": "Las normas de actuación de la Policía Judicial exigen que sus actuaciones sean:",
+    "opciones": ["a) Secretas y orales.", "b) Escritas, objetivas y documentadas.", "c) Verbales y confidenciales.", "d) Arbitrarias y urgentes."],
+    "correcta": "b) Escritas, objetivas y documentadas.",
+    "justificacion": "El RD exige que las actuaciones de la Policía Judicial queden debidamente documentadas y sean objetivas."
+  },
+  {
+    "pregunta": "La coordinación de las Unidades de Policía Judicial corresponde a:",
+    "opciones": ["a) El Consejo General del Poder Judicial.", "b) El Ministerio del Interior y la Fiscalía General del Estado.", "c) Las Delegaciones del Gobierno.", "d) El Tribunal Supremo."],
+    "correcta": "b) El Ministerio del Interior y la Fiscalía General del Estado.",
+    "justificacion": "Ambas instituciones cooperan para coordinar la actuación y eficacia de las unidades de Policía Judicial."
+  },
+  {
+    "pregunta": "El Estatuto de la Víctima del Delito está regulado en la Ley:",
+    "opciones": ["a) Ley 6/1984, de Habeas Corpus.", "b) Ley 4/2015, de 27 de abril.", "c) Ley Orgánica 6/1985, del Poder Judicial.", "d) Ley 1/1996, de Asistencia Jurídica Gratuita."],
+    "correcta": "b) Ley 4/2015, de 27 de abril.",
+    "justificacion": "El Estatuto de la Víctima del Delito se regula en la Ley 4/2015, de 27 de abril."
+  },
+  {
+    "pregunta": "Según la Ley 4/2015, se considera víctima directa a:",
+    "opciones": ["a) Toda persona testigo del delito.", "b) La persona física que haya sufrido un daño o perjuicio como consecuencia del delito.", "c) Solo al denunciante.", "d) Únicamente al familiar del perjudicado."],
+    "correcta": "b) La persona física que haya sufrido un daño o perjuicio como consecuencia del delito.",
+    "justificacion": "El artículo 2 de la Ley 4/2015 define a la víctima directa como quien sufre directamente las consecuencias del delito."
+  },
+  {
+    "pregunta": "Se considera víctima indirecta a:",
+    "opciones": ["a) Los agentes de policía que investigan el delito.", "b) Los familiares del fallecido o desaparecido como consecuencia del delito.", "c) El juez que instruye la causa.", "d) Los medios de comunicación que informan sobre el caso."],
+    "correcta": "b) Los familiares del fallecido o desaparecido como consecuencia del delito.",
+    "justificacion": "El Estatuto reconoce como víctimas indirectas a los familiares cercanos de la víctima fallecida o desaparecida."
+  },
+  {
+    "pregunta": "Entre los derechos básicos de la víctima se encuentra:",
+    "opciones": ["a) El derecho a investigar personalmente el delito.", "b) El derecho a la información, protección y participación en el proceso penal.", "c) El derecho a imponer la pena al acusado.", "d) El derecho a asistencia médica gratuita."],
+    "correcta": "b) El derecho a la información, protección y participación en el proceso penal.",
+    "justificacion": "La Ley 4/2015 reconoce los derechos de información, protección, reconocimiento y participación procesal de la víctima."
+  },
+  {
+    "pregunta": "El derecho de la víctima a ser informada debe ejercerse:",
+    "opciones": ["a) Solo al final del proceso.", "b) Desde el primer contacto con las autoridades competentes.", "c) Solo si lo solicita por escrito.", "d) Únicamente durante el juicio oral."],
+    "correcta": "b) Desde el primer contacto con las autoridades competentes.",
+    "justificacion": "El Estatuto establece que la información debe proporcionarse desde el primer contacto con las autoridades o funcionarios."
+  },
+  {
+    "pregunta": "El derecho de la víctima a comprender y ser comprendida implica:",
+    "opciones": ["a) Que las declaraciones se realicen en su idioma y con lenguaje accesible.", "b) Que el juez repita todo lo dicho.", "c) Que se suspenda el juicio hasta que aprenda español.", "d) Que se limite la duración del juicio."],
+    "correcta": "a) Que las declaraciones se realicen en su idioma y con lenguaje accesible.",
+    "justificacion": "El derecho a comprender y ser comprendida incluye traducción e interpretación y un lenguaje claro y accesible."
+  },
+  {
+    "pregunta": "El derecho a la protección de la víctima busca:",
+    "opciones": ["a) Evitar la repetición del delito y el contacto con el agresor.", "b) Garantizar la impunidad del acusado.", "c) Favorecer la publicidad del proceso.", "d) Sustituir al Ministerio Fiscal."],
+    "correcta": "a) Evitar la repetición del delito y el contacto con el agresor.",
+    "justificacion": "El derecho a la protección tiene como finalidad evitar nuevos daños y el contacto directo con el agresor."
+  },
+  {
+    "pregunta": "La víctima puede solicitar medidas de protección mediante:",
+    "opciones": ["a) Orden de protección o medidas cautelares.", "b) Solicitud ante el Ministerio de Justicia.", "c) Petición al abogado del acusado.", "d) Solicitud de indulto."],
+    "correcta": "a) Orden de protección o medidas cautelares.",
+    "justificacion": "El Estatuto prevé medidas como la orden de protección y otras cautelares para salvaguardar a la víctima."
+  },
+  {
+    "pregunta": "La orden de protección se regula también en:",
+    "opciones": ["a) El artículo 544 ter de la LECrim.", "b) El artículo 17 de la Constitución.", "c) El artículo 2 del Código Penal.", "d) La Ley Orgánica 6/1984."],
+    "correcta": "a) El artículo 544 ter de la LECrim.",
+    "justificacion": "La orden de protección a las víctimas está prevista en el artículo 544 ter de la LECrim."
+  },
+  {
+    "pregunta": "La víctima tiene derecho a ser oída en:",
+    "opciones": ["a) La instrucción y antes de que se adopten decisiones que la afecten.", "b) Solo en la fase de juicio oral.", "c) Exclusivamente en los recursos.", "d) Únicamente si es testigo."],
+    "correcta": "a) La instrucción y antes de que se adopten decisiones que la afecten.",
+    "justificacion": "La víctima debe ser oída en las fases procesales relevantes que puedan afectar sus derechos o intereses."
+  },
+  {
+    "pregunta": "La víctima puede impugnar resoluciones judiciales:",
+    "opciones": ["a) Cuando le causen perjuicio directo.", "b) En ningún caso.", "c) Solo si es parte acusadora.", "d) Solo a través del fiscal."],
+    "correcta": "a) Cuando le causen perjuicio directo.",
+    "justificacion": "El Estatuto permite a la víctima recurrir resoluciones que afecten directamente a sus intereses legítimos."
+  },
+  {
+    "pregunta": "Las víctimas especialmente vulnerables reciben:",
+    "opciones": ["a) Un trato idéntico al resto.", "b) Protección reforzada y atención especializada.", "c) Menos información para no alterar su estado.", "d) Un procedimiento abreviado."],
+    "correcta": "b) Protección reforzada y atención especializada.",
+    "justificacion": "La Ley otorga una protección reforzada a víctimas vulnerables, como menores o personas con discapacidad."
+  },
+  {
+    "pregunta": "Entre las víctimas especialmente vulnerables se encuentran:",
+    "opciones": ["a) Los acusados absueltos.", "b) Las víctimas de terrorismo, violencia de género o sexual.", "c) Los testigos protegidos.", "d) Los abogados de oficio."],
+    "correcta": "b) Las víctimas de terrorismo, violencia de género o sexual.",
+    "justificacion": "El Estatuto incluye expresamente a las víctimas de delitos graves como especialmente vulnerables."
+  },
+  {
+    "pregunta": "El derecho a la justicia restaurativa permite:",
+    "opciones": ["a) La mediación entre víctima y delincuente bajo supervisión judicial.", "b) La exoneración automática del agresor.", "c) La reducción de pena sin consentimiento de la víctima.", "d) La sustitución del proceso penal."],
+    "correcta": "a) La mediación entre víctima y delincuente bajo supervisión judicial.",
+    "justificacion": "La justicia restaurativa busca la reparación moral y material mediante la mediación y el diálogo supervisado."
+  },
+  {
+    "pregunta": "La víctima puede acceder a los servicios de justicia restaurativa:",
+    "opciones": ["a) Solo si lo solicita el juez.", "b) Voluntariamente y con consentimiento informado.", "c) Si lo autoriza el fiscal.", "d) Solo tras la sentencia firme."],
+    "correcta": "b) Voluntariamente y con consentimiento informado.",
+    "justificacion": "La participación en justicia restaurativa es siempre voluntaria y requiere consentimiento informado de la víctima."
+  },
+  {
+    "pregunta": "Las víctimas de delitos violentos y contra la libertad sexual pueden recibir:",
+    "opciones": ["a) Indemnización del Estado.", "b) Asistencia gratuita ilimitada.", "c) Derecho preferente a prisión del agresor.", "d) Asesoramiento del Ministerio Fiscal."],
+    "correcta": "a) Indemnización del Estado.",
+    "justificacion": "La Ley 35/1995 y el Estatuto de la Víctima reconocen indemnización estatal a víctimas de delitos violentos y sexuales."
+  },
+  {
+    "pregunta": "Las oficinas de asistencia a las víctimas tienen como función:",
+    "opciones": ["a) Defender judicialmente al acusado.", "b) Prestar apoyo psicológico, jurídico y social a las víctimas.", "c) Sustituir al Ministerio Fiscal.", "d) Realizar informes policiales."],
+    "correcta": "b) Prestar apoyo psicológico, jurídico y social a las víctimas.",
+    "justificacion": "Estas oficinas ofrecen atención integral a las víctimas durante todo el proceso penal."
+  },
+  {
+    "pregunta": "El derecho de la víctima a la restitución comprende:",
+    "opciones": ["a) La recuperación de bienes y derechos perdidos como consecuencia del delito.", "b) La suspensión de la pena.", "c) La participación en el jurado.", "d) La revisión de la sentencia."],
+    "correcta": "a) La recuperación de bienes y derechos perdidos como consecuencia del delito.",
+    "justificacion": "La restitución busca devolver a la víctima los bienes o derechos afectados por el delito."
+  },
+  {
+    "pregunta": "El derecho de la víctima a la reparación incluye:",
+    "opciones": ["a) La compensación económica y moral por los daños sufridos.", "b) La sustitución de la pena.", "c) El indulto del agresor.", "d) La anulación del proceso penal."],
+    "correcta": "a) La compensación económica y moral por los daños sufridos.",
+    "justificacion": "La reparación comprende la compensación económica y moral derivada de los daños ocasionados por el delito."
+  },
+  {
+    "pregunta": "El Estatuto de la Víctima del Delito tiene por finalidad:",
+    "opciones": ["a) Garantizar un trato digno y protector a todas las víctimas.", "b) Aumentar las penas de los delincuentes.", "c) Modificar el Código Penal.", "d) Limitar la participación procesal de las víctimas."],
+    "correcta": "a) Garantizar un trato digno y protector a todas las víctimas.",
+    "justificacion": "La Ley 4/2015 tiene como finalidad proteger, reconocer y garantizar los derechos de todas las víctimas de delitos."
+  },
+  {
+    "pregunta": "El sumario en el proceso penal tiene como finalidad:",
+    "opciones": ["a) Determinar la inocencia del acusado.", "b) Investigar el delito y asegurar los elementos necesarios para el juicio.", "c) Ejercer la acusación pública.", "d) Dictar sentencia firme."],
+    "correcta": "b) Investigar el delito y asegurar los elementos necesarios para el juicio.",
+    "justificacion": "El sumario busca comprobar el delito, descubrir al culpable y asegurar las pruebas para el juicio oral."
+  },
+  {
+    "pregunta": "Las diligencias sumariales deben practicarse:",
+    "opciones": ["a) Con carácter secreto y escrito.", "b) Oralmente y en audiencia pública.", "c) Solo a petición del fiscal.", "d) En presencia del acusado siempre."],
+    "correcta": "a) Con carácter secreto y escrito.",
+    "justificacion": "Las diligencias sumariales son escritas y secretas para proteger la investigación y las pruebas."
+  },
+  {
+    "pregunta": "El juez de instrucción puede delegar diligencias en:",
+    "opciones": ["a) El Ministerio Fiscal.", "b) La Policía Judicial.", "c) El acusado.", "d) La Audiencia Provincial."],
+    "correcta": "b) La Policía Judicial.",
+    "justificacion": "El juez puede encomendar diligencias de investigación a la Policía Judicial bajo su supervisión."
+  },
+  {
+    "pregunta": "La declaración del investigado debe tomarse siempre:",
+    "opciones": ["a) Sin abogado.", "b) Con la asistencia de abogado defensor.", "c) Ante la policía únicamente.", "d) Por escrito y sin testigos."],
+    "correcta": "b) Con la asistencia de abogado defensor.",
+    "justificacion": "El art. 118 LECrim garantiza la presencia del abogado en toda declaración del investigado."
+  },
+  {
+    "pregunta": "Antes de declarar, el investigado debe ser informado:",
+    "opciones": ["a) Solo del delito imputado.", "b) De sus derechos, incluido el de guardar silencio.", "c) De la sentencia probable.", "d) De la identidad del juez instructor."],
+    "correcta": "b) De sus derechos, incluido el de guardar silencio.",
+    "justificacion": "El art. 520 LECrim exige informar de forma inmediata y comprensible de todos los derechos al detenido o investigado."
+  },
+  {
+    "pregunta": "El derecho a no declarar contra sí mismo incluye:",
+    "opciones": ["a) No colaborar con el abogado.", "b) No responder a preguntas que le incriminen.", "c) No comparecer en juicio.", "d) No asistir a la vista oral."],
+    "correcta": "b) No responder a preguntas que le incriminen.",
+    "justificacion": "El derecho a no autoincriminarse permite al acusado abstenerse de responder sobre hechos que puedan perjudicarle."
+  },
+  {
+    "pregunta": "Las declaraciones testificales se regulan en los artículos:",
+    "opciones": ["a) 410 a 450 de la LECrim.", "b) 100 a 120 de la LECrim.", "c) 520 a 530 de la LECrim.", "d) 700 a 720 de la LECrim."],
+    "correcta": "a) 410 a 450 de la LECrim.",
+    "justificacion": "El título IX de la LECrim regula las declaraciones de testigos y sus obligaciones procesales."
+  },
+  {
+    "pregunta": "Los testigos están obligados a:",
+    "opciones": ["a) Comparecer y declarar la verdad.", "b) Comparecer pero no declarar.", "c) No revelar información confidencial.", "d) Presentar abogado."],
+    "correcta": "a) Comparecer y declarar la verdad.",
+    "justificacion": "El art. 410 LECrim establece la obligación de comparecer y decir verdad, bajo responsabilidad penal por falso testimonio."
+  },
+  {
+    "pregunta": "La detención preventiva no podrá durar más de:",
+    "opciones": ["a) 48 horas.", "b) 72 horas.", "c) 5 días.", "d) 24 horas."],
+    "correcta": "b) 72 horas.",
+    "justificacion": "El art. 17 CE y el art. 520 LECrim establecen que la detención no puede superar las 72 horas sin pasar a disposición judicial."
+  },
+  {
+    "pregunta": "La detención preventiva puede prorrogarse solo:",
+    "opciones": ["a) Por orden judicial.", "b) Por decisión policial.", "c) Si lo solicita el fiscal.", "d) Por motivos administrativos."],
+    "correcta": "a) Por orden judicial.",
+    "justificacion": "Toda prórroga de la detención requiere autorización judicial expresa y motivada."
+  },
+  {
+    "pregunta": "La prisión provisional se regula en:",
+    "opciones": ["a) Los artículos 502 a 519 de la LECrim.", "b) Los artículos 100 a 110 de la LECrim.", "c) Los artículos 600 a 610 de la LECrim.", "d) Los artículos 540 a 550 de la LECrim."],
+    "correcta": "a) Los artículos 502 a 519 de la LECrim.",
+    "justificacion": "La prisión provisional está regulada en los artículos 502 a 519 de la Ley de Enjuiciamiento Criminal."
+  },
+  {
+    "pregunta": "La prisión provisional solo puede acordarse:",
+    "opciones": ["a) Por el juez, mediante auto motivado.", "b) Por la policía judicial.", "c) Por el fiscal de oficio.", "d) A petición de la víctima."],
+    "correcta": "a) Por el juez, mediante auto motivado.",
+    "justificacion": "La prisión provisional requiere decisión judicial motivada que justifique su necesidad y proporcionalidad."
+  },
+  {
+    "pregunta": "La finalidad de la prisión provisional es:",
+    "opciones": ["a) Asegurar la ejecución de la pena.", "b) Evitar la fuga del imputado, la destrucción de pruebas o la reiteración delictiva.", "c) Castigar preventivamente al sospechoso.", "d) Mantener la seguridad pública."],
+    "correcta": "b) Evitar la fuga del imputado, la destrucción de pruebas o la reiteración delictiva.",
+    "justificacion": "La prisión provisional es una medida cautelar para asegurar el proceso y evitar riesgos procesales."
+  },
+  {
+    "pregunta": "El auto de prisión provisional debe notificarse:",
+    "opciones": ["a) Solo al abogado defensor.", "b) Al imputado, a su abogado y al Ministerio Fiscal.", "c) Solo al juez instructor.", "d) Al Ministerio del Interior."],
+    "correcta": "b) Al imputado, a su abogado y al Ministerio Fiscal.",
+    "justificacion": "El auto se notifica a las partes para garantizar la posibilidad de recurso y control judicial."
+  },
+  {
+    "pregunta": "El auto que acuerda prisión provisional puede recurrirse en:",
+    "opciones": ["a) Reforma y apelación.", "b) Casación.", "c) Queja.", "d) Ningún recurso es posible."],
+    "correcta": "a) Reforma y apelación.",
+    "justificacion": "Contra el auto de prisión provisional proceden los recursos de reforma ante el mismo juez y de apelación ante la Audiencia."
+  },
+  {
+    "pregunta": "El plazo máximo de la prisión provisional depende de:",
+    "opciones": ["a) La gravedad del delito y la pena señalada.", "b) La discreción del juez.", "c) El número de acusados.", "d) La edad del imputado."],
+    "correcta": "a) La gravedad del delito y la pena señalada.",
+    "justificacion": "El tiempo máximo de prisión provisional se determina en función de la pena prevista para el delito investigado."
+  },
+  {
+    "pregunta": "La prisión provisional comunicada implica que:",
+    "opciones": ["a) El preso puede comunicarse libremente con familiares y abogado.", "b) No puede tener contacto con nadie.", "c) Se suspenden las visitas del abogado.", "d) Se interrumpe la investigación."],
+    "correcta": "a) El preso puede comunicarse libremente con familiares y abogado.",
+    "justificacion": "La prisión comunicada permite las comunicaciones con familiares, abogado y visitas, bajo control penitenciario."
+  },
+  {
+    "pregunta": "La prisión provisional incomunicada se autoriza:",
+    "opciones": ["a) Solo por razones excepcionales y mediante auto judicial motivado.", "b) Por decisión policial.", "c) Por solicitud de la víctima.", "d) Por orden del fiscal."],
+    "correcta": "a) Solo por razones excepcionales y mediante auto judicial motivado.",
+    "justificacion": "Solo puede acordarse por causas graves y mediante resolución judicial motivada conforme al art. 509 LECrim."
+  },
+  {
+    "pregunta": "La libertad provisional se concede:",
+    "opciones": ["a) Mediante auto del juez instructor con o sin fianza.", "b) Automáticamente tras 72 horas de detención.", "c) A petición de la víctima.", "d) Solo por el Tribunal Supremo."],
+    "correcta": "a) Mediante auto del juez instructor con o sin fianza.",
+    "justificacion": "El juez puede acordar la libertad provisional condicionada al pago de fianza o sin ella."
+  },
+  {
+    "pregunta": "El objeto del sumario se declara concluso cuando:",
+    "opciones": ["a) Se han practicado todas las diligencias necesarias.", "b) El acusado confiesa.", "c) Lo solicita el fiscal.", "d) Se dicta sentencia."],
+    "correcta": "a) Se han practicado todas las diligencias necesarias.",
+    "justificacion": "El juez declara concluso el sumario cuando la instrucción está completa y lista para el enjuiciamiento."
+  },
+  {
+    "pregunta": "El procedimiento abreviado se aplica a los delitos castigados con pena privativa de libertad no superior a:",
+    "opciones": ["a) Tres años.", "b) Cinco años.", "c) Nueve años.", "d) Doce años."],
+    "correcta": "c) Nueve años.",
+    "justificacion": "El artículo 757 LECrim establece que el procedimiento abreviado se aplica a delitos con pena no superior a nueve años de prisión."
+  },
+  {
+    "pregunta": "El procedimiento abreviado fue introducido por:",
+    "opciones": ["a) La Ley Orgánica 7/1988, de 28 de diciembre.", "b) La Ley 4/2015.", "c) El Real Decreto de 1882.", "d) La Ley Orgánica 6/1984."],
+    "correcta": "a) La Ley Orgánica 7/1988, de 28 de diciembre.",
+    "justificacion": "La LO 7/1988 introdujo el procedimiento abreviado para modernizar y agilizar el proceso penal ordinario."
+  },
+  {
+    "pregunta": "La fase de diligencias previas tiene por objeto:",
+    "opciones": ["a) Determinar si procede abrir juicio oral o archivar la causa.", "b) Ejecutar la sentencia.", "c) Imponer medidas cautelares definitivas.", "d) Determinar la competencia del tribunal."],
+    "correcta": "a) Determinar si procede abrir juicio oral o archivar la causa.",
+    "justificacion": "Las diligencias previas tienen como fin averiguar la naturaleza del hecho, los responsables y si procede acusar o archivar."
+  },
+  {
+    "pregunta": "Las diligencias previas se inician mediante:",
+    "opciones": ["a) Denuncia, querella o atestado policial.", "b) Acuerdo del fiscal general.", "c) Orden del tribunal superior.", "d) Resolución del juez de lo penal."],
+    "correcta": "a) Denuncia, querella o atestado policial.",
+    "justificacion": "El procedimiento abreviado comienza con la presentación de denuncia, querella o atestado que comunica un hecho delictivo."
+  },
+  {
+    "pregunta": "La dirección de las diligencias previas corresponde a:",
+    "opciones": ["a) El Ministerio Fiscal.", "b) El Juez de Instrucción.", "c) El Tribunal de lo Penal.", "d) El Secretario Judicial."],
+    "correcta": "b) El Juez de Instrucción.",
+    "justificacion": "El juez de instrucción dirige las diligencias previas con la colaboración del Ministerio Fiscal."
+  },
+  {
+    "pregunta": "Durante las diligencias previas, la Policía Judicial actúa:",
+    "opciones": ["a) Bajo la dirección del juez y del fiscal.", "b) De manera autónoma.", "c) Únicamente bajo el mando policial.", "d) Por orden del acusado."],
+    "correcta": "a) Bajo la dirección del juez y del fiscal.",
+    "justificacion": "La Policía Judicial actúa como auxiliar del juez y fiscal en la práctica de diligencias de investigación."
+  },
+  {
+    "pregunta": "Si de las diligencias previas no resulta delito, el juez:",
+    "opciones": ["a) Archiva provisional o definitivamente la causa.", "b) Abre el juicio oral.", "c) Dicta sentencia absolutoria.", "d) Remite el caso al Tribunal Supremo."],
+    "correcta": "a) Archiva provisional o definitivamente la causa.",
+    "justificacion": "El juez puede acordar el archivo si no existen indicios racionales de delito o responsabilidad penal."
+  },
+  {
+    "pregunta": "Si existen indicios de delito, el juez dicta:",
+    "opciones": ["a) Auto de continuación del procedimiento abreviado.", "b) Auto de sobreseimiento.", "c) Auto de archivo provisional.", "d) Auto de conclusión del sumario."],
+    "correcta": "a) Auto de continuación del procedimiento abreviado.",
+    "justificacion": "El auto de continuación abre la fase intermedia para formular acusación o solicitar sobreseimiento."
+  },
+  {
+    "pregunta": "Tras el auto de continuación del procedimiento abreviado, el fiscal y las partes pueden:",
+    "opciones": ["a) Formular escrito de acusación o solicitar sobreseimiento.", "b) Solicitar directamente la sentencia.", "c) Proponer recurso de casación.", "d) Archivar el proceso sin más trámite."],
+    "correcta": "a) Formular escrito de acusación o solicitar sobreseimiento.",
+    "justificacion": "El art. 780 LECrim establece que las partes pueden acusar o pedir el archivo tras el auto de continuación."
+  },
+  {
+    "pregunta": "El auto de apertura de juicio oral se dicta cuando:",
+    "opciones": ["a) Alguna parte formula acusación.", "b) Se celebra la vista oral.", "c) Se dicta sentencia.", "d) El acusado se declara culpable."],
+    "correcta": "a) Alguna parte formula acusación.",
+    "justificacion": "El juez de instrucción dicta el auto de apertura de juicio oral cuando se presenta acusación formal."
+  },
+  {
+    "pregunta": "El auto de apertura de juicio oral se dicta por:",
+    "opciones": ["a) El Juez de Instrucción.", "b) El Tribunal de lo Penal.", "c) El Tribunal Supremo.", "d) El Ministerio Fiscal."],
+    "correcta": "a) El Juez de Instrucción.",
+    "justificacion": "El juez de instrucción, tras las diligencias previas, es quien dicta el auto de apertura de juicio oral."
+  },
+  {
+    "pregunta": "El órgano competente para el enjuiciamiento en el procedimiento abreviado es:",
+    "opciones": ["a) El Juzgado de lo Penal o la Audiencia Provincial, según la gravedad.", "b) El Juez de Instrucción.", "c) El Tribunal Supremo.", "d) El Ministerio Fiscal."],
+    "correcta": "a) El Juzgado de lo Penal o la Audiencia Provincial, según la gravedad.",
+    "justificacion": "El Juzgado de lo Penal conoce de delitos con pena hasta 5 años; la Audiencia Provincial, de los superiores."
+  },
+  {
+    "pregunta": "El escrito de acusación debe contener:",
+    "opciones": ["a) Los hechos, calificación jurídica y pena solicitada.", "b) Solo la identidad del acusado.", "c) La sentencia propuesta.", "d) Los antecedentes del delito."],
+    "correcta": "a) Los hechos, calificación jurídica y pena solicitada.",
+    "justificacion": "El escrito de acusación debe precisar los hechos, la tipificación legal y la pena que se interesa."
+  },
+  {
+    "pregunta": "La conformidad del acusado con la acusación puede suponer:",
+    "opciones": ["a) Sentencia de conformidad.", "b) Sobreseimiento libre.", "c) Suspensión del proceso.", "d) Inhabilitación del juez."],
+    "correcta": "a) Sentencia de conformidad.",
+    "justificacion": "Si el acusado se conforma con la pena solicitada, puede dictarse sentencia de conformidad sin juicio oral."
+  },
+  {
+    "pregunta": "En el procedimiento abreviado, la sentencia de conformidad se dicta cuando la pena solicitada no supera:",
+    "opciones": ["a) Tres años de prisión.", "b) Cinco años de prisión.", "c) Nueve años de prisión.", "d) Seis meses de prisión."],
+    "correcta": "a) Tres años de prisión.",
+    "justificacion": "Puede dictarse sentencia de conformidad si la pena no supera los tres años de prisión o las accesorias correspondientes."
+  },
+  {
+    "pregunta": "El sobreseimiento libre implica:",
+    "opciones": ["a) Que los hechos no son constitutivos de delito.", "b) Que no se ha podido identificar al autor.", "c) Que no hay pruebas suficientes por el momento.", "d) Que el delito ha prescrito."],
+    "correcta": "a) Que los hechos no son constitutivos de delito.",
+    "justificacion": "El sobreseimiento libre se acuerda cuando los hechos carecen de relevancia penal."
+  },
+  {
+    "pregunta": "El sobreseimiento provisional se acuerda cuando:",
+    "opciones": ["a) No hay pruebas suficientes, pero los hechos podrían ser delito.", "b) Los hechos no son delito.", "c) El acusado ha fallecido.", "d) Hay sentencia firme."],
+    "correcta": "a) No hay pruebas suficientes, pero los hechos podrían ser delito.",
+    "justificacion": "Se dicta cuando no existen pruebas suficientes, aunque los hechos puedan constituir delito."
+  },
+  {
+    "pregunta": "En el procedimiento abreviado, el recurso contra el auto de apertura de juicio oral es:",
+    "opciones": ["a) No recurrible.", "b) De apelación.", "c) De reforma y apelación.", "d) De casación."],
+    "correcta": "a) No recurrible.",
+    "justificacion": "El auto de apertura de juicio oral no admite recurso, conforme al art. 783.3 LECrim."
+  },
+  {
+    "pregunta": "El procedimiento abreviado consta de las fases:",
+    "opciones": ["a) Diligencias previas, fase intermedia y juicio oral.", "b) Instrucción y ejecución.", "c) Investigación y apelación.", "d) Sumario y ejecución."],
+    "correcta": "a) Diligencias previas, fase intermedia y juicio oral.",
+    "justificacion": "El procedimiento abreviado se divide en tres fases: diligencias previas, intermedia y de juicio oral."
+  },
+  {
+    "pregunta": "El procedimiento abreviado se tramita siempre:",
+    "opciones": ["a) Por el Juez de Instrucción.", "b) Por el Juzgado de Guardia.", "c) Por el Juzgado de lo Penal o Audiencia Provincial.", "d) Por el Tribunal Supremo."],
+    "correcta": "c) Por el Juzgado de lo Penal o Audiencia Provincial.",
+    "justificacion": "El juicio oral del procedimiento abreviado corresponde al Juzgado de lo Penal o a la Audiencia Provincial."
+  },
+  {
+    "pregunta": "El procedimiento para el enjuiciamiento rápido de determinados delitos fue introducido por:",
+    "opciones": ["a) La Ley 38/2002, de 24 de octubre.", "b) La Ley Orgánica 7/1988.", "c) La Ley 4/2015.", "d) El Real Decreto de 1882."],
+    "correcta": "a) La Ley 38/2002, de 24 de octubre.",
+    "justificacion": "La Ley 38/2002 creó el procedimiento de juicios rápidos para agilizar la respuesta penal ante delitos flagrantes."
+  },
+  {
+    "pregunta": "Los juicios rápidos se aplican a delitos castigados con pena privativa de libertad que no exceda de:",
+    "opciones": ["a) Cinco años.", "b) Nueve años.", "c) Tres años.", "d) Dos años."],
+    "correcta": "a) Cinco años.",
+    "justificacion": "El artículo 795 LECrim señala que este procedimiento se aplica a delitos con pena privativa de libertad no superior a cinco años."
+  },
+  {
+    "pregunta": "Para que proceda el juicio rápido, el delito debe ser:",
+    "opciones": ["a) Leve o de menor gravedad.", "b) Flagrante o con investigación sencilla.", "c) Económico y complejo.", "d) De terrorismo."],
+    "correcta": "b) Flagrante o con investigación sencilla.",
+    "justificacion": "El juicio rápido se aplica a delitos flagrantes o con instrucción inmediata y prueba fácilmente practicable."
+  },
+  {
+    "pregunta": "El juicio rápido se inicia generalmente por:",
+    "opciones": ["a) Denuncia o atestado policial con detenido.", "b) Querella de la víctima.", "c) Acuerdo del fiscal general.", "d) Recurso de apelación."],
+    "correcta": "a) Denuncia o atestado policial con detenido.",
+    "justificacion": "Este procedimiento suele comenzar con un atestado policial con detenido puesto a disposición del juez de guardia."
+  },
+  {
+    "pregunta": "El atestado debe remitirse al juzgado de guardia en un plazo máximo de:",
+    "opciones": ["a) 24 horas.", "b) 72 horas.", "c) 48 horas.", "d) 12 horas."],
+    "correcta": "b) 72 horas.",
+    "justificacion": "El detenido debe ser puesto a disposición judicial junto con el atestado en un máximo de 72 horas desde su detención."
+  },
+  {
+    "pregunta": "El juez de guardia puede adoptar en los juicios rápidos:",
+    "opciones": ["a) Medidas cautelares y de protección a la víctima.", "b) Solo medidas disciplinarias.", "c) Sentencias firmes.", "d) Resoluciones de archivo definitivo."],
+    "correcta": "a) Medidas cautelares y de protección a la víctima.",
+    "justificacion": "El juez de guardia puede acordar medidas cautelares personales o de protección a las víctimas en la fase inicial."
+  },
+  {
+    "pregunta": "La Policía Judicial en los juicios rápidos debe practicar:",
+    "opciones": ["a) Las diligencias imprescindibles y remitir el atestado de inmediato.", "b) La instrucción completa.", "c) La ejecución de la sentencia.", "d) El archivo provisional."],
+    "correcta": "a) Las diligencias imprescindibles y remitir el atestado de inmediato.",
+    "justificacion": "Debe limitarse a las diligencias urgentes y remitir el atestado al juez de guardia sin demora."
+  },
+  {
+    "pregunta": "El Ministerio Fiscal en los juicios rápidos puede:",
+    "opciones": ["a) Solicitar sobreseimiento o formular acusación inmediata.", "b) Suspender el proceso.", "c) Resolver el caso administrativamente.", "d) Dictar sentencia de oficio."],
+    "correcta": "a) Solicitar sobreseimiento o formular acusación inmediata.",
+    "justificacion": "El fiscal puede pedir el archivo o acusar de inmediato si hay elementos suficientes."
+  },
+  {
+    "pregunta": "Si el acusado se conforma con la acusación en un juicio rápido, se dicta:",
+    "opciones": ["a) Sentencia de conformidad inmediata.", "b) Auto de prisión provisional.", "c) Sobreseimiento libre.", "d) Recurso de apelación."],
+    "correcta": "a) Sentencia de conformidad inmediata.",
+    "justificacion": "El juez puede dictar sentencia de conformidad en el acto si el acusado acepta los términos de la acusación."
+  },
+  {
+    "pregunta": "La sentencia de conformidad en juicio rápido puede dictarse si la pena solicitada no excede de:",
+    "opciones": ["a) Dos años de prisión.", "b) Cinco años de prisión.", "c) Tres años de prisión.", "d) Un año de prisión."],
+    "correcta": "a) Dos años de prisión.",
+    "justificacion": "Puede dictarse sentencia de conformidad en el acto si la pena solicitada no supera los dos años de prisión."
+  },
+  {
+    "pregunta": "En los juicios rápidos, si el acusado no se conforma, el juez:",
+    "opciones": ["a) Remite las actuaciones al Juzgado de lo Penal.", "b) Archiva la causa.", "c) Dicta sentencia absolutoria.", "d) Convoca nuevo juicio oral ante la Audiencia Nacional."],
+    "correcta": "a) Remite las actuaciones al Juzgado de lo Penal.",
+    "justificacion": "Si no hay conformidad, el juez remite las actuaciones al órgano competente para el juicio oral."
+  },
+  {
+    "pregunta": "El procedimiento de juicio rápido se tramita ante:",
+    "opciones": ["a) El Juzgado de Instrucción en funciones de guardia.", "b) La Audiencia Provincial.", "c) El Tribunal Supremo.", "d) El Juzgado Central de Instrucción."],
+    "correcta": "a) El Juzgado de Instrucción en funciones de guardia.",
+    "justificacion": "Los juicios rápidos comienzan y se instruyen ante el Juzgado de Instrucción de guardia."
+  },
+  {
+    "pregunta": "El juicio rápido puede transformarse en procedimiento abreviado cuando:",
+    "opciones": ["a) No se cumplan los requisitos de rapidez o flagrancia.", "b) La víctima no comparece.", "c) El acusado se fuga.", "d) Lo solicite el fiscal."],
+    "correcta": "a) No se cumplan los requisitos de rapidez o flagrancia.",
+    "justificacion": "Si no concurren los requisitos legales, el juez transforma el juicio rápido en procedimiento abreviado."
+  },
+  {
+    "pregunta": "Los juicios rápidos son aplicables a delitos de:",
+    "opciones": ["a) Hurto, lesiones, violencia doméstica y seguridad vial.", "b) Terrorismo y crimen organizado.", "c) Delitos económicos complejos.", "d) Faltas administrativas."],
+    "correcta": "a) Hurto, lesiones, violencia doméstica y seguridad vial.",
+    "justificacion": "El art. 795 LECrim prevé este procedimiento para delitos de menor gravedad como hurto, lesiones o seguridad vial."
+  },
+  {
+    "pregunta": "La intervención del abogado en los juicios rápidos es:",
+    "opciones": ["a) Obligatoria desde la detención del investigado.", "b) Opcional según el tipo de delito.", "c) Solo necesaria en el juicio oral.", "d) No requerida si hay conformidad."],
+    "correcta": "a) Obligatoria desde la detención del investigado.",
+    "justificacion": "El derecho de defensa requiere la asistencia letrada desde el primer momento de la detención."
+  },
+  {
+    "pregunta": "El acusado detenido en juicio rápido debe ser puesto a disposición judicial en un máximo de:",
+    "opciones": ["a) 72 horas.", "b) 48 horas.", "c) 24 horas.", "d) 5 días."],
+    "correcta": "a) 72 horas.",
+    "justificacion": "La Constitución y la LECrim limitan la detención preventiva a un máximo de 72 horas antes de pasar al juez."
+  },
+  {
+    "pregunta": "El juez puede decretar la prisión provisional en juicio rápido:",
+    "opciones": ["a) Si concurren los requisitos legales del art. 503 LECrim.", "b) Automáticamente al recibir el atestado.", "c) Solo a petición de la víctima.", "d) Únicamente en delitos leves."],
+    "correcta": "a) Si concurren los requisitos legales del art. 503 LECrim.",
+    "justificacion": "En los juicios rápidos pueden adoptarse medidas cautelares, incluida la prisión, si se cumplen los requisitos legales."
+  },
+  {
+    "pregunta": "En caso de conformidad, la sentencia dictada en juicio rápido tiene efectos de:",
+    "opciones": ["a) Sentencia firme con reducción de un tercio de la pena.", "b) Resolución provisional.", "c) Auto de archivo.", "d) Aplazamiento del juicio oral."],
+    "correcta": "a) Sentencia firme con reducción de un tercio de la pena.",
+    "justificacion": "La sentencia de conformidad en juicios rápidos es firme y permite una reducción de un tercio de la pena solicitada."
+  },
+  {
+    "pregunta": "La sentencia dictada en juicio rápido puede recurrirse en:",
+    "opciones": ["a) Apelación ante la Audiencia Provincial.", "b) Casación ante el Supremo.", "c) Reforma ante el mismo juez.", "d) Ningún recurso es posible."],
+    "correcta": "a) Apelación ante la Audiencia Provincial.",
+    "justificacion": "La sentencia dictada por el Juzgado de lo Penal en juicio rápido es apelable ante la Audiencia Provincial."
+  },
+  {
+    "pregunta": "El procedimiento de juicio rápido busca principalmente:",
+    "opciones": ["a) Agilizar la justicia penal y reducir dilaciones indebidas.", "b) Sustituir el procedimiento abreviado.", "c) Evitar la intervención del fiscal.", "d) Aplicar penas más graves."],
+    "correcta": "a) Agilizar la justicia penal y reducir dilaciones indebidas.",
+    "justificacion": "Su finalidad es dar una respuesta judicial rápida y eficaz a delitos de sencilla instrucción y gravedad moderada."
+  },
+  {
+    "pregunta": "La Ley Orgánica 5/2000 regula:",
+    "opciones": ["a) El procedimiento abreviado penal.", "b) La responsabilidad penal de los menores.", "c) Los juicios rápidos.", "d) El Habeas Corpus."],
+    "correcta": "b) La responsabilidad penal de los menores.",
+    "justificacion": "La Ley Orgánica 5/2000 regula la responsabilidad penal de los menores de edad por la comisión de delitos y faltas."
+  },
+  {
+    "pregunta": "La Ley Orgánica 5/2000 se aplica a los menores que tengan:",
+    "opciones": ["a) Menos de 12 años.", "b) 14 años o más y menos de 18 años.", "c) Más de 18 años y menos de 21 años.", "d) De 10 a 14 años."],
+    "correcta": "b) 14 años o más y menos de 18 años.",
+    "justificacion": "El artículo 1 de la LORRPM establece que la ley se aplica a quienes tengan entre 14 y 18 años al momento del hecho."
+  },
+  {
+    "pregunta": "Los menores de 14 años:",
+    "opciones": ["a) Son penalmente responsables.", "b) No son penalmente responsables y quedan sometidos a la protección de las entidades públicas.", "c) Pueden ingresar en centros de internamiento.", "d) Son juzgados por el juez de menores."],
+    "correcta": "b) No son penalmente responsables y quedan sometidos a la protección de las entidades públicas.",
+    "justificacion": "Los menores de 14 años están exentos de responsabilidad penal, correspondiendo su atención a los servicios de protección."
+  },
+  {
+    "pregunta": "El órgano competente para conocer de los hechos cometidos por menores es:",
+    "opciones": ["a) El Juzgado de Instrucción.", "b) El Juzgado de Menores.", "c) La Audiencia Provincial.", "d) El Tribunal Supremo."],
+    "correcta": "b) El Juzgado de Menores.",
+    "justificacion": "Los Juzgados de Menores son competentes para instruir y resolver los procedimientos de responsabilidad penal de menores."
+  },
+  {
+    "pregunta": "El procedimiento de menores se basa en los principios de:",
+    "opciones": ["a) Publicidad y celeridad.", "b) Reeducación, reinserción y proporcionalidad.", "c) Castigo ejemplar y sanción firme.", "d) Oralidad y pena automática."],
+    "correcta": "b) Reeducación, reinserción y proporcionalidad.",
+    "justificacion": "El sistema penal juvenil se rige por principios de educación y reinserción, no de castigo retributivo."
+  },
+  {
+    "pregunta": "El Ministerio Fiscal en el procedimiento de menores actúa:",
+    "opciones": ["a) Como instructor del expediente.", "b) Como acusador y garante de la legalidad.", "c) Como defensor del menor.", "d) Como juez de instrucción."],
+    "correcta": "a) Como instructor del expediente.",
+    "justificacion": "El fiscal dirige la investigación preliminar en los procedimientos de menores, instruyendo el expediente."
+  },
+  {
+    "pregunta": "El juez de menores puede acordar medidas:",
+    "opciones": ["a) Cautelares y definitivas según la gravedad del hecho.", "b) Exclusivamente penales.", "c) Administrativas y civiles.", "d) Educativas solo a petición del fiscal."],
+    "correcta": "a) Cautelares y definitivas según la gravedad del hecho.",
+    "justificacion": "El juez puede acordar medidas cautelares y resolver la aplicación de medidas definitivas educativas o de internamiento."
+  },
+  {
+    "pregunta": "Entre las medidas previstas por la Ley 5/2000 se encuentran:",
+    "opciones": ["a) Internamiento, libertad vigilada y prestaciones en beneficio de la comunidad.", "b) Prisión preventiva y multa.", "c) Arresto domiciliario y sanción económica.", "d) Libertad condicional y expulsión del país."],
+    "correcta": "a) Internamiento, libertad vigilada y prestaciones en beneficio de la comunidad.",
+    "justificacion": "La ley contempla medidas de naturaleza educativa, como internamiento o libertad vigilada."
+  },
+  {
+    "pregunta": "La medida de internamiento cerrado implica:",
+    "opciones": ["a) Privación total de libertad en centro cerrado.", "b) Internamiento solo de día.", "c) Libertad vigilada con control telefónico.", "d) Asistencia diaria a un centro educativo."],
+    "correcta": "a) Privación total de libertad en centro cerrado.",
+    "justificacion": "El internamiento cerrado supone la privación completa de libertad en un centro especializado de menores."
+  },
+  {
+    "pregunta": "La medida de libertad vigilada consiste en:",
+    "opciones": ["a) Control de la conducta del menor bajo supervisión profesional.", "b) Ingreso en prisión juvenil.", "c) Aislamiento nocturno.", "d) Inmovilización domiciliaria."],
+    "correcta": "a) Control de la conducta del menor bajo supervisión profesional.",
+    "justificacion": "La libertad vigilada implica seguimiento y orientación del menor en su entorno habitual por personal especializado."
+  },
+  {
+    "pregunta": "Las prestaciones en beneficio de la comunidad requieren:",
+    "opciones": ["a) El consentimiento del menor.", "b) Autorización del Ministerio del Interior.", "c) Acuerdo del fiscal general.", "d) Aprobación del juez sin audiencia del menor."],
+    "correcta": "a) El consentimiento del menor.",
+    "justificacion": "Para imponer esta medida se necesita el consentimiento del menor, conforme al principio educativo de la ley."
+  },
+  {
+    "pregunta": "El procedimiento de menores se inicia mediante:",
+    "opciones": ["a) Denuncia, atestado o parte policial ante el fiscal de menores.", "b) Sentencia previa del juez.", "c) Informe escolar.", "d) Comunicación administrativa."],
+    "correcta": "a) Denuncia, atestado o parte policial ante el fiscal de menores.",
+    "justificacion": "El fiscal inicia las diligencias preliminares al recibir la denuncia o el atestado policial sobre el hecho delictivo."
+  },
+  {
+    "pregunta": "Durante la tramitación del expediente, el menor tiene derecho a:",
+    "opciones": ["a) Asistencia letrada y defensa técnica.", "b) Guardar silencio y ser asistido por sus padres.", "c) Declarar sin abogado.", "d) Nombrar a su juez instructor."],
+    "correcta": "a) Asistencia letrada y defensa técnica.",
+    "justificacion": "La asistencia letrada es obligatoria desde el primer momento del procedimiento."
+  },
+  {
+    "pregunta": "El internamiento preventivo de un menor solo puede acordarse:",
+    "opciones": ["a) Por auto judicial motivado.", "b) Por decisión policial.", "c) Por el fiscal de menores.", "d) Por la comunidad autónoma."],
+    "correcta": "a) Por auto judicial motivado.",
+    "justificacion": "El internamiento preventivo solo puede acordarse mediante resolución judicial motivada conforme a la LORRPM."
+  },
+  {
+    "pregunta": "La duración máxima de la medida de internamiento cerrado no puede exceder:",
+    "opciones": ["a) 6 meses.", "b) 2 años.", "c) 5 años.", "d) 10 años."],
+    "correcta": "c) 5 años.",
+    "justificacion": "El límite general de internamiento cerrado para menores de 18 años es de 5 años, salvo excepciones graves."
+  },
+  {
+    "pregunta": "Las medidas impuestas pueden revisarse:",
+    "opciones": ["a) Cuando varíen las circunstancias del menor o su evolución.", "b) Solo una vez dictadas.", "c) Cada seis años.", "d) A petición del Ministerio del Interior."],
+    "correcta": "a) Cuando varíen las circunstancias del menor o su evolución.",
+    "justificacion": "La ley permite la revisión de medidas educativas cuando cambian las circunstancias personales del menor."
+  },
+  {
+    "pregunta": "El expediente del menor es:",
+    "opciones": ["a) Confidencial y no público.", "b) Público y consultable.", "c) Parte del Registro Central de Penados.", "d) Publicado en boletines oficiales."],
+    "correcta": "a) Confidencial y no público.",
+    "justificacion": "La confidencialidad protege el interés del menor y su reinserción social."
+  },
+  {
+    "pregunta": "Los antecedentes del menor pueden cancelarse:",
+    "opciones": ["a) A los 3 años desde el cumplimiento de la medida.", "b) A los 6 meses.", "c) A los 10 años.", "d) Nunca se cancelan."],
+    "correcta": "a) A los 3 años desde el cumplimiento de la medida.",
+    "justificacion": "Los antecedentes de menores pueden cancelarse a los 3 años de la ejecución o extinción de la medida impuesta."
+  },
+  {
+    "pregunta": "Si el menor alcanza la mayoría de edad durante la ejecución de la medida:",
+    "opciones": ["a) Puede continuarla en un centro de adultos adaptado.", "b) Se extingue automáticamente.", "c) Pasa a prisión ordinaria.", "d) Se sustituye por multa."],
+    "correcta": "a) Puede continuarla en un centro de adultos adaptado.",
+    "justificacion": "La ley permite continuar la medida en centros especializados para jóvenes adultos, si es beneficioso para su reeducación."
+  },
+  {
+    "pregunta": "El objetivo principal de la Ley 5/2000 es:",
+    "opciones": ["a) Reeducar y reintegrar socialmente al menor infractor.", "b) Castigar ejemplarmente al infractor.", "c) Establecer penas equivalentes a las de adultos.", "d) Reprimir la delincuencia juvenil mediante sanciones económicas."],
+    "correcta": "a) Reeducar y reintegrar socialmente al menor infractor.",
+    "justificacion": "La finalidad primordial del sistema de justicia juvenil es educativa y de reinserción social."
+  },
+  {
+    "pregunta": "El recurso en el proceso penal tiene por finalidad:",
+    "opciones": ["a) Revisar las resoluciones judiciales no firmes.", "b) Retrasar la ejecución de la sentencia.", "c) Reabrir el juicio oral.", "d) Repetir las pruebas periciales."],
+    "correcta": "a) Revisar las resoluciones judiciales no firmes.",
+    "justificacion": "Los recursos procesales permiten la revisión de resoluciones judiciales no firmes por un órgano superior."
+  },
+  {
+    "pregunta": "Los recursos ordinarios previstos en la LECrim son:",
+    "opciones": ["a) Reforma y apelación.", "b) Casación y revisión.", "c) Queja y revisión.", "d) Anulación y reposición."],
+    "correcta": "a) Reforma y apelación.",
+    "justificacion": "Los recursos ordinarios son el de reforma, ante el mismo órgano, y el de apelación, ante el superior jerárquico."
+  },
+  {
+    "pregunta": "El recurso extraordinario por antonomasia en el proceso penal es:",
+    "opciones": ["a) El recurso de casación.", "b) El recurso de apelación.", "c) El recurso de revisión.", "d) El recurso de queja."],
+    "correcta": "a) El recurso de casación.",
+    "justificacion": "El recurso de casación es un recurso extraordinario ante el Tribunal Supremo para controlar la legalidad de las sentencias."
+  },
+  {
+    "pregunta": "El recurso de reforma se interpone:",
+    "opciones": ["a) Ante el mismo juez que dictó la resolución.", "b) Ante el tribunal superior.", "c) Ante el Tribunal Supremo.", "d) Ante la Audiencia Nacional."],
+    "correcta": "a) Ante el mismo juez que dictó la resolución.",
+    "justificacion": "El recurso de reforma se presenta ante el mismo órgano judicial que dictó el auto impugnado."
+  },
+  {
+    "pregunta": "El recurso de apelación se interpone ante:",
+    "opciones": ["a) El órgano judicial superior jerárquico.", "b) El mismo juez.", "c) El Tribunal Supremo.", "d) El Ministerio Fiscal."],
+    "correcta": "a) El órgano judicial superior jerárquico.",
+    "justificacion": "El recurso de apelación se plantea ante el tribunal superior jerárquico al que dictó la resolución impugnada."
+  },
+  {
+    "pregunta": "El recurso de queja procede cuando:",
+    "opciones": ["a) Se deniega la admisión de otro recurso.", "b) Se dicta sentencia firme.", "c) No se admite una prueba.", "d) Se suspende una vista oral."],
+    "correcta": "a) Se deniega la admisión de otro recurso.",
+    "justificacion": "El recurso de queja se interpone cuando se deniega la admisión de un recurso procesal, como apelación o casación."
+  },
+  {
+    "pregunta": "El recurso de casación se interpone ante:",
+    "opciones": ["a) El Tribunal Supremo.", "b) La Audiencia Provincial.", "c) El Juzgado de lo Penal.", "d) El Tribunal Constitucional."],
+    "correcta": "a) El Tribunal Supremo.",
+    "justificacion": "El Tribunal Supremo conoce del recurso de casación contra sentencias dictadas por las Audiencias Provinciales o Nacionales."
+  },
+  {
+    "pregunta": "El motivo principal del recurso de casación es:",
+    "opciones": ["a) La infracción de ley o de precepto constitucional.", "b) La discrepancia con la valoración de la prueba.", "c) La revisión de los hechos probados.", "d) La inconformidad del acusado."],
+    "correcta": "a) La infracción de ley o de precepto constitucional.",
+    "justificacion": "El recurso de casación se basa en la infracción de ley o de precepto constitucional, no en la valoración de pruebas."
+  },
+  {
+    "pregunta": "El recurso de revisión tiene por objeto:",
+    "opciones": ["a) Revocar sentencias firmes por causas excepcionales.", "b) Revisar las medidas cautelares.", "c) Repetir el juicio oral.", "d) Anular las pruebas periciales."],
+    "correcta": "a) Revocar sentencias firmes por causas excepcionales.",
+    "justificacion": "El recurso de revisión permite impugnar sentencias firmes por causas excepcionales como error judicial o falsedad probada."
+  },
+  {
+    "pregunta": "La ejecución de las sentencias penales corresponde a:",
+    "opciones": ["a) El juez o tribunal que las haya dictado.", "b) El Ministerio del Interior.", "c) El Ministerio Fiscal.", "d) El Tribunal Supremo."],
+    "correcta": "a) El juez o tribunal que las haya dictado.",
+    "justificacion": "Según la LECrim, la ejecución de las sentencias corresponde al mismo órgano que las pronunció."
+  },
+  {
+    "pregunta": "Las penas privativas de libertad se ejecutan bajo control de:",
+    "opciones": ["a) El Juez de Vigilancia Penitenciaria.", "b) El Juez de Instrucción.", "c) El Tribunal Supremo.", "d) La Audiencia Nacional."],
+    "correcta": "a) El Juez de Vigilancia Penitenciaria.",
+    "justificacion": "El Juez de Vigilancia Penitenciaria controla la ejecución de las penas privativas de libertad y los derechos de los internos."
+  },
+  {
+    "pregunta": "La ejecución de las penas de multa corresponde a:",
+    "opciones": ["a) El juez o tribunal sentenciador.", "b) El Ministerio Fiscal.", "c) La Agencia Tributaria.", "d) El Tribunal Constitucional."],
+    "correcta": "a) El juez o tribunal sentenciador.",
+    "justificacion": "El mismo órgano judicial que dictó la sentencia ejecuta las penas de multa, embargando bienes si procede."
+  },
+  {
+    "pregunta": "El principio de cosa juzgada implica que:",
+    "opciones": ["a) No puede juzgarse dos veces un mismo hecho.", "b) El proceso puede repetirse indefinidamente.", "c) Las sentencias no son vinculantes.", "d) Las resoluciones judiciales son revisables siempre."],
+    "correcta": "a) No puede juzgarse dos veces un mismo hecho.",
+    "justificacion": "El principio de cosa juzgada garantiza la seguridad jurídica evitando la duplicidad de procesos por el mismo hecho."
+  },
+  {
+    "pregunta": "El indulto es:",
+    "opciones": ["a) Una medida de gracia que extingue o conmuta la pena.", "b) Un recurso judicial.", "c) Una sentencia absolutoria.", "d) Un beneficio penitenciario automático."],
+    "correcta": "a) Una medida de gracia que extingue o conmuta la pena.",
+    "justificacion": "El indulto es una medida de gracia concedida por el Gobierno mediante Real Decreto, con efectos sobre la pena."
+  },
+  {
+    "pregunta": "El derecho de indulto se regula en:",
+    "opciones": ["a) La Ley de 18 de junio de 1870.", "b) La Constitución Española de 1978.", "c) El Código Penal de 1995.", "d) La Ley Orgánica 5/2000."],
+    "correcta": "a) La Ley de 18 de junio de 1870.",
+    "justificacion": "La Ley de 18 de junio de 1870 regula las normas para el ejercicio del derecho de gracia de indulto."
+  },
+  {
+    "pregunta": "El principio de legalidad penal significa que:",
+    "opciones": ["a) Nadie puede ser condenado por acciones no tipificadas como delito.", "b) El juez puede interpretar libremente la ley penal.", "c) La costumbre puede sustituir la ley penal.", "d) Las sanciones pueden aplicarse retroactivamente."],
+    "correcta": "a) Nadie puede ser condenado por acciones no tipificadas como delito.",
+    "justificacion": "El principio de legalidad garantiza que solo la ley puede definir delitos y penas."
+  },
+  {
+    "pregunta": "El principio de publicidad del proceso penal implica que:",
+    "opciones": ["a) Las vistas sean públicas salvo excepciones legales.", "b) Todas las actuaciones sean secretas.", "c) Las resoluciones judiciales sean confidenciales.", "d) El juicio se celebre sin presencia de las partes."],
+    "correcta": "a) Las vistas sean públicas salvo excepciones legales.",
+    "justificacion": "El principio de publicidad permite el control social de la justicia, salvo casos en que se limite por ley."
+  },
+  {
+    "pregunta": "El principio de contradicción garantiza que:",
+    "opciones": ["a) Ambas partes puedan conocer y rebatir las pruebas de la otra.", "b) El juez decida sin escuchar a las partes.", "c) El acusado no pueda defenderse.", "d) Solo se escuche al fiscal."],
+    "correcta": "a) Ambas partes puedan conocer y rebatir las pruebas de la otra.",
+    "justificacion": "El principio de contradicción asegura el derecho de defensa y la igualdad de armas en el proceso penal."
+  },
+  {
+    "pregunta": "El principio de presunción de inocencia está reconocido en:",
+    "opciones": ["a) El artículo 24.2 de la Constitución Española.", "b) El artículo 25 de la LOPJ.", "c) El artículo 520 LECrim.", "d) El artículo 14 de la Constitución."],
+    "correcta": "a) El artículo 24.2 de la Constitución Española.",
+    "justificacion": "El art. 24.2 CE reconoce el derecho fundamental a la presunción de inocencia de toda persona acusada."
+  },
+  {
+    "pregunta": "El principio 'non bis in ídem' implica:",
+    "opciones": ["a) No ser juzgado ni sancionado dos veces por los mismos hechos.", "b) No declarar contra uno mismo.", "c) No poder recurrir dos veces.", "d) La prohibición de la prisión preventiva."],
+    "correcta": "a) No ser juzgado ni sancionado dos veces por los mismos hechos.",
+    "justificacion": "El principio 'non bis in ídem' prohíbe la duplicidad de sanciones o procesos por el mismo hecho y sujeto."
+  },
+  {
+    "pregunta": "El proceso penal español se rige por los principios de:",
+    "opciones": ["a) Legalidad, contradicción, inmediación y publicidad.", "b) Jerarquía, discrecionalidad y arbitrariedad.", "c) Autonomía, independencia y secreto.", "d) Oportunidad y conveniencia."],
+    "correcta": "a) Legalidad, contradicción, inmediación y publicidad.",
+    "justificacion": "El proceso penal se rige por principios fundamentales que garantizan el derecho de defensa y la imparcialidad judicial."
+  },
+  {
+    "pregunta": "El proceso penal tiene por objeto:",
+    "opciones": ["a) Investigar y sancionar las infracciones penales.", "b) Resolver conflictos civiles.", "c) Regular el régimen administrativo.", "d) Imponer sanciones disciplinarias."],
+    "correcta": "a) Investigar y sancionar las infracciones penales.",
+    "justificacion": "El proceso penal busca la averiguación del delito y la determinación de la responsabilidad criminal."
+  },
+  {
+    "pregunta": "La competencia objetiva en el proceso penal determina:",
+    "opciones": ["a) Qué órgano judicial conoce del asunto por razón de la materia.", "b) El lugar de celebración del juicio.", "c) La jerarquía del juez.", "d) El idioma procesal."],
+    "correcta": "a) Qué órgano judicial conoce del asunto por razón de la materia.",
+    "justificacion": "La competencia objetiva distribuye los asuntos según la materia y gravedad del delito entre los distintos órganos judiciales."
+  },
+  {
+    "pregunta": "La competencia territorial se determina por:",
+    "opciones": ["a) El lugar donde se haya cometido el delito.", "b) El domicilio del acusado.", "c) La sede del Ministerio Fiscal.", "d) La elección del juez."],
+    "correcta": "a) El lugar donde se haya cometido el delito.",
+    "justificacion": "El artículo 14 de la LECrim fija como regla general la competencia del juez del lugar donde se comete el delito."
+  },
+  {
+    "pregunta": "La recusación de un juez procede cuando:",
+    "opciones": ["a) Exista causa legal de incompatibilidad o interés personal.", "b) El juez no resuelva a favor del acusado.", "c) El fiscal lo solicite sin motivo.", "d) El acusado lo desee."],
+    "correcta": "a) Exista causa legal de incompatibilidad o interés personal.",
+    "justificacion": "La recusación garantiza la imparcialidad del juez ante posibles causas de interés o parentesco."
+  },
+  {
+    "pregunta": "El Ministerio Fiscal actúa en el proceso penal como:",
+    "opciones": ["a) Defensor de la legalidad y del interés público.", "b) Representante exclusivo de la víctima.", "c) Parte imparcial que resuelve el proceso.", "d) Asesor jurídico del acusado."],
+    "correcta": "a) Defensor de la legalidad y del interés público.",
+    "justificacion": "El Ministerio Fiscal vela por la legalidad, los derechos de los ciudadanos y el interés público."
+  },
+  {
+    "pregunta": "El principio acusatorio implica que:",
+    "opciones": ["a) Ningún proceso penal puede iniciarse sin acusación previa.", "b) El juez puede acusar de oficio.", "c) La policía inicia el juicio oral.", "d) El fiscal dicta sentencia."],
+    "correcta": "a) Ningún proceso penal puede iniciarse sin acusación previa.",
+    "justificacion": "El principio acusatorio exige que haya una parte acusadora distinta del órgano que juzga."
+  },
+  {
+    "pregunta": "El imputado pasa a denominarse investigado:",
+    "opciones": ["a) Tras la reforma de la LECrim de 2015.", "b) Desde el siglo XIX.", "c) En la fase de ejecución.", "d) Solo en los delitos leves."],
+    "correcta": "a) Tras la reforma de la LECrim de 2015.",
+    "justificacion": "La Ley 41/2015 sustituyó el término 'imputado' por 'investigado' para garantizar mayor claridad jurídica."
+  },
+  {
+    "pregunta": "El acusado tiene derecho a:",
+    "opciones": ["a) Ser informado de la acusación formulada contra él.", "b) Conocer las pruebas de la acusación al finalizar el juicio.", "c) Elegir al juez que le juzgue.", "d) No comparecer nunca en juicio."],
+    "correcta": "a) Ser informado de la acusación formulada contra él.",
+    "justificacion": "El artículo 24.2 CE y la LECrim garantizan el derecho del acusado a conocer los cargos y las pruebas en su contra."
+  },
+  {
+    "pregunta": "El derecho de defensa incluye:",
+    "opciones": ["a) Ser asistido por abogado desde el primer momento.", "b) Declarar siempre.", "c) Aceptar la acusación para reducir la pena.", "d) Nombrar al juez del caso."],
+    "correcta": "a) Ser asistido por abogado desde el primer momento.",
+    "justificacion": "El derecho de defensa exige asistencia letrada desde el primer acto del procedimiento penal."
+  },
+  {
+    "pregunta": "Las medidas cautelares personales se aplican para:",
+    "opciones": ["a) Asegurar la presencia del acusado y la efectividad del proceso.", "b) Garantizar la ejecución de la pena económica.", "c) Sancionar al imputado.", "d) Imponer condena provisional."],
+    "correcta": "a) Asegurar la presencia del acusado y la efectividad del proceso.",
+    "justificacion": "Las medidas cautelares personales, como la prisión provisional, buscan asegurar la presencia del acusado y la eficacia del proceso."
+  },
+  {
+    "pregunta": "El embargo de bienes es una medida cautelar:",
+    "opciones": ["a) Real.", "b) Personal.", "c) Administrativa.", "d) Penitenciaria."],
+    "correcta": "a) Real.",
+    "justificacion": "El embargo tiene carácter real porque recae sobre los bienes del imputado para garantizar responsabilidades pecuniarias."
+  },
+  {
+    "pregunta": "La prueba en el proceso penal debe practicarse:",
+    "opciones": ["a) En el juicio oral con inmediación y contradicción.", "b) Durante la instrucción de forma reservada.", "c) Por escrito y en secreto.", "d) Solo por la policía judicial."],
+    "correcta": "a) En el juicio oral con inmediación y contradicción.",
+    "justificacion": "El principio de inmediación exige que las pruebas se practiquen en juicio, en presencia del juez y las partes."
+  },
+  {
+    "pregunta": "La confesión del acusado:",
+    "opciones": ["a) No vincula al juez y debe ser valorada con el resto de las pruebas.", "b) Es prueba plena por sí misma.", "c) Sustituye a la sentencia.", "d) No puede recogerse en instrucción."],
+    "correcta": "a) No vincula al juez y debe ser valorada con el resto de las pruebas.",
+    "justificacion": "La confesión no tiene valor absoluto; el juez debe contrastarla con el resto de las pruebas del proceso."
+  },
+  {
+    "pregunta": "El testigo tiene obligación de declarar salvo que:",
+    "opciones": ["a) Exista causa legal de dispensa o parentesco cercano con el acusado.", "b) No desee hacerlo.", "c) Tenga relación profesional con el fiscal.", "d) Sea menor de edad."],
+    "correcta": "a) Exista causa legal de dispensa o parentesco cercano con el acusado.",
+    "justificacion": "La LECrim exime de declarar a familiares directos del acusado para evitar conflictos de conciencia."
+  },
+  {
+    "pregunta": "La valoración de la prueba en el proceso penal se basa en:",
+    "opciones": ["a) La libre valoración del juez.", "b) La jerarquía de las pruebas.", "c) La cantidad de testigos.", "d) La decisión del fiscal."],
+    "correcta": "a) La libre valoración del juez.",
+    "justificacion": "El juez o tribunal valora las pruebas conforme a su libre convicción, respetando los principios de lógica y razonamiento jurídico."
+  },
+  {
+    "pregunta": "El juicio oral debe celebrarse:",
+    "opciones": ["a) En audiencia pública salvo excepciones legales.", "b) Siempre en secreto.", "c) Por escrito.", "d) Sin presencia del acusado."],
+    "correcta": "a) En audiencia pública salvo excepciones legales.",
+    "justificacion": "El principio de publicidad garantiza la transparencia del proceso penal, salvo casos de protección especial."
+  },
+  {
+    "pregunta": "La sentencia penal debe ser:",
+    "opciones": ["a) Motivada y dictada por juez imparcial.", "b) Breve y sin motivación.", "c) Oral y no escrita.", "d) Dictada por el fiscal."],
+    "correcta": "a) Motivada y dictada por juez imparcial.",
+    "justificacion": "La motivación de la sentencia es una garantía del derecho a la tutela judicial efectiva (art. 120 CE)."
+  },
+  {
+    "pregunta": "La acción penal es pública significa que:",
+    "opciones": ["a) Puede ser ejercida por cualquier ciudadano mediante denuncia o querella.", "b) Solo puede ejercerla el fiscal.", "c) Se tramita en audiencia privada.", "d) No necesita juez."],
+    "correcta": "a) Puede ser ejercida por cualquier ciudadano mediante denuncia o querella.",
+    "justificacion": "La acción penal es pública porque cualquier persona puede promoverla, salvo excepciones de delitos privados."
+  },
+  {
+    "pregunta": "Los delitos privados requieren:",
+    "opciones": ["a) Querella del ofendido o su representante legal.", "b) Denuncia anónima.", "c) Intervención del fiscal de oficio.", "d) Actuación policial automática."],
+    "correcta": "a) Querella del ofendido o su representante legal.",
+    "justificacion": "En los delitos privados, como injurias o calumnias, se requiere querella de la persona ofendida."
+  },
+  {
+    "pregunta": "El desistimiento del querellante en delitos privados produce:",
+    "opciones": ["a) El sobreseimiento de la causa.", "b) La continuación del proceso.", "c) La apertura del juicio oral.", "d) La imposición de multa al querellante."],
+    "correcta": "a) El sobreseimiento de la causa.",
+    "justificacion": "Si el ofendido desiste de la querella en delitos privados, el proceso debe sobreseerse al carecer de acusación."
+  },
+  {
+    "pregunta": "El principio de inmediación implica que:",
+    "opciones": ["a) El juez que dicta sentencia debe presenciar directamente la práctica de las pruebas.", "b) El fiscal sustituye al juez en el juicio.", "c) Las pruebas se puedan practicar por escrito.", "d) Se suspenda el juicio si falta un testigo."],
+    "correcta": "a) El juez que dicta sentencia debe presenciar directamente la práctica de las pruebas.",
+    "justificacion": "La inmediación asegura que el juez conozca personalmente las pruebas y su desarrollo en el juicio oral."
+  },
+];
+
+let totalPreguntasRenderizadas = 0;
+
+function barajar(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+}
+
+function setProgress(current, total) {
+  const bar = document.getElementById('progressBar');
+  const pct = total > 0 ? Math.round((current / total) * 100) : 0;
+  bar.style.width = pct + '%';
+  bar.title = pct + '%';
+}
+
+function cargarTest() {
+  const seleccionadas = [...preguntasBanco];
+  barajar(seleccionadas);
+  const num = parseInt(document.getElementById("numPreguntas").value);
+  const seleccion = seleccionadas.slice(0, num);
+
+  const testForm = document.getElementById("testForm");
+  const result = document.getElementById("testResult");
+  testForm.innerHTML = '';
+  result.innerHTML = '';
+  totalPreguntasRenderizadas = seleccion.length;
+  setProgress(0, totalPreguntasRenderizadas);
+
+  seleccion.forEach((preg, index) => {
+    const id = `q${index}`;
+    const opciones = [...preg.opciones];
+    barajar(opciones);
+    const opcionesHTML = opciones.map(op => `
+      <label class="option">
+        <input type="radio" name="${id}" value="${op}" data-correcta="${preg.correcta}" data-justificacion="${preg.justificacion}">
+        ${op}
+      </label>
+    `).join('');
+
+    const card = document.createElement('div');
+    card.className = 'question';
+    card.innerHTML = `
+      <div class="q-head">
+        <div class="q-num">Pregunta ${index + 1}:</div>
+        <p class="q-text">${preg.pregunta}</p>
+      </div>
+      <div class="options">${opcionesHTML}</div>
+      <div class="justification" id="j${id}"></div>
+    `;
+    testForm.appendChild(card);
+  });
+
+  // Botonera inferior
+  const actions = document.createElement('div');
+  actions.style.textAlign = 'center';
+  actions.style.marginTop = '14px';
+  actions.innerHTML = '<button class="btn success" type="button" onclick="corregir()">✅ Enviar</button>';
+  testForm.appendChild(actions);
+
+  // Selección visual on click
+  testForm.querySelectorAll('.option input').forEach(inp => {
+    inp.addEventListener('change', (e) => {
+      const group = e.target.name;
+      // Quitar selección previa
+      testForm.querySelectorAll(`input[name="${group}"]`).forEach(i2 => {
+        i2.closest('.option').classList.remove('is-selected');
+      });
+      e.target.closest('.option').classList.add('is-selected');
+
+      // Progreso (contar cuántas preguntas ya tienen marcada una opción)
+      const respondidas = new Set();
+      testForm.querySelectorAll('.option input:checked').forEach(i3 => respondidas.add(i3.name));
+      setProgress(respondidas.size, totalPreguntasRenderizadas);
+    });
+  });
+}
+
+function corregir() {
+  const preguntas = document.querySelectorAll('.question');
+  let aciertos = 0;
+
+  preguntas.forEach(q => {
+    const seleccion = q.querySelector('input[type="radio"]:checked');
+    const justDiv = q.querySelector('.justification');
+
+    // Limpiar estilos previos
+    q.querySelectorAll('.option').forEach(lbl => {
+      lbl.classList.remove('correct-option', 'wrong-option');
+    });
+
+    // Marcar siempre la opción correcta
+    q.querySelectorAll('.option input').forEach(inp => {
+      if (inp.value === inp.dataset.correcta) {
+        inp.closest('.option').classList.add('correct-option');
+      }
+    });
+
+    if (seleccion) {
+      if (seleccion.value === seleccion.dataset.correcta) {
+        aciertos++;
+        justDiv.innerHTML = `<span class="correct">✔ ${seleccion.dataset.justificacion}</span>`;
+      } else {
+        // Señalar la opción elegida como errónea
+        seleccion.closest('.option').classList.add('wrong-option');
+        justDiv.innerHTML = `<span class="incorrect">✘ ${seleccion.dataset.justificacion}</span>`;
+      }
+    } else {
+      justDiv.innerHTML = `<span class="incorrect">✘ No contestada</span>`;
+    }
+  });
+
+  const result = document.getElementById('testResult');
+  const total = preguntas.length;
+  const pct = Math.round((aciertos / total) * 100);
+  const emoji = pct >= 70 ? "🎉" : (pct >= 50 ? "🙂" : "💪");
+  result.innerHTML = `
+    <div class="result-card">
+      <div class="muted">Resultado</div>
+      <div class="score">${emoji} ${aciertos} / ${total} (${pct}%)</div>
+      <div class="muted">Puedes cambiar tus respuestas y volver a pulsar <strong>Enviar</strong>.</div>
+    </div>
+  `;
+}
+
+function reiniciarTest() {
+  document.getElementById('testForm').innerHTML = '';
+  document.getElementById('testResult').innerHTML = '';
+  setProgress(0, 0);
+}
+</script>
+</body>
+</html>
