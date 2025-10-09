@@ -182,9 +182,9 @@
       <select id="numPreguntas">
         <option value="10">10</option>
         <option value="20">20</option>
-        <option value="30">30</option>
+        <option value="30" selected>30</option>
         <option value="40">40</option>
-        <option value="50" selected>50</option>
+        <option value="50">50</option>
       </select>
       <button class="btn" type="button" onclick="cargarTest()">Comenzar</button>
       <button class="btn secondary" type="button" onclick="reiniciarTest()">Reiniciar</button>
@@ -1786,7 +1786,6 @@ const selectTiempo = document.createElement('select');
 selectTiempo.id = 'tiempoSeleccionado';
 selectTiempo.innerHTML = `
   <option value="0">Sin límite</option>
-  <option value="1">1 minuto</option>
   <option value="5">5 minutos</option>
   <option value="10" selected>10 minutos</option>
   <option value="15">15 minutos</option>
