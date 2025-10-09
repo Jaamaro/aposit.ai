@@ -1865,14 +1865,14 @@ evaluarTest = function() {
 
 // Cuando el tiempo se agota automáticamente
 function finalizarTestPorTiempo() {
-  // Evitar ejecuciones duplicadas
+  // Evita ejecuciones dobles
   if (window.__finalizadoPorTiempo__) return;
   window.__finalizadoPorTiempo__ = true;
 
   detenerTemporizador();
-  if (temporizadorDiv) temporizadorDiv.textContent = '⏰ ¡Tiempo agotado! Responde pulsando "Enviar" para ver la corrección.';
+  if (temporizadorDiv) temporizadorDiv.textContent = '⏰ ¡Tiempo agotado! Pulsa "Enviar" para corregir.';
 
-  // 🔒 Bloquear solo las respuestas, pero mantener activo el botón "Enviar"
+  // 🔒 Bloquear todas las respuestas
   document.querySelectorAll('input[type="radio"]').forEach(r => {
     r.disabled = true;
     const opt = r.closest('.option');
@@ -1882,21 +1882,39 @@ function finalizarTestPorTiempo() {
     }
   });
 
-  // Dejar activo el botón de enviar (para que el usuario lo use manualmente)
+  // ✅ Dejar el botón "Enviar" activo y hacerlo destacar en verde
   const btnEnviar = document.querySelector('button.btn.success, button[type="submit"]');
   if (btnEnviar) {
     btnEnviar.disabled = false;
     btnEnviar.style.opacity = '1';
     btnEnviar.style.cursor = 'pointer';
+
+    // 💚 Efecto parpadeo verde suave
+    btnEnviar.style.animation = 'blinkGreen 1.2s infinite';
+    btnEnviar.style.transition = 'background-color 0.3s ease';
+    btnEnviar.style.backgroundColor = '#22c55e'; // verde suave (Tailwind: green-500)
+    btnEnviar.style.color = 'white';
+
+    // Inyectar animación CSS si no existe
+    if (!document.getElementById('blinkGreen-style')) {
+      const style = document.createElement('style');
+      style.id = 'blinkGreen-style';
+      style.textContent = `
+        @keyframes blinkGreen {
+          0%, 100% { background-color: #22c55e; }
+          50% { background-color: #86efac; } /* verde claro (green-300) */
+        }
+      `;
+      document.head.appendChild(style);
+    }
   }
 
-  // Desactivar cualquier intento de reinicio automático
+  // 🔄 Mantener botón "Reiniciar" activo
   const btnReiniciar = document.querySelector('button.btn.secondary');
   if (btnReiniciar) {
     btnReiniciar.disabled = false;
   }
 }
-
 </script>
 </body>
 </html>
