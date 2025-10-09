@@ -201,8 +201,1446 @@
 
 <script>
 const preguntasBanco = [
- 
-
+   {
+    "pregunta": "Según la Ley 39/2015, los actos administrativos serán nulos de pleno derecho cuando:",
+    "opciones": ["a) Carezcan de forma escrita.", "b) Contengan defectos no esenciales.", "c) Lesione derechos fundamentales reconocidos en la Constitución.", "d) Hayan sido dictados fuera del plazo."],
+    "correcta": "c) Lesione derechos fundamentales reconocidos en la Constitución.",
+    "justificacion": "La nulidad de pleno derecho afecta a los actos que vulneran derechos fundamentales o se dictan sin competencia material."
+  },
+  {
+    "pregunta": "El silencio administrativo tendrá efecto desestimatorio cuando:",
+    "opciones": ["a) Así lo disponga la ley por razones imperiosas de interés general.", "b) El órgano competente no exista.", "c) Se trate de procedimientos relativos al ejercicio del derecho de petición.", "d) Lo determine el interesado."],
+    "correcta": "c) Se trate de procedimientos relativos al ejercicio del derecho de petición.",
+    "justificacion": "El artículo 24.1 de la Ley 39/2015 establece excepciones al silencio positivo, como en el derecho de petición."
+  },
+  {
+    "pregunta": "La Ley 40/2015 establece que las Administraciones Públicas actúan y se relacionan:",
+    "opciones": ["a) Únicamente mediante papel oficial.", "b) Por medios orales o telefónicos.", "c) Preferentemente por medios electrónicos.", "d) Solo a través de registros presenciales."],
+    "correcta": "c) Preferentemente por medios electrónicos.",
+    "justificacion": "La actuación administrativa debe realizarse electrónicamente para garantizar eficacia y transparencia."
+  },
+  {
+    "pregunta": "La competencia de los órganos administrativos se adquiere:",
+    "opciones": ["a) Por delegación del superior jerárquico.", "b) Por nombramiento político.", "c) Por disposición legal o reglamentaria.", "d) Por costumbre administrativa."],
+    "correcta": "c) Por disposición legal o reglamentaria.",
+    "justificacion": "Según la Ley 40/2015, la competencia se establece por norma, no por costumbre ni decisión discrecional."
+  },
+  {
+    "pregunta": "La eficacia de los actos administrativos se produce:",
+    "opciones": ["a) Desde su publicación.", "b) Desde su firma por la autoridad competente.", "c) Desde su notificación o publicación al interesado.", "d) Desde que lo decida el órgano jerárquico superior."],
+    "correcta": "c) Desde su notificación o publicación al interesado.",
+    "justificacion": "Los actos administrativos producen efectos desde su notificación o publicación, según el artículo 39 de la Ley 39/2015."
+  },
+  {
+    "pregunta": "La delegación de competencias debe publicarse:",
+    "opciones": ["a) En el tablón de anuncios del órgano delegante.", "b) En el diario interno de la Administración.", "c) En el boletín oficial correspondiente.", "d) En la página web del ministerio."],
+    "correcta": "c) En el boletín oficial correspondiente.",
+    "justificacion": "La delegación de competencias carece de eficacia hasta su publicación en el boletín oficial pertinente."
+  },
+  {
+    "pregunta": "Los interesados en el procedimiento administrativo tienen derecho a:",
+    "opciones": ["a) Ser informados solo al final del procedimiento.", "b) Acceder únicamente a los documentos finales.", "c) Conocer en cualquier momento el estado de tramitación.", "d) No recibir notificaciones electrónicas."],
+    "correcta": "c) Conocer en cualquier momento el estado de tramitación.",
+    "justificacion": "El artículo 53 de la Ley 39/2015 reconoce este derecho básico de los interesados."
+  },
+  {
+    "pregunta": "La responsabilidad patrimonial de las Administraciones exige:",
+    "opciones": ["a) Existencia de daño moral únicamente.", "b) Intencionalidad del funcionario causante.", "c) Daño efectivo, evaluable económicamente y antijurídico.", "d) Reclamación judicial previa."],
+    "correcta": "c) Daño efectivo, evaluable económicamente y antijurídico.",
+    "justificacion": "Son los requisitos esenciales para la responsabilidad patrimonial según la Ley 40/2015."
+  },
+  {
+    "pregunta": "El procedimiento sancionador debe respetar:",
+    "opciones": ["a) La rapidez sobre la defensa.", "b) El criterio del órgano instructor.", "c) Los principios de legalidad y tipicidad.", "d) La discrecionalidad del superior jerárquico."],
+    "correcta": "c) Los principios de legalidad y tipicidad.",
+    "justificacion": "Toda sanción requiere base legal previa y respeto al principio de tipicidad."
+  },
+  {
+    "pregunta": "Los actos administrativos favorables o de gravamen pueden ser revocados:",
+    "opciones": ["a) En cualquier momento por decisión del superior jerárquico.", "b) Por razones de oportunidad política.", "c) Solo en los casos y con los límites establecidos por la ley.", "d) Cuando lo solicite el interesado."],
+    "correcta": "c) Solo en los casos y con los límites establecidos por la ley.",
+    "justificacion": "La revocación se permite únicamente cuando no se lesionen derechos adquiridos ni el interés público."
+  },
+  {
+    "pregunta": "La convalidación de actos administrativos se aplica cuando:",
+    "opciones": ["a) El acto es nulo de pleno derecho.", "b) Exista falta de competencia material.", "c) Puedan subsanarse los vicios de forma o procedimiento.", "d) El órgano haya desaparecido."],
+    "correcta": "c) Puedan subsanarse los vicios de forma o procedimiento.",
+    "justificacion": "La convalidación corrige defectos formales que no afectan al fondo del acto."
+  },
+  {
+    "pregunta": "El procedimiento de responsabilidad patrimonial se iniciará:",
+    "opciones": ["a) De oficio exclusivamente.", "b) Solo por denuncia del funcionario afectado.", "c) De oficio o a solicitud del interesado.", "d) Mediante recurso de alzada."],
+    "correcta": "c) De oficio o a solicitud del interesado.",
+    "justificacion": "Según la Ley 40/2015, puede iniciarse de oficio o a instancia de quien haya sufrido el daño."
+  },
+  {
+    "pregunta": "Las Administraciones deben actuar con sometimiento pleno:",
+    "opciones": ["a) A las órdenes políticas del Gobierno.", "b) A los intereses del mercado.", "c) A la ley y al Derecho.", "d) A los criterios de oportunidad."],
+    "correcta": "c) A la ley y al Derecho.",
+    "justificacion": "El artículo 103.1 de la Constitución y la Ley 40/2015 imponen el principio de legalidad."
+  },
+  {
+    "pregunta": "El principio de cooperación interadministrativa se basa en:",
+    "opciones": ["a) La subordinación jerárquica.", "b) La independencia absoluta de cada Administración.", "c) La lealtad institucional y la colaboración voluntaria.", "d) El control financiero común."],
+    "correcta": "c) La lealtad institucional y la colaboración voluntaria.",
+    "justificacion": "La Ley 40/2015 establece la cooperación sobre la base de la lealtad y coordinación institucional."
+  },
+  {
+    "pregunta": "Los actos administrativos producirán efectos:",
+    "opciones": ["a) Desde su firma por el funcionario.", "b) A partir de su registro interno.", "c) Desde su notificación o publicación.", "d) Tras su revisión judicial."],
+    "correcta": "c) Desde su notificación o publicación.",
+    "justificacion": "Los actos solo producen efectos una vez notificados o publicados, según la Ley 39/2015."
+  },
+  {
+    "pregunta": "El procedimiento administrativo garantizará siempre:",
+    "opciones": ["a) La rapidez del trámite.", "b) La eficacia del órgano.", "c) La audiencia del interesado antes de dictar resolución.", "d) La confidencialidad del expediente."],
+    "correcta": "c) La audiencia del interesado antes de dictar resolución.",
+    "justificacion": "La audiencia es garantía esencial del derecho de defensa en el procedimiento administrativo."
+  },
+  {
+    "pregunta": "La delegación de firma permite:",
+    "opciones": ["a) Transferir la titularidad de la competencia.", "b) Sustituir permanentemente al órgano superior.", "c) Que otro órgano firme actos por orden del titular sin transferir competencia.", "d) Extinguir la competencia original."],
+    "correcta": "c) Que otro órgano firme actos por orden del titular sin transferir competencia.",
+    "justificacion": "La delegación de firma no transfiere competencia, solo autoriza la firma de actos en nombre del titular."
+  },
+  {
+    "pregunta": "El principio de proporcionalidad exige que las medidas administrativas sean:",
+    "opciones": ["a) Uniformes y rígidas.", "b) Acumulativas en todo caso.", "c) Adecuadas, necesarias y equilibradas con el fin perseguido.", "d) Las más restrictivas posibles."],
+    "correcta": "c) Adecuadas, necesarias y equilibradas con el fin perseguido.",
+    "justificacion": "El principio de proporcionalidad limita el uso de potestades sancionadoras y restrictivas."
+  },
+  {
+    "pregunta": "Los convenios entre Administraciones deben publicarse:",
+    "opciones": ["a) En el diario interno del órgano.", "b) Solo en la sede electrónica del firmante.", "c) En el boletín oficial correspondiente.", "d) En el Registro Civil."],
+    "correcta": "c) En el boletín oficial correspondiente.",
+    "justificacion": "Su publicación en boletín oficial es condición para su eficacia según la Ley 40/2015."
+  },
+  {
+    "pregunta": "El principio de responsabilidad administrativa significa que:",
+    "opciones": ["a) La Administración responde solo por dolo.", "b) No responde por daños a los ciudadanos.", "c) Debe indemnizar los daños causados por el funcionamiento normal o anormal de los servicios públicos.", "d) Responde únicamente de actos legislativos."],
+    "correcta": "c) Debe indemnizar los daños causados por el funcionamiento normal o anormal de los servicios públicos.",
+    "justificacion": "El artículo 32 de la Ley 40/2015 establece la responsabilidad objetiva de la Administración."
+  },
+  {
+    "pregunta": "La motivación de los actos administrativos debe incluir:",
+    "opciones": ["a) La fecha y el nombre del instructor.", "b) Solo la norma aplicada.", "c) Los hechos y fundamentos jurídicos que justifican la decisión.", "d) La firma del interesado."],
+    "correcta": "c) Los hechos y fundamentos jurídicos que justifican la decisión.",
+    "justificacion": "El artículo 35 de la Ley 39/2015 exige motivación con expresión de hechos y fundamentos de Derecho."
+  },
+  {
+    "pregunta": "El recurso de alzada se interpone contra:",
+    "opciones": ["a) Los actos de trámite.", "b) Las resoluciones firmes.", "c) Los actos que no ponen fin a la vía administrativa.", "d) Los actos de otros poderes del Estado."],
+    "correcta": "c) Los actos que no ponen fin a la vía administrativa.",
+    "justificacion": "El recurso de alzada procede contra actos que no agotan la vía administrativa, ante el superior jerárquico."
+  },
+  {
+    "pregunta": "Los actos administrativos son anulables cuando:",
+    "opciones": ["a) Se dicten sin competencia material.", "b) Vulneren derechos fundamentales.", "c) Incurran en cualquier infracción del ordenamiento jurídico no constitutiva de nulidad.", "d) Sean dictados por órgano inexistente."],
+    "correcta": "c) Incurran en cualquier infracción del ordenamiento jurídico no constitutiva de nulidad.",
+    "justificacion": "El artículo 48 de la Ley 39/2015 establece que los actos anulables infringen el ordenamiento sin ser nulos de pleno derecho."
+  },
+  {
+    "pregunta": "El recurso de reposición se presenta ante:",
+    "opciones": ["a) El Consejo de Estado.", "b) El Tribunal Supremo.", "c) El mismo órgano que dictó el acto impugnado.", "d) El órgano jerárquico superior."],
+    "correcta": "c) El mismo órgano que dictó el acto impugnado.",
+    "justificacion": "El recurso potestativo de reposición se interpone ante el mismo órgano que dictó el acto, según la Ley 39/2015."
+  },
+  {
+    "pregunta": "El plazo general para resolver un procedimiento administrativo es de:",
+    "opciones": ["a) 3 meses.", "b) 1 mes.", "c) 6 meses.", "d) 9 meses."],
+    "correcta": "c) 6 meses.",
+    "justificacion": "La Ley 39/2015 establece un plazo general máximo de seis meses para resolver los procedimientos."
+  },
+  {
+    "pregunta": "La revisión de oficio de actos nulos corresponde a:",
+    "opciones": ["a) Cualquier funcionario.", "b) El interesado afectado.", "c) El órgano que dictó el acto o su superior jerárquico.", "d) El Defensor del Pueblo."],
+    "correcta": "c) El órgano que dictó el acto o su superior jerárquico.",
+    "justificacion": "La revisión de oficio de actos nulos corresponde al órgano autor del acto o su superior jerárquico, previa audiencia al Consejo de Estado u órgano consultivo."
+  },
+  {
+    "pregunta": "Los interesados pueden actuar en el procedimiento administrativo:",
+    "opciones": ["a) Únicamente mediante procurador.", "b) Solo de forma presencial.", "c) Por sí mismos o mediante representante.", "d) Únicamente a través de abogado colegiado."],
+    "correcta": "c) Por sí mismos o mediante representante.",
+    "justificacion": "El artículo 5 de la Ley 39/2015 reconoce el derecho a actuar personalmente o mediante representación."
+  },
+  {
+    "pregunta": "El recurso extraordinario de revisión procede cuando:",
+    "opciones": ["a) Haya nuevas pruebas irrelevantes.", "b) Exista cambio político en la Administración.", "c) Aparezcan documentos de valor esencial o pruebas falsas.", "d) Lo solicite cualquier ciudadano."],
+    "correcta": "c) Aparezcan documentos de valor esencial o pruebas falsas.",
+    "justificacion": "El recurso extraordinario de revisión se basa en causas tasadas como aparición de documentos decisivos o falsedad probada."
+  },
+  {
+    "pregunta": "El registro electrónico general permite:",
+    "opciones": ["a) Solo el envío de documentos internos.", "b) La presentación de documentos exclusivamente por funcionarios.", "c) La presentación de escritos y solicitudes en cualquier momento.", "d) La tramitación judicial directa."],
+    "correcta": "c) La presentación de escritos y solicitudes en cualquier momento.",
+    "justificacion": "El registro electrónico general está disponible todos los días del año para la recepción de escritos y solicitudes."
+  },
+  {
+    "pregunta": "La notificación electrónica se considera practicada cuando:",
+    "opciones": ["a) Se publique en el tablón de anuncios.", "b) El interesado reciba aviso telefónico.", "c) El interesado accede a su contenido en la sede electrónica.", "d) Se envíe por correo ordinario."],
+    "correcta": "c) El interesado accede a su contenido en la sede electrónica.",
+    "justificacion": "La notificación electrónica surte efecto desde el acceso al contenido por el interesado o tras diez días naturales si no lo hace."
+  },
+  {
+    "pregunta": "El plazo para interponer el recurso de reposición es de:",
+    "opciones": ["a) 30 días hábiles.", "b) 15 días naturales.", "c) 1 mes.", "d) 3 meses."],
+    "correcta": "c) 1 mes.",
+    "justificacion": "El recurso potestativo de reposición debe interponerse en el plazo de un mes desde la notificación del acto."
+  },
+  {
+    "pregunta": "Los interesados deben presentar documentos electrónicos:",
+    "opciones": ["a) Solo si son funcionarios.", "b) Únicamente si el órgano lo autoriza.", "c) Cuando estén obligados a relacionarse electrónicamente con la Administración.", "d) Nunca, salvo orden judicial."],
+    "correcta": "c) Cuando estén obligados a relacionarse electrónicamente con la Administración.",
+    "justificacion": "Personas jurídicas y profesionales están obligadas a presentar documentación por medios electrónicos."
+  },
+  {
+    "pregunta": "Las Administraciones Públicas pueden dictar disposiciones:",
+    "opciones": ["a) Sin límites jerárquicos.", "b) A través de resoluciones judiciales.", "c) En el ámbito de su competencia y conforme al ordenamiento jurídico.", "d) De forma verbal en casos urgentes."],
+    "correcta": "c) En el ámbito de su competencia y conforme al ordenamiento jurídico.",
+    "justificacion": "Toda actuación normativa debe realizarse dentro del ámbito competencial de la Administración."
+  },
+  {
+    "pregunta": "Los actos presuntos por silencio positivo producen efectos:",
+    "opciones": ["a) Desde la solicitud del interesado.", "b) Desde el inicio del procedimiento.", "c) Desde el vencimiento del plazo sin resolución.", "d) Desde la firma del funcionario."],
+    "correcta": "c) Desde el vencimiento del plazo sin resolución.",
+    "justificacion": "El silencio administrativo estimatorio produce efectos desde el día siguiente al vencimiento del plazo legal para resolver."
+  },
+  {
+    "pregunta": "El principio de descentralización significa que:",
+    "opciones": ["a) Las competencias se concentran en la Administración central.", "b) Solo el Estado puede delegar en la Unión Europea.", "c) Se distribuyen competencias acercando la gestión al ciudadano.", "d) Se eliminan las entidades locales."],
+    "correcta": "c) Se distribuyen competencias acercando la gestión al ciudadano.",
+    "justificacion": "La descentralización acerca la Administración al ciudadano y mejora la eficacia."
+  },
+  {
+    "pregunta": "El procedimiento administrativo podrá finalizar:",
+    "opciones": ["a) Solo por resolución.", "b) Únicamente por desistimiento.", "c) Por resolución, desistimiento, renuncia o caducidad.", "d) Por acuerdo político."],
+    "correcta": "c) Por resolución, desistimiento, renuncia o caducidad.",
+    "justificacion": "El artículo 84 de la Ley 39/2015 regula las formas ordinarias de terminación del procedimiento."
+  },
+  {
+    "pregunta": "Los convenios administrativos deberán incluir obligatoriamente:",
+    "opciones": ["a) La fecha de publicación en el BOE.", "b) La relación nominal de empleados firmantes.", "c) Su objeto, actuaciones a realizar y compromisos de las partes.", "d) Las sanciones por incumplimiento político."],
+    "correcta": "c) Su objeto, actuaciones a realizar y compromisos de las partes.",
+    "justificacion": "La Ley 40/2015 exige que los convenios precisen objeto, actuaciones y compromisos asumidos."
+  },
+  {
+    "pregunta": "El principio de responsabilidad de las autoridades implica que:",
+    "opciones": ["a) Solo responden por culpa leve.", "b) No responden por actos administrativos.", "c) Responderán por daños causados por dolo, culpa o negligencia grave.", "d) Solo responden ante el Tribunal Supremo."],
+    "correcta": "c) Responderán por daños causados por dolo, culpa o negligencia grave.",
+    "justificacion": "El artículo 36 de la Ley 40/2015 regula la responsabilidad de autoridades y personal al servicio público."
+  },
+  {
+    "pregunta": "El principio de cooperación entre Administraciones Públicas se materializa en:",
+    "opciones": ["a) Reuniones informales.", "b) Delegación automática de competencias.", "c) Convenios, conferencias sectoriales y órganos mixtos.", "d) Decisiones unilaterales del Estado."],
+    "correcta": "c) Convenios, conferencias sectoriales y órganos mixtos.",
+    "justificacion": "La Ley 40/2015 prevé instrumentos de cooperación formal y permanente entre Administraciones."
+  },
+  {
+    "pregunta": "El principio de transparencia se aplica mediante:",
+    "opciones": ["a) Restricciones al acceso ciudadano.", "b) El secreto de los actos administrativos.", "c) La publicidad activa y el derecho de acceso a la información pública.", "d) La eliminación de portales de datos abiertos."],
+    "correcta": "c) La publicidad activa y el derecho de acceso a la información pública.",
+    "justificacion": "La Ley 19/2013 y la Ley 40/2015 garantizan transparencia a través de publicidad y acceso ciudadano."
+  },
+  {
+    "pregunta": "Los actos administrativos deben dictarse dentro del plazo establecido para:",
+    "opciones": ["a) Evitar su nulidad automática.", "b) Garantizar la discrecionalidad del órgano.", "c) Garantizar la eficacia y la seguridad jurídica.", "d) Permitir su revisión posterior."],
+    "correcta": "c) Garantizar la eficacia y la seguridad jurídica.",
+    "justificacion": "El respeto a los plazos asegura la eficacia de la Administración y el derecho del ciudadano a una resolución en tiempo razonable."
+  },
+  {
+    "pregunta": "La avocación consiste en:",
+    "opciones": ["a) Delegar la competencia a un órgano inferior.", "b) Transmitir la titularidad de la competencia.", "c) Que un órgano superior asuma un asunto del inferior por razones de interés público.", "d) Delegar la firma de los actos administrativos."],
+    "correcta": "c) Que un órgano superior asuma un asunto del inferior por razones de interés público.",
+    "justificacion": "La Ley 40/2015 permite la avocación de competencias por el órgano superior cuando existan motivos de interés general."
+  },
+  {
+    "pregunta": "El principio de economía en la gestión pública significa:",
+    "opciones": ["a) Reducir el número de funcionarios.", "b) Evitar inversiones públicas.", "c) Alcanzar los fines con el menor gasto posible.", "d) Aumentar los ingresos fiscales."],
+    "correcta": "c) Alcanzar los fines con el menor gasto posible.",
+    "justificacion": "La economía exige utilizar los recursos públicos de manera racional y eficiente."
+  },
+  {
+    "pregunta": "Los interesados pueden desistir del procedimiento:",
+    "opciones": ["a) Solo si el órgano lo autoriza.", "b) Una vez finalizada la tramitación.", "c) En cualquier momento antes de la resolución.", "d) Solo en procedimientos sancionadores."],
+    "correcta": "c) En cualquier momento antes de la resolución.",
+    "justificacion": "El artículo 94 de la Ley 39/2015 permite al interesado desistir antes de la resolución final."
+  },
+  {
+    "pregunta": "El órgano competente para resolver un recurso de alzada es:",
+    "opciones": ["a) El Defensor del Pueblo.", "b) El órgano instructor del expediente.", "c) El superior jerárquico del que dictó el acto impugnado.", "d) El Tribunal de Cuentas."],
+    "correcta": "c) El superior jerárquico del que dictó el acto impugnado.",
+    "justificacion": "El recurso de alzada se interpone ante el órgano superior jerárquico del que dictó el acto."
+  },
+  {
+    "pregunta": "Los interesados en el procedimiento tienen derecho a:",
+    "opciones": ["a) Presentar alegaciones solo al final.", "b) Ser oídos únicamente por escrito.", "c) Acceder al expediente en cualquier fase del procedimiento.", "d) Obtener copia de los documentos finales."],
+    "correcta": "c) Acceder al expediente en cualquier fase del procedimiento.",
+    "justificacion": "El artículo 53 de la Ley 39/2015 reconoce el derecho de acceso al expediente durante su tramitación."
+  },
+  {
+    "pregunta": "El principio de lealtad institucional implica que:",
+    "opciones": ["a) Las Administraciones pueden actuar de forma aislada.", "b) El Estado tiene supremacía jerárquica sobre todas.", "c) Las Administraciones deben actuar con cooperación y respeto mutuo.", "d) Las Comunidades Autónomas se subordinan al Estado."],
+    "correcta": "c) Las Administraciones deben actuar con cooperación y respeto mutuo.",
+    "justificacion": "La lealtad institucional exige colaboración y respeto entre Administraciones para lograr el interés general."
+  },
+  {
+    "pregunta": "El procedimiento sancionador debe iniciarse siempre:",
+    "opciones": ["a) Por denuncia anónima.", "b) A instancia del interesado.", "c) De oficio mediante acuerdo del órgano competente.", "d) Por orden judicial."],
+    "correcta": "c) De oficio mediante acuerdo del órgano competente.",
+    "justificacion": "La Ley 40/2015 establece que los procedimientos sancionadores se inician de oficio."
+  },
+  {
+    "pregunta": "El informe preceptivo en un procedimiento:",
+    "opciones": ["a) Puede omitirse si hay urgencia.", "b) No tiene carácter vinculante.", "c) Es obligatorio emitirlo cuando la norma lo exija.", "d) Sustituye la resolución final."],
+    "correcta": "c) Es obligatorio emitirlo cuando la norma lo exija.",
+    "justificacion": "Los informes preceptivos deben solicitarse y emitirse siempre que la norma así lo disponga."
+  },
+  {
+    "pregunta": "La nulidad de pleno derecho implica que el acto:",
+    "opciones": ["a) Puede convalidarse con posterioridad.", "b) Produce efectos hasta su anulación judicial.", "c) No produce efectos desde su origen.", "d) Es subsanable mediante audiencia."],
+    "correcta": "c) No produce efectos desde su origen.",
+    "justificacion": "La nulidad radical invalida el acto desde el momento en que se dicta."
+  },
+  {
+    "pregunta": "El principio de objetividad obliga a los empleados públicos a:",
+    "opciones": ["a) Responder solo ante su superior jerárquico.", "b) Atender instrucciones políticas.", "c) Actuar conforme al interés general y sin influencias personales.", "d) Favorecer a los compañeros de trabajo."],
+    "correcta": "c) Actuar conforme al interés general y sin influencias personales.",
+    "justificacion": "La objetividad es un principio ético esencial del servicio público."
+  },
+  {
+    "pregunta": "La Administración General del Estado se estructura en:",
+    "opciones": ["a) Comunidades Autónomas y Entidades Locales.", "b) Consejos Consultivos.", "c) Órganos centrales y periféricos.", "d) Empresas públicas y fundaciones."],
+    "correcta": "c) Órganos centrales y periféricos.",
+    "justificacion": "La Ley 40/2015 establece esta estructura básica de la Administración General del Estado."
+  },
+  {
+    "pregunta": "El principio de proporcionalidad en las sanciones exige:",
+    "opciones": ["a) Aplicar la sanción más leve posible.", "b) Igual sanción en todos los casos.", "c) Que la sanción guarde relación con la gravedad del hecho.", "d) Que las sanciones sean siempre económicas."],
+    "correcta": "c) Que la sanción guarde relación con la gravedad del hecho.",
+    "justificacion": "El principio de proporcionalidad garantiza justicia y equilibrio en la potestad sancionadora."
+  },
+  {
+    "pregunta": "Los convenios administrativos deben publicarse:",
+    "opciones": ["a) En la sede electrónica interna.", "b) En la web de transparencia.", "c) En el boletín oficial correspondiente.", "d) En el portal de cada ministerio."],
+    "correcta": "c) En el boletín oficial correspondiente.",
+    "justificacion": "Su publicación en boletín oficial es requisito para su validez y eficacia."
+  },
+  {
+    "pregunta": "Los actos administrativos producen efectos:",
+    "opciones": ["a) Desde su firma.", "b) Desde su registro.", "c) Desde su notificación o publicación.", "d) Desde su comunicación al superior."],
+    "correcta": "c) Desde su notificación o publicación.",
+    "justificacion": "La eficacia de los actos comienza tras su notificación o publicación al interesado."
+  },
+  {
+    "pregunta": "El procedimiento administrativo se impulsará:",
+    "opciones": ["a) Por iniciativa de los interesados.", "b) Solo mediante orden judicial.", "c) De oficio en todos sus trámites.", "d) A petición del Consejo de Estado."],
+    "correcta": "c) De oficio en todos sus trámites.",
+    "justificacion": "El impulso de oficio garantiza la continuidad y eficacia del procedimiento."
+  },
+  {
+    "pregunta": "Las resoluciones administrativas deben ser:",
+    "opciones": ["a) Verbales y provisionales.", "b) Arbitrarias según el interés político.", "c) Motivadas y congruentes con las peticiones formuladas.", "d) Secretas y confidenciales."],
+    "correcta": "c) Motivadas y congruentes con las peticiones formuladas.",
+    "justificacion": "Toda resolución debe expresar los motivos y responder a lo planteado por los interesados."
+  },
+  {
+    "pregunta": "El plazo para interponer el recurso de alzada es de:",
+    "opciones": ["a) 15 días naturales.", "b) 45 días hábiles.", "c) Un mes.", "d) Dos meses."],
+    "correcta": "c) Un mes.",
+    "justificacion": "El recurso de alzada debe interponerse en el plazo de un mes desde la notificación del acto."
+  },
+  {
+    "pregunta": "La revisión de oficio de los actos anulables requiere:",
+    "opciones": ["a) Orden judicial.", "b) Petición del Defensor del Pueblo.", "c) Dictamen previo del Consejo de Estado u órgano consultivo equivalente.", "d) Solicitud de un tercero no interesado."],
+    "correcta": "c) Dictamen previo del Consejo de Estado u órgano consultivo equivalente.",
+    "justificacion": "El dictamen previo garantiza la legalidad y seguridad jurídica en la revisión de oficio."
+  },
+  {
+    "pregunta": "Los principios de buena administración incluyen:",
+    "opciones": ["a) La arbitrariedad y el secreto.", "b) La opacidad y la eficiencia política.", "c) La transparencia, la imparcialidad y la responsabilidad.", "d) El control parlamentario directo."],
+    "correcta": "c) La transparencia, la imparcialidad y la responsabilidad.",
+    "justificacion": "La buena administración garantiza ética, transparencia y servicio al ciudadano."
+  },
+  {
+    "pregunta": "El procedimiento sancionador se regula principalmente en:",
+    "opciones": ["a) El Código Penal.", "b) La Ley 19/2013.", "c) La Constitución Española.", "d) La Ley 40/2015, de Régimen Jurídico del Sector Público."],
+    "correcta": "d) La Ley 40/2015, de Régimen Jurídico del Sector Público.",
+    "justificacion": "La Ley 40/2015 regula la potestad sancionadora y los principios que la rigen."
+  },
+  {
+    "pregunta": "Los interesados podrán interponer recurso contencioso-administrativo ante:",
+    "opciones": ["a) El Defensor del Pueblo.", "b) El Consejo de Estado.", "c) El Tribunal Constitucional.", "d) Los Juzgados y Tribunales de lo Contencioso-Administrativo."],
+    "correcta": "d) Los Juzgados y Tribunales de lo Contencioso-Administrativo.",
+    "justificacion": "La jurisdicción contencioso-administrativa controla la legalidad de la actuación administrativa."
+  },
+  {
+    "pregunta": "El principio de cooperación se instrumenta principalmente mediante:",
+    "opciones": ["a) Reuniones informales entre Administraciones.", "b) Instrucciones internas de los ministerios.", "c) Órdenes jerárquicas del Estado.", "d) Convenios y conferencias sectoriales entre Administraciones."],
+    "correcta": "d) Convenios y conferencias sectoriales entre Administraciones.",
+    "justificacion": "Los convenios y conferencias sectoriales son mecanismos formales de cooperación interadministrativa según la Ley 40/2015."
+  },
+  {
+    "pregunta": "Los actos administrativos deben dictarse y notificarse:",
+    "opciones": ["a) En un plazo de quince días.", "b) Únicamente de forma presencial.", "c) Por escrito y con firma manuscrita.", "d) Por medios electrónicos, garantizando autenticidad y constancia."],
+    "correcta": "d) Por medios electrónicos, garantizando autenticidad y constancia.",
+    "justificacion": "La Ley 39/2015 impone la utilización de medios electrónicos en la tramitación administrativa."
+  },
+  {
+    "pregunta": "El procedimiento de responsabilidad patrimonial puede iniciarse:",
+    "opciones": ["a) Solo por resolución judicial.", "b) Únicamente mediante recurso de alzada.", "c) Por denuncia de un tercero.", "d) De oficio o a solicitud del interesado."],
+    "correcta": "d) De oficio o a solicitud del interesado.",
+    "justificacion": "El artículo 67 de la Ley 40/2015 prevé ambas vías de inicio para el procedimiento de responsabilidad patrimonial."
+  },
+  {
+    "pregunta": "Las resoluciones administrativas deben ser motivadas cuando:",
+    "opciones": ["a) Se dicten en procedimientos simplificados.", "b) Sean de carácter automático.", "c) No afecten a derechos de los interesados.", "d) Pongan fin al procedimiento o resuelvan recursos."],
+    "correcta": "d) Pongan fin al procedimiento o resuelvan recursos.",
+    "justificacion": "El artículo 35 de la Ley 39/2015 exige motivación en las resoluciones que ponen fin al procedimiento."
+  },
+  {
+    "pregunta": "El principio de eficacia se orienta a:",
+    "opciones": ["a) La reducción del gasto público.", "b) La discrecionalidad política.", "c) La actuación jerárquica.", "d) El cumplimiento de los fines de interés general con los medios adecuados."],
+    "correcta": "d) El cumplimiento de los fines de interés general con los medios adecuados.",
+    "justificacion": "El principio de eficacia obliga a alcanzar los fines públicos de forma eficiente y responsable."
+  },
+  {
+    "pregunta": "Los convenios administrativos carecerán de validez si no se publican:",
+    "opciones": ["a) En el tablón de anuncios del órgano.", "b) En la web institucional.", "c) En el Registro Civil.", "d) En el boletín oficial correspondiente."],
+    "correcta": "d) En el boletín oficial correspondiente.",
+    "justificacion": "La publicación en el boletín oficial es requisito de validez y eficacia según la Ley 40/2015."
+  },
+  {
+    "pregunta": "La delegación de competencias produce efectos desde:",
+    "opciones": ["a) Su comunicación interna.", "b) Su firma por el delegado.", "c) El momento en que lo disponga el superior jerárquico.", "d) Su publicación en el boletín oficial correspondiente."],
+    "correcta": "d) Su publicación en el boletín oficial correspondiente.",
+    "justificacion": "Toda delegación de competencias debe publicarse para surtir efectos jurídicos."
+  },
+  {
+    "pregunta": "La Administración podrá revocar sus actos de gravamen siempre que:",
+    "opciones": ["a) No exista oposición del interesado.", "b) Sea autorizado por el Tribunal Supremo.", "c) El acto tenga más de tres años de antigüedad.", "d) No constituya dispensa o exención no permitida por las leyes."],
+    "correcta": "d) No constituya dispensa o exención no permitida por las leyes.",
+    "justificacion": "La revocación solo es válida cuando no se vulneren derechos adquiridos ni prohibiciones legales."
+  },
+  {
+    "pregunta": "El recurso extraordinario de revisión puede interponerse cuando:",
+    "opciones": ["a) Se reabra un expediente caducado.", "b) El órgano cambie de titular.", "c) Existan simples errores materiales.", "d) Aparezcan documentos de valor esencial desconocidos al dictarse el acto."],
+    "correcta": "d) Aparezcan documentos de valor esencial desconocidos al dictarse el acto.",
+    "justificacion": "El recurso extraordinario de revisión procede ante documentos nuevos o falsedad probada."
+  },
+  {
+    "pregunta": "El principio de transparencia se aplica mediante:",
+    "opciones": ["a) El secreto administrativo.", "b) La confidencialidad absoluta de los expedientes.", "c) La reserva de información al superior jerárquico.", "d) La publicidad activa y el derecho de acceso a la información pública."],
+    "correcta": "d) La publicidad activa y el derecho de acceso a la información pública.",
+    "justificacion": "La Ley 19/2013 y la Ley 40/2015 garantizan transparencia mediante publicidad y acceso ciudadano."
+  },
+  {
+    "pregunta": "Las Administraciones Públicas deben actuar con sometimiento pleno:",
+    "opciones": ["a) Al interés político del Gobierno.", "b) A las instrucciones del órgano superior.", "c) A la costumbre administrativa.", "d) A la ley y al Derecho."],
+    "correcta": "d) A la ley y al Derecho.",
+    "justificacion": "El artículo 103 de la Constitución impone la sujeción de la Administración a la ley y al Derecho."
+  },
+  {
+    "pregunta": "El recurso de alzada debe resolverse y notificarse en el plazo máximo de:",
+    "opciones": ["a) 15 días.", "b) 3 meses.", "c) 6 meses.", "d) 3 meses desde su interposición."],
+    "correcta": "d) 3 meses desde su interposición.",
+    "justificacion": "El artículo 122 de la Ley 39/2015 establece un plazo máximo de tres meses para resolver el recurso de alzada."
+  },
+  {
+    "pregunta": "La competencia es:",
+    "opciones": ["a) Transferible discrecionalmente.", "b) Facultativa en todos los casos.", "c) Irrelevante en procedimientos internos.", "d) Irrenunciable salvo delegación o avocación conforme a ley."],
+    "correcta": "d) Irrenunciable salvo delegación o avocación conforme a ley.",
+    "justificacion": "La competencia solo puede delegarse o avocarse conforme a lo previsto en la Ley 40/2015."
+  },
+  {
+    "pregunta": "Los actos administrativos podrán ser anulables cuando:",
+    "opciones": ["a) Se dicten fuera del horario de oficina.", "b) No estén firmados digitalmente.", "c) Carezcan de motivación suficiente.", "d) Infrinjan el ordenamiento jurídico sin ser nulos de pleno derecho."],
+    "correcta": "d) Infrinjan el ordenamiento jurídico sin ser nulos de pleno derecho.",
+    "justificacion": "El artículo 48 de la Ley 39/2015 regula los actos anulables por infracción no esencial del ordenamiento jurídico."
+  },
+  {
+    "pregunta": "El principio de responsabilidad administrativa implica que:",
+    "opciones": ["a) Los funcionarios no responden de sus actos.", "b) Solo existe si hay dolo.", "c) Los ciudadanos responden por los daños causados.", "d) La Administración indemnizará los daños causados por el funcionamiento de los servicios públicos."],
+    "correcta": "d) La Administración indemnizará los daños causados por el funcionamiento de los servicios públicos.",
+    "justificacion": "El artículo 32 de la Ley 40/2015 consagra la responsabilidad objetiva de la Administración."
+  },
+  {
+    "pregunta": "Los órganos colegiados deben convocarse:",
+    "opciones": ["a) Solo cuando lo decida el secretario.", "b) Con carácter trimestral obligatorio.", "c) Por orden ministerial.", "d) Con antelación suficiente y con el orden del día correspondiente."],
+    "correcta": "d) Con antelación suficiente y con el orden del día correspondiente.",
+    "justificacion": "La Ley 40/2015 regula el funcionamiento de los órganos colegiados, incluyendo convocatorias con orden del día."
+  },
+  {
+    "pregunta": "Las Administraciones Públicas se relacionarán electrónicamente entre sí:",
+    "opciones": ["a) Solo en caso de urgencia.", "b) Si así lo acuerdan las partes.", "c) Cuando lo exija el ciudadano.", "d) De manera obligatoria a través de medios electrónicos."],
+    "correcta": "d) De manera obligatoria a través de medios electrónicos.",
+    "justificacion": "La Ley 40/2015 impone la relación electrónica obligatoria entre Administraciones Públicas."
+  },
+  {
+    "pregunta": "El principio de imparcialidad exige que el empleado público:",
+    "opciones": ["a) Intervenga en cualquier expediente.", "b) Participe en asuntos que le beneficien.", "c) Actúe según sus convicciones personales.", "d) Se abstenga cuando concurra interés personal o parentesco."],
+    "correcta": "d) Se abstenga cuando concurra interés personal o parentesco.",
+    "justificacion": "La imparcialidad garantiza decisiones objetivas y libres de conflicto de intereses."
+  },
+  {
+    "pregunta": "El procedimiento administrativo común garantiza:",
+    "opciones": ["a) La actuación discrecional de los órganos.", "b) El secreto absoluto de los expedientes.", "c) La supremacía de la Administración sobre el ciudadano.", "d) La participación, transparencia y derechos de los interesados."],
+    "correcta": "d) La participación, transparencia y derechos de los interesados.",
+    "justificacion": "El procedimiento administrativo asegura la protección de los derechos y la transparencia de la actuación pública."
+  },
+  {
+    "pregunta": "Los actos administrativos firmes pueden ser revisados:",
+    "opciones": ["a) Por voluntad del funcionario.", "b) A través de una simple solicitud del interesado.", "c) En cualquier momento sin limitación.", "d) Solo en los casos y procedimientos previstos por la ley."],
+    "correcta": "d) Solo en los casos y procedimientos previstos por la ley.",
+    "justificacion": "Los actos firmes solo pueden revisarse conforme a los artículos 106 y 109 de la Ley 39/2015."
+  },
+  {
+    "pregunta": "El plazo general para interponer el recurso contencioso-administrativo es de:",
+    "opciones": ["a) 10 días.", "b) 1 año.", "c) 3 meses.", "d) 2 meses desde la notificación del acto."],
+    "correcta": "d) 2 meses desde la notificación del acto.",
+    "justificacion": "El plazo general para interponer recurso contencioso-administrativo es de dos meses, según la Ley 29/1998."
+  },
+  {
+    "pregunta": "El procedimiento administrativo se impulsará siempre:",
+    "opciones": ["a) A instancia del interesado.", "b) Por orden judicial.", "c) Por requerimiento del Defensor del Pueblo.", "d) De oficio en todos sus trámites."],
+    "correcta": "d) De oficio en todos sus trámites.",
+    "justificacion": "El impulso de oficio garantiza la eficacia y continuidad del procedimiento según la Ley 39/2015."
+  },
+  {
+    "pregunta": "El principio de buena fe administrativa obliga a:",
+    "opciones": ["a) Guardar secreto profesional absoluto.", "b) Favorecer a la Administración frente al ciudadano.", "c) Actuar con neutralidad política.", "d) Actuar con lealtad y veracidad hacia los ciudadanos."],
+    "correcta": "d) Actuar con lealtad y veracidad hacia los ciudadanos.",
+    "justificacion": "La buena fe rige las relaciones entre Administración y ciudadanos para fomentar la confianza pública."
+  },
+  {
+    "pregunta": "La potestad sancionadora se ejercerá respetando:",
+    "opciones": ["a) La discrecionalidad política.", "b) La oportunidad administrativa.", "c) Las instrucciones internas del órgano competente.", "d) Los principios de legalidad, tipicidad y proporcionalidad."],
+    "correcta": "d) Los principios de legalidad, tipicidad y proporcionalidad.",
+    "justificacion": "Estos principios garantizan que toda sanción tenga base legal y sea adecuada a la infracción."
+  },
+  {
+    "pregunta": "El principio de objetividad exige que las decisiones se adopten:",
+    "opciones": ["a) Según la ideología del órgano decisor.", "b) En atención a criterios personales.", "c) Atendiendo al interés político.", "d) Conforme al interés general y sin influencias externas."],
+    "correcta": "d) Conforme al interés general y sin influencias externas.",
+    "justificacion": "La objetividad garantiza neutralidad y servicio al interés público en la actuación administrativa."
+  },
+  {
+    "pregunta": "El silencio administrativo tendrá efecto positivo:",
+    "opciones": ["a) En los procedimientos sancionadores.", "b) En todos los supuestos sin excepción.", "c) En los procedimientos de revisión de oficio.", "d) Cuando la norma no disponga lo contrario y no afecte al interés general."],
+    "correcta": "d) Cuando la norma no disponga lo contrario y no afecte al interés general.",
+    "justificacion": "El silencio estimatorio es la regla general salvo excepciones expresamente previstas en la ley."
+  },
+  {
+    "pregunta": "Los actos administrativos producen efectos:",
+    "opciones": ["a) Desde su firma digital.", "b) Desde su creación en el registro.", "c) Desde la fecha que indique la autoridad competente.", "d) Desde su notificación o publicación al interesado."],
+    "correcta": "d) Desde su notificación o publicación al interesado.",
+    "justificacion": "La eficacia de los actos administrativos se produce tras su notificación o publicación, según la Ley 39/2015."
+  },
+  {
+    "pregunta": "El principio de cooperación entre Administraciones Públicas se desarrolla mediante:",
+    "opciones": ["a) Circulares internas.", "b) Actas notariales.", "c) Reuniones informales de coordinación.", "d) Convenios, conferencias sectoriales y órganos mixtos de cooperación."],
+    "correcta": "d) Convenios, conferencias sectoriales y órganos mixtos de cooperación.",
+    "justificacion": "La Ley 40/2015 prevé estos instrumentos como medios de cooperación interadministrativa."
+  },
+  {
+    "pregunta": "La competencia de un órgano se determinará según:",
+    "opciones": ["a) La costumbre administrativa.", "b) La tradición institucional.", "c) La decisión del titular político.", "d) La ley o reglamento que la atribuya expresamente."],
+    "correcta": "d) La ley o reglamento que la atribuya expresamente.",
+    "justificacion": "Solo una norma con rango de ley o reglamento puede atribuir competencia a un órgano administrativo."
+  },
+  {
+    "pregunta": "Los actos nulos de pleno derecho pueden ser revisados:",
+    "opciones": ["a) Mediante recurso de reposición.", "b) A petición del interesado sin límite.", "c) Únicamente por orden judicial.", "d) De oficio o a instancia del interesado con dictamen del Consejo de Estado."],
+    "correcta": "d) De oficio o a instancia del interesado con dictamen del Consejo de Estado.",
+    "justificacion": "La revisión de actos nulos requiere dictamen previo del Consejo de Estado o órgano consultivo equivalente."
+  },
+  {
+    "pregunta": "El principio de economía en la gestión pública significa:",
+    "opciones": ["a) Reducir servicios públicos esenciales.", "b) Incrementar los gastos corrientes.", "c) Fomentar el uso ilimitado de recursos.", "d) Alcanzar los fines con el menor coste posible."],
+    "correcta": "d) Alcanzar los fines con el menor coste posible.",
+    "justificacion": "La economía exige el uso racional y eficiente de los recursos públicos."
+  },
+  {
+    "pregunta": "Los interesados podrán desistir de sus solicitudes:",
+    "opciones": ["a) Tras la resolución del procedimiento.", "b) Solo con autorización del órgano superior.", "c) En cualquier momento después de la notificación.", "d) En cualquier momento antes de dictarse la resolución."],
+    "correcta": "d) En cualquier momento antes de dictarse la resolución.",
+    "justificacion": "La Ley 39/2015 permite desistir mientras el procedimiento esté en trámite."
+  },
+  {
+    "pregunta": "El principio de proporcionalidad en materia sancionadora exige:",
+    "opciones": ["a) Aplicar la sanción máxima en caso de duda.", "b) Igual sanción ante hechos distintos.", "c) Que la sanción sea discrecional.", "d) Que sea adecuada, necesaria y equilibrada con el fin perseguido."],
+    "correcta": "d) Que sea adecuada, necesaria y equilibrada con el fin perseguido.",
+    "justificacion": "La proporcionalidad impide excesos y garantiza justicia en la aplicación de sanciones."
+  },
+  {
+    "pregunta": "Los convenios administrativos deben contener:",
+    "opciones": ["a) La firma del Consejo de Ministros.", "b) La referencia al Tribunal de Cuentas.", "c) El presupuesto anual del ministerio firmante.", "d) Su objeto, actuaciones y compromisos asumidos por las partes."],
+    "correcta": "d) Su objeto, actuaciones y compromisos asumidos por las partes.",
+    "justificacion": "La Ley 40/2015 exige que los convenios definan claramente su objeto y obligaciones recíprocas."
+  },
+  {
+    "pregunta": "Los actos presuntos por silencio positivo producen efectos:",
+    "opciones": ["a) Desde la presentación de la solicitud.", "b) Desde la firma del funcionario competente.", "c) Desde el registro de entrada del expediente.", "d) Desde el vencimiento del plazo sin resolución expresa."],
+    "correcta": "d) Desde el vencimiento del plazo sin resolución expresa.",
+    "justificacion": "El silencio positivo surte efectos desde el día siguiente al vencimiento del plazo legal para resolver."
+  },
+  {
+    "pregunta": "Los recursos administrativos tienen por objeto:",
+    "opciones": ["a) Reabrir expedientes cerrados.", "b) Revisar actos judiciales firmes.", "c) Impugnar actos de otros poderes del Estado.", "d) Revisar actos administrativos que lesionen derechos o intereses legítimos."],
+    "correcta": "d) Revisar actos administrativos que lesionen derechos o intereses legítimos.",
+    "justificacion": "Los recursos administrativos permiten revisar actos que vulneren derechos o intereses de los ciudadanos."
+  },
+  {
+    "pregunta": "El principio de integridad obliga al empleado público a:",
+    "opciones": ["a) Aceptar regalos institucionales.", "b) Participar en campañas políticas.", "c) Omitir conflictos de interés.", "d) Actuar con honestidad y rectitud en el ejercicio de sus funciones."],
+    "correcta": "d) Actuar con honestidad y rectitud en el ejercicio de sus funciones.",
+    "justificacion": "La integridad es un valor ético fundamental del servicio público recogido en el Código de Conducta del EBEP."
+  },
+  {
+    "pregunta": "El control de eficacia evalúa:",
+    "opciones": ["a) La productividad privada.", "b) Los resultados económicos de las empresas estatales.", "c) La legalidad formal de los actos administrativos.", "d) El grado de cumplimiento de los objetivos y resultados de la gestión pública."],
+    "correcta": "d) El grado de cumplimiento de los objetivos y resultados de la gestión pública.",
+    "justificacion": "El control de eficacia mide el cumplimiento de los fines de la Administración y la calidad del servicio público."
+  },
+  {
+    "pregunta": "Las Administraciones Públicas deben coordinar su actuación basándose en:",
+    "opciones": ["a) La subordinación jerárquica entre ellas.", "b) La independencia absoluta.", "c) El principio de oportunidad política.", "d) La lealtad institucional y la cooperación recíproca."],
+    "correcta": "d) La lealtad institucional y la cooperación recíproca.",
+    "justificacion": "La Ley 40/2015 establece que las Administraciones se coordinarán en base a la lealtad institucional."
+  },
+  {
+    "pregunta": "El principio de legalidad implica que:",
+    "opciones": ["a) Los funcionarios pueden actuar por costumbre.", "b) Las normas administrativas prevalecen sobre las leyes.", "c) Las decisiones políticas sustituyen a la ley.", "d) Toda actuación administrativa debe ajustarse a la ley y al Derecho."],
+    "correcta": "d) Toda actuación administrativa debe ajustarse a la ley y al Derecho.",
+    "justificacion": "El principio de legalidad asegura que la Administración se somete plenamente al ordenamiento jurídico."
+  },
+  {
+    "pregunta": "La delegación de firma permite:",
+    "opciones": ["a) Transferir la titularidad de la competencia.", "b) Sustituir al titular en la función pública.", "c) Delegar la decisión final del expediente.", "d) Firmar actos por orden del titular sin ceder la competencia."],
+    "correcta": "d) Firmar actos por orden del titular sin ceder la competencia.",
+    "justificacion": "La delegación de firma autoriza a firmar actos en nombre del titular, sin transferir competencia alguna."
+  },
+  {
+    "pregunta": "El plazo para resolver un procedimiento sancionador es de:",
+    "opciones": ["a) 1 mes.", "b) 3 meses.", "c) 9 meses.", "d) 6 meses desde su inicio."],
+    "correcta": "d) 6 meses desde su inicio.",
+    "justificacion": "El artículo 21.6 de la Ley 39/2015 establece un plazo máximo de seis meses para resolver procedimientos sancionadores."
+  },
+  {
+    "pregunta": "Las Administraciones Públicas actuarán conforme a los principios de:",
+    "opciones": ["a) Jerarquía y subordinación.", "b) Rentabilidad económica.", "c) Oportunidad política y discrecionalidad.", "d) Eficacia, jerarquía, descentralización y coordinación."],
+    "correcta": "d) Eficacia, jerarquía, descentralización y coordinación.",
+    "justificacion": "El artículo 103 de la Constitución fija estos principios como rectores de la Administración Pública."
+  },
+  {
+    "pregunta": "El silencio administrativo desestimatorio tiene por finalidad:",
+    "opciones": ["a) Acelerar la concesión de licencias.", "b) Aumentar el número de resoluciones favorables.", "c) Evitar la revisión judicial.", "d) Proteger el interés general en determinados procedimientos."],
+    "correcta": "d) Proteger el interés general en determinados procedimientos.",
+    "justificacion": "El silencio negativo se aplica cuando la estimación automática podría perjudicar el interés general."
+  },
+  {
+    "pregunta": "Los actos administrativos deberán notificarse:",
+    "opciones": ["a) Solo verbalmente.", "b) Mediante llamada telefónica.", "c) Por correo ordinario.", "d) De forma que quede constancia de su recepción y contenido."],
+    "correcta": "d) De forma que quede constancia de su recepción y contenido.",
+    "justificacion": "La Ley 39/2015 exige notificación con constancia de recepción, fecha y contenido del acto."
+  },
+  {
+    "pregunta": "El principio de responsabilidad de las autoridades públicas implica:",
+    "opciones": ["a) La inmunidad en el ejercicio del cargo.", "b) La exención por errores administrativos menores.", "c) La impunidad por dolo o negligencia.", "d) La obligación de responder por los daños causados por dolo o culpa grave."],
+    "correcta": "d) La obligación de responder por los daños causados por dolo o culpa grave.",
+    "justificacion": "El artículo 36 de la Ley 40/2015 establece la responsabilidad por dolo o negligencia grave de las autoridades."
+  },
+  {
+    "pregunta": "El recurso de reposición tiene carácter:",
+    "opciones": ["a) Obligatorio antes del contencioso.", "b) Preceptivo para los funcionarios.", "c) Exclusivo de los órganos colegiados.", "d) Potestativo antes de acudir a la vía contencioso-administrativa."],
+    "correcta": "d) Potestativo antes de acudir a la vía contencioso-administrativa.",
+    "justificacion": "El recurso de reposición es potestativo, según el artículo 123 de la Ley 39/2015."
+  },
+  {
+    "pregunta": "El principio de descentralización persigue:",
+    "opciones": ["a) Concentrar la gestión en órganos centrales.", "b) Reducir el número de Administraciones.", "c) Delegar todo en el sector privado.", "d) Acercar la Administración a los ciudadanos."],
+    "correcta": "d) Acercar la Administración a los ciudadanos.",
+    "justificacion": "La descentralización permite una gestión más próxima y eficiente respecto a los ciudadanos."
+  },
+  {
+    "pregunta": "Los convenios entre Administraciones deben publicarse:",
+    "opciones": ["a) Solo en la sede electrónica del órgano.", "b) En un boletín interno de la entidad.", "c) Mediante resolución ministerial.", "d) En el boletín oficial correspondiente para su eficacia."],
+    "correcta": "d) En el boletín oficial correspondiente para su eficacia.",
+    "justificacion": "La Ley 40/2015 establece que la publicación en el boletín oficial es requisito de eficacia de los convenios."
+  },
+  {
+    "pregunta": "El procedimiento administrativo podrá terminar:",
+    "opciones": ["a) Solo por resolución expresa.", "b) Por silencio negativo.", "c) Por acuerdo del Consejo de Estado.", "d) Por resolución, desistimiento, renuncia o caducidad."],
+    "correcta": "d) Por resolución, desistimiento, renuncia o caducidad.",
+    "justificacion": "El artículo 84 de la Ley 39/2015 regula las formas ordinarias de terminación del procedimiento."
+  },
+  {
+    "pregunta": "El principio de objetividad implica que los empleados públicos:",
+    "opciones": ["a) Sigan las instrucciones políticas del Gobierno.", "b) Resuelvan los asuntos según su criterio personal.", "c) Favorezcan la posición de sus superiores.", "d) Actúen con neutralidad y servicio al interés general."],
+    "correcta": "d) Actúen con neutralidad y servicio al interés general.",
+    "justificacion": "El principio de objetividad garantiza imparcialidad en las decisiones públicas."
+  },
+  {
+    "pregunta": "El recurso de alzada procede contra:",
+    "opciones": ["a) Actos judiciales.", "b) Resoluciones de órganos colegiados.", "c) Actos con carácter de informe.", "d) Actos que no ponen fin a la vía administrativa."],
+    "correcta": "d) Actos que no ponen fin a la vía administrativa.",
+    "justificacion": "El recurso de alzada se interpone ante el superior jerárquico frente a actos no definitivos."
+  },
+  {
+    "pregunta": "El acto administrativo favorable podrá ser revocado:",
+    "opciones": ["a) Cuando exista interés político.", "b) Cuando el órgano cambie de titular.", "c) Por decisión del Consejo de Ministros.", "d) Cuando no se lesionen derechos de terceros ni se infrinja la ley."],
+    "correcta": "d) Cuando no se lesionen derechos de terceros ni se infrinja la ley.",
+    "justificacion": "Los actos favorables pueden revocarse siempre que no se vulneren derechos adquiridos ni disposiciones legales."
+  },
+  {
+    "pregunta": "El principio de eficacia implica que:",
+    "opciones": ["a) Se dé prioridad a los plazos sobre los derechos.", "b) Se reduzcan los procedimientos administrativos.", "c) Se elimine el control de legalidad.", "d) Se alcancen los fines públicos con los medios más adecuados."],
+    "correcta": "d) Se alcancen los fines públicos con los medios más adecuados.",
+    "justificacion": "El principio de eficacia busca lograr los fines de interés general de forma eficiente y ordenada."
+  },
+  {
+    "pregunta": "La nulidad de pleno derecho afecta a actos que:",
+    "opciones": ["a) Se dicten sin firma digital.", "b) Se notifiquen con retraso.", "c) Tengan errores de forma.", "d) Lesionen derechos fundamentales o se dicten sin competencia."],
+    "correcta": "d) Lesionen derechos fundamentales o se dicten sin competencia.",
+    "justificacion": "El artículo 47 de la Ley 39/2015 declara nulos los actos que vulneren derechos fundamentales o competencia material."
+  },
+  {
+    "pregunta": "El principio de transparencia garantiza:",
+    "opciones": ["a) La confidencialidad de las decisiones políticas.", "b) La reserva de los expedientes administrativos.", "c) La comunicación interna exclusiva.", "d) El acceso de los ciudadanos a la información pública y la publicidad activa."],
+    "correcta": "d) El acceso de los ciudadanos a la información pública y la publicidad activa.",
+    "justificacion": "La Ley 19/2013 y la Ley 40/2015 imponen la transparencia y el acceso ciudadano como obligación pública."
+  },
+  {
+    "pregunta": "La avocación consiste en:",
+    "opciones": ["a) Delegar una competencia a otro órgano.", "b) Revocar un acto administrativo.", "c) Subcontratar funciones públicas.", "d) Que un órgano superior asuma un asunto del inferior por razones de interés público."],
+    "correcta": "d) Que un órgano superior asuma un asunto del inferior por razones de interés público.",
+    "justificacion": "La avocación permite al órgano superior asumir una competencia del inferior por razones justificadas."
+  },
+  {
+    "pregunta": "El principio de integridad en la función pública obliga a:",
+    "opciones": ["a) Mantener neutralidad solo en actos públicos.", "b) Anteponer intereses personales.", "c) Respetar las jerarquías políticas.", "d) Actuar con honestidad, rectitud y respeto al interés general."],
+    "correcta": "d) Actuar con honestidad, rectitud y respeto al interés general.",
+    "justificacion": "La integridad es un valor esencial del servicio público recogido en la Ley 40/2015 y el EBEP."
+  },
+  {
+    "pregunta": "La Ley 39/2015 regula principalmente:",
+    "opciones": ["a) El procedimiento administrativo común de las Administraciones Públicas.", "b) El régimen jurídico del sector público.", "c) Las relaciones laborales en la Administración.", "d) La jurisdicción contencioso-administrativa."],
+    "correcta": "a) El procedimiento administrativo común de las Administraciones Públicas.",
+    "justificacion": "La Ley 39/2015 regula el procedimiento administrativo común aplicable a todas las Administraciones Públicas."
+  },
+  {
+    "pregunta": "El principio de legalidad obliga a la Administración a:",
+    "opciones": ["a) Actuar conforme a la ley y al Derecho.", "b) Aplicar las instrucciones políticas.", "c) Atender a las directrices sindicales.", "d) Priorizar la eficacia sobre la ley."],
+    "correcta": "a) Actuar conforme a la ley y al Derecho.",
+    "justificacion": "El principio de legalidad impone la sujeción de toda actuación administrativa a la ley y al Derecho."
+  },
+  {
+    "pregunta": "Los actos administrativos producen efectos desde:",
+    "opciones": ["a) Su notificación o publicación al interesado.", "b) Su firma por el titular del órgano.", "c) La fecha de registro interno.", "d) La aprobación del superior jerárquico."],
+    "correcta": "a) Su notificación o publicación al interesado.",
+    "justificacion": "La eficacia de los actos administrativos se produce desde su notificación o publicación, según la Ley 39/2015."
+  },
+  {
+    "pregunta": "El procedimiento administrativo se impulsa:",
+    "opciones": ["a) De oficio en todos sus trámites.", "b) Solo por petición del interesado.", "c) A requerimiento del Defensor del Pueblo.", "d) A propuesta de las Comunidades Autónomas."],
+    "correcta": "a) De oficio en todos sus trámites.",
+    "justificacion": "El artículo 71 de la Ley 39/2015 establece que el procedimiento se impulsa de oficio en todas sus fases."
+  },
+  {
+    "pregunta": "El principio de buena fe administrativa exige:",
+    "opciones": ["a) Actuar con lealtad y confianza hacia los ciudadanos.", "b) Anteponer el interés político.", "c) Evitar la motivación de los actos.", "d) Responder siempre de forma discrecional."],
+    "correcta": "a) Actuar con lealtad y confianza hacia los ciudadanos.",
+    "justificacion": "La buena fe obliga a la Administración a actuar con lealtad y veracidad en sus relaciones con los administrados."
+  },
+  {
+    "pregunta": "La competencia de los órganos administrativos es:",
+    "opciones": ["a) Irrenunciable salvo delegación o avocación conforme a la ley.", "b) Facultativa y transferible libremente.", "c) Ejercida por delegación judicial.", "d) Temporal según el mandato político."],
+    "correcta": "a) Irrenunciable salvo delegación o avocación conforme a la ley.",
+    "justificacion": "La competencia solo puede delegarse o avocarse en los casos previstos legalmente."
+  },
+  {
+    "pregunta": "El principio de objetividad en la actuación administrativa obliga a:",
+    "opciones": ["a) Servir con neutralidad e imparcialidad al interés general.", "b) Defender los intereses de la organización política.", "c) Favorecer a los órganos superiores.", "d) Actuar conforme a la tradición institucional."],
+    "correcta": "a) Servir con neutralidad e imparcialidad al interés general.",
+    "justificacion": "El principio de objetividad asegura decisiones basadas en el interés general, no en preferencias personales."
+  },
+  {
+    "pregunta": "Los convenios administrativos serán válidos cuando:",
+    "opciones": ["a) Se publiquen en el boletín oficial correspondiente.", "b) Se firmen verbalmente ante testigos.", "c) Se aprueben por decreto judicial.", "d) Sean comunicados al Defensor del Pueblo."],
+    "correcta": "a) Se publiquen en el boletín oficial correspondiente.",
+    "justificacion": "La publicación en el boletín oficial es requisito de eficacia y validez de los convenios, según la Ley 40/2015."
+  },
+  {
+    "pregunta": "El silencio administrativo positivo supone:",
+    "opciones": ["a) La estimación de la solicitud del interesado.", "b) La anulación automática del procedimiento.", "c) La suspensión de plazos administrativos.", "d) La denegación tácita del recurso."],
+    "correcta": "a) La estimación de la solicitud del interesado.",
+    "justificacion": "El silencio administrativo tiene efecto estimatorio salvo disposición legal en contrario."
+  },
+  {
+    "pregunta": "Los actos administrativos favorables podrán ser revocados:",
+    "opciones": ["a) Cuando no se lesionen derechos de terceros ni se infrinja la ley.", "b) Cuando lo ordene el Defensor del Pueblo.", "c) A petición del interesado en todo caso.", "d) Cuando exista cambio de gobierno."],
+    "correcta": "a) Cuando no se lesionen derechos de terceros ni se infrinja la ley.",
+    "justificacion": "La revocación de actos favorables solo procede cuando no se vulneren derechos adquiridos ni normas legales."
+  },
+  {
+    "pregunta": "Los procedimientos sancionadores deben iniciarse:",
+    "opciones": ["a) De oficio por acuerdo del órgano competente.", "b) A petición de un particular.", "c) Por decisión judicial previa.", "d) Por solicitud de otro órgano administrativo."],
+    "correcta": "a) De oficio por acuerdo del órgano competente.",
+    "justificacion": "El artículo 63 de la Ley 40/2015 establece que los procedimientos sancionadores se inician de oficio."
+  },
+  {
+    "pregunta": "El principio de proporcionalidad en las sanciones exige:",
+    "opciones": ["a) Que la sanción sea adecuada, necesaria y equilibrada con la infracción.", "b) Que se imponga siempre la sanción mínima.", "c) Que el órgano sancionador actúe discrecionalmente.", "d) Que la sanción se sustituya por una advertencia."],
+    "correcta": "a) Que la sanción sea adecuada, necesaria y equilibrada con la infracción.",
+    "justificacion": "El principio de proporcionalidad garantiza la equidad en la potestad sancionadora."
+  },
+  {
+    "pregunta": "Los recursos administrativos se interponen:",
+    "opciones": ["a) Contra actos administrativos que lesionen derechos o intereses legítimos.", "b) Contra disposiciones de carácter general.", "c) Solo ante el Tribunal Supremo.", "d) Contra decisiones judiciales firmes."],
+    "correcta": "a) Contra actos administrativos que lesionen derechos o intereses legítimos.",
+    "justificacion": "Los recursos administrativos permiten impugnar actos que vulneren derechos o intereses legítimos de los ciudadanos."
+  },
+  {
+    "pregunta": "Los actos nulos de pleno derecho son aquellos que:",
+    "opciones": ["a) Lesionen derechos fundamentales o se dicten sin competencia.", "b) Contengan defectos de forma no esenciales.", "c) Produzcan efectos económicos adversos.", "d) No se publiquen en el boletín oficial."],
+    "correcta": "a) Lesionen derechos fundamentales o se dicten sin competencia.",
+    "justificacion": "El artículo 47 de la Ley 39/2015 define como nulos los actos que vulneran derechos fundamentales o competencia material."
+  },
+  {
+    "pregunta": "El principio de eficacia busca:",
+    "opciones": ["a) Alcanzar los fines de interés general con los medios más adecuados.", "b) Reducir el número de funcionarios públicos.", "c) Favorecer la rapidez sobre la legalidad.", "d) Evitar la participación ciudadana."],
+    "correcta": "a) Alcanzar los fines de interés general con los medios más adecuados.",
+    "justificacion": "La eficacia es un principio esencial que orienta la acción administrativa al cumplimiento de los fines públicos."
+  },
+  {
+    "pregunta": "La Ley 40/2015 regula:",
+    "opciones": ["a) El régimen jurídico del sector público y las relaciones interadministrativas.", "b) El procedimiento sancionador exclusivo.", "c) Las relaciones internacionales de España.", "d) La función pública estatal."],
+    "correcta": "a) El régimen jurídico del sector público y las relaciones interadministrativas.",
+    "justificacion": "La Ley 40/2015 regula la organización y funcionamiento del sector público y las relaciones entre Administraciones."
+  },
+  {
+    "pregunta": "La Administración responde patrimonialmente cuando:",
+    "opciones": ["a) Causa un daño antijurídico a un ciudadano.", "b) Un funcionario incumple su horario.", "c) Exista un conflicto sindical.", "d) Se produzca un error presupuestario."],
+    "correcta": "a) Causa un daño antijurídico a un ciudadano.",
+    "justificacion": "La responsabilidad patrimonial se produce por daños antijurídicos derivados del funcionamiento público."
+  },
+  {
+    "pregunta": "El principio de transparencia se traduce en:",
+    "opciones": ["a) La publicidad activa y el derecho de acceso a la información pública.", "b) La reserva de la información interna.", "c) La confidencialidad absoluta de los expedientes.", "d) La eliminación de datos públicos."],
+    "correcta": "a) La publicidad activa y el derecho de acceso a la información pública.",
+    "justificacion": "La transparencia se garantiza mediante la publicidad activa y el acceso ciudadano, según la Ley 19/2013."
+  },
+  {
+    "pregunta": "La nulidad de pleno derecho implica que el acto:",
+    "opciones": ["a) No produce efectos desde su origen.", "b) Puede subsanarse por audiencia.", "c) Genera efectos hasta su anulación.", "d) Requiere convalidación automática."],
+    "correcta": "a) No produce efectos desde su origen.",
+    "justificacion": "El acto nulo carece de validez desde su emisión y no produce efectos jurídicos."
+  },
+  {
+    "pregunta": "La abstención de un funcionario procede cuando:",
+    "opciones": ["a) Exista interés personal o parentesco con el interesado.", "b) Lo ordene el Defensor del Pueblo.", "c) Lo indique el secretario del órgano.", "d) Exista conflicto político o mediático."],
+    "correcta": "a) Exista interés personal o parentesco con el interesado.",
+    "justificacion": "El deber de abstención garantiza la imparcialidad de los empleados públicos ante posibles conflictos de interés."
+  },
+  {
+    "pregunta": "El principio de jerarquía en la Administración implica que:",
+    "opciones": ["a) Los órganos superiores dirigen y controlan la actuación de los inferiores.", "b) Todos los órganos administrativos son independientes entre sí.", "c) Los órganos inferiores pueden corregir las resoluciones de los superiores.", "d) Solo los órganos colegiados pueden emitir órdenes."],
+    "correcta": "a) Los órganos superiores dirigen y controlan la actuación de los inferiores.",
+    "justificacion": "El principio de jerarquía establece la subordinación funcional y el control entre órganos de distinto nivel."
+  },
+  {
+    "pregunta": "El procedimiento sancionador se inicia siempre:",
+    "opciones": ["a) De oficio mediante acuerdo del órgano competente.", "b) Por denuncia del interesado.", "c) Por decisión judicial.", "d) A petición del Consejo de Estado."],
+    "correcta": "a) De oficio mediante acuerdo del órgano competente.",
+    "justificacion": "Según la Ley 40/2015, los procedimientos sancionadores se inician de oficio, nunca a instancia del interesado."
+  },
+  {
+    "pregunta": "El silencio administrativo positivo produce:",
+    "opciones": ["a) La estimación de la solicitud del interesado.", "b) La anulación del procedimiento.", "c) El archivo del expediente.", "d) La suspensión del plazo de resolución."],
+    "correcta": "a) La estimación de la solicitud del interesado.",
+    "justificacion": "La regla general del silencio administrativo es positiva, salvo disposición legal en contrario."
+  },
+  {
+    "pregunta": "Los actos administrativos se presumen:",
+    "opciones": ["a) Válidos y eficaces mientras no se declare su nulidad o anulación.", "b) Ineficaces hasta su revisión judicial.", "c) Suspendidos hasta la publicación en el BOE.", "d) Caducados a los tres meses."],
+    "correcta": "a) Válidos y eficaces mientras no se declare su nulidad o anulación.",
+    "justificacion": "El principio de presunción de validez se aplica a todos los actos administrativos, conforme a la Ley 39/2015."
+  },
+  {
+    "pregunta": "El procedimiento administrativo podrá finalizar:",
+    "opciones": ["a) Por resolución, desistimiento, renuncia o caducidad.", "b) Solo por resolución expresa.", "c) Por silencio negativo.", "d) Por decisión del Defensor del Pueblo."],
+    "correcta": "a) Por resolución, desistimiento, renuncia o caducidad.",
+    "justificacion": "La Ley 39/2015 establece estas formas ordinarias de terminación del procedimiento."
+  },
+  {
+    "pregunta": "La responsabilidad patrimonial de la Administración procede cuando:",
+    "opciones": ["a) Se cause un daño antijurídico a un ciudadano.", "b) Un funcionario cometa falta leve.", "c) Se incumpla un contrato privado.", "d) Exista dolo en la actuación del órgano."],
+    "correcta": "a) Se cause un daño antijurídico a un ciudadano.",
+    "justificacion": "La Administración responde por daños antijurídicos causados por el funcionamiento de los servicios públicos."
+  },
+  {
+    "pregunta": "El principio de proporcionalidad obliga a:",
+    "opciones": ["a) Adoptar medidas adecuadas, necesarias y equilibradas con el fin perseguido.", "b) Sancionar siempre con la multa máxima.", "c) Eliminar la discrecionalidad administrativa.", "d) Actuar con arbitrariedad justificada."],
+    "correcta": "a) Adoptar medidas adecuadas, necesarias y equilibradas con el fin perseguido.",
+    "justificacion": "El principio de proporcionalidad limita la intensidad de la actuación administrativa en relación con su fin."
+  },
+  {
+    "pregunta": "El derecho de acceso a archivos y registros administrativos se reconoce a:",
+    "opciones": ["a) Todas las personas físicas y jurídicas.", "b) Solo a funcionarios públicos.", "c) Únicamente a los interesados directos.", "d) Las entidades con autorización ministerial."],
+    "correcta": "a) Todas las personas físicas y jurídicas.",
+    "justificacion": "El artículo 13 de la Ley 39/2015 reconoce el derecho general de acceso a archivos y registros públicos."
+  },
+  {
+    "pregunta": "Las Administraciones Públicas se relacionan electrónicamente:",
+    "opciones": ["a) De manera obligatoria entre sí.", "b) Solo en casos de urgencia.", "c) Cuando lo autorice el ciudadano.", "d) Si lo decide el Consejo de Ministros."],
+    "correcta": "a) De manera obligatoria entre sí.",
+    "justificacion": "La Ley 40/2015 impone la relación electrónica obligatoria entre Administraciones Públicas."
+  },
+  {
+    "pregunta": "Los órganos colegiados deben convocarse:",
+    "opciones": ["a) Con antelación suficiente y con el orden del día correspondiente.", "b) Sin necesidad de previo aviso.", "c) Por acuerdo verbal de los miembros.", "d) Únicamente en sesión extraordinaria."],
+    "correcta": "a) Con antelación suficiente y con el orden del día correspondiente.",
+    "justificacion": "La Ley 40/2015 regula el funcionamiento de los órganos colegiados, incluyendo las normas de convocatoria."
+  },
+  {
+    "pregunta": "El principio de transparencia implica:",
+    "opciones": ["a) La publicidad activa y el acceso ciudadano a la información pública.", "b) La confidencialidad de los actos administrativos.", "c) La reserva de la documentación oficial.", "d) La supresión de los registros públicos."],
+    "correcta": "a) La publicidad activa y el acceso ciudadano a la información pública.",
+    "justificacion": "El principio de transparencia garantiza la rendición de cuentas y la información accesible al ciudadano."
+  },
+  {
+    "pregunta": "La delegación de firma permite:",
+    "opciones": ["a) Que otro órgano firme actos por orden del titular sin ceder la competencia.", "b) Transferir la titularidad de la competencia.", "c) Sustituir al titular de forma permanente.", "d) Revocar las decisiones jerárquicas."],
+    "correcta": "a) Que otro órgano firme actos por orden del titular sin ceder la competencia.",
+    "justificacion": "La delegación de firma no transfiere la competencia, solo permite firmar en nombre del titular."
+  },
+  {
+    "pregunta": "La motivación de los actos administrativos debe incluir:",
+    "opciones": ["a) Los hechos y fundamentos jurídicos que justifican la decisión.", "b) Solo la referencia normativa.", "c) La opinión del superior jerárquico.", "d) La valoración económica del expediente."],
+    "correcta": "a) Los hechos y fundamentos jurídicos que justifican la decisión.",
+    "justificacion": "La motivación debe detallar los hechos y fundamentos de derecho en que se basa la resolución."
+  },
+  {
+    "pregunta": "La avocación se produce cuando:",
+    "opciones": ["a) Un órgano superior asume un asunto del inferior por razones de interés público.", "b) El inferior delega su competencia en el superior.", "c) El funcionario firma por ausencia del titular.", "d) Se transmite la titularidad de la competencia."],
+    "correcta": "a) Un órgano superior asume un asunto del inferior por razones de interés público.",
+    "justificacion": "La avocación es una técnica de centralización temporal de competencias por razones justificadas."
+  },
+  {
+    "pregunta": "La Administración actúa con sometimiento pleno:",
+    "opciones": ["a) A la ley y al Derecho.", "b) A las instrucciones del Gobierno.", "c) Al interés corporativo.", "d) A las decisiones judiciales previas."],
+    "correcta": "a) A la ley y al Derecho.",
+    "justificacion": "El artículo 103 de la Constitución obliga a la Administración a someterse plenamente a la ley y al Derecho."
+  },
+  {
+    "pregunta": "Los interesados en el procedimiento tienen derecho a:",
+    "opciones": ["a) Conocer en cualquier momento el estado de tramitación.", "b) Ser oídos únicamente al final del proceso.", "c) Acceder solo a la resolución final.", "d) No recibir notificaciones electrónicas."],
+    "correcta": "a) Conocer en cualquier momento el estado de tramitación.",
+    "justificacion": "El artículo 53 de la Ley 39/2015 garantiza el derecho de los interesados a conocer el estado de su expediente."
+  },
+  {
+    "pregunta": "El principio de economía en la gestión pública busca:",
+    "opciones": ["a) Alcanzar los fines públicos con el menor gasto posible.", "b) Reducir servicios esenciales.", "c) Evitar controles financieros.", "d) Aumentar el gasto político."],
+    "correcta": "a) Alcanzar los fines públicos con el menor gasto posible.",
+    "justificacion": "El principio de economía exige el uso racional y eficiente de los recursos públicos."
+  },
+  {
+    "pregunta": "El principio de imparcialidad obliga a los empleados públicos a:",
+    "opciones": ["a) Abstenerse cuando concurra interés personal o parentesco.", "b) Participar en decisiones políticas.", "c) Favorecer a sus superiores jerárquicos.", "d) Adoptar decisiones discrecionales sin motivación."],
+    "correcta": "a) Abstenerse cuando concurra interés personal o parentesco.",
+    "justificacion": "La imparcialidad exige abstenerse en casos de conflicto de interés o relación personal con el asunto."
+  },
+  {
+    "pregunta": "La revisión de oficio de actos nulos requiere:",
+    "opciones": ["a) Dictamen previo del Consejo de Estado u órgano consultivo equivalente.", "b) Acuerdo de la Comunidad Autónoma.", "c) Decisión judicial firme.", "d) Resolución del Defensor del Pueblo."],
+    "correcta": "a) Dictamen previo del Consejo de Estado u órgano consultivo equivalente.",
+    "justificacion": "El dictamen consultivo previo garantiza la legalidad en la revisión de actos nulos de pleno derecho."
+  },
+  {
+    "pregunta": "El recurso de alzada se interpone ante:",
+    "opciones": ["a) El superior jerárquico del órgano que dictó el acto impugnado.", "b) El Tribunal Supremo.", "c) El Defensor del Pueblo.", "d) El Consejo de Estado."],
+    "correcta": "a) El superior jerárquico del órgano que dictó el acto impugnado.",
+    "justificacion": "El recurso de alzada se interpone ante el superior jerárquico del órgano que emitió el acto recurrido."
+  },
+  {
+    "pregunta": "El recurso de reposición es:",
+    "opciones": ["a) Potestativo antes de acudir a la vía contencioso-administrativa.", "b) Obligatorio antes del recurso judicial.", "c) Excepcional y solo para actos colegiados.", "d) Exclusivo de los órganos constitucionales."],
+    "correcta": "a) Potestativo antes de acudir a la vía contencioso-administrativa.",
+    "justificacion": "El recurso de reposición es potestativo y permite revisar actos administrativos antes de la vía contenciosa."
+  },
+  {
+    "pregunta": "Los actos administrativos nulos de pleno derecho son aquellos que:",
+    "opciones": ["a) Lesionen derechos fundamentales o se dicten sin competencia material.", "b) Contengan defectos de forma leves.", "c) Se notifiquen fuera de plazo.", "d) Carezcan de motivación formal."],
+    "correcta": "a) Lesionen derechos fundamentales o se dicten sin competencia material.",
+    "justificacion": "El artículo 47 de la Ley 39/2015 considera nulos los actos que vulneran derechos fundamentales o competencia material."
+  },
+  {
+    "pregunta": "El principio de eficacia exige que la Administración:",
+    "opciones": ["a) Alcance los fines de interés general con los medios más adecuados.", "b) Priorice la rapidez sobre la legalidad.", "c) Limite su actividad a los órganos centrales.", "d) Favorezca el interés político sobre el general."],
+    "correcta": "a) Alcance los fines de interés general con los medios más adecuados.",
+    "justificacion": "La eficacia busca cumplir los fines públicos utilizando los medios disponibles de forma óptima."
+  },
+  {
+    "pregunta": "La responsabilidad patrimonial de la Administración procede:",
+    "opciones": ["a) Cuando el funcionamiento de los servicios públicos cause daños antijurídicos.", "b) Solo en caso de dolo probado.", "c) Cuando exista sentencia judicial firme.", "d) Exclusivamente por error presupuestario."],
+    "correcta": "a) Cuando el funcionamiento de los servicios públicos cause daños antijurídicos.",
+    "justificacion": "La Administración debe indemnizar los daños causados por el funcionamiento normal o anormal de los servicios públicos."
+  },
+  {
+    "pregunta": "La abstención de un funcionario se produce cuando:",
+    "opciones": ["a) Concurre interés personal, amistad o parentesco con el interesado.", "b) Lo ordene su superior jerárquico.", "c) Exista discrepancia política.", "d) El expediente sea complejo."],
+    "correcta": "a) Concurre interés personal, amistad o parentesco con el interesado.",
+    "justificacion": "El deber de abstención garantiza la objetividad y neutralidad en la función pública."
+  },
+  {
+    "pregunta": "El silencio administrativo positivo implica:",
+    "opciones": ["a) La estimación de la solicitud presentada por el interesado.", "b) La desestimación tácita del recurso.", "c) La nulidad del procedimiento.", "d) La caducidad automática del expediente."],
+    "correcta": "a) La estimación de la solicitud presentada por el interesado.",
+    "justificacion": "La regla general del silencio administrativo es positiva, salvo que una norma establezca lo contrario."
+  },
+  {
+    "pregunta": "Los actos favorables podrán ser revocados:",
+    "opciones": ["a) Siempre que no se lesionen derechos de terceros ni se infrinja la ley.", "b) Cuando exista cambio de órgano competente.", "c) En cualquier momento por decisión política.", "d) Por voluntad del interesado sin causa justificada."],
+    "correcta": "a) Siempre que no se lesionen derechos de terceros ni se infrinja la ley.",
+    "justificacion": "La revocación de actos favorables solo es posible cuando no se vulneren derechos ni normas legales."
+  },
+  {
+    "pregunta": "La competencia de los órganos administrativos es:",
+    "opciones": ["a) Irrenunciable, salvo delegación o avocación conforme a la ley.", "b) Transferible por decisión jerárquica.", "c) Facultativa y discrecional.", "d) Variable según los cambios políticos."],
+    "correcta": "a) Irrenunciable, salvo delegación o avocación conforme a la ley.",
+    "justificacion": "La competencia es un atributo del órgano y solo puede delegarse o avocarse por norma legal."
+  },
+  {
+    "pregunta": "El procedimiento administrativo se impulsa:",
+    "opciones": ["a) De oficio en todos sus trámites.", "b) Solo a solicitud del interesado.", "c) Por requerimiento judicial.", "d) Por orden del Defensor del Pueblo."],
+    "correcta": "a) De oficio en todos sus trámites.",
+    "justificacion": "El artículo 71 de la Ley 39/2015 establece el impulso de oficio para garantizar la eficacia del procedimiento."
+  },
+  {
+    "pregunta": "El acto administrativo produce efectos:",
+    "opciones": ["a) Desde su notificación o publicación al interesado.", "b) Desde su firma electrónica.", "c) Desde la aprobación del superior jerárquico.", "d) Desde su registro interno."],
+    "correcta": "a) Desde su notificación o publicación al interesado.",
+    "justificacion": "La eficacia de los actos administrativos comienza tras su notificación o publicación, conforme a la Ley 39/2015."
+  },
+  {
+    "pregunta": "Los convenios administrativos deben publicarse:",
+    "opciones": ["a) En el boletín oficial correspondiente.", "b) En la web de la Administración firmante.", "c) En el registro civil.", "d) Mediante comunicación interna."],
+    "correcta": "a) En el boletín oficial correspondiente.",
+    "justificacion": "La publicación en el boletín oficial es requisito de eficacia de los convenios, según la Ley 40/2015."
+  },
+  {
+    "pregunta": "El recurso de alzada se interpone ante:",
+    "opciones": ["a) El superior jerárquico del órgano que dictó el acto.", "b) El Tribunal Supremo.", "c) El Consejo de Estado.", "d) El Defensor del Pueblo."],
+    "correcta": "a) El superior jerárquico del órgano que dictó el acto.",
+    "justificacion": "El recurso de alzada procede contra actos que no pongan fin a la vía administrativa, ante el superior jerárquico."
+  },
+  {
+    "pregunta": "La Administración se rige por el principio de:",
+    "opciones": ["a) Eficacia, jerarquía, descentralización y coordinación.", "b) Imparcialidad política.", "c) Desobediencia civil.", "d) Discrecionalidad normativa."],
+    "correcta": "a) Eficacia, jerarquía, descentralización y coordinación.",
+    "justificacion": "El artículo 103 de la Constitución recoge estos principios rectores de la actuación administrativa."
+  },
+  {
+    "pregunta": "La buena fe administrativa supone:",
+    "opciones": ["a) Actuar con lealtad y confianza hacia los ciudadanos.", "b) Favorecer los intereses del órgano superior.", "c) Respetar la tradición institucional.", "d) Mantener reserva ante los interesados."],
+    "correcta": "a) Actuar con lealtad y confianza hacia los ciudadanos.",
+    "justificacion": "El principio de buena fe exige relaciones basadas en confianza y veracidad entre Administración y administrados."
+  },
+  {
+    "pregunta": "El principio de imparcialidad obliga al funcionario a:",
+    "opciones": ["a) Abstenerse cuando exista interés personal o parentesco.", "b) Actuar conforme a sus opiniones personales.", "c) Defender a sus compañeros de trabajo.", "d) Favorecer a quien le nombró en el cargo."],
+    "correcta": "a) Abstenerse cuando exista interés personal o parentesco.",
+    "justificacion": "La imparcialidad se garantiza mediante el deber de abstención en caso de conflicto de interés."
+  },
+  {
+    "pregunta": "El principio de jerarquía administrativa implica:",
+    "opciones": ["a) La subordinación de los órganos inferiores a los superiores.", "b) La independencia total de cada órgano.", "c) La rotación periódica de los cargos.", "d) La supresión del control interno."],
+    "correcta": "a) La subordinación de los órganos inferiores a los superiores.",
+    "justificacion": "La jerarquía establece una relación de dirección y control entre órganos administrativos."
+  },
+  {
+    "pregunta": "La nulidad de pleno derecho implica que el acto:",
+    "opciones": ["a) No produce efectos desde su origen.", "b) Puede ser convalidado.", "c) Genera efectos hasta su revisión.", "d) Produce efectos transitorios."],
+    "correcta": "a) No produce efectos desde su origen.",
+    "justificacion": "El acto nulo carece de validez y no produce efectos jurídicos desde el momento de su emisión."
+  },
+  {
+    "pregunta": "Los actos administrativos deben motivarse:",
+    "opciones": ["a) Cuando pongan fin al procedimiento o resuelvan recursos.", "b) Solo si afectan a funcionarios públicos.", "c) En los actos de trámite simples.", "d) Cuando lo solicite el interesado."],
+    "correcta": "a) Cuando pongan fin al procedimiento o resuelvan recursos.",
+    "justificacion": "La Ley 39/2015 exige motivación en los actos que pongan fin al procedimiento o resuelvan recursos."
+  },
+  {
+    "pregunta": "El principio de cooperación entre Administraciones se articula mediante:",
+    "opciones": ["a) Convenios, conferencias sectoriales y órganos mixtos.", "b) Notas verbales informales.", "c) Directrices políticas.", "d) Resoluciones judiciales conjuntas."],
+    "correcta": "a) Convenios, conferencias sectoriales y órganos mixtos.",
+    "justificacion": "La Ley 40/2015 establece instrumentos de cooperación formal entre Administraciones Públicas."
+  },
+  {
+    "pregunta": "Los interesados pueden desistir de su solicitud:",
+    "opciones": ["a) En cualquier momento antes de dictarse la resolución.", "b) Solo al inicio del procedimiento.", "c) Una vez notificada la resolución.", "d) Cuando lo autorice el órgano superior."],
+    "correcta": "a) En cualquier momento antes de dictarse la resolución.",
+    "justificacion": "El artículo 94 de la Ley 39/2015 permite desistir mientras el procedimiento esté en tramitación."
+  },
+  {
+    "pregunta": "El recurso extraordinario de revisión puede interponerse cuando:",
+    "opciones": ["a) Se notifique un acto de trámite.", "b) Aparezcan documentos esenciales desconocidos al dictarse el acto.", "c) Exista discrepancia política con la resolución.", "d) Lo autorice el Defensor del Pueblo."],
+    "correcta": "b) Aparezcan documentos esenciales desconocidos al dictarse el acto.",
+    "justificacion": "El artículo 125 de la Ley 39/2015 prevé este recurso ante la aparición de documentos esenciales nuevos."
+  },
+  {
+    "pregunta": "Los actos administrativos producen efectos:",
+    "opciones": ["a) Desde su firma por el órgano competente.", "b) Desde su notificación o publicación.", "c) Desde la fecha de registro interno.", "d) Desde la validación judicial."],
+    "correcta": "b) Desde su notificación o publicación.",
+    "justificacion": "La eficacia de los actos administrativos comienza con su notificación o publicación al interesado."
+  },
+  {
+    "pregunta": "El principio de transparencia se concreta en:",
+    "opciones": ["a) La reserva de los expedientes.", "b) La publicidad activa y el derecho de acceso a la información pública.", "c) La confidencialidad absoluta de los datos administrativos.", "d) La supresión de registros públicos."],
+    "correcta": "b) La publicidad activa y el derecho de acceso a la información pública.",
+    "justificacion": "La transparencia se garantiza mediante publicidad activa y acceso ciudadano según la Ley 19/2013."
+  },
+  {
+    "pregunta": "La Administración actuará con sometimiento pleno:",
+    "opciones": ["a) Al interés político del Gobierno.", "b) A la ley y al Derecho.", "c) A las decisiones judiciales previas.", "d) A la costumbre administrativa."],
+    "correcta": "b) A la ley y al Derecho.",
+    "justificacion": "El artículo 103 de la Constitución impone el sometimiento pleno de la Administración a la ley y al Derecho."
+  },
+  {
+    "pregunta": "Los interesados pueden interponer recurso de alzada:",
+    "opciones": ["a) Contra actos judiciales.", "b) Contra actos que no pongan fin a la vía administrativa.", "c) Solo frente a disposiciones generales.", "d) Únicamente en materia tributaria."],
+    "correcta": "b) Contra actos que no pongan fin a la vía administrativa.",
+    "justificacion": "El recurso de alzada se interpone ante el superior jerárquico contra actos no definitivos en vía administrativa."
+  },
+  {
+    "pregunta": "El procedimiento administrativo común se regula en:",
+    "opciones": ["a) La Ley 40/2015.", "b) La Ley 39/2015.", "c) La Ley 19/2013.", "d) El Estatuto Básico del Empleado Público."],
+    "correcta": "b) La Ley 39/2015.",
+    "justificacion": "La Ley 39/2015 regula el procedimiento administrativo común de las Administraciones Públicas."
+  },
+  {
+    "pregunta": "Los actos nulos de pleno derecho pueden revisarse:",
+    "opciones": ["a) Por resolución del interesado.", "b) De oficio o a instancia del interesado, con dictamen del Consejo de Estado.", "c) Solo por orden judicial.", "d) Únicamente mediante recurso de reposición."],
+    "correcta": "b) De oficio o a instancia del interesado, con dictamen del Consejo de Estado.",
+    "justificacion": "La revisión de actos nulos requiere dictamen previo del Consejo de Estado o del órgano consultivo autonómico."
+  },
+  {
+    "pregunta": "La competencia de un órgano administrativo se determinará por:",
+    "opciones": ["a) La costumbre institucional.", "b) La ley o reglamento que la atribuya expresamente.", "c) El criterio del superior jerárquico.", "d) El acuerdo del Consejo de Ministros."],
+    "correcta": "b) La ley o reglamento que la atribuya expresamente.",
+    "justificacion": "La competencia se atribuye únicamente por norma con rango de ley o reglamento."
+  },
+  {
+    "pregunta": "El principio de cooperación entre Administraciones Públicas se manifiesta a través de:",
+    "opciones": ["a) Comunicaciones informales.", "b) Convenios y conferencias sectoriales.", "c) Circulares internas de coordinación.", "d) Reuniones parlamentarias."],
+    "correcta": "b) Convenios y conferencias sectoriales.",
+    "justificacion": "La cooperación interadministrativa se articula mediante convenios y conferencias sectoriales según la Ley 40/2015."
+  },
+  {
+    "pregunta": "El principio de proporcionalidad en la potestad sancionadora exige:",
+    "opciones": ["a) Aplicar la sanción más grave por precaución.", "b) Que la sanción sea adecuada, necesaria y equilibrada con la infracción.", "c) Que las sanciones sean idénticas para todos los casos.", "d) Que el órgano pueda decidir libremente la sanción."],
+    "correcta": "b) Que la sanción sea adecuada, necesaria y equilibrada con la infracción.",
+    "justificacion": "El principio de proporcionalidad impone equilibrio entre la infracción cometida y la sanción impuesta."
+  },
+  {
+    "pregunta": "El silencio administrativo negativo se aplica:",
+    "opciones": ["a) En todos los procedimientos administrativos.", "b) Cuando la estimación pudiera perjudicar el interés general.", "c) En los procedimientos iniciados de oficio.", "d) En los procedimientos simplificados."],
+    "correcta": "b) Cuando la estimación pudiera perjudicar el interés general.",
+    "justificacion": "El silencio desestimatorio se aplica en los casos en que el silencio positivo pudiera afectar al interés general."
+  },
+  {
+    "pregunta": "La avocación se produce cuando:",
+    "opciones": ["a) Un órgano inferior asume competencias del superior.", "b) Un órgano superior asume un asunto del inferior.", "c) Se delega la firma en un subordinado.", "d) Se designa un suplente temporal."],
+    "correcta": "b) Un órgano superior asume un asunto del inferior.",
+    "justificacion": "La avocación es la asunción por un órgano superior de un asunto atribuido a su inferior por razones de interés público."
+  },
+  {
+    "pregunta": "El principio de objetividad obliga a la Administración a:",
+    "opciones": ["a) Defender el interés de los partidos políticos.", "b) Servir con neutralidad al interés general.", "c) Favorecer a sus superiores jerárquicos.", "d) Mantener reserva sobre sus decisiones."],
+    "correcta": "b) Servir con neutralidad al interés general.",
+    "justificacion": "El principio de objetividad garantiza la actuación imparcial de los poderes públicos."
+  },
+  {
+    "pregunta": "El principio de economía en la gestión pública supone:",
+    "opciones": ["a) Reducir servicios públicos esenciales.", "b) Alcanzar los fines con el menor gasto posible.", "c) Aumentar los gastos corrientes.", "d) Evitar controles financieros."],
+    "correcta": "b) Alcanzar los fines con el menor gasto posible.",
+    "justificacion": "El principio de economía busca la optimización de recursos para cumplir los fines públicos con menor coste."
+  },
+  {
+    "pregunta": "Los órganos colegiados se rigen por:",
+    "opciones": ["a) La costumbre administrativa.", "b) Las normas de funcionamiento establecidas en la Ley 40/2015.", "c) Las instrucciones del Presidente del Gobierno.", "d) Los acuerdos informales de sus miembros."],
+    "correcta": "b) Las normas de funcionamiento establecidas en la Ley 40/2015.",
+    "justificacion": "La Ley 40/2015 regula la composición, convocatoria y funcionamiento de los órganos colegiados."
+  },
+  {
+    "pregunta": "La motivación de un acto administrativo debe incluir:",
+    "opciones": ["a) La firma digital del funcionario.", "b) Los hechos y fundamentos jurídicos en que se basa.", "c) El presupuesto del órgano competente.", "d) La identidad de los testigos del procedimiento."],
+    "correcta": "b) Los hechos y fundamentos jurídicos en que se basa.",
+    "justificacion": "La motivación explica las razones de hecho y de derecho que justifican la decisión adoptada."
+  },
+  {
+    "pregunta": "El principio de eficacia orienta la actuación administrativa a:",
+    "opciones": ["a) La satisfacción de los intereses privados.", "b) El cumplimiento de los fines de interés general.", "c) El mantenimiento del statu quo político.", "d) La reducción del número de órganos."],
+    "correcta": "b) El cumplimiento de los fines de interés general.",
+    "justificacion": "La eficacia obliga a orientar toda la actuación administrativa al logro de los fines públicos establecidos."
+  },
+  {
+    "pregunta": "El recurso de reposición se interpone ante:",
+    "opciones": ["a) El Tribunal Supremo.", "b) El mismo órgano que dictó el acto impugnado.", "c) El superior jerárquico del órgano competente.", "d) El Defensor del Pueblo."],
+    "correcta": "b) El mismo órgano que dictó el acto impugnado.",
+    "justificacion": "El recurso de reposición se presenta ante el mismo órgano que dictó el acto, conforme al artículo 123 de la Ley 39/2015."
+  },
+  {
+    "pregunta": "El principio de buena fe obliga a la Administración a:",
+    "opciones": ["a) Favorecer sus propios intereses.", "b) Actuar con lealtad y veracidad en sus relaciones con los ciudadanos.", "c) Mantener reserva sobre todos los expedientes.", "d) Acelerar los procedimientos a cualquier precio."],
+    "correcta": "b) Actuar con lealtad y veracidad en sus relaciones con los ciudadanos.",
+    "justificacion": "El principio de buena fe exige actuaciones honestas y confiables por parte de la Administración Pública."
+  },
+  {
+    "pregunta": "Los convenios administrativos entran en vigor:",
+    "opciones": ["a) Con la firma de las partes.", "b) Tras su publicación en el boletín oficial correspondiente.", "c) Una vez aprobados por el Consejo de Estado.", "d) Tras la validación del Defensor del Pueblo."],
+    "correcta": "b) Tras su publicación en el boletín oficial correspondiente.",
+    "justificacion": "La publicación en el boletín oficial es requisito de eficacia y validez de los convenios administrativos."
+  },
+  {
+    "pregunta": "El procedimiento sancionador deberá iniciarse siempre:",
+    "opciones": ["a) Por denuncia de un particular.", "b) De oficio, mediante acuerdo del órgano competente.", "c) Por resolución judicial.", "d) A solicitud del interesado."],
+    "correcta": "b) De oficio, mediante acuerdo del órgano competente.",
+    "justificacion": "Según el artículo 63 de la Ley 40/2015, los procedimientos sancionadores se inician de oficio."
+  },
+  {
+    "pregunta": "La responsabilidad patrimonial de la Administración se caracteriza por ser:",
+    "opciones": ["a) Subjetiva, basada en la culpa o negligencia.", "b) Objetiva, derivada del funcionamiento normal o anormal de los servicios públicos.", "c) Subsidiaria, respecto de los empleados públicos.", "d) Discrecional, según el tipo de daño."],
+    "correcta": "b) Objetiva, derivada del funcionamiento normal o anormal de los servicios públicos.",
+    "justificacion": "El artículo 32 de la Ley 40/2015 establece que la responsabilidad de la Administración es objetiva."
+  },
+  {
+    "pregunta": "La responsabilidad patrimonial prescribe al cabo de:",
+    "opciones": ["a) Un año desde la publicación de la norma.", "b) Un año desde que se produjo el daño o se manifestó su efecto lesivo.", "c) Tres años desde la actuación administrativa.", "d) Seis meses desde la reclamación."],
+    "correcta": "b) Un año desde que se produjo el daño o se manifestó su efecto lesivo.",
+    "justificacion": "El plazo de prescripción de la acción de responsabilidad patrimonial es de un año según la Ley 39/2015."
+  },
+  {
+    "pregunta": "En materia sancionadora, las sanciones deben aplicarse respetando:",
+    "opciones": ["a) La oportunidad política.", "b) Los principios de legalidad y tipicidad.", "c) La costumbre administrativa.", "d) El criterio del órgano sancionador."],
+    "correcta": "b) Los principios de legalidad y tipicidad.",
+    "justificacion": "Toda sanción debe estar prevista en norma con rango de ley y responder a un tipo infractor determinado."
+  },
+  {
+    "pregunta": "Las entidades públicas empresariales pertenecen:",
+    "opciones": ["a) Al sector privado.", "b) Al sector público institucional.", "c) A las sociedades mercantiles del Estado.", "d) A la Administración consultiva."],
+    "correcta": "b) Al sector público institucional.",
+    "justificacion": "Las entidades públicas empresariales forman parte del sector público institucional según la Ley 40/2015."
+  },
+  {
+    "pregunta": "Las sanciones administrativas solo podrán imponerse:",
+    "opciones": ["a) Por analogía o interpretación extensiva.", "b) En virtud de procedimiento legal establecido.", "c) Por decisión directa del órgano político.", "d) Mediante acuerdo entre las partes."],
+    "correcta": "b) En virtud de procedimiento legal establecido.",
+    "justificacion": "El principio de legalidad exige un procedimiento sancionador con garantías establecido por ley."
+  },
+  {
+    "pregunta": "En materia de responsabilidad patrimonial, el procedimiento se inicia:",
+    "opciones": ["a) Solo a instancia del ciudadano.", "b) De oficio o a solicitud del interesado.", "c) Por acuerdo del Consejo de Ministros.", "d) Por resolución judicial firme."],
+    "correcta": "b) De oficio o a solicitud del interesado.",
+    "justificacion": "El procedimiento de responsabilidad patrimonial puede iniciarse de oficio o por solicitud según el artículo 67 de la Ley 40/2015."
+  },
+  {
+    "pregunta": "El plazo máximo para resolver un procedimiento sancionador es de:",
+    "opciones": ["a) Tres meses.", "b) Seis meses.", "c) Nueve meses.", "d) Un año."],
+    "correcta": "b) Seis meses.",
+    "justificacion": "El artículo 21.6 de la Ley 39/2015 fija el plazo máximo de seis meses para resolver los procedimientos sancionadores."
+  },
+  {
+    "pregunta": "El procedimiento sancionador garantizará siempre:",
+    "opciones": ["a) La decisión inmediata del órgano competente.", "b) La presunción de inocencia del presunto infractor.", "c) La confidencialidad del procedimiento.", "d) La discrecionalidad en la sanción."],
+    "correcta": "b) La presunción de inocencia del presunto infractor.",
+    "justificacion": "El procedimiento sancionador debe respetar los derechos fundamentales, incluida la presunción de inocencia."
+  },
+  {
+    "pregunta": "El sector público institucional incluye:",
+    "opciones": ["a) Solo la Administración General del Estado.", "b) Entidades públicas empresariales, organismos autónomos y consorcios.", "c) Los órganos judiciales y legislativos.", "d) Las empresas privadas colaboradoras."],
+    "correcta": "b) Entidades públicas empresariales, organismos autónomos y consorcios.",
+    "justificacion": "El artículo 84 de la Ley 40/2015 define el sector público institucional con estas entidades."
+  },
+  {
+    "pregunta": "En el procedimiento sancionador, las medidas provisionales tienen por finalidad:",
+    "opciones": ["a) Sustituir la sanción definitiva.", "b) Asegurar la eficacia de la resolución que pudiera dictarse.", "c) Imponer sanciones anticipadas.", "d) Suspender el procedimiento principal."],
+    "correcta": "b) Asegurar la eficacia de la resolución que pudiera dictarse.",
+    "justificacion": "Las medidas provisionales se adoptan para garantizar la eficacia de la resolución final del procedimiento."
+  },
+  {
+    "pregunta": "En el procedimiento de responsabilidad patrimonial, la resolución debe ser:",
+    "opciones": ["a) Automática tras la reclamación.", "b) Motivada, con determinación del daño y de la cuantía de la indemnización.", "c) Exclusivamente económica.", "d) Firmada por el Defensor del Pueblo."],
+    "correcta": "b) Motivada, con determinación del daño y de la cuantía de la indemnización.",
+    "justificacion": "La resolución debe indicar el daño causado y la cuantía a indemnizar conforme al artículo 91 de la Ley 39/2015."
+  },
+  {
+    "pregunta": "El principio de proporcionalidad en la sanción implica que:",
+    "opciones": ["a) Las sanciones sean iguales para todos los infractores.", "b) Se apliquen de acuerdo con la gravedad del hecho y las circunstancias.", "c) Se impongan de forma discrecional.", "d) No puedan graduarse las infracciones."],
+    "correcta": "b) Se apliquen de acuerdo con la gravedad del hecho y las circunstancias.",
+    "justificacion": "El principio de proporcionalidad exige adecuar la sanción a la gravedad de la infracción y circunstancias concurrentes."
+  },
+  {
+    "pregunta": "Las infracciones muy graves de la Ley 19/2013 podrán ser sancionadas con:",
+    "opciones": ["a) Amonestación privada.", "b) Separación del cargo o destitución.", "c) Multa de hasta 600 euros.", "d) Suspensión temporal del procedimiento."],
+    "correcta": "b) Separación del cargo o destitución.",
+    "justificacion": "La Ley 19/2013 establece la separación del cargo como sanción para infracciones muy graves de buen gobierno."
+  },
+  {
+    "pregunta": "La imposición de sanciones administrativas requiere:",
+    "opciones": ["a) Resolución judicial previa.", "b) Resolución motivada del órgano competente.", "c) Acuerdo entre las partes.", "d) Dictamen del Defensor del Pueblo."],
+    "correcta": "b) Resolución motivada del órgano competente.",
+    "justificacion": "Toda sanción debe imponerse mediante resolución motivada conforme al artículo 35 de la Ley 39/2015."
+  },
+  {
+    "pregunta": "Los consorcios forman parte de:",
+    "opciones": ["a) La Administración militar.", "b) El sector público institucional.", "c) Las entidades privadas concertadas.", "d) El poder judicial."],
+    "correcta": "b) El sector público institucional.",
+    "justificacion": "Los consorcios son entidades de cooperación incluidas en el sector público institucional según la Ley 40/2015."
+  },
+  {
+    "pregunta": "El órgano competente para resolver la responsabilidad patrimonial será:",
+    "opciones": ["a) El Defensor del Pueblo.", "b) El órgano que causó el daño o su superior jerárquico.", "c) El Ministerio de Justicia.", "d) El Consejo de Estado."],
+    "correcta": "b) El órgano que causó el daño o su superior jerárquico.",
+    "justificacion": "La competencia para resolver recae en el órgano que generó el daño o en su superior jerárquico."
+  },
+  {
+    "pregunta": "El plazo máximo para resolver un procedimiento de responsabilidad patrimonial es de:",
+    "opciones": ["a) Tres meses.", "b) Seis meses.", "c) Un año.", "d) Doce meses prorrogables."],
+    "correcta": "b) Seis meses.",
+    "justificacion": "El artículo 91 de la Ley 39/2015 establece un plazo máximo de seis meses para resolver la responsabilidad patrimonial."
+  },
+  {
+    "pregunta": "Las medidas provisionales podrán adoptarse:",
+    "opciones": ["a) Sin motivación.", "b) Antes o durante el procedimiento, de forma motivada y proporcionada.", "c) Solo tras la resolución.", "d) Por decisión de un particular."],
+    "correcta": "b) Antes o durante el procedimiento, de forma motivada y proporcionada.",
+    "justificacion": "Las medidas provisionales deben ser motivadas y ajustadas a los principios de necesidad y proporcionalidad."
+  },
+  {
+    "pregunta": "En la Ley 19/2013, el régimen sancionador se aplica a:",
+    "opciones": ["a) Los ciudadanos en general.", "b) Las autoridades y cargos públicos sujetos a los principios de buen gobierno.", "c) Las empresas privadas proveedoras del Estado.", "d) Los medios de comunicación."],
+    "correcta": "b) Las autoridades y cargos públicos sujetos a los principios de buen gobierno.",
+    "justificacion": "El régimen sancionador de la Ley 19/2013 se aplica a las autoridades y altos cargos del sector público."
+  },
+  {
+    "pregunta": "La iniciación de un procedimiento administrativo podrá realizarse:",
+    "opciones": ["a) Únicamente por denuncia.", "b) De oficio o a solicitud del interesado.", "c) Solo por resolución judicial.", "d) Por comunicación informal."],
+    "correcta": "b) De oficio o a solicitud del interesado.",
+    "justificacion": "Según la Ley 39/2015, los procedimientos administrativos pueden iniciarse de oficio o por solicitud del interesado."
+  },
+  {
+    "pregunta": "Los actos administrativos deben notificarse:",
+    "opciones": ["a) Siempre por correo postal.", "b) En el plazo de diez días desde su dictado.", "c) Dentro de los tres meses siguientes.", "d) Solo a petición del interesado."],
+    "correcta": "b) En el plazo de diez días desde su dictado.",
+    "justificacion": "La Ley 39/2015 establece un plazo máximo de diez días para notificar los actos administrativos."
+  },
+  {
+    "pregunta": "El procedimiento simplificado se aplica:",
+    "opciones": ["a) En procedimientos sancionadores.", "b) Cuando razones de interés público lo aconsejen y los interesados estén de acuerdo.", "c) Solo en procedimientos judiciales.", "d) Para todos los procedimientos ordinarios."],
+    "correcta": "b) Cuando razones de interés público lo aconsejen y los interesados estén de acuerdo.",
+    "justificacion": "El procedimiento simplificado puede aplicarse con acuerdo de los interesados y razones de interés público, según el artículo 96 de la Ley 39/2015."
+  },
+  {
+    "pregunta": "La eficacia de los actos administrativos se produce:",
+    "opciones": ["a) Desde la firma del órgano competente.", "b) Desde su notificación o publicación.", "c) Desde la presentación de la solicitud.", "d) Desde la validación judicial."],
+    "correcta": "b) Desde su notificación o publicación.",
+    "justificacion": "El acto administrativo adquiere eficacia una vez notificado o publicado conforme al artículo 39 de la Ley 39/2015."
+  },
+  {
+    "pregunta": "La avocación es la técnica por la cual:",
+    "opciones": ["a) Un órgano inferior asume competencias del superior.", "b) Un órgano superior asume el conocimiento de un asunto de su inferior.", "c) Se delega la competencia permanentemente.", "d) Se cede la firma a otro funcionario."],
+    "correcta": "b) Un órgano superior asume el conocimiento de un asunto de su inferior.",
+    "justificacion": "La avocación permite que un órgano superior asuma un asunto por razones de interés público."
+  },
+  {
+    "pregunta": "Las sanciones administrativas deben imponerse:",
+    "opciones": ["a) Sin procedimiento previo.", "b) En virtud de un procedimiento con garantías.", "c) Mediante resolución judicial.", "d) De manera inmediata por el órgano político."],
+    "correcta": "b) En virtud de un procedimiento con garantías.",
+    "justificacion": "El principio de legalidad exige que toda sanción se imponga conforme a un procedimiento establecido por ley."
+  },
+  {
+    "pregunta": "La competencia de los órganos administrativos se determina por:",
+    "opciones": ["a) La costumbre administrativa.", "b) La ley o reglamento que la atribuya.", "c) El acuerdo entre órganos.", "d) La jerarquía política."],
+    "correcta": "b) La ley o reglamento que la atribuya.",
+    "justificacion": "La competencia solo puede atribuirse por norma con rango de ley o reglamento, nunca por costumbre."
+  },
+  {
+    "pregunta": "El silencio administrativo negativo implica:",
+    "opciones": ["a) La estimación de la solicitud.", "b) La desestimación por silencio del órgano competente.", "c) La suspensión del procedimiento.", "d) La nulidad del acto."],
+    "correcta": "b) La desestimación por silencio del órgano competente.",
+    "justificacion": "El silencio negativo produce la desestimación de la solicitud cuando así lo establezca la norma aplicable."
+  },
+  {
+    "pregunta": "El principio de cooperación entre Administraciones Públicas se concreta en:",
+    "opciones": ["a) La subordinación jerárquica.", "b) Los convenios y conferencias sectoriales.", "c) Las órdenes ministeriales conjuntas.", "d) La integración de organismos privados."],
+    "correcta": "b) Los convenios y conferencias sectoriales.",
+    "justificacion": "La cooperación se articula a través de convenios, conferencias y órganos mixtos según la Ley 40/2015."
+  },
+  {
+    "pregunta": "El procedimiento sancionador garantiza:",
+    "opciones": ["a) La confidencialidad de las partes.", "b) El derecho de audiencia del presunto infractor.", "c) La aplicación automática de la sanción.", "d) La actuación sin pruebas."],
+    "correcta": "b) El derecho de audiencia del presunto infractor.",
+    "justificacion": "El artículo 53 de la Ley 39/2015 reconoce el derecho de audiencia antes de dictar resolución sancionadora."
+  },
+  {
+    "pregunta": "Las entidades públicas empresariales se rigen por:",
+    "opciones": ["a) Derecho exclusivamente privado.", "b) Derecho público en su actividad administrativa y privado en la mercantil.", "c) Derecho penal en su conjunto.", "d) Derecho civil general."],
+    "correcta": "b) Derecho público en su actividad administrativa y privado en la mercantil.",
+    "justificacion": "Las entidades públicas empresariales combinan régimen público y privado según la Ley 40/2015."
+  },
+  {
+    "pregunta": "El principio de objetividad obliga a los funcionarios a:",
+    "opciones": ["a) Favorecer los intereses de su órgano.", "b) Actuar con neutralidad e imparcialidad en el desempeño de sus funciones.", "c) Seguir las instrucciones políticas.", "d) Mantener reserva sobre los procedimientos."],
+    "correcta": "b) Actuar con neutralidad e imparcialidad en el desempeño de sus funciones.",
+    "justificacion": "El principio de objetividad exige actuación neutral orientada al interés general, conforme al artículo 103 CE."
+  },
+  {
+    "pregunta": "El principio de transparencia se traduce en:",
+    "opciones": ["a) El secreto administrativo.", "b) La publicidad activa y el derecho de acceso a la información pública.", "c) La reserva de los expedientes.", "d) La confidencialidad absoluta de los documentos."],
+    "correcta": "b) La publicidad activa y el derecho de acceso a la información pública.",
+    "justificacion": "La Ley 19/2013 garantiza la transparencia mediante la publicidad activa y el acceso ciudadano."
+  },
+  {
+    "pregunta": "El recurso extraordinario de revisión se interpone:",
+    "opciones": ["a) Contra actos de trámite.", "b) Contra actos firmes en vía administrativa por causas tasadas.", "c) Contra resoluciones judiciales.", "d) Sin plazo determinado."],
+    "correcta": "b) Contra actos firmes en vía administrativa por causas tasadas.",
+    "justificacion": "El artículo 125 de la Ley 39/2015 regula este recurso frente a actos firmes cuando concurra causa legal."
+  },
+  {
+    "pregunta": "Los órganos colegiados deben convocarse:",
+    "opciones": ["a) Por cualquier miembro del órgano.", "b) Por su presidente, con orden del día previo.", "c) Por los secretarios técnicos.", "d) Sin necesidad de aviso formal."],
+    "correcta": "b) Por su presidente, con orden del día previo.",
+    "justificacion": "La convocatoria corresponde al presidente, quien fija el orden del día conforme a la Ley 40/2015."
+  },
+  {
+    "pregunta": "La responsabilidad disciplinaria de los altos cargos se rige por:",
+    "opciones": ["a) El Código Penal.", "b) La Ley 19/2013 de transparencia, acceso a la información y buen gobierno.", "c) La Ley de Enjuiciamiento Civil.", "d) El Reglamento del Congreso."],
+    "correcta": "b) La Ley 19/2013 de transparencia, acceso a la información y buen gobierno.",
+    "justificacion": "La Ley 19/2013 regula las obligaciones éticas y disciplinarias de los altos cargos públicos."
+  },
+  {
+    "pregunta": "El principio de buena fe en la actuación administrativa exige:",
+    "opciones": ["a) La defensa de intereses particulares.", "b) La actuación leal, honesta y transparente hacia los ciudadanos.", "c) La reserva absoluta de información.", "d) La discrecionalidad política del funcionario."],
+    "correcta": "b) La actuación leal, honesta y transparente hacia los ciudadanos.",
+    "justificacion": "El principio de buena fe obliga a la Administración a actuar con honestidad y lealtad en todas sus actuaciones."
+  },
+  {
+    "pregunta": "El plazo general de prescripción de infracciones administrativas es de:",
+    "opciones": ["a) Un mes.", "b) Tres años, salvo que la ley disponga otro.", "c) Seis meses.", "d) Cinco años para todas las infracciones."],
+    "correcta": "b) Tres años, salvo que la ley disponga otro.",
+    "justificacion": "Las infracciones administrativas prescriben a los tres años, conforme al artículo 30 de la Ley 40/2015."
+  },
+  {
+    "pregunta": "El sector público institucional se compone de:",
+    "opciones": ["a) Órganos constitucionales.", "b) Organismos autónomos, entidades públicas empresariales y consorcios.", "c) Empresas privadas colaboradoras.", "d) Organismos internacionales."],
+    "correcta": "b) Organismos autónomos, entidades públicas empresariales y consorcios.",
+    "justificacion": "El artículo 84 de la Ley 40/2015 define el sector público institucional con estas entidades."
+  },
+  {
+    "pregunta": "Las infracciones graves de la Ley 19/2013 pueden sancionarse con:",
+    "opciones": ["a) Multa simbólica.", "b) Suspensión del cargo hasta un año.", "c) Separación definitiva del servicio.", "d) Reprimenda pública sin efectos."],
+    "correcta": "b) Suspensión del cargo hasta un año.",
+    "justificacion": "Las infracciones graves del régimen de buen gobierno pueden sancionarse con suspensión temporal del cargo."
+  },
   ];
 
 let totalPreguntasRenderizadas = 0;
