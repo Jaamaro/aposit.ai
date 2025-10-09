@@ -94,6 +94,35 @@
         transform: translateY(0);
       }
     }
+    /* Ajuste especial para versión solo Guardia Civil */
+.button-container.single {
+  display: flex;
+  justify-content: center;
+}
+
+.oposit-button.gc {
+  font-size: 1.3rem;
+  padding: 1.2rem 2.5rem;
+  border-radius: 12px;
+  box-shadow: 0 6px 12px rgba(27, 94, 32, 0.25);
+}
+    /* === Botón principal Guardia Civil con degradado elegante === */
+.oposit-button.gc {
+  font-size: 1.3rem;
+  padding: 1.2rem 2.5rem;
+  border-radius: 12px;
+  font-weight: 700;
+  color: #ffffff;
+  background: linear-gradient(135deg, #1b5e20 0%, #22c55e 100%);
+  box-shadow: 0 6px 14px rgba(27, 94, 32, 0.25);
+  transition: all 0.3s ease;
+}
+
+.oposit-button.gc:hover {
+  background: linear-gradient(135deg, #22c55e 0%, #4ade80 100%);
+  transform: scale(1.08);
+  box-shadow: 0 8px 18px rgba(27, 94, 32, 0.35);
+}
   </style>
 </head>
 <body>
@@ -105,22 +134,18 @@
     <a href="consejos.html">Consejos</a>
   </nav>
 
-  <main>
-    <div class="card">
-      <h1>Selecciona tu oposición</h1>
-      <p>Elige la oposición para acceder a los tests específicos de cada cuerpo. Podrás practicar por temas, con tests aleatorios o simulacros reales.</p>
+  <main><main>
+  <div class="card">
+    <h1>Tests de Guardia Civil</h1>
+    <p>Accede a los tests oficiales de la Guardia Civil. Practica por temas, realiza simulacros o tests aleatorios para preparar tu oposición con el mejor enfoque.</p>
 
-      <div class="button-container">
-        <a href="tests/guardia-civil.html" class="oposit-button gc">
-          <span class="emoji">🛡️</span> Entrar a Tests de Guardia Civil
-        </a>
-        <a href="tests/policia-nacional.html" class="oposit-button pn">
-          <span class="emoji">👮‍♂️</span> Entrar a Tests de Policía Nacional
-        </a>
-      </div>
+    <div class="button-container single">
+      <a href="tests/guardia-civil.html" class="oposit-button gc">
+        <span class="emoji">🛡️</span> Entrar a Tests de Guardia Civil
+      </a>
     </div>
-  </main>
-
+  </div>
+</main>
   <footer>
     © 2025 Oposit.ai — Hecho con 💡 y café para opositores como tú.
   </footer>
