@@ -1865,53 +1865,38 @@ evaluarTest = function() {
 
 // Cuando el tiempo se agota automáticamente
 function finalizarTestPorTiempo() {
-  // Evita doble ejecución
+  // Evitar ejecuciones duplicadas
   if (window.__finalizadoPorTiempo__) return;
   window.__finalizadoPorTiempo__ = true;
 
   detenerTemporizador();
-  if (temporizadorDiv) temporizadorDiv.textContent = '⏰ ¡Tiempo agotado! Corrigiendo…';
+  if (temporizadorDiv) temporizadorDiv.textContent = '⏰ ¡Tiempo agotado! Responde pulsando "Enviar" para ver la corrección.';
 
-  // Evita que el formulario provoque recarga
-  const form = document.getElementById('testForm');
-  if (form) {
-    form.addEventListener('submit', e => e.preventDefault(), { once: true });
+  // 🔒 Bloquear solo las respuestas, pero mantener activo el botón "Enviar"
+  document.querySelectorAll('input[type="radio"]').forEach(r => {
+    r.disabled = true;
+    const opt = r.closest('.option');
+    if (opt) {
+      opt.style.opacity = '0.6';
+      opt.style.pointerEvents = 'none';
+    }
+  });
+
+  // Dejar activo el botón de enviar (para que el usuario lo use manualmente)
+  const btnEnviar = document.querySelector('button.btn.success, button[type="submit"]');
+  if (btnEnviar) {
+    btnEnviar.disabled = false;
+    btnEnviar.style.opacity = '1';
+    btnEnviar.style.cursor = 'pointer';
   }
 
-  // 🧮 Ejecutar la corrección: detecta si la función está en ámbito local o global
-  try {
-    if (typeof evaluarTest === 'function') {
-      evaluarTest();
-    } else if (typeof window.evaluarTest === 'function') {
-      window.evaluarTest();
-    } else {
-      console.warn('⚠️ No se encontró la función evaluarTest().');
-    }
-  } catch (err) {
-    console.error('Error al ejecutar evaluarTest():', err);
+  // Desactivar cualquier intento de reinicio automático
+  const btnReiniciar = document.querySelector('button.btn.secondary');
+  if (btnReiniciar) {
+    btnReiniciar.disabled = false;
   }
-
-  // Bloquear los controles tras la corrección
-  setTimeout(() => {
-    document.querySelectorAll('input[type="radio"]').forEach(r => {
-      r.disabled = true;
-      const opt = r.closest('.option');
-      if (opt) {
-        opt.style.opacity = '0.6';
-        opt.style.pointerEvents = 'none';
-      }
-    });
-
-    const btnEnviar = document.querySelector('button.btn.success, button[type="submit"]');
-    if (btnEnviar) {
-      btnEnviar.disabled = true;
-      btnEnviar.style.opacity = '0.5';
-      btnEnviar.style.cursor = 'not-allowed';
-    }
-
-    if (temporizadorDiv) temporizadorDiv.textContent = '⏰ ¡Tiempo agotado! Test corregido.';
-  }, 100);
 }
+
 </script>
 </body>
 </html>
