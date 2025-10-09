@@ -1786,7 +1786,7 @@ const selectTiempo = document.createElement('select');
 selectTiempo.id = 'tiempoSeleccionado';
 selectTiempo.innerHTML = `
   <option value="0">Sin límite</option>
-  <option value="1">1 minuto</option>
+  <option value="0.1">6 segundos</option>
   <option value="5">5 minutos</option>
   <option value="10" selected>10 minutos</option>
   <option value="15">15 minutos</option>
@@ -1865,30 +1865,33 @@ evaluarTest = function() {
 
 // Cuando el tiempo se agota automáticamente
 function finalizarTestPorTiempo() {
-  // Evitar que se ejecute dos veces
+  // Evita doble ejecución
   if (window.__finalizadoPorTiempo__) return;
   window.__finalizadoPorTiempo__ = true;
 
-  // Detiene el temporizador y muestra aviso
   detenerTemporizador();
-  temporizadorDiv.textContent = '⏰ ¡Tiempo agotado! Corrigiendo…';
+  if (temporizadorDiv) temporizadorDiv.textContent = '⏰ ¡Tiempo agotado! Corrigiendo…';
 
-  // 🔒 Evita recarga del formulario si hay comportamiento por defecto
+  // Evita que el formulario provoque recarga
   const form = document.getElementById('testForm');
   if (form) {
     form.addEventListener('submit', e => e.preventDefault(), { once: true });
   }
 
-  // 🧮 Corrige automáticamente (llama a tu función de corrección)
-  if (typeof window.evaluarTest === 'function') {
-    try {
+  // 🧮 Ejecutar la corrección: detecta si la función está en ámbito local o global
+  try {
+    if (typeof evaluarTest === 'function') {
+      evaluarTest();
+    } else if (typeof window.evaluarTest === 'function') {
       window.evaluarTest();
-    } catch (err) {
-      console.error('Error al ejecutar evaluarTest:', err);
+    } else {
+      console.warn('⚠️ No se encontró la función evaluarTest().');
     }
+  } catch (err) {
+    console.error('Error al ejecutar evaluarTest():', err);
   }
 
-  // ⛔ Bloquea todos los inputs y botones
+  // Bloquear los controles tras la corrección
   setTimeout(() => {
     document.querySelectorAll('input[type="radio"]').forEach(r => {
       r.disabled = true;
@@ -1899,30 +1902,16 @@ function finalizarTestPorTiempo() {
       }
     });
 
-    const btnEnviar = document.querySelector('button.btn.success');
+    const btnEnviar = document.querySelector('button.btn.success, button[type="submit"]');
     if (btnEnviar) {
       btnEnviar.disabled = true;
       btnEnviar.style.opacity = '0.5';
       btnEnviar.style.cursor = 'not-allowed';
     }
 
-    const btnReiniciar = document.querySelector('button.btn.secondary');
-    if (btnReiniciar) {
-      btnReiniciar.disabled = false; // este sí lo dejamos activo
-    }
-
-    temporizadorDiv.textContent = '⏰ ¡Tiempo agotado! Test corregido.';
+    if (temporizadorDiv) temporizadorDiv.textContent = '⏰ ¡Tiempo agotado! Test corregido.';
   }, 100);
 }
-// Evita recarga completa al enviar manualmente el test
-document.addEventListener('submit', function(e) {
-  if (e.target && e.target.id === 'testForm') {
-    e.preventDefault(); // ⚡ bloquea la recarga
-    if (typeof window.evaluarTest === 'function') {
-      try { evaluarTest(); } catch (err) { console.error(err); }
-    }
-  }
-});
 </script>
 </body>
 </html>
