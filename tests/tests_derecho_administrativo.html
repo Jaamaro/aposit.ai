@@ -1865,7 +1865,8 @@ evaluarTest = function() {
 // Cuando el tiempo se agota automáticamente
 function finalizarTestPorTiempo() {
   detenerTemporizador();
-  temporizadorDiv.t
+  temporizadorDiv.textContent = '⏰ ¡Tiempo agotado!';
+  evaluarTest(); // Corrige automáticamente
 </script>
 </body>
 </html>
