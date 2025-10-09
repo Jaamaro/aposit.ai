@@ -1865,50 +1865,64 @@ evaluarTest = function() {
 
 // Cuando el tiempo se agota automáticamente
 function finalizarTestPorTiempo() {
-  // Evita dobles ejecuciones
+  // Evitar que se ejecute dos veces
   if (window.__finalizadoPorTiempo__) return;
   window.__finalizadoPorTiempo__ = true;
 
-  try { detenerTemporizador(); } catch(_) {}
-  if (typeof temporizadorDiv !== 'undefined' && temporizadorDiv) {
-    temporizadorDiv.textContent = '⏰ ¡Tiempo agotado! Corrigiendo…';
-  }
+  // Detiene el temporizador y muestra aviso
+  detenerTemporizador();
+  temporizadorDiv.textContent = '⏰ ¡Tiempo agotado! Corrigiendo…';
 
+  // 🔒 Evita recarga del formulario si hay comportamiento por defecto
   const form = document.getElementById('testForm');
+  if (form) {
+    form.addEventListener('submit', e => e.preventDefault(), { once: true });
+  }
 
-  // 1) Preferible: corregir directamente si existe la función
-  let evaluado = false;
+  // 🧮 Corrige automáticamente (llama a tu función de corrección)
   if (typeof window.evaluarTest === 'function') {
-    try { window.evaluarTest(); evaluado = true; } catch (err) { console.error(err); }
-  }
-
-  // 2) Alternativa: disparar submit del formulario (nuestro listener ya evita recarga)
-  if (!evaluado && form) {
     try {
-      if (typeof form.requestSubmit === 'function') {
-        form.requestSubmit();
-      } else {
-        form.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
-      }
-    } catch (err) { console.error(err); }
+      window.evaluarTest();
+    } catch (err) {
+      console.error('Error al ejecutar evaluarTest:', err);
+    }
   }
 
-  // 3) Bloquear UI tras corregir (siguiente tick para no interferir con la lectura)
+  // ⛔ Bloquea todos los inputs y botones
   setTimeout(() => {
     document.querySelectorAll('input[type="radio"]').forEach(r => {
       r.disabled = true;
       const opt = r.closest('.option');
-      if (opt) { opt.style.opacity = '0.6'; opt.style.pointerEvents = 'none'; }
+      if (opt) {
+        opt.style.opacity = '0.6';
+        opt.style.pointerEvents = 'none';
+      }
     });
 
-    const btnEnviar = document.querySelector('button[type="submit"], input[type="submit"], button.btn.success');
+    const btnEnviar = document.querySelector('button.btn.success');
     if (btnEnviar) {
       btnEnviar.disabled = true;
       btnEnviar.style.opacity = '0.5';
       btnEnviar.style.cursor = 'not-allowed';
     }
-  }, 0);
+
+    const btnReiniciar = document.querySelector('button.btn.secondary');
+    if (btnReiniciar) {
+      btnReiniciar.disabled = false; // este sí lo dejamos activo
+    }
+
+    temporizadorDiv.textContent = '⏰ ¡Tiempo agotado! Test corregido.';
+  }, 100);
 }
+// Evita recarga completa al enviar manualmente el test
+document.addEventListener('submit', function(e) {
+  if (e.target && e.target.id === 'testForm') {
+    e.preventDefault(); // ⚡ bloquea la recarga
+    if (typeof window.evaluarTest === 'function') {
+      try { evaluarTest(); } catch (err) { console.error(err); }
+    }
+  }
+});
 </script>
 </body>
 </html>
