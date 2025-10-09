@@ -123,6 +123,26 @@
   transform: scale(1.08);
   box-shadow: 0 8px 18px rgba(27, 94, 32, 0.35);
 }
+    /* === Footer fijo al fondo === */
+html, body {
+  height: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1; /* empuja el footer hacia abajo */
+}
+
+footer {
+  background-color: #1b5e20;
+  color: #fef9c3;
+  text-align: center;
+  padding: 1rem;
+  font-size: 0.95rem;
+  margin-top: auto;
+}
   </style>
 </head>
 <body>
