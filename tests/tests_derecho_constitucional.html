@@ -2306,6 +2306,148 @@ function reiniciarTest() {
   document.getElementById('testResult').innerHTML = '';
   setProgress(0, 0);
 }
+   // ==========================
+// 🔹 TEMPORIZADOR CONFIGURABLE
+// ==========================
+
+// Variables del temporizador
+let tiempoTotal = 0;
+let tiempoRestante = 0;
+let temporizadorInterval;
+
+// Crear selector de tiempo en el panel de controles
+const selectTiempo = document.createElement('select');
+selectTiempo.id = 'tiempoSeleccionado';
+selectTiempo.innerHTML = `
+  <option value="0">Sin límite</option>
+  <option value="5">5 minutos</option>
+  <option value="10" selected>10 minutos</option>
+  <option value="15">15 minutos</option>
+  <option value="20">20 minutos</option>
+  <option value="30">30 minutos</option>
+  <option value="40">40 minutos</option>
+  <option value="50">50 minutos</option>
+  <option value="60">60 minutos</option>
+`;
+const labelTiempo = document.createElement('label');
+labelTiempo.htmlFor = 'tiempoSeleccionado';
+labelTiempo.textContent = 'Tiempo límite:';
+const controlsDiv = document.querySelector('.controls');
+controlsDiv.insertBefore(labelTiempo, controlsDiv.children[2]);
+controlsDiv.insertBefore(selectTiempo, controlsDiv.children[3]);
+
+// Crear elemento visual del temporizador
+const temporizadorDiv = document.createElement('div');
+temporizadorDiv.id = 'temporizador';
+temporizadorDiv.style.textAlign = 'center';
+temporizadorDiv.style.fontSize = '18px';
+temporizadorDiv.style.fontWeight = '700';
+temporizadorDiv.style.color = '#2563eb';
+temporizadorDiv.style.marginTop = '12px';
+controlsDiv.appendChild(temporizadorDiv);
+
+// Mostrar tiempo en formato mm:ss
+function mostrarTiempo() {
+  let min = Math.floor(tiempoRestante / 60);
+  let seg = tiempoRestante % 60;
+  temporizadorDiv.textContent = `⏳ Tiempo restante: ${min}:${seg.toString().padStart(2, '0')}`;
+}
+
+// Iniciar temporizador
+function iniciarTemporizador() {
+  const minutosSeleccionados = parseInt(document.getElementById('tiempoSeleccionado').value);
+  if (minutosSeleccionados === 0) {
+    temporizadorDiv.textContent = '⏳ Sin límite de tiempo';
+    return;
+  }
+
+  tiempoTotal = minutosSeleccionados * 60;
+  tiempoRestante = tiempoTotal;
+  mostrarTiempo();
+
+  temporizadorInterval = setInterval(() => {
+    tiempoRestante--;
+    mostrarTiempo();
+    if (tiempoRestante <= 0) {
+      clearInterval(temporizadorInterval);
+      temporizadorDiv.textContent = '⏰ ¡Tiempo agotado!';
+      finalizarTestPorTiempo();
+    }
+  }, 1000);
+}
+
+// Detener temporizador
+function detenerTemporizador() {
+  clearInterval(temporizadorInterval);
+}
+
+// Modificar función cargarTest para que inicie el temporizador
+const originalCargarTest = cargarTest;
+cargarTest = function() {
+  originalCargarTest();
+  detenerTemporizador(); // Por si se reinicia
+  iniciarTemporizador();
+};
+
+// Al finalizar el test manualmente (botón Enviar)
+const originalEvaluarTest = evaluarTest;
+evaluarTest = function() {
+  detenerTemporizador(); // Detiene el contador al pulsar Enviar
+  originalEvaluarTest();
+};
+
+// Cuando el tiempo se agota automáticamente
+function finalizarTestPorTiempo() {
+  // Evita ejecuciones dobles
+  if (window.__finalizadoPorTiempo__) return;
+  window.__finalizadoPorTiempo__ = true;
+
+  detenerTemporizador();
+  if (temporizadorDiv) temporizadorDiv.textContent = '⏰ ¡Tiempo agotado! Pulsa "Enviar" para corregir.';
+
+  // 🔒 Bloquear todas las respuestas
+  document.querySelectorAll('input[type="radio"]').forEach(r => {
+    r.disabled = true;
+    const opt = r.closest('.option');
+    if (opt) {
+      opt.style.opacity = '0.6';
+      opt.style.pointerEvents = 'none';
+    }
+  });
+
+  // ✅ Dejar el botón "Enviar" activo y hacerlo destacar en verde
+  const btnEnviar = document.querySelector('button.btn.success, button[type="submit"]');
+  if (btnEnviar) {
+    btnEnviar.disabled = false;
+    btnEnviar.style.opacity = '1';
+    btnEnviar.style.cursor = 'pointer';
+
+    // 💚 Efecto parpadeo verde suave
+    btnEnviar.style.animation = 'blinkGreen 1.2s infinite';
+    btnEnviar.style.transition = 'background-color 0.3s ease';
+    btnEnviar.style.backgroundColor = '#22c55e'; // verde suave (Tailwind: green-500)
+    btnEnviar.style.color = 'white';
+
+    // Inyectar animación CSS si no existe
+    if (!document.getElementById('blinkGreen-style')) {
+      const style = document.createElement('style');
+      style.id = 'blinkGreen-style';
+      style.textContent = `
+        @keyframes blinkGreen {
+          0%, 100% { background-color: #22c55e; }
+          50% { background-color: #86efac; } /* verde claro (green-300) */
+        }
+      `;
+      document.head.appendChild(style);
+    }
+  }
+
+  // 🔄 Mantener botón "Reiniciar" activo
+  const btnReiniciar = document.querySelector('button.btn.secondary');
+  if (btnReiniciar) {
+    btnReiniciar.disabled = false;
+  }
+}
 </script>
 </body>
 </html>
