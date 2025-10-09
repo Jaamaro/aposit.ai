@@ -1866,7 +1866,25 @@ evaluarTest = function() {
 function finalizarTestPorTiempo() {
   detenerTemporizador();
   temporizadorDiv.textContent = '⏰ ¡Tiempo agotado!';
-  evaluarTest(); // Corrige automáticamente
+
+  // 🔒 Desactivar todos los inputs para impedir más respuestas
+  const radios = document.querySelectorAll('input[type="radio"]');
+  radios.forEach(r => {
+    r.disabled = true;
+    // Opcional: quitarle la clase "hover" visual
+    if (r.parentElement) r.parentElement.style.opacity = '0.6';
+  });
+
+  // Desactivar también el botón de enviar si existe
+  const btnEnviar = document.querySelector('button.btn.success');
+  if (btnEnviar) {
+    btnEnviar.disabled = true;
+    btnEnviar.style.opacity = '0.5';
+    btnEnviar.style.cursor = 'not-allowed';
+  }
+
+  // 🧾 Corregir automáticamente el test
+  evaluarTest();
 }
 </script>
 </body>
