@@ -1865,40 +1865,40 @@ evaluarTest = function() {
 
 // Cuando el tiempo se agota automáticamente
 function finalizarTestPorTiempo() {
-  // Evita que se ejecute dos veces
+  // Evita dobles ejecuciones
   if (window.__finalizadoPorTiempo__) return;
   window.__finalizadoPorTiempo__ = true;
 
-  detenerTemporizador();
-  temporizadorDiv.textContent = '⏰ ¡Tiempo agotado! Corrigiendo…';
+  try { detenerTemporizador(); } catch(_) {}
+  if (typeof temporizadorDiv !== 'undefined' && temporizadorDiv) {
+    temporizadorDiv.textContent = '⏰ ¡Tiempo agotado! Corrigiendo…';
+  }
 
   const form = document.getElementById('testForm');
 
-  // 1️⃣ Intenta enviar el formulario (forma más limpia si tu botón "Enviar" usa submit)
-  if (form) {
-    if (typeof form.requestSubmit === 'function') {
-      form.requestSubmit(); // moderno y fiable
-    } else {
-      const submitBtn = form.querySelector('button[type="submit"], input[type="submit"], button.btn.success');
-      if (submitBtn) submitBtn.click();
-    }
-  }
-
-  // 2️⃣ Si por cualquier motivo no se envió, ejecuta manualmente la función de corrección
+  // 1) Preferible: corregir directamente si existe la función
+  let evaluado = false;
   if (typeof window.evaluarTest === 'function') {
-    try { window.evaluarTest(); } catch (err) { console.error(err); }
+    try { window.evaluarTest(); evaluado = true; } catch (err) { console.error(err); }
   }
 
-  // 3️⃣ Bloquea toda la interfaz tras corregir (un pequeño retardo para no interferir)
+  // 2) Alternativa: disparar submit del formulario (nuestro listener ya evita recarga)
+  if (!evaluado && form) {
+    try {
+      if (typeof form.requestSubmit === 'function') {
+        form.requestSubmit();
+      } else {
+        form.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
+      }
+    } catch (err) { console.error(err); }
+  }
+
+  // 3) Bloquear UI tras corregir (siguiente tick para no interferir con la lectura)
   setTimeout(() => {
-    const radios = document.querySelectorAll('input[type="radio"]');
-    radios.forEach(r => {
+    document.querySelectorAll('input[type="radio"]').forEach(r => {
       r.disabled = true;
       const opt = r.closest('.option');
-      if (opt) {
-        opt.style.opacity = '0.6';
-        opt.style.pointerEvents = 'none';
-      }
+      if (opt) { opt.style.opacity = '0.6'; opt.style.pointerEvents = 'none'; }
     });
 
     const btnEnviar = document.querySelector('button[type="submit"], input[type="submit"], button.btn.success');
@@ -1907,7 +1907,7 @@ function finalizarTestPorTiempo() {
       btnEnviar.style.opacity = '0.5';
       btnEnviar.style.cursor = 'not-allowed';
     }
-  }, 50);
+  }, 0);
 }
 </script>
 </body>
