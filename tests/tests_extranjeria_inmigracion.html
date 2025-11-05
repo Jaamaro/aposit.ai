@@ -259,20 +259,36 @@ function cargarTest() {
   testResult.innerHTML = '';
   progressBar.style.width = '0%';
 
-  // Mezclar las preguntas y seleccionar las necesarias
+  if (!preguntasBanco || preguntasBanco.length === 0) {
+    testForm.innerHTML = '<p style="color:red;font-weight:bold;">⚠️ No hay preguntas en el banco.</p>';
+    return;
+  }
+
+  const letras = ['a)', 'b)', 'c)', 'd)', 'e)', 'f)']; // por si hay más de 4 opciones
   const preguntasSeleccionadas = shuffle([...preguntasBanco]).slice(0, numPreguntas);
 
   preguntasSeleccionadas.forEach((preguntaObj, index) => {
-    // Mezclar opciones
+    // Mezclamos las opciones (pero vamos a limpiar su prefijo "a) " si lo llevan)
     const opcionesMezcladas = shuffle([...preguntaObj.opciones]);
 
-    // Cada input llevará un data-correct="true" si esa opción es la correcta
-    const opcionesHTML = opcionesMezcladas.map((opcion) => {
-      const esCorrecta = opcion === preguntaObj.correcta ? 'true' : 'false';
+    // Convertimos cada opción en un objeto { texto, esCorrecta }
+    const opcionesObj = opcionesMezcladas.map(opcion => {
+      // Limpiar prefijos como "a) ", "b) " si existen
+      const textoLimpio = opcion.replace(/^[A-Za-z]\)\s*/, '').trim();
+      const esCorrecta = opcion === preguntaObj.correcta || textoLimpio === preguntaObj.correcta.replace(/^[A-Za-z]\)\s*/, '').trim();
+      return { texto: textoLimpio, esCorrecta };
+    });
+
+    // Renderizamos las opciones asignando letras según la posición (letras fijas)
+    const opcionesHTML = opcionesObj.map((opt, optIndex) => {
+      const marcaCorrecta = opt.esCorrecta ? 'true' : 'false';
+      const letra = letras[optIndex] || `${optIndex + 1})`; // fallback si hay >6 opciones
+      // No incluimos la letra dentro del texto de la opción; la mostramos separada
       return `
         <label class="option">
-          <input type="radio" name="pregunta${index}" value="${opcion}" data-correct="${esCorrecta}">
-          ${opcion}
+          <input type="radio" name="pregunta${index}" value="${opt.texto.replace(/"/g, '&quot;')}" data-correct="${marcaCorrecta}">
+          <span style="font-weight:700; margin-right:10px; color:var(--muted)">${letra}</span>
+          ${opt.texto}
         </label>
       `;
     }).join('');
@@ -287,7 +303,7 @@ function cargarTest() {
           ${opcionesHTML}
         </div>
         <div class="justification muted" style="display:none;">
-          <span class="correct">✔ ${preguntaObj.correcta}</span><br>
+          <span class="correct">✔ ${preguntaObj.correcta.replace(/^[A-Za-z]\)\s*/, '')}</span><br>
           ${preguntaObj.justificacion}
         </div>
       </div>
@@ -295,14 +311,18 @@ function cargarTest() {
     testForm.insertAdjacentHTML('beforeend', preguntaHTML);
   });
 
-  // Añadir botón corregir
-  const botonCorregir = document.createElement('button');
-  botonCorregir.type = 'button';
-  botonCorregir.className = 'btn success';
-  botonCorregir.textContent = 'Corregir';
-  botonCorregir.onclick = () => corregirTest();
-  testForm.appendChild(botonCorregir);
+  // Añadir botón corregir (evitar duplicados)
+  const botonCorregirExistente = Array.from(testForm.getElementsByTagName('button')).find(b => b.textContent === 'Corregir');
+  if (!botonCorregirExistente) {
+    const botonCorregir = document.createElement('button');
+    botonCorregir.type = 'button';
+    botonCorregir.className = 'btn success';
+    botonCorregir.textContent = 'Corregir';
+    botonCorregir.onclick = () => corregirTest();
+    testForm.appendChild(botonCorregir);
+  }
 }
+
 
 function corregirTest() {
   const preguntas = document.querySelectorAll('.question');
