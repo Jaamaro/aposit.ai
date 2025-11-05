@@ -247,30 +247,37 @@ function cargarTest() {
   testResult.innerHTML = '';
   progressBar.style.width = '0%';
 
-  // Mezclar las preguntas
+  // Mezclar las preguntas y seleccionar las necesarias
   const preguntasSeleccionadas = shuffle([...preguntasBanco]).slice(0, numPreguntas);
 
   preguntasSeleccionadas.forEach((preguntaObj, index) => {
-    // Mezclar opciones y actualizar la correcta
+    // Mezclar opciones
     const opcionesMezcladas = shuffle([...preguntaObj.opciones]);
-    const correctaActualizada = opcionesMezcladas.find(opt => opt === preguntaObj.correcta);
+
+    // Construir HTML de opciones: cada input tendrá data-correct="true" si es la correcta
+    const opcionesHTML = opcionesMezcladas.map((opcion, optIndex) => {
+      const esCorrecta = opcion === preguntaObj.correcta ? 'true' : 'false';
+      // Escapar comillas en value por seguridad
+      const valor = opcion.replace(/"/g, '&quot;');
+      return `
+        <label class="option" data-option-index="${optIndex}">
+          <input type="radio" name="pregunta${index}" value="${valor}" data-correct="${esCorrecta}">
+          ${opcion}
+        </label>
+      `;
+    }).join('');
 
     const preguntaHTML = `
-      <div class="question" data-correcta="${correctaActualizada}">
+      <div class="question" data-preg-index="${index}">
         <div class="q-head">
           <span class="q-num">${index + 1}.</span>
           <p class="q-text">${preguntaObj.pregunta}</p>
         </div>
         <div class="options">
-          ${opcionesMezcladas.map(opcion => `
-            <label class="option">
-              <input type="radio" name="pregunta${index}" value="${opcion}">
-              ${opcion}
-            </label>
-          `).join('')}
+          ${opcionesHTML}
         </div>
         <div class="justification muted" style="display:none;">
-          <span class="correct">✔ ${correctaActualizada}</span><br>
+          <span class="correct">✔ ${preguntaObj.correcta}</span><br>
           ${preguntaObj.justificacion}
         </div>
       </div>
@@ -278,82 +285,83 @@ function cargarTest() {
     testForm.insertAdjacentHTML('beforeend', preguntaHTML);
   });
 
-  // Botonera inferior
-  const actions = document.createElement('div');
-  actions.style.textAlign = 'center';
-  actions.style.marginTop = '14px';
-  actions.innerHTML = '<button class="btn success" type="button" onclick="corregir()">✅ Enviar</button>';
-  testForm.appendChild(actions);
-
-  // Selección visual on click
-  testForm.querySelectorAll('.option input').forEach(inp => {
-    inp.addEventListener('change', (e) => {
-      const group = e.target.name;
-      // Quitar selección previa
-      testForm.querySelectorAll(`input[name="${group}"]`).forEach(i2 => {
-        i2.closest('.option').classList.remove('is-selected');
-      });
-      e.target.closest('.option').classList.add('is-selected');
-
-      // Progreso (contar cuántas preguntas ya tienen marcada una opción)
-      const respondidas = new Set();
-      testForm.querySelectorAll('.option input:checked').forEach(i3 => respondidas.add(i3.name));
-      setProgress(respondidas.size, totalPreguntasRenderizadas);
-    });
-  });
+  // Agregar botón de corrección (solo uno)
+  const botonCorregir = document.createElement('button');
+  botonCorregir.type = 'button';
+  botonCorregir.className = 'btn success';
+  botonCorregir.textContent = 'Corregir';
+  botonCorregir.onclick = () => corregirTest();
+  // Si ya hay un botón, evitar duplicarlo
+  const existing = Array.from(testForm.getElementsByTagName('button')).find(b => b.textContent === 'Corregir');
+  if (!existing) testForm.appendChild(botonCorregir);
 }
 
-function corregir() {
+// Corrige el test y muestra resultados
+function corregirTest() {
   const preguntas = document.querySelectorAll('.question');
   let aciertos = 0;
 
-  preguntas.forEach(q => {
-    const seleccion = q.querySelector('input[type="radio"]:checked');
-    const justDiv = q.querySelector('.justification');
+  preguntas.forEach((pregunta) => {
+    const opcionesLabels = pregunta.querySelectorAll('.option');
+    const radios = pregunta.querySelectorAll('input[type="radio"]');
 
-    // Limpiar estilos previos
-    q.querySelectorAll('.option').forEach(lbl => {
+    // Limpiar clases previas
+    opcionesLabels.forEach(lbl => {
       lbl.classList.remove('correct-option', 'wrong-option');
     });
 
-    // Marcar siempre la opción correcta
-    q.querySelectorAll('.option input').forEach(inp => {
-      if (inp.value === inp.dataset.correcta) {
-        inp.closest('.option').classList.add('correct-option');
+    // Encontrar si el usuario ha seleccionado una opción y si es correcta
+    let seleccionCorrecta = false;
+    let seleccionado = false;
+
+    radios.forEach(radio => {
+      if (radio.checked) {
+        seleccionado = true;
+        if (radio.dataset.correct === 'true') {
+          seleccionCorrecta = true;
+        }
       }
     });
 
-    if (seleccion) {
-      if (seleccion.value === seleccion.dataset.correcta) {
-        aciertos++;
-        justDiv.innerHTML = `<span class="correct">✔ ${seleccion.dataset.justificacion}</span>`;
-      } else {
-        // Señalar la opción elegida como errónea
-        seleccion.closest('.option').classList.add('wrong-option');
-        justDiv.innerHTML = `<span class="incorrect">✘ ${seleccion.dataset.justificacion}</span>`;
+    // Marcar visualmente: buscar el label cuyo input tiene data-correct="true"
+    radios.forEach(radio => {
+      const label = radio.closest('label');
+      if (radio.dataset.correct === 'true') {
+        label.classList.add('correct-option');
       }
-    } else {
-      justDiv.innerHTML = `<span class="incorrect">✘ No contestada</span>`;
-    }
+      if (radio.checked && radio.dataset.correct !== 'true') {
+        label.classList.add('wrong-option');
+      }
+    });
+
+    // Mostrar justificación
+    const justificacion = pregunta.querySelector('.justification');
+    if (justificacion) justificacion.style.display = 'block';
+
+    if (seleccionCorrecta) aciertos++;
   });
 
-  const result = document.getElementById('testResult');
+  // Mostrar resultado final
   const total = preguntas.length;
-  const pct = Math.round((aciertos / total) * 100);
-  const emoji = pct >= 70 ? "🎉" : (pct >= 50 ? "🙂" : "💪");
-  result.innerHTML = `
+  const porcentaje = total > 0 ? Math.round((aciertos / total) * 100) : 0;
+  const testResult = document.getElementById('testResult');
+  testResult.innerHTML = `
     <div class="result-card">
-      <div class="muted">Resultado</div>
-      <div class="score">${emoji} ${aciertos} / ${total} (${pct}%)</div>
-      <div class="muted">Puedes cambiar tus respuestas y volver a pulsar <strong>Enviar</strong>.</div>
+      <p class="score">Has acertado ${aciertos} de ${total} preguntas (${porcentaje}%).</p>
+      <p class="muted">${porcentaje >= 70 ? "✅ ¡Buen trabajo!" : "❌ Puedes mejorar. Repasa los artículos clave de la CE."}</p>
     </div>
   `;
+
+  // Actualizar barra de progreso
+  const progressBar = document.getElementById('progressBar');
+  progressBar.style.width = '100%';
 }
 
+// Reinicia el test
 function reiniciarTest() {
   document.getElementById('testForm').innerHTML = '';
   document.getElementById('testResult').innerHTML = '';
-  setProgress(0, 0);
+  document.getElementById('progressBar').style.width = '0%';
 }
   // ==========================
 // 🔹 TEMPORIZADOR CONFIGURABLE
