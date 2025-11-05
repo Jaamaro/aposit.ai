@@ -225,15 +225,20 @@ const preguntasBanco = [
   // ... (todas las demás preguntas van aquí)
 ];
 
-// === FUNCIONES DE LÓGICA DEL TEST ===
+let totalPreguntasRenderizadas = 0;
 
-// Mezcla los elementos de un array (algoritmo de Fisher-Yates)
-function shuffle(array) {
+function barajar(array) {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [array[i], array[j]] = [array[j], array[i]];
   }
-  return array;
+}
+
+function setProgress(current, total) {
+  const bar = document.getElementById('progressBar');
+  const pct = total > 0 ? Math.round((current / total) * 100) : 0;
+  bar.style.width = pct + '%';
+  bar.title = pct + '%';
 }
 
 // Carga el test con preguntas y respuestas aleatorias
@@ -254,21 +259,19 @@ function cargarTest() {
     // Mezclar opciones
     const opcionesMezcladas = shuffle([...preguntaObj.opciones]);
 
-    // Construir HTML de opciones: cada input tendrá data-correct="true" si es la correcta
-    const opcionesHTML = opcionesMezcladas.map((opcion, optIndex) => {
+    // Cada input llevará un data-correct="true" si esa opción es la correcta
+    const opcionesHTML = opcionesMezcladas.map((opcion) => {
       const esCorrecta = opcion === preguntaObj.correcta ? 'true' : 'false';
-      // Escapar comillas en value por seguridad
-      const valor = opcion.replace(/"/g, '&quot;');
       return `
-        <label class="option" data-option-index="${optIndex}">
-          <input type="radio" name="pregunta${index}" value="${valor}" data-correct="${esCorrecta}">
+        <label class="option">
+          <input type="radio" name="pregunta${index}" value="${opcion}" data-correct="${esCorrecta}">
           ${opcion}
         </label>
       `;
     }).join('');
 
     const preguntaHTML = `
-      <div class="question" data-preg-index="${index}">
+      <div class="question">
         <div class="q-head">
           <span class="q-num">${index + 1}.</span>
           <p class="q-text">${preguntaObj.pregunta}</p>
@@ -285,15 +288,13 @@ function cargarTest() {
     testForm.insertAdjacentHTML('beforeend', preguntaHTML);
   });
 
-  // Agregar botón de corrección (solo uno)
+  // Añadir botón corregir
   const botonCorregir = document.createElement('button');
   botonCorregir.type = 'button';
   botonCorregir.className = 'btn success';
   botonCorregir.textContent = 'Corregir';
   botonCorregir.onclick = () => corregirTest();
-  // Si ya hay un botón, evitar duplicarlo
-  const existing = Array.from(testForm.getElementsByTagName('button')).find(b => b.textContent === 'Corregir');
-  if (!existing) testForm.appendChild(botonCorregir);
+  testForm.appendChild(botonCorregir);
 }
 
 // Corrige el test y muestra resultados
@@ -302,66 +303,48 @@ function corregirTest() {
   let aciertos = 0;
 
   preguntas.forEach((pregunta) => {
-    const opcionesLabels = pregunta.querySelectorAll('.option');
     const radios = pregunta.querySelectorAll('input[type="radio"]');
+    const labels = pregunta.querySelectorAll('.option');
 
-    // Limpiar clases previas
-    opcionesLabels.forEach(lbl => {
-      lbl.classList.remove('correct-option', 'wrong-option');
-    });
+    labels.forEach(l => l.classList.remove('correct-option', 'wrong-option'));
 
-    // Encontrar si el usuario ha seleccionado una opción y si es correcta
     let seleccionCorrecta = false;
-    let seleccionado = false;
 
     radios.forEach(radio => {
-      if (radio.checked) {
-        seleccionado = true;
-        if (radio.dataset.correct === 'true') {
-          seleccionCorrecta = true;
-        }
-      }
-    });
-
-    // Marcar visualmente: buscar el label cuyo input tiene data-correct="true"
-    radios.forEach(radio => {
-      const label = radio.closest('label');
+      const label = radio.closest('.option');
       if (radio.dataset.correct === 'true') {
         label.classList.add('correct-option');
       }
-      if (radio.checked && radio.dataset.correct !== 'true') {
+      if (radio.checked && radio.dataset.correct === 'true') {
+        seleccionCorrecta = true;
+      } else if (radio.checked && radio.dataset.correct !== 'true') {
         label.classList.add('wrong-option');
       }
     });
 
-    // Mostrar justificación
+    if (seleccionCorrecta) aciertos++;
+
     const justificacion = pregunta.querySelector('.justification');
     if (justificacion) justificacion.style.display = 'block';
-
-    if (seleccionCorrecta) aciertos++;
   });
 
-  // Mostrar resultado final
   const total = preguntas.length;
-  const porcentaje = total > 0 ? Math.round((aciertos / total) * 100) : 0;
+  const porcentaje = Math.round((aciertos / total) * 100);
   const testResult = document.getElementById('testResult');
   testResult.innerHTML = `
     <div class="result-card">
       <p class="score">Has acertado ${aciertos} de ${total} preguntas (${porcentaje}%).</p>
-      <p class="muted">${porcentaje >= 70 ? "✅ ¡Buen trabajo!" : "❌ Puedes mejorar. Repasa los artículos clave de la CE."}</p>
+      <p class="muted">${porcentaje >= 70 ? "✅ ¡Buen trabajo!" : "❌ Puedes mejorar."}</p>
     </div>
   `;
-
-  // Actualizar barra de progreso
-  const progressBar = document.getElementById('progressBar');
-  progressBar.style.width = '100%';
+  document.getElementById('progressBar').style.width = '100%';
 }
 
-// Reinicia el test
+
 function reiniciarTest() {
   document.getElementById('testForm').innerHTML = '';
   document.getElementById('testResult').innerHTML = '';
-  document.getElementById('progressBar').style.width = '0%';
+  setProgress(0, 0);
 }
   // ==========================
 // 🔹 TEMPORIZADOR CONFIGURABLE
