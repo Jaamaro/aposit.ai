@@ -304,7 +304,6 @@ function cargarTest() {
   testForm.appendChild(botonCorregir);
 }
 
-// Corrige el test y muestra resultados
 function corregirTest() {
   const preguntas = document.querySelectorAll('.question');
   let aciertos = 0;
@@ -312,29 +311,55 @@ function corregirTest() {
   preguntas.forEach((pregunta) => {
     const radios = pregunta.querySelectorAll('input[type="radio"]');
     const labels = pregunta.querySelectorAll('.option');
-
-    labels.forEach(l => l.classList.remove('correct-option', 'wrong-option'));
-
+    const justificacion = pregunta.querySelector('.justification');
     let seleccionCorrecta = false;
+
+    // Limpiar clases anteriores
+    labels.forEach(l => {
+      l.classList.remove('correct-option', 'wrong-option');
+      const checkmark = l.querySelector('.checkmark');
+      if (checkmark) checkmark.remove();
+    });
 
     radios.forEach(radio => {
       const label = radio.closest('.option');
-      if (radio.dataset.correct === 'true') {
-        label.classList.add('correct-option');
-      }
       if (radio.checked && radio.dataset.correct === 'true') {
         seleccionCorrecta = true;
-      } else if (radio.checked && radio.dataset.correct !== 'true') {
-        label.classList.add('wrong-option');
       }
     });
 
-    if (seleccionCorrecta) aciertos++;
+    radios.forEach(radio => {
+      const label = radio.closest('.option');
 
-    const justificacion = pregunta.querySelector('.justification');
-    if (justificacion) justificacion.style.display = 'block';
+      if (radio.dataset.correct === 'true') {
+        // Mostrar check verde en la opción correcta
+        label.classList.add('correct-option');
+        label.insertAdjacentHTML('afterbegin', `<span class="checkmark" style="color:#059669;font-weight:700;">✔</span>`);
+      }
+
+      if (radio.checked && radio.dataset.correct !== 'true') {
+        // Mostrar X roja en la opción elegida incorrecta
+        label.classList.add('wrong-option');
+        label.insertAdjacentHTML('afterbegin', `<span class="checkmark" style="color:#dc2626;font-weight:700;">✘</span>`);
+      }
+    });
+
+    // Mostrar la justificación al final
+    if (justificacion) {
+      justificacion.style.display = 'block';
+      justificacion.innerHTML = `
+        ${seleccionCorrecta 
+          ? `<span class="correct">✔ ${pregunta.querySelector('input[data-correct="true"]').value}</span><br>` 
+          : `<span class="incorrect">✘ ${pregunta.querySelector('input[data-correct="true"]').value}</span><br>`
+        }
+        ${pregunta.querySelector('.justification').textContent || ''}
+      `;
+    }
+
+    if (seleccionCorrecta) aciertos++;
   });
 
+  // Mostrar resultado final
   const total = preguntas.length;
   const porcentaje = Math.round((aciertos / total) * 100);
   const testResult = document.getElementById('testResult');
