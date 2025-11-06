@@ -1,0 +1,2747 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test de Seguridad Pública y Privada</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --card: #ffffff;
+      --text: #111827;
+      --muted: #6b7280;
+      --primary: #2563eb;
+      --primary-dark: #1e40af;
+      --success: #059669;
+      --danger: #dc2626;
+      --ring: rgba(37, 99, 235, 0.25);
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: 'Roboto', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      padding: 24px;
+    }
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+    header.hero {
+      text-align: center;
+      margin-bottom: 16px;
+    }
+    .title {
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--primary-dark);
+      margin: 0 0 8px;
+    }
+    .subtitle {
+      color: var(--muted);
+      margin: 0;
+    }
+    .controls {
+      background: var(--card);
+      border-radius: 14px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.06);
+      padding: 16px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      justify-content: center;
+      position: sticky;
+      top: 12px;
+      z-index: 5;
+    }
+    .controls label { font-weight: 500; }
+    select {
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid #e5e7eb;
+      background: #fff;
+      outline: none;
+      transition: box-shadow .2s, border-color .2s;
+    }
+    select:focus { border-color: var(--primary); box-shadow: 0 0 0 4px var(--ring); }
+
+    .btn {
+      cursor: pointer;
+      border: none;
+      border-radius: 10px;
+      padding: 12px 18px;
+      font-weight: 700;
+      transition: transform .15s, background .2s, box-shadow .2s;
+      color: #fff;
+      background: var(--primary);
+      box-shadow: 0 6px 14px rgba(37,99,235,.2);
+    }
+    .btn:hover { transform: translateY(-1px); background: var(--primary-dark); }
+    .btn.secondary { background: #6b7280; }
+    .btn.secondary:hover { background: #374151; }
+    .btn.success { background: var(--success); }
+    .btn.success:hover { background: #047857; }
+    .btn.danger { background: var(--danger); }
+    .btn.danger:hover { background: #b91c1c; }
+
+    .progress {
+      width: 100%;
+      height: 10px;
+      background: #e5e7eb;
+      border-radius: 999px;
+      overflow: hidden;
+      margin-top: 8px;
+    }
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--primary), #60a5fa);
+      transition: width .3s ease;
+    }
+
+    .question {
+      margin: 14px 0;
+      padding: 18px;
+      background: var(--card);
+      border-radius: 14px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.06);
+    }
+    .q-head {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+    }
+    .q-num {
+      font-weight: 800;
+      color: var(--primary-dark);
+    }
+    .q-text { margin: 0; }
+
+    .options { margin-top: 10px; display: grid; gap: 8px; }
+    .option {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid #e5e7eb;
+      background: #fff;
+      transition: background .15s, border-color .15s, box-shadow .15s;
+      cursor: pointer;
+    }
+    .option input { transform: scale(1.2); }
+    .option:hover { background: #f9fafb; border-color: #d1d5db; }
+    .option.is-selected { box-shadow: 0 0 0 4px var(--ring); border-color: var(--primary); }
+
+    .justification {
+      margin-top: 10px; color: var(--muted);
+    }
+    .correct { color: var(--success); font-weight: 700; }
+    .incorrect { color: var(--danger); font-weight: 700; }
+
+    .option.correct-option {
+      border-color: rgba(5,150,105,.4);
+      background: #ecfdf5;
+    }
+    .option.wrong-option {
+      border-color: rgba(220,38,38,.4);
+      background: #fef2f2;
+    }
+
+    .result-card {
+      margin: 18px 0;
+      padding: 16px;
+      background: var(--card);
+      border-radius: 14px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.06);
+      text-align: center;
+    }
+    .score {
+      font-size: 22px;
+      font-weight: 800;
+      margin: 8px 0;
+    }
+    .muted { color: var(--muted); }
+    footer { text-align: center; margin-top: 24px; color: var(--muted); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="hero">
+      <h1 class="title">Test de Seguridad Pública y Privada</h1>
+      <p class="subtitle">Selecciona cuántas preguntas quieres y pulsa <strong>Comenzar</strong>.</p>
+    </header>
+
+    <div class="controls">
+      <label for="numPreguntas">Número de preguntas:</label>
+      <select id="numPreguntas">
+        <option value="10">10</option>
+        <option value="20">20</option>
+        <option value="30">30</option>
+        <option value="40">40</option>
+        <option value="50" selected>50</option>
+      </select>
+      <button class="btn" type="button" onclick="cargarTest()">Comenzar</button>
+      <button class="btn secondary" type="button" onclick="reiniciarTest()">Reiniciar</button>
+      <div class="progress" style="flex-basis: 100%;">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+    </div>
+
+    <form id="testForm"></form>
+
+    <div id="testResult"></div>
+    <footer>© Test de práctica — Seguridad Pública y Privada</footer>
+  </div>
+
+<script>
+const preguntasBanco = [
+{
+  pregunta: "¿Cuál es el objeto principal de la Ley Orgánica 4/2015, de protección de la seguridad ciudadana?",
+  opciones: ["a) Regular la actuación de los cuerpos policiales en materia penal.", "b) Garantizar la convivencia y el ejercicio de los derechos y libertades.", "c) Regular la defensa nacional.", "d) Establecer normas sobre extranjería y fronteras."],
+  correcta: "b) Garantizar la convivencia y el ejercicio de los derechos y libertades.",
+  justificacion: "El artículo 1 de la LO 4/2015 establece que su objeto es garantizar la seguridad ciudadana mediante la protección de los derechos y libertades."
+},
+
+{
+  pregunta: "Según la LO 4/2015, ¿qué Administración es competente para dictar las normas generales sobre seguridad ciudadana?",
+  opciones: ["a) Las Comunidades Autónomas.", "b) La Administración General del Estado.", "c) Los Ayuntamientos.", "d) El Consejo de Europa."],
+  correcta: "b) La Administración General del Estado.",
+  justificacion: "El artículo 2.1 atribuye al Estado la competencia exclusiva en materia de seguridad pública conforme al artículo 149.1.29 de la Constitución."
+},
+
+{
+  pregunta: "¿Qué principio rige la actuación de las autoridades en materia de seguridad ciudadana según la LO 4/2015?",
+  opciones: ["a) Proporcionalidad.", "b) Jerarquía normativa.", "c) Publicidad.", "d) Territorialidad."],
+  correcta: "a) Proporcionalidad.",
+  justificacion: "El artículo 5 establece que las actuaciones deben respetar los principios de congruencia, oportunidad y proporcionalidad."
+},
+
+{
+  pregunta: "¿Cuál de las siguientes no es una finalidad de las medidas de seguridad ciudadana según la LO 4/2015?",
+  opciones: ["a) Proteger personas y bienes.", "b) Mantener la paz pública.", "c) Garantizar la libre circulación de bienes.", "d) Prevenir infracciones penales o administrativas."],
+  correcta: "c) Garantizar la libre circulación de bienes.",
+  justificacion: "El artículo 3 recoge las finalidades de la ley, y la libre circulación de bienes no se incluye entre ellas."
+},
+
+{
+  pregunta: "¿Qué autoridad puede acordar el decomiso de los instrumentos utilizados en una infracción grave de la LO 4/2015?",
+  opciones: ["a) El Consejo de Ministros.", "b) El Ministro del Interior.", "c) El órgano competente para imponer la sanción.", "d) El Juzgado de Instrucción."],
+  correcta: "c) El órgano competente para imponer la sanción.",
+  justificacion: "El artículo 39 prevé el decomiso por parte de la autoridad sancionadora como medida accesoria."
+},
+
+{
+  pregunta: "¿Cuál es la sanción prevista para las infracciones leves según la LO 4/2015?",
+  opciones: ["a) Multa de 100 a 600 euros.", "b) Multa de 601 a 30.000 euros.", "c) Multa de 30.001 a 600.000 euros.", "d) Arresto domiciliario de 15 días."],
+  correcta: "a) Multa de 100 a 600 euros.",
+  justificacion: "El artículo 39.1 establece que las infracciones leves se sancionarán con multa de 100 a 600 euros."
+},
+
+{
+  pregunta: "¿Cuál de los siguientes actos constituye infracción grave según la LO 4/2015?",
+  opciones: ["a) Exhibir banderas sin autorización.", "b) Negarse a identificarse ante los agentes.", "c) Faltar al respeto a un agente fuera del servicio.", "d) Realizar una concentración sin aviso previo."],
+  correcta: "d) Realizar una concentración sin aviso previo.",
+  justificacion: "El artículo 36.3 tipifica como infracción grave la celebración de manifestaciones sin comunicación previa."
+},
+
+{
+  pregunta: "¿Qué órgano es competente para sancionar las infracciones muy graves según la LO 4/2015?",
+  opciones: ["a) El Delegado del Gobierno.", "b) El Subdelegado del Gobierno.", "c) El Ministro del Interior.", "d) El Consejo de Ministros."],
+  correcta: "c) El Ministro del Interior.",
+  justificacion: "El artículo 33.1.a) establece que las infracciones muy graves serán sancionadas por el Ministro del Interior."
+},
+
+{
+  pregunta: "¿Qué actuación de los agentes debe respetar los principios de congruencia, oportunidad y proporcionalidad?",
+  opciones: ["a) Las sanciones administrativas.", "b) Las intervenciones sobre personas y bienes.", "c) Los actos judiciales.", "d) Las órdenes internas de servicio."],
+  correcta: "b) Las intervenciones sobre personas y bienes.",
+  justificacion: "El artículo 5.2 de la LO 4/2015 aplica estos principios a las intervenciones que afecten a la libertad o patrimonio de los ciudadanos."
+},
+
+{
+  pregunta: "¿Cuál de las siguientes es infracción muy grave según la LO 4/2015?",
+  opciones: ["a) Reunirse en lugares de tránsito público sin comunicarlo.", "b) Perturbar gravemente actos públicos.", "c) Fabricar o usar explosivos no autorizados.", "d) Faltar al respeto a los agentes."],
+  correcta: "c) Fabricar o usar explosivos no autorizados.",
+  justificacion: "El artículo 35.1 tipifica como muy grave la fabricación, reparación o utilización de armas o explosivos sin autorización."
+},
+
+{
+  pregunta: "¿Cuál de las siguientes conductas es infracción leve según la LO 4/2015?",
+  opciones: ["a) Ocupación de inmuebles.", "b) Manifestación no comunicada.", "c) Colocación de carteles en espacios públicos sin permiso.", "d) Alterar el orden en actos públicos."],
+  correcta: "c) Colocación de carteles en espacios públicos sin permiso.",
+  justificacion: "El artículo 37.3 considera infracción leve la colocación no autorizada de carteles o pancartas en edificios públicos."
+},
+
+{
+  pregunta: "¿Qué duración máxima puede tener la medida de retención preventiva para identificación?",
+  opciones: ["a) 30 minutos.", "b) 1 hora.", "c) 2 horas.", "d) El tiempo estrictamente necesario."],
+  correcta: "d) El tiempo estrictamente necesario.",
+  justificacion: "El artículo 16.2 dispone que la retención se limitará al tiempo imprescindible para la identificación."
+},
+
+{
+  pregunta: "¿Quién puede ordenar el registro corporal superficial según la LO 4/2015?",
+  opciones: ["a) Un agente de la autoridad debidamente identificado.", "b) El jefe de la unidad policial.", "c) El juez de instrucción.", "d) El fiscal de guardia."],
+  correcta: "a) Un agente de la autoridad debidamente identificado.",
+  justificacion: "El artículo 20 autoriza a los agentes a realizar registros corporales superficiales para garantizar la seguridad."
+},
+
+{
+  pregunta: "¿Cuál es la finalidad del acta de intervención de efectos en la LO 4/2015?",
+  opciones: ["a) Acreditar la legalidad del decomiso.", "b) Garantizar la trazabilidad de los efectos intervenidos.", "c) Servir como prueba documental del procedimiento sancionador.", "d) Todas son correctas."],
+  correcta: "d) Todas son correctas.",
+  justificacion: "El acta de intervención cumple funciones de garantía, control y prueba en el procedimiento sancionador."
+},
+
+{
+  pregunta: "¿Cuál de las siguientes materias se regula por la Ley 5/2014 de Seguridad Privada?",
+  opciones: ["a) La actuación del Ministerio Fiscal.", "b) Las funciones y coordinación de los servicios de seguridad privada.", "c) Las sanciones penales por delitos de seguridad.", "d) El control de fronteras."],
+  correcta: "b) Las funciones y coordinación de los servicios de seguridad privada.",
+  justificacion: "El artículo 1 de la Ley 5/2014 define su objeto como la regulación de los servicios y actividades de seguridad privada."
+},
+
+{
+  pregunta: "¿Qué ministerio ejerce la competencia general sobre seguridad privada en España?",
+  opciones: ["a) Ministerio de Defensa.", "b) Ministerio del Interior.", "c) Ministerio de Justicia.", "d) Ministerio de Economía."],
+  correcta: "b) Ministerio del Interior.",
+  justificacion: "El artículo 8 atribuye al Ministerio del Interior la competencia general en materia de seguridad privada."
+},
+
+{
+  pregunta: "¿Qué principio inspira la prestación de servicios de seguridad privada según la Ley 5/2014?",
+  opciones: ["a) Colaboración con la seguridad pública.", "b) Libre competencia absoluta.", "c) Independencia total de las autoridades públicas.", "d) Subordinación económica al cliente."],
+  correcta: "a) Colaboración con la seguridad pública.",
+  justificacion: "El artículo 4 establece que los servicios de seguridad privada deben colaborar y complementar a las Fuerzas y Cuerpos de Seguridad."
+},
+
+{
+  pregunta: "¿Quién puede realizar funciones de vigilancia y protección de bienes según la Ley 5/2014?",
+  opciones: ["a) Cualquier empleado autorizado por la empresa.", "b) Solo los vigilantes de seguridad habilitados.", "c) Los conserjes de edificios públicos.", "d) El personal de mantenimiento."],
+  correcta: "b) Solo los vigilantes de seguridad habilitados.",
+  justificacion: "El artículo 32.1 atribuye estas funciones exclusivamente a los vigilantes de seguridad debidamente habilitados."
+},
+
+{
+  pregunta: "¿Cuál de los siguientes servicios está expresamente prohibido a las empresas de seguridad privada?",
+  opciones: ["a) Servicios de escolta privada.", "b) Investigación de delitos públicos.", "c) Vigilancia en urbanizaciones.", "d) Custodia de transporte de fondos."],
+  correcta: "b) Investigación de delitos públicos.",
+  justificacion: "El artículo 5 prohíbe a las empresas privadas investigar delitos, función reservada a la Policía Judicial."
+},
+
+{
+  pregunta: "¿Qué infracción muy grave recoge la Ley 5/2014 en su artículo 57?",
+  opciones: ["a) No llevar la placa identificativa.", "b) Prestar servicios sin autorización.", "c) Olvidar comunicar un cambio de turno.", "d) No acudir a una llamada de emergencia."],
+  correcta: "b) Prestar servicios sin autorización.",
+  justificacion: "El artículo 57.a) considera muy grave la prestación de servicios de seguridad sin la preceptiva autorización administrativa."
+},
+{
+  pregunta: "¿Cuál de las siguientes actuaciones constituye infracción grave según la Ley 5/2014?",
+  opciones: ["a) No llevar consigo la tarjeta de identificación profesional.", "b) Prestar un servicio sin comunicarlo a la autoridad competente.", "c) No comunicar un cambio menor en la uniformidad.", "d) No asistir a una reunión interna de la empresa."],
+  correcta: "b) Prestar un servicio sin comunicarlo a la autoridad competente.",
+  justificacion: "El artículo 56.1.b) de la Ley 5/2014 tipifica como infracción grave la prestación de servicios sin la preceptiva comunicación previa."
+},
+
+{
+  pregunta: "Según la Ley 5/2014, ¿qué autoridad tiene competencia sancionadora en materia de seguridad privada?",
+  opciones: ["a) Las Delegaciones y Subdelegaciones del Gobierno.", "b) Los Ayuntamientos.", "c) El Consejo de Seguridad Privada.", "d) Las Comunidades Autónomas en todo caso."],
+  correcta: "a) Las Delegaciones y Subdelegaciones del Gobierno.",
+  justificacion: "El artículo 60 establece que la potestad sancionadora corresponde al Ministerio del Interior y a las Delegaciones/Subdelegaciones del Gobierno."
+},
+
+{
+  pregunta: "¿Qué tipo de infracción comete un vigilante que trabaje sin estar debidamente habilitado?",
+  opciones: ["a) Leve.", "b) Grave.", "c) Muy grave.", "d) No constituye infracción administrativa."],
+  correcta: "c) Muy grave.",
+  justificacion: "El artículo 57.b) considera muy grave la prestación de servicios sin la habilitación o acreditación exigida."
+},
+
+{
+  pregunta: "¿Qué documento acredita la habilitación de un vigilante de seguridad?",
+  opciones: ["a) El contrato laboral.", "b) La tarjeta de identidad profesional (TIP).", "c) El permiso de armas.", "d) El certificado de empresa."],
+  correcta: "b) La tarjeta de identidad profesional (TIP).",
+  justificacion: "El artículo 27 de la Ley 5/2014 establece que la habilitación se acredita mediante la TIP expedida por el Ministerio del Interior."
+},
+
+{
+  pregunta: "¿Cuál es la finalidad del Registro Nacional de Seguridad Privada?",
+  opciones: ["a) Controlar la formación del personal de seguridad privada.", "b) Registrar todas las sanciones penales del personal de seguridad.", "c) Inscribir empresas, personal y contratos de seguridad privada.", "d) Gestionar los permisos de armas de los vigilantes."],
+  correcta: "c) Inscribir empresas, personal y contratos de seguridad privada.",
+  justificacion: "El artículo 50 crea el Registro Nacional de Seguridad Privada para la inscripción y control administrativo del sector."
+},
+
+{
+  pregunta: "¿Qué artículo de la LO 4/2015 regula la identificación de las personas por los agentes?",
+  opciones: ["a) Artículo 15.", "b) Artículo 16.", "c) Artículo 18.", "d) Artículo 22."],
+  correcta: "b) Artículo 16.",
+  justificacion: "El artículo 16 regula la obligación de identificarse y la posibilidad de traslado a dependencias policiales para comprobar la identidad."
+},
+
+{
+  pregunta: "¿Qué requisito deben cumplir los registros domiciliarios según la LO 4/2015?",
+  opciones: ["a) Autorización judicial previa.", "b) Consentimiento verbal del titular.", "c) Comunicación inmediata a la Delegación del Gobierno.", "d) Aprobación del Ministerio del Interior."],
+  correcta: "a) Autorización judicial previa.",
+  justificacion: "El artículo 18 de la LO 4/2015 establece que la entrada en domicilio requiere consentimiento del titular o autorización judicial, salvo flagrante delito."
+},
+
+{
+  pregunta: "¿Cuál de los siguientes derechos puede verse limitado por razones de seguridad ciudadana según la LO 4/2015?",
+  opciones: ["a) Derecho a la educación.", "b) Derecho de reunión.", "c) Derecho a la propiedad intelectual.", "d) Derecho al honor."],
+  correcta: "b) Derecho de reunión.",
+  justificacion: "El artículo 21 CE y la LO 4/2015 permiten limitar el derecho de reunión por motivos de orden o seguridad pública."
+},
+
+{
+  pregunta: "¿Cuál es la autoridad competente para sancionar infracciones graves según la LO 4/2015?",
+  opciones: ["a) Ministro del Interior.", "b) Delegado del Gobierno.", "c) Subdelegado del Gobierno.", "d) Ambas b) y c)."],
+  correcta: "d) Ambas b) y c).",
+  justificacion: "El artículo 33.1.b) y c) establece que los Delegados y Subdelegados del Gobierno son competentes para sancionar infracciones graves."
+},
+
+{
+  pregunta: "¿Qué tipo de infracción es la negativa a disolver una reunión o manifestación cuando lo ordena la autoridad?",
+  opciones: ["a) Leve.", "b) Grave.", "c) Muy grave.", "d) No constituye infracción."],
+  correcta: "b) Grave.",
+  justificacion: "El artículo 36.4 considera infracción grave la negativa a disolver reuniones o manifestaciones tras orden legítima de la autoridad."
+},
+
+{
+  pregunta: "¿Qué sanción se impone por infracciones muy graves según la LO 4/2015?",
+  opciones: ["a) Multa de 100 a 600 euros.", "b) Multa de 601 a 30.000 euros.", "c) Multa de 30.001 a 600.000 euros.", "d) Inhabilitación temporal."],
+  correcta: "c) Multa de 30.001 a 600.000 euros.",
+  justificacion: "El artículo 39.1.c) establece este rango para las infracciones muy graves."
+},
+
+{
+  pregunta: "¿Qué principio rige la aplicación de las sanciones en la LO 4/2015?",
+  opciones: ["a) Legalidad y tipicidad.", "b) Solidaridad y confianza.", "c) Publicidad y transparencia.", "d) Igualdad formal."],
+  correcta: "a) Legalidad y tipicidad.",
+  justificacion: "El artículo 40 establece que las sanciones se impondrán conforme a los principios de legalidad y tipicidad."
+},
+
+{
+  pregunta: "¿Qué obligación tienen los ciudadanos ante requerimientos de los agentes de la autoridad?",
+  opciones: ["a) Ninguna si no están detenidos.", "b) Cumplirlos siempre que sean legales y proporcionales.", "c) Cumplirlos solo si existe orden escrita.", "d) Solo si se encuentran en la vía pública."],
+  correcta: "b) Cumplirlos siempre que sean legales y proporcionales.",
+  justificacion: "El artículo 36.6 de la LO 4/2015 sanciona la desobediencia o resistencia a la autoridad como infracción grave."
+},
+
+{
+  pregunta: "¿Qué principio establece la Ley 5/2014 respecto a la formación del personal de seguridad privada?",
+  opciones: ["a) Formación continua y obligatoria.", "b) Formación voluntaria cada 5 años.", "c) Formación exclusiva inicial.", "d) Formación en centros militares únicamente."],
+  correcta: "a) Formación continua y obligatoria.",
+  justificacion: "El artículo 29 establece la obligación de formación inicial y permanente del personal de seguridad privada."
+},
+
+{
+  pregunta: "¿Qué categoría profesional puede realizar servicios de protección de personas (escoltas)?",
+  opciones: ["a) Vigilantes de seguridad.", "b) Guardas rurales.", "c) Escoltas privados.", "d) Auxiliares de seguridad."],
+  correcta: "c) Escoltas privados.",
+  justificacion: "El artículo 36 atribuye la función de protección de personas exclusivamente a los escoltas privados habilitados."
+},
+
+{
+  pregunta: "¿Qué infracción leve recoge la Ley 5/2014?",
+  opciones: ["a) No comunicar cambios de personal al Registro.", "b) Olvidar portar la TIP durante el servicio.", "c) Prestar servicios sin autorización.", "d) Incumplir las medidas de seguridad obligatorias."],
+  correcta: "b) Olvidar portar la TIP durante el servicio.",
+  justificacion: "El artículo 58 tipifica como leve no llevar consigo la acreditación profesional durante el desempeño del servicio."
+},
+
+{
+  pregunta: "¿Qué documento deben llevar los vigilantes en servicio visible al público?",
+  opciones: ["a) El carné de empresa.", "b) La TIP o placa identificativa.", "c) El contrato laboral.", "d) El acta de servicio."],
+  correcta: "b) La TIP o placa identificativa.",
+  justificacion: "El artículo 27.2 de la Ley 5/2014 exige portar de forma visible la tarjeta o placa profesional."
+},
+
+{
+  pregunta: "¿Qué autoridad puede suspender una empresa de seguridad por infracción muy grave?",
+  opciones: ["a) El Jefe de Policía Local.", "b) El Subdelegado del Gobierno.", "c) El Ministro del Interior.", "d) El Delegado del Gobierno."],
+  correcta: "c) El Ministro del Interior.",
+  justificacion: "El artículo 59.3 permite al Ministro del Interior imponer sanciones accesorias como la suspensión temporal de actividad."
+},
+
+{
+  pregunta: "¿Qué función puede realizar un detective privado según la Ley 5/2014?",
+  opciones: ["a) Investigación de delitos públicos.", "b) Vigilancia de espectáculos deportivos.", "c) Obtención de información sobre personas a petición legítima.", "d) Control de acceso en locales de ocio."],
+  correcta: "c) Obtención de información sobre personas a petición legítima.",
+  justificacion: "El artículo 48 regula las funciones de los detectives privados, limitadas a encargos legítimos de particulares o empresas."
+},
+
+{
+  pregunta: "¿Qué finalidad tiene el deber de colaboración entre la seguridad privada y las FFCCSE?",
+  opciones: ["a) Sustituir a las Fuerzas de Seguridad en determinadas zonas.", "b) Aumentar la eficiencia en la protección de bienes y personas.", "c) Evitar la competencia entre sectores.", "d) Garantizar el secreto profesional del cliente."],
+  correcta: "b) Aumentar la eficiencia en la protección de bienes y personas.",
+  justificacion: "El artículo 4 de la Ley 5/2014 establece la cooperación como principio básico para mejorar la seguridad global."
+},
+{
+  pregunta: "Según la LO 4/2015, ¿quién puede acordar la incautación preventiva de efectos peligrosos para la seguridad ciudadana?",
+  opciones: ["a) El juez de instrucción.", "b) Los agentes de la autoridad en el ejercicio de sus funciones.", "c) El alcalde del municipio.", "d) El Ministro del Interior."],
+  correcta: "b) Los agentes de la autoridad en el ejercicio de sus funciones.",
+  justificacion: "El artículo 20.2 de la LO 4/2015 permite a los agentes incautar de manera preventiva efectos o instrumentos peligrosos."
+},
+
+{
+  pregunta: "¿Qué artículo de la LO 4/2015 regula la entrada y registro en domicilios?",
+  opciones: ["a) Artículo 18.", "b) Artículo 16.", "c) Artículo 22.", "d) Artículo 20."],
+  correcta: "a) Artículo 18.",
+  justificacion: "El artículo 18 regula los supuestos de entrada y registro domiciliario, requiriendo autorización judicial o consentimiento del titular."
+},
+
+{
+  pregunta: "¿Qué principio garantiza que las sanciones administrativas sean proporcionales a la gravedad de la infracción?",
+  opciones: ["a) Principio de oportunidad.", "b) Principio de proporcionalidad.", "c) Principio de efectividad.", "d) Principio de publicidad."],
+  correcta: "b) Principio de proporcionalidad.",
+  justificacion: "El artículo 40.2 de la LO 4/2015 establece que las sanciones se graduarán conforme al principio de proporcionalidad."
+},
+
+{
+  pregunta: "¿Qué tipo de infracción constituye el consumo o tenencia de drogas en lugares públicos según la LO 4/2015?",
+  opciones: ["a) Leve.", "b) Grave.", "c) Muy grave.", "d) No es infracción administrativa."],
+  correcta: "b) Grave.",
+  justificacion: "El artículo 36.16 considera infracción grave el consumo o tenencia ilícita de drogas en lugares públicos."
+},
+
+{
+  pregunta: "¿Cuál de los siguientes documentos puede ser requerido por los agentes para comprobar la identidad de una persona?",
+  opciones: ["a) Documento Nacional de Identidad o pasaporte.", "b) Contrato de trabajo.", "c) Tarjeta sanitaria.", "d) Recibo de alquiler."],
+  correcta: "a) Documento Nacional de Identidad o pasaporte.",
+  justificacion: "El artículo 16 permite a los agentes requerir documentos oficiales de identidad para verificar la identidad de los ciudadanos."
+},
+
+{
+  pregunta: "¿Qué sanción puede imponerse como accesoria a la multa según la LO 4/2015?",
+  opciones: ["a) Retirada del permiso de conducir.", "b) Decomiso de los efectos utilizados.", "c) Inhabilitación profesional.", "d) Suspensión del empleo."],
+  correcta: "b) Decomiso de los efectos utilizados.",
+  justificacion: "El artículo 39.2 prevé el decomiso como sanción accesoria en determinados casos."
+},
+
+{
+  pregunta: "¿Qué infracción se comete al permitir el acceso de menores a locales donde se vendan bebidas alcohólicas?",
+  opciones: ["a) Leve.", "b) Grave.", "c) Muy grave.", "d) No sancionable administrativamente."],
+  correcta: "b) Grave.",
+  justificacion: "El artículo 36.17 considera infracción grave permitir el consumo o acceso de menores a establecimientos con bebidas alcohólicas."
+},
+
+{
+  pregunta: "¿Qué principio general de la actuación administrativa recoge el artículo 5 de la LO 4/2015?",
+  opciones: ["a) Confianza legítima.", "b) Proporcionalidad, congruencia y oportunidad.", "c) Jerarquía y coordinación.", "d) Colaboración interinstitucional."],
+  correcta: "b) Proporcionalidad, congruencia y oportunidad.",
+  justificacion: "El artículo 5 recoge estos principios rectores de la actuación de las autoridades en materia de seguridad ciudadana."
+},
+
+{
+  pregunta: "¿Qué infracción comete el titular de un local que carece de medidas de seguridad obligatorias?",
+  opciones: ["a) Leve.", "b) Grave.", "c) Muy grave.", "d) Penal."],
+  correcta: "b) Grave.",
+  justificacion: "El artículo 36.7 tipifica como infracción grave la falta de medidas de seguridad obligatorias en establecimientos exigidos."
+},
+
+{
+  pregunta: "¿Qué artículo de la Ley 5/2014 establece la clasificación de las infracciones en materia de seguridad privada?",
+  opciones: ["a) Artículo 55.", "b) Artículo 57.", "c) Artículo 58.", "d) Artículo 56."],
+  correcta: "a) Artículo 55.",
+  justificacion: "El artículo 55 clasifica las infracciones en muy graves, graves y leves, según su entidad y repercusión."
+},
+
+{
+  pregunta: "¿Qué autoridad puede sancionar una infracción leve en materia de seguridad privada?",
+  opciones: ["a) El Ministro del Interior.", "b) El Delegado o Subdelegado del Gobierno.", "c) El Consejo de Seguridad Privada.", "d) El Alcalde."],
+  correcta: "b) El Delegado o Subdelegado del Gobierno.",
+  justificacion: "El artículo 60.2 atribuye la sanción de infracciones leves a los Delegados y Subdelegados del Gobierno."
+},
+
+{
+  pregunta: "¿Qué infracción muy grave recoge el artículo 57 de la Ley 5/2014?",
+  opciones: ["a) Incumplir la uniformidad establecida.", "b) Manipular sistemas de seguridad sin autorización.", "c) Prestar servicios sin habilitación o autorización.", "d) No portar la TIP en servicio."],
+  correcta: "c) Prestar servicios sin habilitación o autorización.",
+  justificacion: "El artículo 57.a) tipifica como muy grave la prestación de servicios sin la preceptiva autorización o habilitación."
+},
+
+{
+  pregunta: "¿Qué documento regula las relaciones de cooperación entre seguridad pública y privada?",
+  opciones: ["a) El convenio marco de seguridad.", "b) El plan de colaboración.", "c) La instrucción del Ministerio del Interior.", "d) El reglamento orgánico de coordinación."],
+  correcta: "b) El plan de colaboración.",
+  justificacion: "El artículo 14 prevé la existencia de planes de colaboración entre la seguridad pública y la privada."
+},
+
+{
+  pregunta: "¿Qué función NO pueden realizar las empresas de seguridad privada?",
+  opciones: ["a) Transporte de explosivos.", "b) Custodia de llaves.", "c) Investigación de delitos públicos.", "d) Instalación de sistemas de alarma."],
+  correcta: "c) Investigación de delitos públicos.",
+  justificacion: "El artículo 5 prohíbe expresamente a las empresas de seguridad privada investigar delitos públicos."
+},
+
+{
+  pregunta: "¿Cuál de las siguientes categorías profesionales pertenece al personal de seguridad privada?",
+  opciones: ["a) Escoltas privados, vigilantes de seguridad y detectives privados.", "b) Policías locales y guardas rurales.", "c) Conserjes y vigilantes eventuales.", "d) Personal auxiliar de servicio."],
+  correcta: "a) Escoltas privados, vigilantes de seguridad y detectives privados.",
+  justificacion: "El artículo 26 enumera las categorías profesionales del personal de seguridad privada."
+},
+
+{
+  pregunta: "¿Qué función desempeñan los guardas rurales según la Ley 5/2014?",
+  opciones: ["a) Protección de personas en zonas urbanas.", "b) Vigilancia en el campo y medio rural.", "c) Investigación de delitos menores.", "d) Custodia de transporte de valores."],
+  correcta: "b) Vigilancia en el campo y medio rural.",
+  justificacion: "El artículo 38 les atribuye la protección de bienes e instalaciones en el ámbito rural."
+},
+
+{
+  pregunta: "¿Qué infracción leve comete el personal de seguridad que no comunique un cambio de domicilio a la autoridad competente?",
+  opciones: ["a) Muy grave.", "b) Grave.", "c) Leve.", "d) No constituye infracción."],
+  correcta: "c) Leve.",
+  justificacion: "El artículo 58.b) considera infracción leve no comunicar cambios relevantes como el domicilio o lugar de trabajo."
+},
+
+{
+  pregunta: "¿Qué artículo de la Ley 5/2014 regula el régimen disciplinario del personal de seguridad privada?",
+  opciones: ["a) Artículo 62.", "b) Artículo 64.", "c) Artículo 61.", "d) Artículo 60."],
+  correcta: "c) Artículo 61.",
+  justificacion: "El artículo 61 establece el régimen disciplinario aplicable al personal habilitado de seguridad privada."
+},
+
+{
+  pregunta: "¿Qué infracción recoge la LO 4/2015 al desobedecer de forma leve las órdenes de los agentes?",
+  opciones: ["a) Leve.", "b) Grave.", "c) Muy grave.", "d) Penal."],
+  correcta: "b) Grave.",
+  justificacion: "El artículo 36.6 sanciona como infracción grave la desobediencia o resistencia a la autoridad."
+},
+
+{
+  pregunta: "¿Qué artículo de la LO 4/2015 regula el régimen sancionador general?",
+  opciones: ["a) Artículo 39.", "b) Artículo 40.", "c) Artículo 41.", "d) Artículo 38."],
+  correcta: "b) Artículo 40.",
+  justificacion: "El artículo 40 establece los principios del régimen sancionador, entre ellos la legalidad, tipicidad y proporcionalidad."
+},
+{
+  pregunta: "¿Qué autoridad es competente para imponer sanciones por infracciones muy graves según la Ley 5/2014?",
+  opciones: ["a) El Ministro del Interior.", "b) El Director General de la Policía.", "c) El Delegado del Gobierno.", "d) El Subdelegado del Gobierno."],
+  correcta: "a) El Ministro del Interior.",
+  justificacion: "El artículo 60.1.a) de la Ley 5/2014 atribuye al Ministro del Interior la competencia para sancionar infracciones muy graves."
+},
+
+{
+  pregunta: "¿Cuál es el plazo máximo para resolver un procedimiento sancionador iniciado por infracción grave según la LO 4/2015?",
+  opciones: ["a) Seis meses.", "b) Nueve meses.", "c) Doce meses.", "d) Tres meses."],
+  correcta: "a) Seis meses.",
+  justificacion: "El artículo 44 establece un plazo máximo de seis meses para resolver los procedimientos sancionadores."
+},
+
+{
+  pregunta: "¿Cuál es el objeto de las medidas de seguridad ciudadana previstas en la LO 4/2015?",
+  opciones: ["a) Facilitar la identificación de los ciudadanos.", "b) Proteger personas y bienes y asegurar el libre ejercicio de derechos.", "c) Controlar la economía sumergida.", "d) Regular la actividad de las empresas de seguridad privada."],
+  correcta: "b) Proteger personas y bienes y asegurar el libre ejercicio de derechos.",
+  justificacion: "El artículo 3 recoge como finalidad la protección de personas y bienes y la garantía del libre ejercicio de derechos."
+},
+
+{
+  pregunta: "¿Cuál de las siguientes conductas constituye infracción leve según la LO 4/2015?",
+  opciones: ["a) La ocupación de inmuebles.", "b) El consumo de drogas en la vía pública.", "c) La retirada no autorizada de vallas de seguridad.", "d) La exhibición de objetos peligrosos sin causar riesgo."],
+  correcta: "d) La exhibición de objetos peligrosos sin causar riesgo.",
+  justificacion: "El artículo 37.8 considera infracción leve la exhibición de objetos peligrosos sin causar alarma o riesgo."
+},
+
+{
+  pregunta: "¿Cuál de los siguientes principios NO se menciona en la LO 4/2015 como rector de la actuación de las autoridades?",
+  opciones: ["a) Congruencia.", "b) Proporcionalidad.", "c) Eficiencia económica.", "d) Oportunidad."],
+  correcta: "c) Eficiencia económica.",
+  justificacion: "El artículo 5 menciona congruencia, oportunidad y proporcionalidad, pero no eficiencia económica."
+},
+
+{
+  pregunta: "¿Qué infracción muy grave se establece en la LO 4/2015 en relación con el uso de explosivos?",
+  opciones: ["a) La simple tenencia de material pirotécnico.", "b) La fabricación o uso no autorizado de explosivos.", "c) El uso de bengalas en espectáculos deportivos.", "d) El almacenamiento doméstico de fuegos artificiales."],
+  correcta: "b) La fabricación o uso no autorizado de explosivos.",
+  justificacion: "El artículo 35.1 tipifica como muy grave la fabricación, reparación o utilización de explosivos sin autorización."
+},
+
+{
+  pregunta: "¿Qué infracción comete el titular de un local que no cuenta con el libro-registro obligatorio de seguridad?",
+  opciones: ["a) Leve.", "b) Grave.", "c) Muy grave.", "d) No constituye infracción."],
+  correcta: "b) Grave.",
+  justificacion: "El artículo 36.7 considera infracción grave la falta o incumplimiento de medidas de seguridad obligatorias."
+},
+
+{
+  pregunta: "¿Qué medida pueden adoptar los agentes de la autoridad para prevenir infracciones a la seguridad ciudadana?",
+  opciones: ["a) Clausura de locales.", "b) Identificación y comprobación de antecedentes.", "c) Citación judicial.", "d) Detención preventiva automática."],
+  correcta: "b) Identificación y comprobación de antecedentes.",
+  justificacion: "El artículo 16 autoriza a los agentes a identificar a personas para prevenir la comisión de infracciones."
+},
+
+{
+  pregunta: "¿Qué órgano puede acordar la suspensión de la habilitación de un vigilante de seguridad?",
+  opciones: ["a) El Ministerio del Interior.", "b) El Director General de la Policía.", "c) La empresa contratante.", "d) El Subdelegado del Gobierno."],
+  correcta: "a) El Ministerio del Interior.",
+  justificacion: "El artículo 61.4 de la Ley 5/2014 permite al Ministerio del Interior suspender temporalmente la habilitación del personal de seguridad."
+},
+
+{
+  pregunta: "¿Cuál es la principal función del detective privado según la Ley 5/2014?",
+  opciones: ["a) Investigar delitos de oficio.", "b) Obtener información sobre personas a solicitud legítima de un cliente.", "c) Vigilar espacios públicos.", "d) Proteger a testigos judiciales."],
+  correcta: "b) Obtener información sobre personas a solicitud legítima de un cliente.",
+  justificacion: "El artículo 48 define esta función como la principal actividad del detective privado."
+},
+
+{
+  pregunta: "¿Qué infracción muy grave recoge el artículo 57 de la Ley 5/2014 en relación con la colaboración con las autoridades?",
+  opciones: ["a) No comunicar un cambio de domicilio.", "b) Negarse a colaborar con las FFCCSE.", "c) No portar la TIP durante el servicio.", "d) Prestar servicios sin uniforme."],
+  correcta: "b) Negarse a colaborar con las FFCCSE.",
+  justificacion: "El artículo 57.d) considera muy grave la negativa a colaborar con las Fuerzas y Cuerpos de Seguridad."
+},
+
+{
+  pregunta: "¿Qué infracción comete la empresa que subcontrata servicios de seguridad sin autorización?",
+  opciones: ["a) Leve.", "b) Grave.", "c) Muy grave.", "d) Penal."],
+  correcta: "c) Muy grave.",
+  justificacion: "El artículo 57.c) tipifica como muy grave la subcontratación de servicios sin la preceptiva autorización administrativa."
+},
+
+{
+  pregunta: "¿Qué sanción máxima puede imponerse a una empresa de seguridad privada por infracción muy grave?",
+  opciones: ["a) 30.000 euros.", "b) 100.000 euros.", "c) 500.000 euros.", "d) 600.000 euros."],
+  correcta: "d) 600.000 euros.",
+  justificacion: "El artículo 59.1.a) fija la multa máxima de 600.000 euros para infracciones muy graves."
+},
+
+{
+  pregunta: "¿Qué tipo de infracción es no comunicar un cambio en el personal directivo de una empresa de seguridad?",
+  opciones: ["a) Muy grave.", "b) Grave.", "c) Leve.", "d) No sancionable."],
+  correcta: "b) Grave.",
+  justificacion: "El artículo 56.d) considera grave no comunicar a la autoridad competente los cambios en el personal directivo o en la estructura de la empresa."
+},
+
+{
+  pregunta: "¿Qué medidas pueden adoptar los agentes para garantizar la seguridad durante una manifestación?",
+  opciones: ["a) Suspender la manifestación sin orden judicial.", "b) Requerir identificación y adoptar medidas de contención proporcionadas.", "c) Detener a todos los participantes.", "d) Desalojar la vía pública automáticamente."],
+  correcta: "b) Requerir identificación y adoptar medidas de contención proporcionadas.",
+  justificacion: "La LO 4/2015 exige que toda actuación respete los principios de proporcionalidad, congruencia y oportunidad (art. 5)."
+},
+
+{
+  pregunta: "¿Qué autoridad puede acordar la clausura temporal de un establecimiento por infracción muy grave en seguridad privada?",
+  opciones: ["a) El Delegado del Gobierno.", "b) El Ministro del Interior.", "c) El Director General de la Policía.", "d) El Consejo de Seguridad Privada."],
+  correcta: "b) El Ministro del Interior.",
+  justificacion: "El artículo 59.3 de la Ley 5/2014 permite la clausura temporal del establecimiento por decisión del Ministro del Interior."
+},
+
+{
+  pregunta: "¿Qué principio regula la cooperación entre seguridad pública y privada según la Ley 5/2014?",
+  opciones: ["a) Subordinación jerárquica.", "b) Coordinación y colaboración.", "c) Independencia funcional.", "d) Libre competencia."],
+  correcta: "b) Coordinación y colaboración.",
+  justificacion: "El artículo 4 establece la cooperación y coordinación como principios básicos de relación entre ambos sectores."
+},
+
+{
+  pregunta: "¿Qué artículo de la LO 4/2015 regula la práctica de registros superficiales por los agentes?",
+  opciones: ["a) Artículo 20.", "b) Artículo 18.", "c) Artículo 22.", "d) Artículo 24."],
+  correcta: "a) Artículo 20.",
+  justificacion: "El artículo 20 permite registros corporales superficiales para garantizar la seguridad de los agentes o de terceros."
+},
+
+{
+  pregunta: "¿Qué infracción recoge la Ley 5/2014 por carecer de contrato escrito entre empresa y cliente?",
+  opciones: ["a) Muy grave.", "b) Grave.", "c) Leve.", "d) No sancionable."],
+  correcta: "b) Grave.",
+  justificacion: "El artículo 56.e) establece como infracción grave la prestación de servicios sin contrato escrito formalizado."
+},
+
+{
+  pregunta: "¿Qué infracción leve puede cometer el personal de seguridad privada según la Ley 5/2014?",
+  opciones: ["a) No llevar la TIP durante el servicio.", "b) Prestar servicios sin autorización.", "c) Negarse a colaborar con la policía.", "d) Subcontratar sin permiso."],
+  correcta: "a) No llevar la TIP durante el servicio.",
+  justificacion: "El artículo 58.a) tipifica como infracción leve no portar la tarjeta de identificación profesional durante el servicio."
+},
+{
+  pregunta: "¿Cuál es el objeto principal de la Ley 5/2014, de Seguridad Privada?",
+  opciones: ["a) Regular el control fronterizo.", "b) Establecer el régimen jurídico de la seguridad privada.", "c) Coordinar las Fuerzas Armadas con la Policía.", "d) Regular los centros penitenciarios."],
+  correcta: "b) Establecer el régimen jurídico de la seguridad privada.",
+  justificacion: "El artículo 1 define como objeto de la ley la regulación de la seguridad privada y su coordinación con la seguridad pública."
+},
+
+{
+  pregunta: "¿Qué autoridad puede acordar la intervención de armas en situaciones de alteración del orden público?",
+  opciones: ["a) El Delegado del Gobierno.", "b) El Ministro del Interior.", "c) El Director General de la Guardia Civil.", "d) Cualquier agente de la autoridad."],
+  correcta: "b) El Ministro del Interior.",
+  justificacion: "Según el artículo 24 de la LO 4/2015, el Ministro del Interior puede acordar la retirada o intervención de armas en casos de riesgo para la seguridad."
+},
+
+{
+  pregunta: "¿Cuál de los siguientes actos constituye una infracción grave según la LO 4/2015?",
+  opciones: ["a) La celebración de manifestaciones sin comunicación previa.", "b) La negativa a identificarse ante un agente.", "c) La falta de respeto a un miembro de las Fuerzas y Cuerpos de Seguridad.", "d) La tenencia de drogas para consumo propio."],
+  correcta: "a) La celebración de manifestaciones sin comunicación previa.",
+  justificacion: "El artículo 36.3 tipifica como infracción grave la celebración de reuniones o manifestaciones sin comunicación previa cuando sea preceptiva."
+},
+
+{
+  pregunta: "¿Qué principio debe guiar toda actuación de los agentes según la LO 4/2015?",
+  opciones: ["a) El principio de autoridad.", "b) El principio de proporcionalidad.", "c) El principio de inmediatez.", "d) El principio de jerarquía."],
+  correcta: "b) El principio de proporcionalidad.",
+  justificacion: "El artículo 5 establece que la actuación de las autoridades debe regirse por los principios de proporcionalidad, congruencia y oportunidad."
+},
+
+{
+  pregunta: "¿Qué documento deben portar los vigilantes de seguridad durante el servicio?",
+  opciones: ["a) La licencia de armas.", "b) La tarjeta de identificación profesional (TIP).", "c) El contrato laboral.", "d) El certificado de antecedentes penales."],
+  correcta: "b) La tarjeta de identificación profesional (TIP).",
+  justificacion: "El artículo 32 de la Ley 5/2014 obliga al personal de seguridad privada a portar la TIP durante el servicio."
+},
+
+{
+  pregunta: "¿Qué infracción comete el vigilante que excede sus funciones realizando actuaciones reservadas a las FFCCSE?",
+  opciones: ["a) Leve.", "b) Grave.", "c) Muy grave.", "d) Penal."],
+  correcta: "c) Muy grave.",
+  justificacion: "El artículo 57.f) considera muy grave que el personal de seguridad privada ejerza funciones exclusivas de las Fuerzas y Cuerpos de Seguridad."
+},
+
+{
+  pregunta: "¿Cuál es el objetivo de la identificación preventiva regulada en la LO 4/2015?",
+  opciones: ["a) Determinar la nacionalidad de los ciudadanos.", "b) Prevenir infracciones o mantener la seguridad ciudadana.", "c) Facilitar el control de inmigración.", "d) Ejecutar sanciones administrativas."],
+  correcta: "b) Prevenir infracciones o mantener la seguridad ciudadana.",
+  justificacion: "El artículo 16 permite la identificación para prevenir infracciones o garantizar la seguridad."
+},
+
+{
+  pregunta: "¿Qué tipo de sanción puede imponerse por una infracción leve según la LO 4/2015?",
+  opciones: ["a) Multa de 100 a 300 euros.", "b) Multa de 100 a 600 euros.", "c) Multa de 601 a 30.000 euros.", "d) Multa de 30.001 a 600.000 euros."],
+  correcta: "b) Multa de 100 a 600 euros.",
+  justificacion: "El artículo 39 establece que las infracciones leves se sancionan con multa de 100 a 600 euros."
+},
+
+{
+  pregunta: "¿Qué función puede realizar el personal de seguridad privada en colaboración con las FFCCSE?",
+  opciones: ["a) Identificación de personas en la vía pública.", "b) Custodia de detenidos.", "c) Vigilancia y protección de bienes o personas.", "d) Instrucción de diligencias judiciales."],
+  correcta: "c) Vigilancia y protección de bienes o personas.",
+  justificacion: "Según el artículo 41, el personal de seguridad privada puede realizar tareas de vigilancia y protección complementarias a las FFCCSE."
+},
+
+{
+  pregunta: "¿Qué órgano es responsable del control y supervisión de la seguridad privada?",
+  opciones: ["a) El Ministerio del Interior.", "b) La Delegación del Gobierno.", "c) La Policía Nacional y la Guardia Civil.", "d) El Consejo de Seguridad Ciudadana."],
+  correcta: "c) La Policía Nacional y la Guardia Civil.",
+  justificacion: "El artículo 65 de la Ley 5/2014 asigna a ambos cuerpos las funciones de control e inspección en materia de seguridad privada."
+},
+
+{
+  pregunta: "¿Qué infracción comete una persona que se niega a disolver una concentración ilegal tras requerimiento de la autoridad?",
+  opciones: ["a) Leve.", "b) Grave.", "c) Muy grave.", "d) Penal."],
+  correcta: "b) Grave.",
+  justificacion: "El artículo 36.3 considera grave la negativa a disolver reuniones o manifestaciones prohibidas o no comunicadas."
+},
+
+{
+  pregunta: "¿Qué sanción máxima se prevé por infracciones muy graves en la LO 4/2015?",
+  opciones: ["a) 30.000 euros.", "b) 60.000 euros.", "c) 300.000 euros.", "d) 600.000 euros."],
+  correcta: "d) 600.000 euros.",
+  justificacion: "El artículo 39 establece multas de 30.001 a 600.000 euros para las infracciones muy graves."
+},
+
+{
+  pregunta: "¿Qué documento deben conservar las empresas de seguridad sobre sus servicios prestados?",
+  opciones: ["a) Contrato y facturas.", "b) Libro-registro de servicios.", "c) Informe mensual de actividades.", "d) Nóminas del personal."],
+  correcta: "b) Libro-registro de servicios.",
+  justificacion: "El artículo 42 obliga a las empresas de seguridad a mantener un libro-registro de servicios y contratos."
+},
+
+{
+  pregunta: "¿Qué infracción comete una empresa de seguridad que no comunica la apertura de una delegación?",
+  opciones: ["a) Muy grave.", "b) Grave.", "c) Leve.", "d) No sancionable."],
+  correcta: "b) Grave.",
+  justificacion: "El artículo 56.b) de la Ley 5/2014 tipifica como grave no comunicar a la autoridad competente la apertura o cierre de delegaciones."
+},
+
+{
+  pregunta: "¿Qué derecho tiene toda persona retenida por identificación según la LO 4/2015?",
+  opciones: ["a) A recibir asistencia letrada.", "b) A no declarar.", "c) A ser informada de las razones y duración de la retención.", "d) A una indemnización económica."],
+  correcta: "c) A ser informada de las razones y duración de la retención.",
+  justificacion: "El artículo 16.2 garantiza el derecho a ser informado del motivo y duración aproximada de la retención."
+},
+
+{
+  pregunta: "¿Cuál de las siguientes no es una medida de seguridad ciudadana según la LO 4/2015?",
+  opciones: ["a) Control de armas y explosivos.", "b) Documentación e identificación personal.", "c) Control de seguridad en transportes.", "d) Control de precios de servicios privados."],
+  correcta: "d) Control de precios de servicios privados.",
+  justificacion: "El artículo 3 no incluye el control de precios como medida de seguridad ciudadana."
+},
+
+{
+  pregunta: "¿Qué infracción se comete al utilizar uniformes o distintivos similares a los de los cuerpos policiales?",
+  opciones: ["a) Muy grave.", "b) Grave.", "c) Leve.", "d) Penal."],
+  correcta: "b) Grave.",
+  justificacion: "El artículo 36.14 tipifica como infracción grave el uso público indebido de uniformes o insignias oficiales."
+},
+
+{
+  pregunta: "¿Qué órgano puede ordenar la disolución de una manifestación por alteraciones graves del orden?",
+  opciones: ["a) El Delegado del Gobierno.", "b) El Ministro del Interior.", "c) La autoridad judicial.", "d) El Jefe del dispositivo policial."],
+  correcta: "a) El Delegado del Gobierno.",
+  justificacion: "El artículo 23 atribuye esta competencia al Delegado del Gobierno en casos de alteración grave del orden público."
+},
+
+{
+  pregunta: "¿Qué medida pueden adoptar los agentes si no se puede identificar a una persona en el lugar de los hechos?",
+  opciones: ["a) Trasladarla a dependencias policiales por tiempo máximo de seis horas.", "b) Detenerla automáticamente.", "c) Retener su documentación.", "d) Imponerle una sanción inmediata."],
+  correcta: "a) Trasladarla a dependencias policiales por tiempo máximo de seis horas.",
+  justificacion: "El artículo 16.2 permite el traslado a dependencias policiales cuando no es posible la identificación en el lugar, con un límite de seis horas."
+},
+
+{
+  pregunta: "¿Qué infracción se comete al desobedecer a un agente de la autoridad en el ejercicio de sus funciones?",
+  opciones: ["a) Leve.", "b) Grave.", "c) Muy grave.", "d) Penal."],
+  correcta: "b) Grave.",
+  justificacion: "El artículo 36.6 considera grave la desobediencia o resistencia a los agentes de la autoridad en el ejercicio de sus funciones."
+},
+{
+  pregunta: "¿Qué autoridad es competente para imponer sanciones por infracciones graves según la Ley 5/2014 de Seguridad Privada?",
+  opciones: ["a) El Ministro del Interior.", "b) El Director General de la Policía o de la Guardia Civil.", "c) El Delegado del Gobierno.", "d) El Subdelegado del Gobierno."],
+  correcta: "b) El Director General de la Policía o de la Guardia Civil.",
+  justificacion: "El artículo 60.1.b) de la Ley 5/2014 atribuye esta competencia a los Directores Generales en función del cuerpo que supervise la empresa."
+},
+
+{
+  pregunta: "¿Qué infracción se comete al prestar servicios de seguridad sin la autorización necesaria?",
+  opciones: ["a) Leve.", "b) Grave.", "c) Muy grave.", "d) Penal."],
+  correcta: "c) Muy grave.",
+  justificacion: "El artículo 57.a) de la Ley 5/2014 considera muy grave la prestación de servicios de seguridad privada sin autorización administrativa."
+},
+
+{
+  pregunta: "¿Qué tipo de documento es obligatorio para ejercer funciones de detective privado?",
+  opciones: ["a) Licencia de investigación privada.", "b) Título universitario y TIP.", "c) Carné profesional de investigador.", "d) Autorización judicial específica."],
+  correcta: "b) Título universitario y TIP.",
+  justificacion: "El artículo 47 exige una titulación universitaria en investigación privada y la TIP correspondiente."
+},
+
+{
+  pregunta: "¿Qué principio regula el uso de videocámaras con fines de seguridad en lugares públicos?",
+  opciones: ["a) Proporcionalidad y mínima intervención.", "b) Publicidad y transparencia.", "c) Eficiencia tecnológica.", "d) Libre instalación por empresas privadas."],
+  correcta: "a) Proporcionalidad y mínima intervención.",
+  justificacion: "El uso de videocámaras por las FFCCSE se rige por los principios de proporcionalidad, idoneidad y mínima intervención (art. 22 LO 4/2015)."
+},
+
+{
+  pregunta: "¿Qué autoridad puede acordar la suspensión temporal de una empresa de seguridad privada?",
+  opciones: ["a) El Ministro del Interior.", "b) El Delegado del Gobierno.", "c) El Director General de la Policía.", "d) El Consejo de Seguridad Privada."],
+  correcta: "a) El Ministro del Interior.",
+  justificacion: "El artículo 59.3 de la Ley 5/2014 permite al Ministro del Interior suspender temporalmente la actividad de una empresa de seguridad."
+},
+
+{
+  pregunta: "¿Qué infracción comete el ciudadano que porta armas sin la documentación requerida?",
+  opciones: ["a) Leve.", "b) Grave.", "c) Muy grave.", "d) Penal."],
+  correcta: "b) Grave.",
+  justificacion: "El artículo 36.10 de la LO 4/2015 considera infracción grave portar armas careciendo de la documentación oportuna."
+},
+
+{
+  pregunta: "¿Qué requisito es necesario para obtener la habilitación del personal de seguridad privada?",
+  opciones: ["a) Ser mayor de 16 años.", "b) Tener nacionalidad española o de la UE y carecer de antecedentes penales.", "c) Haber completado estudios secundarios.", "d) Presentar aval bancario."],
+  correcta: "b) Tener nacionalidad española o de la UE y carecer de antecedentes penales.",
+  justificacion: "El artículo 28 de la Ley 5/2014 establece estos requisitos básicos para la habilitación."
+},
+
+{
+  pregunta: "¿Qué medidas de control pueden imponerse a los establecimientos obligados a disponer de seguridad privada?",
+  opciones: ["a) Nombrar un jefe de seguridad.", "b) Instalar sistemas de alarma y vigilancia.", "c) Notificar mensualmente sus ingresos.", "d) Contratar seguridad pública adicional."],
+  correcta: "b) Instalar sistemas de alarma y vigilancia.",
+  justificacion: "El artículo 50 exige medidas como sistemas de alarma, videovigilancia o personal de seguridad según el riesgo."
+},
+
+{
+  pregunta: "¿Cuál es la finalidad de la coordinación entre seguridad pública y privada?",
+  opciones: ["a) Sustituir a las Fuerzas y Cuerpos de Seguridad.", "b) Garantizar la complementariedad en la protección ciudadana.", "c) Controlar la actividad económica de las empresas.", "d) Crear cuerpos mixtos de seguridad."],
+  correcta: "b) Garantizar la complementariedad en la protección ciudadana.",
+  justificacion: "El artículo 4 de la Ley 5/2014 establece la colaboración como principio para complementar la seguridad pública."
+},
+
+{
+  pregunta: "¿Qué infracción comete el titular de un establecimiento que obstaculiza una inspección de seguridad?",
+  opciones: ["a) Leve.", "b) Grave.", "c) Muy grave.", "d) Penal."],
+  correcta: "b) Grave.",
+  justificacion: "El artículo 36.9 de la LO 4/2015 considera grave la obstrucción o negativa a la inspección de las autoridades competentes."
+},
+
+{
+  pregunta: "¿Cuál es el plazo máximo para notificar la resolución de un procedimiento sancionador en seguridad privada?",
+  opciones: ["a) Tres meses.", "b) Seis meses.", "c) Nueve meses.", "d) Doce meses."],
+  correcta: "b) Seis meses.",
+  justificacion: "El artículo 62 de la Ley 5/2014 establece un plazo máximo de seis meses para resolver los procedimientos sancionadores."
+},
+
+{
+  pregunta: "¿Qué finalidad tiene el Registro Nacional de Seguridad Privada?",
+  opciones: ["a) Inscribir las sanciones impuestas.", "b) Registrar empresas, personal y contratos de seguridad privada.", "c) Controlar la tributación de las empresas del sector.", "d) Llevar un censo de establecimientos vigilados."],
+  correcta: "b) Registrar empresas, personal y contratos de seguridad privada.",
+  justificacion: "El artículo 64 crea el Registro Nacional de Seguridad Privada con estas funciones de control y seguimiento."
+},
+
+{
+  pregunta: "¿Qué autoridad puede acordar la retirada temporal de la habilitación de un vigilante por infracción grave?",
+  opciones: ["a) El Ministro del Interior.", "b) El Director General de la Policía.", "c) El Delegado del Gobierno.", "d) El Consejo de Seguridad Privada."],
+  correcta: "b) El Director General de la Policía.",
+  justificacion: "Según el artículo 61.4, el Director General competente puede acordar la suspensión temporal de la habilitación del personal."
+},
+
+{
+  pregunta: "¿Qué infracción se comete al manipular indebidamente las cámaras de seguridad instaladas en un local?",
+  opciones: ["a) Leve.", "b) Grave.", "c) Muy grave.", "d) Penal."],
+  correcta: "b) Grave.",
+  justificacion: "El artículo 36.15 de la LO 4/2015 tipifica como grave la alteración o manipulación no autorizada de sistemas de seguridad o vigilancia."
+},
+
+{
+  pregunta: "¿Cuál de los siguientes documentos puede ser exigido por los agentes en un control de seguridad ciudadana?",
+  opciones: ["a) Documento Nacional de Identidad o pasaporte.", "b) Certificado médico.", "c) Nómina del mes en curso.", "d) Título académico."],
+  correcta: "a) Documento Nacional de Identidad o pasaporte.",
+  justificacion: "El artículo 8 de la LO 4/2015 establece la obligación de los ciudadanos de exhibir su documentación personal a requerimiento de la autoridad."
+},
+
+{
+  pregunta: "¿Qué sanción se puede imponer a un vigilante que no comunica un hecho delictivo observado durante el servicio?",
+  opciones: ["a) Leve.", "b) Grave.", "c) Muy grave.", "d) Penal."],
+  correcta: "b) Grave.",
+  justificacion: "El artículo 56.c) considera grave no comunicar a las FFCCSE hechos delictivos conocidos durante el servicio."
+},
+
+{
+  pregunta: "¿Qué tipo de formación deben tener los jefes de seguridad privada?",
+  opciones: ["a) Formación universitaria específica o equivalente.", "b) Curso básico de defensa personal.", "c) Estudios de bachillerato.", "d) Formación exclusivamente interna de la empresa."],
+  correcta: "a) Formación universitaria específica o equivalente.",
+  justificacion: "El artículo 29 exige formación universitaria o equivalente para los jefes de seguridad y directores de seguridad."
+},
+
+{
+  pregunta: "¿Qué órgano resuelve los recursos administrativos contra sanciones en materia de seguridad ciudadana?",
+  opciones: ["a) El Tribunal Constitucional.", "b) El superior jerárquico de quien impuso la sanción.", "c) El Consejo de Estado.", "d) La Audiencia Nacional."],
+  correcta: "b) El superior jerárquico de quien impuso la sanción.",
+  justificacion: "Según el régimen general de recursos (art. 44 LO 4/2015), se interpone recurso ante el superior jerárquico del órgano sancionador."
+},
+
+{
+  pregunta: "¿Qué medida puede adoptarse respecto a la documentación de un extranjero cuando sea falsa o esté manipulada?",
+  opciones: ["a) Retención temporal del documento.", "b) Anulación judicial inmediata.", "c) Arresto preventivo.", "d) Sustitución del documento por otro provisional."],
+  correcta: "a) Retención temporal del documento.",
+  justificacion: "El artículo 12.3 de la LO 4/2015 permite la retirada o retención temporal de documentos falsos o alterados."
+},
+
+{
+  pregunta: "¿Qué infracción se comete al organizar espectáculos públicos incumpliendo las medidas de seguridad establecidas?",
+  opciones: ["a) Leve.", "b) Grave.", "c) Muy grave.", "d) Penal."],
+  correcta: "b) Grave.",
+  justificacion: "El artículo 36.12 considera grave la organización de espectáculos sin cumplir las condiciones de seguridad impuestas por la autoridad."
+},
+{
+  pregunta: "¿Qué principio debe regir el ejercicio de la potestad sancionadora según la LO 4/2015?",
+  opciones: ["a) Proporcionalidad.", "b) Eficacia económica.", "c) Publicidad.", "d) Jerarquía normativa."],
+  correcta: "a) Proporcionalidad.",
+  justificacion: "El artículo 30 establece que la potestad sancionadora se ejercerá conforme a los principios de proporcionalidad, responsabilidad y no concurrencia de sanciones."
+},
+
+{
+  pregunta: "¿Qué autoridad impone sanciones por infracciones leves en materia de seguridad ciudadana?",
+  opciones: ["a) El Ministro del Interior.", "b) El Delegado del Gobierno.", "c) El Subdelegado del Gobierno.", "d) El Director General de la Policía."],
+  correcta: "c) El Subdelegado del Gobierno.",
+  justificacion: "El artículo 44.1.c) LO 4/2015 atribuye la competencia sancionadora de infracciones leves a los Subdelegados del Gobierno."
+},
+
+{
+  pregunta: "¿Qué infracción se comete al negarse a entregar armas cuando se ordena su retirada preventiva?",
+  opciones: ["a) Leve.", "b) Grave.", "c) Muy grave.", "d) Penal."],
+  correcta: "b) Grave.",
+  justificacion: "El artículo 36.11 considera infracción grave la negativa a entregar armas o explosivos cuando se ordene su retirada preventiva."
+},
+
+{
+  pregunta: "¿Qué sanción puede acompañar a la multa por infracción muy grave en seguridad privada?",
+  opciones: ["a) Suspensión de la habilitación hasta 2 años.", "b) Pérdida temporal del contrato laboral.", "c) Clausura temporal de hasta 6 meses.", "d) Inhabilitación de por vida."],
+  correcta: "c) Clausura temporal de hasta 6 meses.",
+  justificacion: "El artículo 59.3 de la Ley 5/2014 prevé como medida accesoria la clausura temporal del establecimiento o la suspensión de la actividad."
+},
+
+{
+  pregunta: "¿Qué finalidad tiene la inscripción en el Registro Nacional de Seguridad Privada?",
+  opciones: ["a) Controlar los antecedentes penales del personal.", "b) Acreditar oficialmente la habilitación o autorización.", "c) Facilitar el acceso a subvenciones públicas.", "d) Evitar la competencia desleal entre empresas."],
+  correcta: "b) Acreditar oficialmente la habilitación o autorización.",
+  justificacion: "El artículo 64 señala que la inscripción en el registro acredita la autorización o habilitación otorgada."
+},
+
+{
+  pregunta: "¿Qué principio debe respetar la instalación de medidas de videovigilancia en espacios privados de uso público?",
+  opciones: ["a) Necesidad y proporcionalidad.", "b) Publicidad y transparencia.", "c) Rentabilidad y control.", "d) Delegación administrativa."],
+  correcta: "a) Necesidad y proporcionalidad.",
+  justificacion: "El artículo 42 de la Ley 5/2014 exige que la instalación de sistemas de videovigilancia respete estos principios y la normativa de protección de datos."
+},
+
+{
+  pregunta: "¿Qué sanción máxima puede imponerse al personal de seguridad privada por infracciones muy graves?",
+  opciones: ["a) Multa de 3.000 euros.", "b) Multa de 6.000 euros.", "c) Multa de 10.000 euros.", "d) Multa de 30.000 euros."],
+  correcta: "b) Multa de 6.000 euros.",
+  justificacion: "El artículo 59.2 de la Ley 5/2014 establece multas de hasta 6.000 euros para infracciones muy graves cometidas por el personal."
+},
+
+{
+  pregunta: "¿Qué infracción comete el ciudadano que introduce armas en lugares públicos sin causa justificada?",
+  opciones: ["a) Leve.", "b) Grave.", "c) Muy grave.", "d) Penal."],
+  correcta: "b) Grave.",
+  justificacion: "El artículo 36.10 LO 4/2015 considera infracción grave portar o introducir armas en lugares públicos sin motivo legítimo."
+},
+
+{
+  pregunta: "¿Qué principio general regula la actuación del personal de seguridad privada?",
+  opciones: ["a) Subordinación a las autoridades competentes.", "b) Independencia funcional.", "c) Competencia exclusiva.", "d) Neutralidad política."],
+  correcta: "a) Subordinación a las autoridades competentes.",
+  justificacion: "El artículo 31 de la Ley 5/2014 establece que el personal de seguridad privada actúa bajo la dependencia funcional de las FFCCSE."
+},
+
+{
+  pregunta: "¿Qué órgano puede establecer medidas de coordinación específicas entre seguridad pública y privada?",
+  opciones: ["a) El Consejo de Seguridad Privada.", "b) El Consejo de Ministros.", "c) La Dirección General de la Policía.", "d) El Senado."],
+  correcta: "a) El Consejo de Seguridad Privada.",
+  justificacion: "El artículo 67 de la Ley 5/2014 prevé que el Consejo de Seguridad Privada promueva la coordinación y cooperación operativa."
+},
+
+{
+  pregunta: "¿Qué autoridad puede acordar el depósito obligatorio de armas en situaciones de riesgo?",
+  opciones: ["a) El Director General de la Policía.", "b) El Delegado del Gobierno.", "c) El Ministro del Interior.", "d) El Jefe del Cuerpo Nacional de Policía."],
+  correcta: "c) El Ministro del Interior.",
+  justificacion: "El artículo 24 LO 4/2015 otorga al Ministro del Interior la competencia para acordar la retirada o depósito de armas en caso de riesgo."
+},
+
+{
+  pregunta: "¿Qué plazo de prescripción tienen las infracciones graves según la LO 4/2015?",
+  opciones: ["a) Seis meses.", "b) Un año.", "c) Dos años.", "d) Tres años."],
+  correcta: "c) Dos años.",
+  justificacion: "El artículo 38.2 establece que las infracciones graves prescriben a los dos años desde su comisión."
+},
+
+{
+  pregunta: "¿Qué infracción comete una empresa que forma a su personal sin estar homologada para ello?",
+  opciones: ["a) Leve.", "b) Grave.", "c) Muy grave.", "d) Penal."],
+  correcta: "c) Muy grave.",
+  justificacion: "El artículo 57.g) de la Ley 5/2014 considera muy grave impartir formación sin la homologación del Ministerio del Interior."
+},
+
+{
+  pregunta: "¿Qué principio debe respetar la imposición de sanciones en materia de seguridad ciudadana?",
+  opciones: ["a) Non bis in ídem.", "b) Eficiencia pública.", "c) Competencia compartida.", "d) Publicidad de sanciones."],
+  correcta: "a) Non bis in ídem.",
+  justificacion: "El artículo 30 LO 4/2015 recoge el principio de que no puede sancionarse dos veces el mismo hecho cuando se aprecie identidad de sujeto, hecho y fundamento."
+},
+
+{
+  pregunta: "¿Qué autoridad puede suspender cautelarmente una actividad que afecte gravemente a la seguridad ciudadana?",
+  opciones: ["a) El Ministro del Interior.", "b) El Delegado del Gobierno.", "c) El Director General de la Policía.", "d) El Subdelegado del Gobierno."],
+  correcta: "b) El Delegado del Gobierno.",
+  justificacion: "El artículo 44.3 LO 4/2015 permite al Delegado del Gobierno acordar la suspensión cautelar de actividades que supongan riesgo grave para la seguridad."
+},
+
+{
+  pregunta: "¿Qué infracción comete el vigilante que abandona el servicio sin causa justificada?",
+  opciones: ["a) Leve.", "b) Grave.", "c) Muy grave.", "d) Penal."],
+  correcta: "b) Grave.",
+  justificacion: "El artículo 56.g) de la Ley 5/2014 considera infracción grave el abandono del puesto de trabajo sin causa justificada."
+},
+
+{
+  pregunta: "¿Qué plazo de prescripción tienen las infracciones leves según la Ley 5/2014?",
+  opciones: ["a) Seis meses.", "b) Un año.", "c) Dos años.", "d) Tres años."],
+  correcta: "b) Un año.",
+  justificacion: "El artículo 63.1 establece que las infracciones leves prescriben al año de su comisión."
+},
+
+{
+  pregunta: "¿Qué órgano puede inspeccionar los locales de una empresa de seguridad privada?",
+  opciones: ["a) La Inspección de Trabajo.", "b) Las Fuerzas y Cuerpos de Seguridad competentes.", "c) El Consejo de Seguridad Privada.", "d) El Ministerio de Economía."],
+  correcta: "b) Las Fuerzas y Cuerpos de Seguridad competentes.",
+  justificacion: "El artículo 65 de la Ley 5/2014 atribuye la inspección y control a la Policía Nacional y la Guardia Civil según su ámbito."
+},
+
+{
+  pregunta: "¿Qué infracción comete una persona que difunde imágenes de agentes que puedan poner en riesgo su seguridad?",
+  opciones: ["a) Leve.", "b) Grave.", "c) Muy grave.", "d) Penal."],
+  correcta: "b) Grave.",
+  justificacion: "El artículo 36.23 de la LO 4/2015 tipifica como infracción grave el uso no autorizado de imágenes de agentes que pongan en riesgo su seguridad personal o la eficacia de una operación."
+},
+
+{
+  pregunta: "¿Qué infracción comete una empresa que no cumple las medidas de seguridad impuestas por la autoridad?",
+  opciones: ["a) Leve.", "b) Grave.", "c) Muy grave.", "d) Penal."],
+  correcta: "c) Muy grave.",
+  justificacion: "El artículo 57.e) de la Ley 5/2014 tipifica como muy grave el incumplimiento de las medidas de seguridad impuestas por resolución administrativa."
+},
+{
+  pregunta: "¿Cuál es el plazo de prescripción de las infracciones muy graves según la LO 4/2015?",
+  opciones: ["a) Un año.", "b) Dos años.", "c) Tres años.", "d) Cuatro años."],
+  correcta: "c) Tres años.",
+  justificacion: "El artículo 38.2 de la Ley Orgánica 4/2015 establece que las infracciones muy graves prescriben a los tres años."
+},
+
+{
+  pregunta: "¿Cuál es el plazo de prescripción de las sanciones impuestas por infracciones leves según la LO 4/2015?",
+  opciones: ["a) Un año.", "b) Dos años.", "c) Seis meses.", "d) Tres meses."],
+  correcta: "a) Un año.",
+  justificacion: "El artículo 39.1 LO 4/2015 dispone que las sanciones impuestas por infracciones leves prescriben al año."
+},
+
+{
+  pregunta: "¿Qué principio impide sancionar dos veces un mismo hecho en materia de seguridad ciudadana?",
+  opciones: ["a) Legalidad.", "b) Proporcionalidad.", "c) Non bis in ídem.", "d) Responsabilidad objetiva."],
+  correcta: "c) Non bis in ídem.",
+  justificacion: "El artículo 30 LO 4/2015 recoge el principio de non bis in ídem, que prohíbe sancionar dos veces los mismos hechos."
+},
+
+{
+  pregunta: "¿Qué efecto produce la iniciación del procedimiento sancionador en el cómputo de la prescripción?",
+  opciones: ["a) La interrumpe.", "b) La suspende.", "c) No la afecta.", "d) La extingue."],
+  correcta: "a) La interrumpe.",
+  justificacion: "La iniciación con conocimiento del interesado interrumpe el plazo de prescripción, conforme al artículo 38.3 LO 4/2015."
+},
+
+{
+  pregunta: "¿Qué plazo máximo tiene la Administración para resolver el procedimiento sancionador según la LO 4/2015?",
+  opciones: ["a) 3 meses.", "b) 6 meses.", "c) 12 meses.", "d) 18 meses."],
+  correcta: "b) 6 meses.",
+  justificacion: "El artículo 40 LO 4/2015 fija el plazo máximo de seis meses para resolver y notificar el procedimiento sancionador."
+},
+
+{
+  pregunta: "¿Qué ocurre si el procedimiento sancionador no se resuelve en plazo según la LO 4/2015?",
+  opciones: ["a) Se archiva.", "b) Prescribe automáticamente.", "c) Caduca.", "d) Se reabre de oficio."],
+  correcta: "c) Caduca.",
+  justificacion: "Según el artículo 40.2 LO 4/2015, la falta de resolución en plazo determina la caducidad del procedimiento sancionador."
+},
+
+{
+  pregunta: "¿Qué autoridad puede acordar medidas cautelares para asegurar la eficacia de la resolución sancionadora?",
+  opciones: ["a) El Ministro del Interior.", "b) El Delegado del Gobierno.", "c) El órgano competente para resolver.", "d) El Consejo de Ministros."],
+  correcta: "c) El órgano competente para resolver.",
+  justificacion: "El artículo 41 LO 4/2015 dispone que el órgano competente para resolver podrá adoptar medidas cautelares proporcionales."
+},
+
+{
+  pregunta: "¿Qué plazo de prescripción tienen las sanciones muy graves impuestas según la Ley 5/2014?",
+  opciones: ["a) Un año.", "b) Dos años.", "c) Tres años.", "d) Cuatro años."],
+  correcta: "c) Tres años.",
+  justificacion: "El artículo 63.2 de la Ley 5/2014 establece que las sanciones muy graves prescriben a los tres años."
+},
+
+{
+  pregunta: "¿Qué efecto produce la iniciación del procedimiento sancionador en el plazo de prescripción de infracciones según la Ley 5/2014?",
+  opciones: ["a) La suspende.", "b) La interrumpe.", "c) La extingue.", "d) No la afecta."],
+  correcta: "b) La interrumpe.",
+  justificacion: "El artículo 63.3 de la Ley 5/2014 dispone que la iniciación del procedimiento sancionador interrumpe la prescripción."
+},
+
+{
+  pregunta: "¿Qué autoridad está facultada para adoptar medidas cautelares en el ámbito de la seguridad privada?",
+  opciones: ["a) El Consejo de Seguridad Privada.", "b) El Ministerio del Interior.", "c) La autoridad que instruye el expediente.", "d) Las Fuerzas y Cuerpos de Seguridad."],
+  correcta: "b) El Ministerio del Interior.",
+  justificacion: "El artículo 62.1 de la Ley 5/2014 otorga al Ministerio del Interior la facultad de adoptar medidas cautelares."
+},
+
+{
+  pregunta: "¿Qué plazo tiene el procedimiento sancionador en materia de seguridad privada para resolverse?",
+  opciones: ["a) 3 meses.", "b) 6 meses.", "c) 9 meses.", "d) 12 meses."],
+  correcta: "b) 6 meses.",
+  justificacion: "El artículo 62.2 de la Ley 5/2014 establece un plazo máximo de seis meses para resolver los procedimientos sancionadores."
+},
+
+{
+  pregunta: "¿Qué ocurre si el procedimiento sancionador en materia de seguridad privada caduca?",
+  opciones: ["a) Se archiva sin perjuicio de iniciar otro procedimiento.", "b) Se anula de pleno derecho.", "c) Queda sin efecto definitivo.", "d) Se convierte en una sanción leve."],
+  correcta: "a) Se archiva sin perjuicio de iniciar otro procedimiento.",
+  justificacion: "El artículo 62.3 de la Ley 5/2014 prevé el archivo del expediente por caducidad, sin perjuicio de iniciar uno nuevo."
+},
+
+{
+  pregunta: "¿Qué cooperación internacional se prevé en la Ley 5/2014 respecto a la seguridad privada?",
+  opciones: ["a) Ninguna.", "b) La cooperación en formación y homologación de medios técnicos.", "c) Solo en materia de sanciones.", "d) Limitada al intercambio estadístico."],
+  correcta: "b) La cooperación en formación y homologación de medios técnicos.",
+  justificacion: "El artículo 70 de la Ley 5/2014 fomenta la cooperación internacional en materia de formación y homologación técnica."
+},
+
+{
+  pregunta: "¿Qué principio guía las relaciones entre seguridad pública y privada según la Ley 5/2014?",
+  opciones: ["a) Jerarquía.", "b) Complementariedad.", "c) Sustitución.", "d) Independencia funcional."],
+  correcta: "b) Complementariedad.",
+  justificacion: "El artículo 3 de la Ley 5/2014 establece la complementariedad entre seguridad pública y privada."
+},
+
+{
+  pregunta: "¿Qué infracción comete una empresa que impide una inspección de seguridad privada?",
+  opciones: ["a) Leve.", "b) Grave.", "c) Muy grave.", "d) Penal."],
+  correcta: "c) Muy grave.",
+  justificacion: "El artículo 57.i) de la Ley 5/2014 considera infracción muy grave la obstrucción o negativa a una inspección."
+},
+
+{
+  pregunta: "¿Qué disposición de la Ley 5/2014 regula la habilitación del personal de seguridad privada?",
+  opciones: ["a) Disposición adicional primera.", "b) Disposición adicional segunda.", "c) Disposición adicional tercera.", "d) Disposición final primera."],
+  correcta: "a) Disposición adicional primera.",
+  justificacion: "La disposición adicional primera establece las condiciones de habilitación del personal que ejerce funciones de seguridad privada."
+},
+
+{
+  pregunta: "¿Qué disposición final de la Ley 5/2014 autoriza al Gobierno para dictar su desarrollo reglamentario?",
+  opciones: ["a) Primera.", "b) Segunda.", "c) Tercera.", "d) Cuarta."],
+  correcta: "c) Tercera.",
+  justificacion: "La disposición final tercera habilita al Gobierno a dictar las normas reglamentarias necesarias para su aplicación."
+},
+
+{
+  pregunta: "¿Qué disposición de la LO 4/2015 deroga expresamente la anterior Ley Orgánica 1/1992?",
+  opciones: ["a) Disposición derogatoria única.", "b) Disposición final primera.", "c) Disposición adicional primera.", "d) Disposición transitoria segunda."],
+  correcta: "a) Disposición derogatoria única.",
+  justificacion: "La disposición derogatoria única de la LO 4/2015 deroga la Ley Orgánica 1/1992, de protección de la seguridad ciudadana."
+},
+
+{
+  pregunta: "¿Qué disposición de la LO 4/2015 habilita al Gobierno para dictar las normas necesarias para su ejecución?",
+  opciones: ["a) Disposición adicional segunda.", "b) Disposición final primera.", "c) Disposición final tercera.", "d) Disposición final cuarta."],
+  correcta: "b) Disposición final primera.",
+  justificacion: "La disposición final primera autoriza al Gobierno para dictar las normas necesarias para el desarrollo y ejecución de la Ley Orgánica 4/2015."
+},
+
+{
+  pregunta: "¿Qué ámbito territorial tienen las medidas de seguridad pública previstas en la LO 4/2015?",
+  opciones: ["a) Nacional.", "b) Autonómico.", "c) Local.", "d) Comunitario."],
+  correcta: "a) Nacional.",
+  justificacion: "La LO 4/2015 tiene ámbito de aplicación en todo el territorio nacional, según su disposición adicional primera."
+},
+{
+  pregunta: "Según la LO 4/2015, ¿qué finalidad persigue la protección de la seguridad ciudadana?",
+  opciones: ["a) La defensa nacional.", "b) La salvaguarda de la convivencia y el libre ejercicio de derechos.", "c) El control administrativo de la población.", "d) La protección exclusiva del orden público."],
+  correcta: "b) La salvaguarda de la convivencia y el libre ejercicio de derechos.",
+  justificacion: "El artículo 1 de la LO 4/2015 señala que la finalidad de la Ley es garantizar la convivencia ciudadana y el libre ejercicio de derechos y libertades."
+},
+
+{
+  pregunta: "¿Cuál de los siguientes principios rige la actuación de las autoridades y agentes en materia de seguridad ciudadana?",
+  opciones: ["a) Oportunidad.", "b) Congruencia.", "c) Subordinación.", "d) Secreto."],
+  correcta: "b) Congruencia.",
+  justificacion: "El artículo 5 LO 4/2015 establece los principios de congruencia, oportunidad y proporcionalidad en el uso de la fuerza."
+},
+
+{
+  pregunta: "¿Qué norma regula la identificación de personas en lugares públicos por razones de seguridad?",
+  opciones: ["a) La Ley Orgánica 4/2015, artículo 16.", "b) El Real Decreto 240/2007.", "c) El Código Penal.", "d) La Ley Orgánica 2/1986."],
+  correcta: "a) La Ley Orgánica 4/2015, artículo 16.",
+  justificacion: "El artículo 16 de la LO 4/2015 regula la obligación de identificarse y las medidas para verificar la identidad."
+},
+
+{
+  pregunta: "¿Qué autoridad puede acordar la retirada preventiva de armas en caso de riesgo para la seguridad?",
+  opciones: ["a) El Director General de la Policía.", "b) El Delegado del Gobierno.", "c) El Ministro del Interior.", "d) El Subdelegado del Gobierno."],
+  correcta: "c) El Ministro del Interior.",
+  justificacion: "El artículo 24 LO 4/2015 otorga dicha competencia al Ministro del Interior o autoridad en quien delegue."
+},
+
+{
+  pregunta: "¿Cuál es la duración máxima de la suspensión cautelar de una actividad por riesgo grave para la seguridad ciudadana?",
+  opciones: ["a) 3 meses.", "b) 6 meses.", "c) 12 meses.", "d) Indefinida hasta resolución."],
+  correcta: "b) 6 meses.",
+  justificacion: "El artículo 44.3 LO 4/2015 establece que la suspensión cautelar no podrá exceder de seis meses."
+},
+
+{
+  pregunta: "¿Cuál de los siguientes hechos se considera infracción leve según la LO 4/2015?",
+  opciones: ["a) Faltar al respeto a un agente en el ejercicio de sus funciones.", "b) Desobedecer órdenes directas de los agentes.", "c) La exhibición de objetos peligrosos sin intención de causar daño.", "d) Participar en alteraciones del orden público con violencia."],
+  correcta: "c) La exhibición de objetos peligrosos sin intención de causar daño.",
+  justificacion: "El artículo 37.7 tipifica como leve la exhibición de objetos peligrosos para la integridad física sin intención de usarlo."
+},
+
+{
+  pregunta: "¿Qué autoridad puede ordenar el cierre de locales por infracciones muy graves según la LO 4/2015?",
+  opciones: ["a) El Delegado del Gobierno.", "b) El Ministro del Interior.", "c) El Director General de la Policía.", "d) El Ayuntamiento."],
+  correcta: "b) El Ministro del Interior.",
+  justificacion: "El artículo 43 LO 4/2015 otorga al Ministro del Interior la potestad para ordenar el cierre de locales en infracciones muy graves."
+},
+
+{
+  pregunta: "Según la Ley 5/2014, ¿qué requisito debe cumplir toda empresa de seguridad privada?",
+  opciones: ["a) Tener su sede fuera del territorio nacional.", "b) Contar con autorización previa del Ministerio del Interior.", "c) Contar únicamente con licencia municipal.", "d) Presentar declaración responsable ante la Policía Nacional."],
+  correcta: "b) Contar con autorización previa del Ministerio del Interior.",
+  justificacion: "El artículo 5 de la Ley 5/2014 establece la necesidad de autorización previa del Ministerio del Interior."
+},
+
+{
+  pregunta: "¿Qué funciones pueden desempeñar los vigilantes de seguridad según la Ley 5/2014?",
+  opciones: ["a) Custodia de caudales, vigilancia de bienes y protección de personas.", "b) Investigación privada.", "c) Vigilancia en domicilios particulares.", "d) Transporte de valores únicamente."],
+  correcta: "a) Custodia de caudales, vigilancia de bienes y protección de personas.",
+  justificacion: "El artículo 32 de la Ley 5/2014 define las funciones de los vigilantes de seguridad."
+},
+
+{
+  pregunta: "¿Qué norma determina la dependencia funcional de los vigilantes respecto a las FFCCSE?",
+  opciones: ["a) La Ley Orgánica 2/1986.", "b) La Ley 5/2014, artículo 31.", "c) El Reglamento de Seguridad Privada de 1994.", "d) El Real Decreto 240/2007."],
+  correcta: "b) La Ley 5/2014, artículo 31.",
+  justificacion: "El artículo 31 de la Ley 5/2014 establece la dependencia funcional de los vigilantes de seguridad respecto a las FFCCSE."
+},
+
+{
+  pregunta: "¿Qué infracción comete una empresa de seguridad que no comunica cambios en su plantilla al Ministerio del Interior?",
+  opciones: ["a) Leve.", "b) Grave.", "c) Muy grave.", "d) Penal."],
+  correcta: "b) Grave.",
+  justificacion: "El artículo 56.c) de la Ley 5/2014 considera infracción grave no comunicar modificaciones relevantes en los datos de la empresa."
+},
+
+{
+  pregunta: "¿Qué documento acredita la habilitación profesional del personal de seguridad privada?",
+  opciones: ["a) Certificado de empresa.", "b) Licencia profesional expedida por el Ministerio del Interior.", "c) Carné profesional.", "d) Contrato de trabajo."],
+  correcta: "c) Carné profesional.",
+  justificacion: "El artículo 27 de la Ley 5/2014 establece que la habilitación se acredita mediante el carné profesional expedido por el Ministerio del Interior."
+},
+
+{
+  pregunta: "¿Qué autoridad puede acordar la cancelación de la autorización de una empresa de seguridad privada?",
+  opciones: ["a) El Delegado del Gobierno.", "b) El Ministro del Interior.", "c) La Dirección General de la Policía.", "d) El Consejo de Seguridad Privada."],
+  correcta: "b) El Ministro del Interior.",
+  justificacion: "El artículo 61 de la Ley 5/2014 atribuye al Ministro del Interior la competencia para revocar o cancelar autorizaciones."
+},
+
+{
+  pregunta: "¿Qué obligación tienen los titulares de establecimientos que requieran medidas de seguridad privada?",
+  opciones: ["a) Solicitar inspección anual.", "b) Comunicar las medidas implantadas a la autoridad competente.", "c) Notificar únicamente a la empresa de seguridad.", "d) Presentar declaración responsable ante el ayuntamiento."],
+  correcta: "b) Comunicar las medidas implantadas a la autoridad competente.",
+  justificacion: "El artículo 52 de la Ley 5/2014 impone la obligación de comunicar las medidas de seguridad adoptadas."
+},
+
+{
+  pregunta: "¿Qué infracción comete el personal de seguridad que presta servicio sin la debida uniformidad o acreditación?",
+  opciones: ["a) Leve.", "b) Grave.", "c) Muy grave.", "d) Penal."],
+  correcta: "b) Grave.",
+  justificacion: "El artículo 56.d) de la Ley 5/2014 considera infracción grave desempeñar funciones sin la uniformidad o acreditación reglamentaria."
+},
+
+{
+  pregunta: "¿Qué infracción comete una empresa que reincide en una infracción grave de seguridad privada?",
+  opciones: ["a) Se mantiene como grave.", "b) Pasa a considerarse muy grave.", "c) Se extingue por prescripción.", "d) No tiene consecuencias adicionales."],
+  correcta: "b) Pasa a considerarse muy grave.",
+  justificacion: "El artículo 57.j) de la Ley 5/2014 eleva a muy grave la reincidencia en infracciones graves."
+},
+
+{
+  pregunta: "¿Qué órgano está encargado de promover la cooperación entre seguridad pública y privada?",
+  opciones: ["a) El Consejo de Seguridad Privada.", "b) El Ministerio de Justicia.", "c) El Consejo de Estado.", "d) El Defensor del Pueblo."],
+  correcta: "a) El Consejo de Seguridad Privada.",
+  justificacion: "El artículo 67 de la Ley 5/2014 crea el Consejo de Seguridad Privada como órgano de cooperación y coordinación."
+},
+
+{
+  pregunta: "¿Qué disposición de la Ley 5/2014 establece la derogación de la Ley 23/1992?",
+  opciones: ["a) Disposición final tercera.", "b) Disposición derogatoria única.", "c) Disposición adicional primera.", "d) Disposición transitoria segunda."],
+  correcta: "b) Disposición derogatoria única.",
+  justificacion: "La disposición derogatoria única de la Ley 5/2014 deroga expresamente la Ley 23/1992, de Seguridad Privada."
+},
+
+{
+  pregunta: "¿Qué autoridad supervisa las actividades de investigación privada en España?",
+  opciones: ["a) El Consejo de Seguridad Privada.", "b) La Dirección General de la Policía.", "c) El Ministerio de Justicia.", "d) El Delegado del Gobierno."],
+  correcta: "b) La Dirección General de la Policía.",
+  justificacion: "El artículo 29 de la Ley 5/2014 establece la supervisión de la investigación privada bajo la Dirección General de la Policía."
+},
+
+{
+  pregunta: "¿Qué disposición final de la Ley 5/2014 regula su entrada en vigor?",
+  opciones: ["a) Primera.", "b) Segunda.", "c) Tercera.", "d) Cuarta."],
+  correcta: "d) Cuarta.",
+  justificacion: "La disposición final cuarta establece que la Ley entrará en vigor a los tres meses de su publicación en el BOE."
+},
+{
+  pregunta: "Según la LO 4/2015, ¿quién tiene competencia para dictar las disposiciones necesarias para la aplicación de la Ley?",
+  opciones: ["a) Las Cortes Generales.", "b) El Gobierno.", "c) El Congreso de los Diputados.", "d) El Consejo de Estado."],
+  correcta: "b) El Gobierno.",
+  justificacion: "La disposición final primera de la LO 4/2015 faculta al Gobierno para dictar las disposiciones necesarias para su desarrollo y aplicación."
+},
+
+{
+  pregunta: "¿Qué principio garantiza que las sanciones sean proporcionales a la gravedad de la infracción?",
+  opciones: ["a) Principio de equidad.", "b) Principio de proporcionalidad.", "c) Principio de oportunidad.", "d) Principio de subsidiariedad."],
+  correcta: "b) Principio de proporcionalidad.",
+  justificacion: "El artículo 29 de la LO 4/2015 establece el principio de proporcionalidad en la imposición de sanciones."
+},
+
+{
+  pregunta: "¿Qué elemento se considera esencial para determinar la competencia sancionadora en la LO 4/2015?",
+  opciones: ["a) El lugar de comisión del hecho.", "b) La nacionalidad del infractor.", "c) El nivel económico del infractor.", "d) La reincidencia."],
+  correcta: "a) El lugar de comisión del hecho.",
+  justificacion: "El artículo 34 LO 4/2015 establece la competencia sancionadora en función del ámbito territorial del órgano competente."
+},
+
+{
+  pregunta: "¿Qué tipo de sanción puede imponerse por infracciones muy graves según la LO 4/2015?",
+  opciones: ["a) Multa de 100 a 600 euros.", "b) Multa de 601 a 30.000 euros.", "c) Multa de 30.001 a 600.000 euros.", "d) Multa superior a 1.000.000 de euros."],
+  correcta: "c) Multa de 30.001 a 600.000 euros.",
+  justificacion: "El artículo 39 LO 4/2015 fija la cuantía de las sanciones muy graves entre 30.001 y 600.000 euros."
+},
+
+{
+  pregunta: "¿Qué plazo máximo se establece para resolver y notificar los procedimientos sancionadores en materia de seguridad ciudadana?",
+  opciones: ["a) Tres meses.", "b) Seis meses.", "c) Nueve meses.", "d) Doce meses."],
+  correcta: "b) Seis meses.",
+  justificacion: "El artículo 41 LO 4/2015 dispone un plazo máximo de seis meses para resolver y notificar la resolución del procedimiento sancionador."
+},
+
+{
+  pregunta: "Según la Ley 5/2014, ¿qué órgano podrá ejercer la inspección sobre las empresas y el personal de seguridad privada?",
+  opciones: ["a) Las Delegaciones del Gobierno.", "b) Las Fuerzas y Cuerpos de Seguridad.", "c) El Consejo de Seguridad Privada.", "d) El Ministerio de Defensa."],
+  correcta: "b) Las Fuerzas y Cuerpos de Seguridad.",
+  justificacion: "El artículo 64 de la Ley 5/2014 atribuye a las Fuerzas y Cuerpos de Seguridad la función inspectora en materia de seguridad privada."
+},
+
+{
+  pregunta: "¿Qué finalidad tiene la cooperación entre la seguridad pública y privada según la Ley 5/2014?",
+  opciones: ["a) Sustituir funciones policiales.", "b) Garantizar la unidad de acción y eficacia del sistema de seguridad.", "c) Disminuir costes públicos.", "d) Facilitar la contratación privada en seguridad."],
+  correcta: "b) Garantizar la unidad de acción y eficacia del sistema de seguridad.",
+  justificacion: "El artículo 14 de la Ley 5/2014 establece la cooperación entre seguridad pública y privada para reforzar la eficacia del sistema global."
+},
+
+{
+  pregunta: "¿Qué requisito deben cumplir los directores de seguridad según la Ley 5/2014?",
+  opciones: ["a) Tener formación militar.", "b) Poseer la titulación y habilitación exigidas por el Ministerio del Interior.", "c) Estar colegiados en el Consejo de Seguridad.", "d) Tener un mínimo de diez años de experiencia."],
+  correcta: "b) Poseer la titulación y habilitación exigidas por el Ministerio del Interior.",
+  justificacion: "El artículo 36 de la Ley 5/2014 exige titulación y habilitación para ejercer como director de seguridad."
+},
+
+{
+  pregunta: "¿Cuál es el objetivo del Registro Nacional de Seguridad Privada?",
+  opciones: ["a) Registrar sanciones administrativas.", "b) Controlar las armas utilizadas por los vigilantes.", "c) Registrar empresas, personal y medios autorizados.", "d) Controlar la facturación de las empresas."],
+  correcta: "c) Registrar empresas, personal y medios autorizados.",
+  justificacion: "El artículo 68 de la Ley 5/2014 crea el Registro Nacional de Seguridad Privada para inscribir empresas, personal y medios."
+},
+
+{
+  pregunta: "¿Qué tipo de medida puede adoptar el Ministerio del Interior ante un incumplimiento grave de la Ley 5/2014?",
+  opciones: ["a) Suspensión temporal de la actividad.", "b) Aviso sin consecuencias.", "c) Multa de 30 euros.", "d) Revisión voluntaria."],
+  correcta: "a) Suspensión temporal de la actividad.",
+  justificacion: "El artículo 61 de la Ley 5/2014 permite suspender temporalmente la actividad en caso de infracción grave o muy grave."
+},
+
+{
+  pregunta: "¿Cuál es la naturaleza jurídica de la Ley 5/2014?",
+  opciones: ["a) Ley orgánica.", "b) Ley ordinaria.", "c) Real decreto-ley.", "d) Reglamento ejecutivo."],
+  correcta: "b) Ley ordinaria.",
+  justificacion: "La Ley 5/2014 es una ley ordinaria del Estado, no tiene carácter orgánico."
+},
+
+{
+  pregunta: "¿Qué artículo de la Ley 5/2014 define los principios generales de la seguridad privada?",
+  opciones: ["a) Artículo 1.", "b) Artículo 4.", "c) Artículo 7.", "d) Artículo 9."],
+  correcta: "b) Artículo 4.",
+  justificacion: "El artículo 4 de la Ley 5/2014 establece los principios generales de la seguridad privada, como complementariedad y subordinación."
+},
+
+{
+  pregunta: "¿Qué infracción se produce si una empresa de seguridad continúa su actividad tras la suspensión de la autorización?",
+  opciones: ["a) Leve.", "b) Grave.", "c) Muy grave.", "d) Penal."],
+  correcta: "c) Muy grave.",
+  justificacion: "El artículo 57.f) de la Ley 5/2014 califica como muy grave continuar la actividad con la autorización suspendida."
+},
+
+{
+  pregunta: "¿Qué disposición de la LO 4/2015 establece la vigencia de las sanciones impuestas?",
+  opciones: ["a) Disposición adicional segunda.", "b) Disposición transitoria única.", "c) Disposición final tercera.", "d) Disposición derogatoria única."],
+  correcta: "b) Disposición transitoria única.",
+  justificacion: "La disposición transitoria única regula la vigencia de las sanciones impuestas bajo la normativa anterior."
+},
+
+{
+  pregunta: "¿Qué valor tienen las disposiciones reglamentarias dictadas para desarrollar la LO 4/2015?",
+  opciones: ["a) Carácter interpretativo.", "b) Carácter complementario y obligatorio.", "c) No vinculante.", "d) De mera orientación técnica."],
+  correcta: "b) Carácter complementario y obligatorio.",
+  justificacion: "Las disposiciones reglamentarias desarrollan y complementan la Ley con carácter obligatorio."
+},
+
+{
+  pregunta: "¿Qué órgano puede imponer sanciones por infracciones muy graves según la Ley 5/2014?",
+  opciones: ["a) El Ministro del Interior.", "b) El Delegado del Gobierno.", "c) El Consejo de Seguridad Privada.", "d) El Director General de la Policía."],
+  correcta: "a) El Ministro del Interior.",
+  justificacion: "El artículo 62.1 de la Ley 5/2014 atribuye al Ministro del Interior la potestad sancionadora en infracciones muy graves."
+},
+
+{
+  pregunta: "¿Qué principio inspira la actuación conjunta entre seguridad pública y privada?",
+  opciones: ["a) Competencia.", "b) Coordinación.", "c) Neutralidad.", "d) Jerarquía."],
+  correcta: "b) Coordinación.",
+  justificacion: "El principio de coordinación garantiza la integración eficaz de la seguridad pública y privada, conforme al artículo 14 de la Ley 5/2014."
+},
+
+{
+  pregunta: "¿Qué autoridad vela por la correcta aplicación de la Ley 5/2014 en el ámbito autonómico?",
+  opciones: ["a) El Consejo de Seguridad Privada.", "b) Las Comunidades Autónomas con competencias en seguridad.", "c) La Fiscalía General del Estado.", "d) El Tribunal Supremo."],
+  correcta: "b) Las Comunidades Autónomas con competencias en seguridad.",
+  justificacion: "La Ley 5/2014 reconoce en su disposición adicional tercera la competencia autonómica en materia de control e inspección."
+},
+
+{
+  pregunta: "¿Qué norma sustituirá al actual Reglamento de Seguridad Privada de 1994 según la Ley 5/2014?",
+  opciones: ["a) Un real decreto posterior de desarrollo.", "b) Una orden ministerial.", "c) Un acuerdo del Consejo de Seguridad Privada.", "d) No se prevé sustitución."],
+  correcta: "a) Un real decreto posterior de desarrollo.",
+  justificacion: "La disposición final tercera prevé la aprobación de un nuevo reglamento por real decreto."
+},
+
+{
+  pregunta: "¿Cuál es el objetivo general de la Ley 5/2014 según su exposición de motivos?",
+  opciones: ["a) Limitar la actividad de la seguridad privada.", "b) Integrar la seguridad privada como parte del sistema público de seguridad.", "c) Privatizar servicios públicos.", "d) Reducir la carga administrativa del Ministerio del Interior."],
+  correcta: "b) Integrar la seguridad privada como parte del sistema público de seguridad.",
+  justificacion: "La exposición de motivos señala que la Ley busca la plena integración de la seguridad privada en el sistema de seguridad pública."
+},
+{
+  pregunta: "Según la LO 4/2015, ¿qué se entiende por seguridad ciudadana?",
+  opciones: ["a) El conjunto de medidas de defensa nacional.", "b) La acción de las administraciones para proteger derechos y libertades.", "c) La seguridad exclusiva de los edificios públicos.", "d) El control fronterizo de personas y mercancías."],
+  correcta: "b) La acción de las administraciones para proteger derechos y libertades.",
+  justificacion: "El artículo 1 define la seguridad ciudadana como la acción de los poderes públicos para garantizar el libre ejercicio de derechos y la convivencia."
+},
+
+{
+  pregunta: "¿Qué principio limita la actuación de las autoridades al mínimo necesario para alcanzar el fin legítimo?",
+  opciones: ["a) Legalidad.", "b) Proporcionalidad.", "c) Eficacia.", "d) Oportunidad."],
+  correcta: "b) Proporcionalidad.",
+  justificacion: "El artículo 5 LO 4/2015 establece el principio de proporcionalidad como límite esencial de la actuación de las autoridades."
+},
+
+{
+  pregunta: "¿Quién tiene la competencia sancionadora en materia de infracciones graves de seguridad ciudadana?",
+  opciones: ["a) El Ministro del Interior.", "b) El Delegado del Gobierno.", "c) El Director General de la Policía.", "d) El Juez de Instrucción."],
+  correcta: "b) El Delegado del Gobierno.",
+  justificacion: "El artículo 43 LO 4/2015 atribuye la competencia en infracciones graves a los Delegados y Subdelegados del Gobierno."
+},
+
+{
+  pregunta: "¿Qué derecho se garantiza al ciudadano durante las actuaciones policiales de identificación?",
+  opciones: ["a) El derecho a permanecer en silencio.", "b) El derecho a no ser trasladado salvo causa justificada.", "c) El derecho a asistencia letrada inmediata.", "d) El derecho a oponerse a la identificación."],
+  correcta: "b) El derecho a no ser trasladado salvo causa justificada.",
+  justificacion: "El artículo 16 LO 4/2015 establece que solo podrá trasladarse a dependencias si no es posible la identificación en el lugar de los hechos."
+},
+
+{
+  pregunta: "¿Qué infracción comete quien retire vallas o elementos de seguridad colocados por la autoridad en la vía pública?",
+  opciones: ["a) Leve.", "b) Grave.", "c) Muy grave.", "d) Penal."],
+  correcta: "b) Grave.",
+  justificacion: "El artículo 36.7 LO 4/2015 tipifica como infracción grave la retirada no autorizada de elementos de seguridad o contención."
+},
+
+{
+  pregunta: "¿Cuál es el objetivo de la Ley 5/2014 respecto a la seguridad privada?",
+  opciones: ["a) Limitar las funciones de las empresas privadas.", "b) Integrar la seguridad privada como complemento a la pública.", "c) Centralizar el control en el Ministerio de Defensa.", "d) Sustituir la actuación policial en espacios públicos."],
+  correcta: "b) Integrar la seguridad privada como complemento a la pública.",
+  justificacion: "El artículo 1 de la Ley 5/2014 señala como objetivo la integración y complementariedad con la seguridad pública."
+},
+
+{
+  pregunta: "¿Qué entidad autoriza los servicios de seguridad privada que afecten a varias Comunidades Autónomas?",
+  opciones: ["a) El Consejo de Seguridad Privada.", "b) La Dirección General de la Policía.", "c) El Ministerio del Interior.", "d) Las Comunidades Autónomas afectadas."],
+  correcta: "c) El Ministerio del Interior.",
+  justificacion: "El artículo 6.3 de la Ley 5/2014 otorga dicha competencia al Ministerio del Interior por afectar a varios territorios."
+},
+
+{
+  pregunta: "¿Qué órgano consultivo está previsto en la Ley 5/2014 para asesorar al Ministerio del Interior?",
+  opciones: ["a) Consejo Nacional de Seguridad.", "b) Consejo de Seguridad Privada.", "c) Consejo General de Protección Ciudadana.", "d) Junta de Coordinación Estatal."],
+  correcta: "b) Consejo de Seguridad Privada.",
+  justificacion: "El artículo 67 crea el Consejo de Seguridad Privada como órgano consultivo y de participación sectorial."
+},
+
+{
+  pregunta: "¿Qué infracción comete un detective privado que realice investigaciones sobre delitos perseguibles de oficio?",
+  opciones: ["a) Leve.", "b) Grave.", "c) Muy grave.", "d) Penal."],
+  correcta: "c) Muy grave.",
+  justificacion: "El artículo 57.e) de la Ley 5/2014 considera muy grave investigar delitos perseguibles de oficio, competencia exclusiva de la autoridad pública."
+},
+
+{
+  pregunta: "¿Qué artículo de la Ley 5/2014 regula la formación del personal de seguridad privada?",
+  opciones: ["a) Artículo 18.", "b) Artículo 26.", "c) Artículo 29.", "d) Artículo 42."],
+  correcta: "b) Artículo 26.",
+  justificacion: "El artículo 26 establece la formación, actualización y especialización del personal de seguridad privada."
+},
+
+{
+  pregunta: "¿Qué autoridad podrá requerir la colaboración de las empresas de seguridad privada en casos de emergencia?",
+  opciones: ["a) El Consejo de Seguridad Privada.", "b) El Ministro del Interior.", "c) El Delegado del Gobierno.", "d) El Director General de la Policía."],
+  correcta: "b) El Ministro del Interior.",
+  justificacion: "El artículo 14.3 de la Ley 5/2014 prevé la colaboración obligatoria en situaciones de emergencia a requerimiento del Ministro del Interior."
+},
+
+{
+  pregunta: "¿Qué infracción comete una empresa que carece del seguro obligatorio de responsabilidad civil?",
+  opciones: ["a) Leve.", "b) Grave.", "c) Muy grave.", "d) Penal."],
+  correcta: "c) Muy grave.",
+  justificacion: "El artículo 57.h) de la Ley 5/2014 considera muy grave la falta del seguro de responsabilidad civil o de caución exigido."
+},
+
+{
+  pregunta: "¿Cuál es el principio rector de la seguridad privada en su relación con la pública?",
+  opciones: ["a) Jerarquía.", "b) Coordinación y cooperación.", "c) Independencia.", "d) Soberanía funcional."],
+  correcta: "b) Coordinación y cooperación.",
+  justificacion: "El artículo 14 de la Ley 5/2014 fija la cooperación y coordinación con la seguridad pública como principio rector."
+},
+
+{
+  pregunta: "¿Qué documento deberá portar siempre el personal de seguridad privada durante el servicio?",
+  opciones: ["a) Copia del contrato laboral.", "b) Carné profesional expedido por el Ministerio del Interior.", "c) Licencia de armas tipo B.", "d) Justificante de formación teórica."],
+  correcta: "b) Carné profesional expedido por el Ministerio del Interior.",
+  justificacion: "El artículo 27 establece la obligación de portar el carné profesional durante el servicio."
+},
+
+{
+  pregunta: "¿Qué disposición de la Ley 5/2014 regula la entrada en vigor de la norma?",
+  opciones: ["a) Disposición final primera.", "b) Disposición final segunda.", "c) Disposición final cuarta.", "d) Disposición adicional tercera."],
+  correcta: "c) Disposición final cuarta.",
+  justificacion: "La disposición final cuarta fija la entrada en vigor a los tres meses de su publicación en el BOE."
+},
+
+{
+  pregunta: "¿Qué función principal tienen los jefes de seguridad según la Ley 5/2014?",
+  opciones: ["a) Custodia de instalaciones públicas.", "b) Dirección, inspección y supervisión de los servicios de seguridad privada.", "c) Control de las armas reglamentarias.", "d) Coordinación con empresas de transporte de fondos."],
+  correcta: "b) Dirección, inspección y supervisión de los servicios de seguridad privada.",
+  justificacion: "El artículo 35 les asigna funciones de dirección y supervisión de los servicios de seguridad privada."
+},
+
+{
+  pregunta: "¿Qué tipo de infracción es prestar servicios de seguridad privada sin autorización administrativa?",
+  opciones: ["a) Leve.", "b) Grave.", "c) Muy grave.", "d) Penal."],
+  correcta: "c) Muy grave.",
+  justificacion: "El artículo 57.a) de la Ley 5/2014 considera muy grave la prestación de servicios sin la preceptiva autorización."
+},
+
+{
+  pregunta: "¿Qué plazo de prescripción tienen las infracciones graves en materia de seguridad privada?",
+  opciones: ["a) 6 meses.", "b) 1 año.", "c) 2 años.", "d) 3 años."],
+  correcta: "c) 2 años.",
+  justificacion: "El artículo 60 de la Ley 5/2014 establece dos años para la prescripción de infracciones graves."
+},
+
+{
+  pregunta: "¿Qué infracción comete el personal de seguridad que excede sus funciones reglamentarias?",
+  opciones: ["a) Leve.", "b) Grave.", "c) Muy grave.", "d) Penal."],
+  correcta: "b) Grave.",
+  justificacion: "El artículo 56.a) de la Ley 5/2014 considera grave el incumplimiento o exceso en el ejercicio de funciones."
+},
+
+{
+  pregunta: "¿Qué disposición adicional de la Ley 5/2014 regula la cooperación con las Comunidades Autónomas?",
+  opciones: ["a) Primera.", "b) Segunda.", "c) Tercera.", "d) Cuarta."],
+  correcta: "c) Tercera.",
+  justificacion: "La disposición adicional tercera establece la cooperación entre el Estado y las Comunidades Autónomas con competencias en seguridad."
+},
+{
+  pregunta: "¿Qué tipo de infracción comete quien falte al respeto o consideración a un miembro de las Fuerzas y Cuerpos de Seguridad en el ejercicio de sus funciones?",
+  opciones: ["a) Leve.", "b) Grave.", "c) Muy grave.", "d) Penal."],
+  correcta: "a) Leve.",
+  justificacion: "El artículo 37.4 LO 4/2015 califica como infracción leve la falta de respeto o consideración a agentes de la autoridad."
+},
+
+{
+  pregunta: "¿Qué sanción máxima puede imponerse por infracciones muy graves según la LO 4/2015?",
+  opciones: ["a) Hasta 300 euros.", "b) Hasta 30.000 euros.", "c) De 30.001 a 600.000 euros.", "d) De 601 a 30.000 euros."],
+  correcta: "c) De 30.001 a 600.000 euros.",
+  justificacion: "El artículo 39.1 establece la sanción de entre 30.001 y 600.000 euros para infracciones muy graves."
+},
+
+{
+  pregunta: "¿Qué criterio se aplica para graduar las sanciones en materia de seguridad ciudadana?",
+  opciones: ["a) Capacidad económica del infractor.", "b) Grado de culpabilidad y trascendencia del daño.", "c) Edad del infractor.", "d) Residencia habitual."],
+  correcta: "b) Grado de culpabilidad y trascendencia del daño.",
+  justificacion: "El artículo 40 fija criterios de graduación como la culpabilidad, daño producido, reincidencia y beneficio obtenido."
+},
+
+{
+  pregunta: "¿Qué infracción es la negativa a disolver reuniones o manifestaciones cuando lo ordene la autoridad?",
+  opciones: ["a) Leve.", "b) Grave.", "c) Muy grave.", "d) Penal."],
+  correcta: "b) Grave.",
+  justificacion: "El artículo 36.3 LO 4/2015 considera grave la negativa a disolver reuniones o manifestaciones cuando lo ordene la autoridad."
+},
+
+{
+  pregunta: "¿Qué plazo de prescripción tienen las infracciones leves según la LO 4/2015?",
+  opciones: ["a) 3 meses.", "b) 6 meses.", "c) 1 año.", "d) 2 años."],
+  correcta: "b) 6 meses.",
+  justificacion: "El artículo 38.1 LO 4/2015 establece que las infracciones leves prescriben a los seis meses."
+},
+
+{
+  pregunta: "¿Quién impone las sanciones por infracciones leves en materia de seguridad ciudadana?",
+  opciones: ["a) El Ministro del Interior.", "b) Los Delegados del Gobierno.", "c) Los Subdelegados del Gobierno.", "d) Los Directores Generales de la Policía o Guardia Civil."],
+  correcta: "c) Los Subdelegados del Gobierno.",
+  justificacion: "El artículo 43 LO 4/2015 atribuye la competencia sancionadora en infracciones leves a los Subdelegados del Gobierno."
+},
+
+{
+  pregunta: "¿Qué órgano tiene la competencia sancionadora en infracciones muy graves según la LO 4/2015?",
+  opciones: ["a) El Ministro del Interior.", "b) El Consejo de Ministros.", "c) El Delegado del Gobierno.", "d) El Secretario de Estado de Seguridad."],
+  correcta: "a) El Ministro del Interior.",
+  justificacion: "El artículo 43.1 atribuye al Ministro del Interior la competencia para sancionar las infracciones muy graves."
+},
+
+{
+  pregunta: "¿Qué plazo de prescripción tienen las sanciones muy graves según la LO 4/2015?",
+  opciones: ["a) 1 año.", "b) 2 años.", "c) 3 años.", "d) 4 años."],
+  correcta: "c) 3 años.",
+  justificacion: "El artículo 42.1 fija el plazo de prescripción de las sanciones muy graves en tres años."
+},
+
+{
+  pregunta: "¿Qué principio prohíbe imponer sanciones por hechos ya sancionados penal o administrativamente?",
+  opciones: ["a) Tipicidad.", "b) Proporcionalidad.", "c) Non bis in ídem.", "d) Culpabilidad."],
+  correcta: "c) Non bis in ídem.",
+  justificacion: "El principio non bis in ídem impide sancionar dos veces el mismo hecho, conforme al artículo 29 LO 4/2015."
+},
+
+{
+  pregunta: "¿Qué infracción comete quien consuma bebidas alcohólicas en lugares públicos alterando la tranquilidad ciudadana?",
+  opciones: ["a) Leve.", "b) Grave.", "c) Muy grave.", "d) Penal."],
+  correcta: "a) Leve.",
+  justificacion: "El artículo 37.17 LO 4/2015 tipifica como leve el consumo de alcohol en lugares públicos cuando perturbe la tranquilidad ciudadana."
+},
+
+{
+  pregunta: "¿Qué infracción supone la proyección de haces de luz sobre pilotos o vehículos en circulación?",
+  opciones: ["a) Leve.", "b) Grave.", "c) Muy grave.", "d) Penal."],
+  correcta: "b) Grave.",
+  justificacion: "El artículo 36.23 LO 4/2015 califica como grave esta conducta por el riesgo que genera a la seguridad vial y ciudadana."
+},
+
+{
+  pregunta: "¿Qué autoridad resuelve los recursos administrativos contra sanciones impuestas por Delegados del Gobierno?",
+  opciones: ["a) El Ministro del Interior.", "b) El Secretario de Estado de Seguridad.", "c) El Consejo de Ministros.", "d) La Audiencia Nacional."],
+  correcta: "a) El Ministro del Interior.",
+  justificacion: "El artículo 45 LO 4/2015 establece que los recursos se resolverán por el órgano jerárquicamente superior, en este caso el Ministro del Interior."
+},
+
+{
+  pregunta: "¿Qué infracción comete quien obstaculice dolosamente la actuación de los servicios de emergencia?",
+  opciones: ["a) Leve.", "b) Grave.", "c) Muy grave.", "d) Penal."],
+  correcta: "b) Grave.",
+  justificacion: "El artículo 36.15 LO 4/2015 considera grave obstaculizar el funcionamiento de los servicios de emergencia en caso de desastre o accidente."
+},
+
+{
+  pregunta: "¿Qué disposición final de la LO 4/2015 faculta al Gobierno para dictar las normas de desarrollo?",
+  opciones: ["a) Primera.", "b) Segunda.", "c) Tercera.", "d) Cuarta."],
+  correcta: "b) Segunda.",
+  justificacion: "La disposición final segunda habilita al Gobierno para dictar las disposiciones necesarias para la aplicación de la Ley."
+},
+
+{
+  pregunta: "¿Qué infracción comete un vigilante que abandone su puesto sin causa justificada durante el servicio?",
+  opciones: ["a) Leve.", "b) Grave.", "c) Muy grave.", "d) Penal."],
+  correcta: "b) Grave.",
+  justificacion: "El artículo 56.e) de la Ley 5/2014 considera grave el abandono injustificado del servicio o del puesto asignado."
+},
+
+{
+  pregunta: "¿Qué plazo tiene la Administración para iniciar el procedimiento sancionador tras conocer los hechos en materia de seguridad privada?",
+  opciones: ["a) 1 mes.", "b) 3 meses.", "c) 6 meses.", "d) 1 año."],
+  correcta: "b) 3 meses.",
+  justificacion: "El artículo 61 de la Ley 5/2014 establece un plazo máximo de tres meses para iniciar el procedimiento sancionador desde que se tiene conocimiento de los hechos."
+},
+
+{
+  pregunta: "¿Qué sanción se aplica a las infracciones graves en materia de seguridad privada?",
+  opciones: ["a) Multa de 300 a 30.000 euros.", "b) Multa de 30.001 a 600.000 euros.", "c) Multa de 601 a 30.000 euros.", "d) Multa de 600 a 6.000 euros."],
+  correcta: "a) Multa de 30.001 a 600.000 euros.",
+  justificacion: "El artículo 59.2 de la Ley 5/2014 establece sanciones para las infracciones graves entre 30.001 y 600.000 euros."
+},
+
+{
+  pregunta: "¿Qué principio rige el procedimiento sancionador en materia de seguridad privada según la Ley 5/2014?",
+  opciones: ["a) Eficiencia.", "b) Audiencia del interesado.", "c) Jerarquía normativa.", "d) Publicidad."],
+  correcta: "b) Audiencia del interesado.",
+  justificacion: "El procedimiento sancionador se rige por los principios del artículo 63, incluyendo el de audiencia del interesado antes de resolver."
+},
+
+{
+  pregunta: "¿Qué autoridad puede suspender temporalmente la autorización de una empresa de seguridad privada?",
+  opciones: ["a) El Consejo de Seguridad Privada.", "b) El Ministro del Interior.", "c) El Delegado del Gobierno.", "d) La Dirección General de la Policía."],
+  correcta: "b) El Ministro del Interior.",
+  justificacion: "El artículo 59.4 de la Ley 5/2014 faculta al Ministro del Interior para suspender temporalmente la autorización de una empresa de seguridad privada."
+},
+
+{
+  pregunta: "¿Cuándo prescribe el derecho de la Administración a ejecutar las sanciones en materia de seguridad privada?",
+  opciones: ["a) A los 6 meses.", "b) Al año.", "c) A los 2 años.", "d) A los 3 años."],
+  correcta: "d) A los 3 años.",
+  justificacion: "El artículo 62 de la Ley 5/2014 fija el plazo de tres años para la prescripción de las sanciones impuestas."
+},
+{
+  pregunta: "¿Qué finalidad principal tiene la coordinación entre la seguridad pública y la privada según la Ley 5/2014?",
+  opciones: ["a) Sustituir las funciones policiales por las privadas.", "b) Garantizar la complementariedad y eficacia en la protección de personas y bienes.", "c) Favorecer la competencia entre ambos sectores.", "d) Establecer una jerarquía operativa común."],
+  correcta: "b) Garantizar la complementariedad y eficacia en la protección de personas y bienes.",
+  justificacion: "El artículo 6 de la Ley 5/2014 establece la coordinación para reforzar la seguridad global mediante la colaboración entre ambos ámbitos."
+},
+
+{
+  pregunta: "¿Quién ostenta la máxima autoridad en materia de seguridad privada?",
+  opciones: ["a) El Consejo de Seguridad Privada.", "b) El Ministro del Interior.", "c) El Secretario de Estado de Seguridad.", "d) El Director General de la Policía."],
+  correcta: "b) El Ministro del Interior.",
+  justificacion: "El artículo 8 de la Ley 5/2014 atribuye al Ministro del Interior la superior dirección y coordinación de la seguridad privada."
+},
+
+{
+  pregunta: "¿Qué órgano asesora al Ministerio del Interior en materia de seguridad privada?",
+  opciones: ["a) La Dirección General de la Guardia Civil.", "b) El Consejo de Seguridad Privada.", "c) La Junta Central de Seguridad.", "d) El Gabinete de Coordinación y Estudios de Seguridad."],
+  correcta: "b) El Consejo de Seguridad Privada.",
+  justificacion: "El artículo 10 crea el Consejo de Seguridad Privada como órgano asesor y de participación del sector."
+},
+
+{
+  pregunta: "¿Qué requisito general se exige para obtener habilitación como personal de seguridad privada?",
+  opciones: ["a) Ser mayor de 18 años.", "b) No haber sido condenado por delitos dolosos.", "c) Poseer nacionalidad española exclusivamente.", "d) Tener estudios universitarios."],
+  correcta: "b) No haber sido condenado por delitos dolosos.",
+  justificacion: "El artículo 28 exige carecer de antecedentes por delitos dolosos como requisito esencial de habilitación."
+},
+
+{
+  pregunta: "¿Qué personal de seguridad puede portar armas durante el servicio?",
+  opciones: ["a) Todos los vigilantes y detectives.", "b) Los vigilantes de seguridad cuando el servicio lo requiera.", "c) Únicamente los jefes de seguridad.", "d) Los operadores de centrales de alarma."],
+  correcta: "b) Los vigilantes de seguridad cuando el servicio lo requiera.",
+  justificacion: "El artículo 32.2 establece que el uso de armas por vigilantes de seguridad dependerá de la naturaleza del servicio y autorización correspondiente."
+},
+
+{
+  pregunta: "¿Qué funciones puede desempeñar un jefe de seguridad?",
+  opciones: ["a) Investigación privada.", "b) Control y coordinación del personal y servicios de seguridad.", "c) Vigilancia con arma reglamentaria.", "d) Custodia de pruebas judiciales."],
+  correcta: "b) Control y coordinación del personal y servicios de seguridad.",
+  justificacion: "El artículo 36 atribuye al jefe de seguridad la planificación, dirección e inspección del personal y servicios de seguridad privada."
+},
+
+{
+  pregunta: "¿Qué función tienen los detectives privados según la Ley 5/2014?",
+  opciones: ["a) Realizar investigaciones criminales oficiales.", "b) Colaborar con las Fuerzas y Cuerpos de Seguridad en detenciones.", "c) Obtener y aportar información privada a solicitud de personas legitimadas.", "d) Vigilar recintos públicos."],
+  correcta: "c) Obtener y aportar información privada a solicitud de personas legitimadas.",
+  justificacion: "El artículo 48 señala que los detectives privados investigan hechos y conductas a instancia de personas físicas o jurídicas con interés legítimo."
+},
+
+{
+  pregunta: "¿Qué obligación tienen las empresas de seguridad privada respecto a las Fuerzas y Cuerpos de Seguridad?",
+  opciones: ["a) No facilitar información por confidencialidad.", "b) Cooperar e informar sobre los servicios que presten.", "c) Sustituir temporalmente las funciones públicas.", "d) Entregar sus registros económicos al Ministerio del Interior."],
+  correcta: "b) Cooperar e informar sobre los servicios que presten.",
+  justificacion: "El artículo 54 impone la obligación de colaboración con las Fuerzas y Cuerpos de Seguridad."
+},
+
+{
+  pregunta: "¿Quién puede impartir formación en materia de seguridad privada?",
+  opciones: ["a) Cualquier entidad privada.", "b) Únicamente las universidades públicas.", "c) Centros de formación autorizados por el Ministerio del Interior.", "d) Las propias empresas de seguridad sin autorización."],
+  correcta: "c) Centros de formación autorizados por el Ministerio del Interior.",
+  justificacion: "El artículo 29.2 determina que la formación debe impartirse en centros acreditados por el Ministerio del Interior."
+},
+
+{
+  pregunta: "¿Qué documento acredita la habilitación del personal de seguridad privada?",
+  opciones: ["a) El contrato laboral.", "b) El diploma de formación.", "c) La tarjeta de identidad profesional.", "d) El certificado de antecedentes penales."],
+  correcta: "c) La tarjeta de identidad profesional.",
+  justificacion: "El artículo 30 regula la tarjeta de identidad profesional (TIP) como documento acreditativo de la habilitación."
+},
+
+{
+  pregunta: "¿Qué tipo de uniforme debe usar el personal de seguridad privada?",
+  opciones: ["a) Similar al de las Fuerzas de Seguridad.", "b) Con elementos distintivos claramente diferenciados.", "c) De libre elección por la empresa.", "d) De color negro obligatorio."],
+  correcta: "b) Con elementos distintivos claramente diferenciados.",
+  justificacion: "El artículo 31.3 establece que los uniformes deben ser distintos a los de las Fuerzas y Cuerpos de Seguridad para evitar confusión."
+},
+
+{
+  pregunta: "¿Qué autoridad controla la tenencia y uso del armamento por parte del personal de seguridad privada?",
+  opciones: ["a) El Ministerio de Defensa.", "b) El Ministerio de Interior.", "c) La Intervención de Armas de la Guardia Civil.", "d) La Policía Nacional."],
+  correcta: "c) La Intervención de Armas de la Guardia Civil.",
+  justificacion: "Según el artículo 32.4, la Intervención de Armas de la Guardia Civil supervisa la adquisición, uso y custodia del armamento."
+},
+
+{
+  pregunta: "¿Qué personal de seguridad puede realizar funciones de control de accesos en edificios?",
+  opciones: ["a) Detectives privados.", "b) Vigilantes de seguridad.", "c) Operadores de central de alarmas.", "d) Escoltas privados exclusivamente."],
+  correcta: "b) Vigilantes de seguridad.",
+  justificacion: "El artículo 32.1 faculta a los vigilantes de seguridad para realizar control de accesos y custodia en recintos privados."
+},
+
+{
+  pregunta: "¿Qué figura profesional garantiza la seguridad en espectáculos y eventos deportivos?",
+  opciones: ["a) Detective privado.", "b) Coordinador de espectáculos.", "c) Vigilante de seguridad.", "d) Director de seguridad."],
+  correcta: "d) Director de seguridad.",
+  justificacion: "El artículo 35 establece que el director de seguridad organiza y coordina las medidas de seguridad en eventos y grandes concentraciones."
+},
+
+{
+  pregunta: "¿Quién puede ejercer la dirección de seguridad en una empresa con más de 50 vigilantes?",
+  opciones: ["a) Cualquier persona designada por el gerente.", "b) Un jefe de seguridad con 5 años de experiencia.", "c) Un director de seguridad habilitado.", "d) Un inspector de servicios externo."],
+  correcta: "c) Un director de seguridad habilitado.",
+  justificacion: "El artículo 35 exige que las empresas con más de 50 vigilantes cuenten con un director de seguridad habilitado."
+},
+
+{
+  pregunta: "¿Qué documento deben portar los vigilantes durante el servicio?",
+  opciones: ["a) El contrato de trabajo.", "b) La tarjeta profesional y el parte de servicio.", "c) El justificante del curso de formación.", "d) El reglamento interno de la empresa."],
+  correcta: "b) La tarjeta profesional y el parte de servicio.",
+  justificacion: "El artículo 30 y 34 obligan al personal a portar la TIP y la documentación relativa al servicio en curso."
+},
+
+{
+  pregunta: "¿Qué tipo de responsabilidad puede exigirse al personal de seguridad privada por incumplir sus funciones?",
+  opciones: ["a) Solo civil.", "b) Solo penal.", "c) Administrativa, penal y civil según el caso.", "d) Únicamente disciplinaria interna."],
+  correcta: "c) Administrativa, penal y civil según el caso.",
+  justificacion: "El artículo 64 establece que el personal podrá incurrir en responsabilidad administrativa, penal o civil por el incumplimiento de sus obligaciones."
+},
+
+{
+  pregunta: "¿Qué autoridad puede inspeccionar los servicios de seguridad privada en cualquier momento?",
+  opciones: ["a) Solo la empresa contratante.", "b) Las Fuerzas y Cuerpos de Seguridad competentes.", "c) El Ayuntamiento.", "d) El Consejo de Seguridad Privada."],
+  correcta: "b) Las Fuerzas y Cuerpos de Seguridad competentes.",
+  justificacion: "El artículo 52 otorga potestad inspectora a las Fuerzas y Cuerpos de Seguridad en materia de seguridad privada."
+},
+
+{
+  pregunta: "¿Qué infracción comete el personal que no lleve su tarjeta profesional durante el servicio?",
+  opciones: ["a) Leve.", "b) Grave.", "c) Muy grave.", "d) Penal."],
+  correcta: "a) Leve.",
+  justificacion: "El artículo 57.b) tipifica como infracción leve no portar la tarjeta de identidad profesional durante el servicio."
+},
+
+{
+  pregunta: "¿Qué empresas deben disponer obligatoriamente de un departamento de seguridad?",
+  opciones: ["a) Las que tengan más de 10 empleados.", "b) Las que lo determine el Ministerio del Interior por la naturaleza de su actividad.", "c) Las que contraten servicios de detectives.", "d) Todas las empresas con sede en España."],
+  correcta: "b) Las que lo determine el Ministerio del Interior por la naturaleza de su actividad.",
+  justificacion: "El artículo 34 obliga a disponer de departamento de seguridad a las empresas y entidades que el Ministerio del Interior determine."
+},
+{
+  pregunta: "¿Qué forma jurídica deben adoptar las empresas de seguridad privada para poder operar en España?",
+  opciones: ["a) Sociedad civil.", "b) Cooperativa.", "c) Sociedad anónima o limitada.", "d) Sociedad de responsabilidad limitada nueva empresa."],
+  correcta: "c) Sociedad anónima o limitada.",
+  justificacion: "El artículo 19.1 de la Ley 5/2014 exige que las empresas de seguridad adopten forma de sociedad anónima o limitada."
+},
+
+{
+  pregunta: "¿Qué requisito debe cumplir el capital social de las empresas de seguridad privada?",
+  opciones: ["a) No puede ser inferior al mínimo legal establecido para sociedades anónimas.", "b) Debe ser íntegramente público.", "c) Puede ser simbólico si lo autoriza el Ministerio.", "d) No está regulado en la ley."],
+  correcta: "a) No puede ser inferior al mínimo legal establecido para sociedades anónimas.",
+  justificacion: "El artículo 19.2 dispone que el capital social no será inferior al mínimo exigido para las sociedades anónimas."
+},
+
+{
+  pregunta: "¿Quién concede la autorización para el funcionamiento de una empresa de seguridad privada?",
+  opciones: ["a) El Delegado del Gobierno.", "b) El Ministro del Interior.", "c) El Secretario de Estado de Seguridad.", "d) El Consejo de Seguridad Privada."],
+  correcta: "b) El Ministro del Interior.",
+  justificacion: "El artículo 20.1 establece que corresponde al Ministro del Interior autorizar la constitución y funcionamiento de las empresas de seguridad."
+},
+
+{
+  pregunta: "¿Qué documento acredita que una empresa de seguridad está debidamente autorizada?",
+  opciones: ["a) Licencia de actividad.", "b) Resolución ministerial.", "c) Número de inscripción en el Registro Nacional de Seguridad Privada.", "d) Certificado de la Cámara de Comercio."],
+  correcta: "c) Número de inscripción en el Registro Nacional de Seguridad Privada.",
+  justificacion: "El artículo 20.3 determina que las empresas autorizadas se inscriben en el Registro Nacional de Seguridad Privada."
+},
+
+{
+  pregunta: "¿Qué requisito deben cumplir los administradores de las empresas de seguridad privada?",
+  opciones: ["a) Ser funcionarios en activo.", "b) No haber sido condenados por delitos dolosos.", "c) Tener nacionalidad española exclusivamente.", "d) Ser miembros del Consejo de Seguridad Privada."],
+  correcta: "b) No haber sido condenados por delitos dolosos.",
+  justificacion: "El artículo 21 exige que los administradores cumplan los requisitos de honorabilidad profesional y carezcan de antecedentes por delitos dolosos."
+},
+
+{
+  pregunta: "¿Qué servicio puede prestar una empresa de seguridad privada sin autorización específica adicional?",
+  opciones: ["a) Transporte de explosivos.", "b) Instalación de sistemas de alarma.", "c) Custodia de dinero en tránsito.", "d) Ninguno, todos requieren autorización expresa."],
+  correcta: "b) Instalación de sistemas de alarma.",
+  justificacion: "El artículo 5.1 incluye la instalación y mantenimiento de sistemas de seguridad entre los servicios básicos que pueden prestarse con la autorización general."
+},
+
+{
+  pregunta: "¿Qué empresas deben disponer de un plan de seguridad aprobado por el Ministerio del Interior?",
+  opciones: ["a) Todas las de transporte de fondos.", "b) Solo las que tengan armas.", "c) Las de ámbito local.", "d) Ninguna, los planes son voluntarios."],
+  correcta: "a) Todas las de transporte de fondos.",
+  justificacion: "El artículo 22 obliga a las empresas que realicen transporte y custodia de valores a contar con un plan de seguridad aprobado."
+},
+
+{
+  pregunta: "¿Qué servicio de seguridad requiere la intervención de la Guardia Civil en su supervisión?",
+  opciones: ["a) Transporte de explosivos.", "b) Instalación de alarmas.", "c) Protección personal.", "d) Vigilancia sin armas."],
+  correcta: "a) Transporte de explosivos.",
+  justificacion: "El artículo 24.2 establece que el transporte de explosivos estará sometido a la supervisión y control de la Guardia Civil."
+},
+
+{
+  pregunta: "¿Qué obligación tienen las empresas respecto a sus armas reglamentarias?",
+  opciones: ["a) Custodiarlas en armeros homologados.", "b) Guardarlas en los domicilios de los vigilantes.", "c) Entregarlas en depósito a la empresa de transporte.", "d) Tenerlas registradas en el Ayuntamiento."],
+  correcta: "a) Custodiarlas en armeros homologados.",
+  justificacion: "El artículo 32.4 establece la obligación de custodiar las armas en armeros debidamente homologados bajo control de la Guardia Civil."
+},
+
+{
+  pregunta: "¿Qué autoridad puede realizar inspecciones a las empresas de seguridad privada?",
+  opciones: ["a) Las Fuerzas y Cuerpos de Seguridad competentes.", "b) Solo el Consejo de Seguridad Privada.", "c) El Ayuntamiento correspondiente.", "d) Los Delegados de Hacienda."],
+  correcta: "a) Las Fuerzas y Cuerpos de Seguridad competentes.",
+  justificacion: "El artículo 52 faculta a las Fuerzas y Cuerpos de Seguridad para realizar inspecciones en materia de seguridad privada."
+},
+
+{
+  pregunta: "¿Qué infracción comete una empresa que presta servicios sin la preceptiva autorización?",
+  opciones: ["a) Leve.", "b) Grave.", "c) Muy grave.", "d) Penal."],
+  correcta: "c) Muy grave.",
+  justificacion: "El artículo 57.a) tipifica como infracción muy grave la prestación de servicios de seguridad sin la correspondiente autorización."
+},
+
+{
+  pregunta: "¿Qué sanción se impone por infracciones muy graves a las empresas de seguridad?",
+  opciones: ["a) Multa de 600 a 6.000 euros.", "b) Multa de 6.001 a 30.000 euros.", "c) Multa de 30.001 a 600.000 euros.", "d) Multa de 600.001 a 1.000.000 euros."],
+  correcta: "c) Multa de 30.001 a 600.000 euros.",
+  justificacion: "El artículo 59.1 fija este rango de sanciones para las infracciones muy graves."
+},
+
+{
+  pregunta: "¿Qué infracción comete una empresa por no comunicar la celebración de un contrato de seguridad al Ministerio del Interior?",
+  opciones: ["a) Leve.", "b) Grave.", "c) Muy grave.", "d) Penal."],
+  correcta: "b) Grave.",
+  justificacion: "El artículo 56.c) considera grave no comunicar al Ministerio los contratos o servicios prestados."
+},
+
+{
+  pregunta: "¿Qué plazo de prescripción tienen las infracciones graves en materia de seguridad privada?",
+  opciones: ["a) 6 meses.", "b) 1 año.", "c) 2 años.", "d) 3 años."],
+  correcta: "c) 2 años.",
+  justificacion: "El artículo 61.1 establece que las infracciones graves prescriben a los dos años."
+},
+
+{
+  pregunta: "¿Qué principio rige la actuación de las empresas de seguridad privada en su relación con los ciudadanos?",
+  opciones: ["a) Oportunidad.", "b) Confidencialidad.", "c) Transparencia total.", "d) Publicidad activa."],
+  correcta: "b) Confidencialidad.",
+  justificacion: "El artículo 5.2 obliga a mantener la confidencialidad de las informaciones obtenidas en el ejercicio de sus funciones."
+},
+
+{
+  pregunta: "¿Qué autoridad es competente para imponer sanciones por infracciones muy graves en materia de seguridad privada?",
+  opciones: ["a) El Ministro del Interior.", "b) El Secretario de Estado de Seguridad.", "c) El Delegado del Gobierno.", "d) El Consejo de Seguridad Privada."],
+  correcta: "a) El Ministro del Interior.",
+  justificacion: "El artículo 59.4 establece que el Ministro del Interior es competente para sancionar las infracciones muy graves."
+},
+
+{
+  pregunta: "¿Qué documento deben conservar las empresas de seguridad para cada servicio contratado?",
+  opciones: ["a) Copia del contrato y comunicación a Interior.", "b) Factura del servicio.", "c) Informe de satisfacción del cliente.", "d) Declaración jurada del vigilante."],
+  correcta: "a) Copia del contrato y comunicación a Interior.",
+  justificacion: "El artículo 54.2 obliga a conservar copia de los contratos y comunicar su existencia al Ministerio del Interior."
+},
+
+{
+  pregunta: "¿Qué sanción puede imponerse además de la multa en los casos más graves?",
+  opciones: ["a) Suspensión temporal de la actividad o revocación de la autorización.", "b) Arresto domiciliario del administrador.", "c) Embargo de bienes personales.", "d) Clausura definitiva de la empresa sin procedimiento previo."],
+  correcta: "a) Suspensión temporal de la actividad o revocación de la autorización.",
+  justificacion: "El artículo 60 permite imponer sanciones accesorias como suspensión temporal o revocación de la autorización."
+},
+
+{
+  pregunta: "¿Qué plazo tiene la Administración para ejecutar una sanción firme en materia de seguridad privada?",
+  opciones: ["a) 6 meses.", "b) 1 año.", "c) 2 años.", "d) 3 años."],
+  correcta: "d) 3 años.",
+  justificacion: "El artículo 62 establece un plazo de tres años para la prescripción del derecho a ejecutar las sanciones impuestas."
+},
+
+{
+  pregunta: "¿Qué disposición final de la Ley 5/2014 faculta al Gobierno para dictar su desarrollo reglamentario?",
+  opciones: ["a) Primera.", "b) Segunda.", "c) Tercera.", "d) Cuarta."],
+  correcta: "b) Segunda.",
+  justificacion: "La disposición final segunda habilita al Gobierno para desarrollar reglamentariamente la Ley de Seguridad Privada."
+},
+{
+  pregunta: "¿Cuál de los siguientes principios no rige la actuación de las Fuerzas y Cuerpos de Seguridad según la LO 4/2015?",
+  opciones: ["a) Legalidad.", "b) Oportunidad.", "c) Proporcionalidad.", "d) Congruencia."],
+  correcta: "b) Oportunidad.",
+  justificacion: "La actuación policial debe regirse por legalidad, necesidad, congruencia y proporcionalidad, no por oportunidad (art. 5 LO 4/2015)."
+},
+
+{
+  pregunta: "¿Qué autoridad es competente para imponer sanciones por infracciones muy graves según la LO 4/2015?",
+  opciones: ["a) Delegado del Gobierno.", "b) Ministro del Interior.", "c) Subdelegado del Gobierno.", "d) Secretario de Estado de Seguridad."],
+  correcta: "b) Ministro del Interior.",
+  justificacion: "El artículo 39.1 de la LO 4/2015 atribuye la competencia sancionadora por infracciones muy graves al Ministro del Interior."
+},
+
+{
+  pregunta: "¿Cuál de las siguientes conductas se considera infracción grave según la LO 4/2015?",
+  opciones: ["a) Exhibir armas de modo negligente.", "b) Celebrar reuniones no comunicadas.", "c) Negarse a disolver una manifestación comunicada.", "d) Dañar mobiliario urbano sin causar peligro."],
+  correcta: "b) Celebrar reuniones no comunicadas.",
+  justificacion: "El artículo 36.3 tipifica como infracción grave la celebración de reuniones o manifestaciones sin comunicación previa."
+},
+
+{
+  pregunta: "¿Qué tipo de infracción comete una empresa de seguridad que utilice distintivos similares a los de la Policía Nacional?",
+  opciones: ["a) Leve.", "b) Grave.", "c) Muy grave.", "d) Penal."],
+  correcta: "c) Muy grave.",
+  justificacion: "El artículo 57.e) de la Ley 5/2014 lo considera infracción muy grave."
+},
+
+{
+  pregunta: "¿Qué plazo de prescripción tienen las infracciones leves según la LO 4/2015?",
+  opciones: ["a) 6 meses.", "b) 1 año.", "c) 2 años.", "d) 3 años."],
+  correcta: "a) 6 meses.",
+  justificacion: "El artículo 40.1 establece que las infracciones leves prescriben a los seis meses."
+},
+
+{
+  pregunta: "¿Qué requisito deben cumplir los vigilantes de seguridad para ejercer funciones con armas?",
+  opciones: ["a) Estar habilitados y poseer licencia tipo C.", "b) Haber prestado servicio armado previamente.", "c) Contar con autorización municipal.", "d) Ser designados por la empresa."],
+  correcta: "a) Estar habilitados y poseer licencia tipo C.",
+  justificacion: "La Ley 5/2014 exige habilitación como vigilante y la correspondiente licencia de armas tipo C para servicios armados."
+},
+
+{
+  pregunta: "¿Quién puede acordar la disolución de una reunión en lugares de tránsito público?",
+  opciones: ["a) El Alcalde del municipio.", "b) El Delegado del Gobierno.", "c) El Juez de Instrucción.", "d) El Subdelegado del Gobierno."],
+  correcta: "b) El Delegado del Gobierno.",
+  justificacion: "El artículo 23 LO 4/2015 faculta al Delegado del Gobierno a ordenar la disolución cuando se altere el orden público."
+},
+
+{
+  pregunta: "¿Cuál es la duración máxima de la medida de inmovilización de un vehículo prevista en la LO 4/2015?",
+  opciones: ["a) 24 horas.", "b) 48 horas.", "c) El tiempo imprescindible.", "d) No se establece límite."],
+  correcta: "c) El tiempo imprescindible.",
+  justificacion: "El artículo 25 LO 4/2015 indica que la inmovilización solo podrá durar el tiempo estrictamente necesario."
+},
+
+{
+  pregunta: "¿Qué autoridad puede autorizar el funcionamiento de una empresa de seguridad privada?",
+  opciones: ["a) El Ministro del Interior.", "b) El Delegado del Gobierno.", "c) El Secretario de Estado de Seguridad.", "d) La Dirección General de la Guardia Civil."],
+  correcta: "a) El Ministro del Interior.",
+  justificacion: "Según el artículo 20.1 de la Ley 5/2014, corresponde al Ministro del Interior otorgar la autorización de funcionamiento."
+},
+
+{
+  pregunta: "¿Qué infracción comete el que introduce armas en un espectáculo sin autorización?",
+  opciones: ["a) Leve.", "b) Grave.", "c) Muy grave.", "d) Penal."],
+  correcta: "b) Grave.",
+  justificacion: "El artículo 36.10 LO 4/2015 tipifica como infracción grave introducir armas o explosivos en espectáculos públicos sin autorización."
+},
+
+{
+  pregunta: "¿Cuál es la finalidad del Registro Nacional de Seguridad Privada?",
+  opciones: ["a) Controlar la formación de los vigilantes.", "b) Inscribir empresas, delegaciones y servicios autorizados.", "c) Gestionar el armamento de las empresas.", "d) Supervisar la facturación de las compañías."],
+  correcta: "b) Inscribir empresas, delegaciones y servicios autorizados.",
+  justificacion: "El artículo 20.3 de la Ley 5/2014 define este registro con esa finalidad."
+},
+
+{
+  pregunta: "¿Qué principio básico se aplica a las sanciones en materia de seguridad ciudadana?",
+  opciones: ["a) Principio de proporcionalidad.", "b) Principio de oportunidad.", "c) Principio de intervención mínima.", "d) Principio de autoridad."],
+  correcta: "a) Principio de proporcionalidad.",
+  justificacion: "El artículo 32 LO 4/2015 establece el principio de proporcionalidad en la aplicación de sanciones."
+},
+
+{
+  pregunta: "¿Qué órgano ejerce la potestad sancionadora por infracciones graves en materia de seguridad privada?",
+  opciones: ["a) Ministro del Interior.", "b) Secretario de Estado de Seguridad.", "c) Delegado del Gobierno.", "d) Subdelegado del Gobierno."],
+  correcta: "c) Delegado del Gobierno.",
+  justificacion: "El artículo 59.4 atribuye a los Delegados del Gobierno la competencia para sancionar las infracciones graves."
+},
+
+{
+  pregunta: "¿Cuál de las siguientes funciones puede realizar un vigilante de seguridad?",
+  opciones: ["a) Controlar accesos a recintos.", "b) Detener a sospechosos y registrarlos corporalmente.", "c) Practicar registros domiciliarios.", "d) Investigar delitos de oficio."],
+  correcta: "a) Controlar accesos a recintos.",
+  justificacion: "El artículo 32 de la Ley 5/2014 establece entre sus funciones el control de accesos y la vigilancia de bienes e instalaciones."
+},
+
+{
+  pregunta: "¿Cuál de las siguientes infracciones según la LO 4/2015 se considera muy grave?",
+  opciones: ["a) La negativa a identificarse.", "b) La perturbación grave del orden en actos públicos.", "c) La tenencia de drogas para consumo propio.", "d) La omisión de comunicación de una manifestación."],
+  correcta: "b) La perturbación grave del orden en actos públicos.",
+  justificacion: "El artículo 35.1 considera muy grave la perturbación grave del orden con violencia en actos públicos."
+},
+
+{
+  pregunta: "¿Qué medida pueden adoptar los agentes ante una infracción leve según la LO 4/2015?",
+  opciones: ["a) Multa inmediata.", "b) Amonestación verbal.", "c) Identificación y propuesta de sanción.", "d) Detención obligatoria."],
+  correcta: "c) Identificación y propuesta de sanción.",
+  justificacion: "En infracciones leves se procede a la identificación y posterior propuesta sancionadora según el procedimiento administrativo común."
+},
+
+{
+  pregunta: "¿Qué autoridad coordina la actuación de las Fuerzas y Cuerpos de Seguridad en materia de seguridad privada?",
+  opciones: ["a) Secretario de Estado de Seguridad.", "b) Consejo de Seguridad Privada.", "c) Ministro del Interior.", "d) Delegado del Gobierno."],
+  correcta: "a) Secretario de Estado de Seguridad.",
+  justificacion: "El artículo 8 de la Ley 5/2014 establece que corresponde al Secretario de Estado de Seguridad la coordinación general en materia de seguridad privada."
+},
+
+{
+  pregunta: "¿Cuál de las siguientes conductas se sanciona como infracción leve según la LO 4/2015?",
+  opciones: ["a) La ocupación de vía pública sin autorización cuando no haya alteración del orden.", "b) La desobediencia a los agentes.", "c) La negativa a identificarse.", "d) La celebración de reuniones no comunicadas."],
+  correcta: "a) La ocupación de vía pública sin autorización cuando no haya alteración del orden.",
+  justificacion: "El artículo 37.7 LO 4/2015 la tipifica como infracción leve."
+},
+
+{
+  pregunta: "¿Qué artículo de la Ley 5/2014 regula las funciones del personal de seguridad privada?",
+  opciones: ["a) Artículo 30.", "b) Artículo 31.", "c) Artículo 32.", "d) Artículo 33."],
+  correcta: "c) Artículo 32.",
+  justificacion: "El artículo 32 enumera las funciones que pueden desempeñar los vigilantes de seguridad y su ámbito de actuación."
+},
+
+{
+  pregunta: "¿Cuál es la finalidad esencial de la LO 4/2015?",
+  opciones: ["a) Regular la seguridad privada.", "b) Garantizar la convivencia ciudadana y la protección de derechos y libertades.", "c) Fomentar la cooperación internacional.", "d) Crear un sistema de sanciones administrativas único."],
+  correcta: "b) Garantizar la convivencia ciudadana y la protección de derechos y libertades.",
+  justificacion: "El artículo 1 LO 4/2015 establece su finalidad: proteger la seguridad ciudadana y los derechos de las personas."
+},
+{
+  pregunta: "¿En qué año se aprobó la Ley Orgánica de protección de la seguridad ciudadana actualmente vigente?",
+  opciones: ["a) 2013.", "b) 2014.", "c) 2015.", "d) 2016."],
+  correcta: "c) 2015.",
+  justificacion: "La Ley Orgánica 4/2015, de 30 de marzo, fue publicada en el BOE el 31 de marzo de 2015."
+},
+
+{
+  pregunta: "¿Qué artículo de la LO 4/2015 regula la identificación de personas?",
+  opciones: ["a) Artículo 15.", "b) Artículo 16.", "c) Artículo 17.", "d) Artículo 18."],
+  correcta: "b) Artículo 16.",
+  justificacion: "El artículo 16 establece las condiciones para la identificación de personas por las Fuerzas y Cuerpos de Seguridad."
+},
+
+{
+  pregunta: "¿Qué tipo de infracción es el consumo de drogas en lugares públicos según la LO 4/2015?",
+  opciones: ["a) Leve.", "b) Grave.", "c) Muy grave.", "d) Penal."],
+  correcta: "b) Grave.",
+  justificacion: "El artículo 36.16 considera infracción grave el consumo o tenencia ilícita de drogas en lugares públicos."
+},
+
+{
+  pregunta: "¿Cuál es la autoridad competente para sancionar infracciones leves en materia de seguridad ciudadana?",
+  opciones: ["a) Subdelegado del Gobierno.", "b) Delegado del Gobierno.", "c) Ministro del Interior.", "d) Secretario de Estado de Seguridad."],
+  correcta: "b) Delegado del Gobierno.",
+  justificacion: "Según el artículo 39.1 LO 4/2015, el Delegado del Gobierno sanciona las infracciones leves y graves."
+},
+
+{
+  pregunta: "¿Qué artículo de la Ley 5/2014 recoge las funciones de los vigilantes de seguridad?",
+  opciones: ["a) Artículo 31.", "b) Artículo 32.", "c) Artículo 33.", "d) Artículo 34."],
+  correcta: "b) Artículo 32.",
+  justificacion: "El artículo 32 establece las funciones del personal de seguridad privada."
+},
+
+{
+  pregunta: "¿Qué autoridad autoriza la apertura de delegaciones o sucursales de empresas de seguridad en España?",
+  opciones: ["a) El Ministro del Interior.", "b) El Secretario de Estado de Seguridad.", "c) El Delegado del Gobierno.", "d) La Dirección General de la Policía."],
+  correcta: "a) El Ministro del Interior.",
+  justificacion: "Según el artículo 20.1, la autorización corresponde al Ministro del Interior."
+},
+
+{
+  pregunta: "¿Qué artículo de la LO 4/2015 regula la entrada y registro en domicilios?",
+  opciones: ["a) 17.", "b) 18.", "c) 19.", "d) 20."],
+  correcta: "b) 18.",
+  justificacion: "El artículo 18 regula los supuestos de entrada y registro en domicilio en caso de flagrante delito o autorización judicial."
+},
+
+{
+  pregunta: "¿Qué plazo de prescripción tienen las infracciones muy graves según la LO 4/2015?",
+  opciones: ["a) 1 año.", "b) 2 años.", "c) 3 años.", "d) 5 años."],
+  correcta: "d) 5 años.",
+  justificacion: "El artículo 40.1 LO 4/2015 establece la prescripción a los cinco años para las infracciones muy graves."
+},
+
+{
+  pregunta: "¿Qué artículo de la Ley 5/2014 regula la obligación de confidencialidad del personal de seguridad privada?",
+  opciones: ["a) 5.", "b) 6.", "c) 7.", "d) 8."],
+  correcta: "a) 5.",
+  justificacion: "El artículo 5.2 establece la obligación de confidencialidad sobre la información conocida en el ejercicio profesional."
+},
+
+{
+  pregunta: "¿Qué órgano ejerce la potestad sancionadora por infracciones graves en materia de seguridad privada?",
+  opciones: ["a) Subdelegado del Gobierno.", "b) Delegado del Gobierno.", "c) Ministro del Interior.", "d) Secretario de Estado de Seguridad."],
+  correcta: "b) Delegado del Gobierno.",
+  justificacion: "El artículo 59.4 atribuye esta competencia a los Delegados del Gobierno."
+},
+
+{
+  pregunta: "¿Qué artículo de la LO 4/2015 regula la incautación preventiva de efectos peligrosos?",
+  opciones: ["a) 18.", "b) 19.", "c) 20.", "d) 21."],
+  correcta: "c) 20.",
+  justificacion: "El artículo 20 regula la ocupación e incautación preventiva de efectos, armas o instrumentos peligrosos."
+},
+
+{
+  pregunta: "¿Qué tipo de infracción comete una empresa de seguridad que presta servicios sin autorización?",
+  opciones: ["a) Leve.", "b) Grave.", "c) Muy grave.", "d) Penal."],
+  correcta: "c) Muy grave.",
+  justificacion: "El artículo 57.a) de la Ley 5/2014 lo tipifica como infracción muy grave."
+},
+
+{
+  pregunta: "¿Qué principio rige la aplicación de las sanciones en materia de seguridad ciudadana?",
+  opciones: ["a) Intervención mínima.", "b) Proporcionalidad.", "c) Oportunidad.", "d) Publicidad."],
+  correcta: "b) Proporcionalidad.",
+  justificacion: "El artículo 32 LO 4/2015 exige proporcionalidad entre la infracción y la sanción impuesta."
+},
+
+{
+  pregunta: "¿Qué plazo tiene la Administración para ejecutar una sanción firme en materia de seguridad privada?",
+  opciones: ["a) 1 año.", "b) 2 años.", "c) 3 años.", "d) 5 años."],
+  correcta: "c) 3 años.",
+  justificacion: "El artículo 62 de la Ley 5/2014 establece un plazo de tres años para ejecutar sanciones firmes."
+},
+
+{
+  pregunta: "¿Qué infracción según la LO 4/2015 puede acarrear multa de 600 a 30.000 euros?",
+  opciones: ["a) Leve.", "b) Grave.", "c) Muy grave.", "d) Penal."],
+  correcta: "b) Grave.",
+  justificacion: "El artículo 39.2.b) establece que las infracciones graves se sancionan con multa de 601 a 30.000 euros."
+},
+
+{
+  pregunta: "¿Qué institución coordina la formación y homologación del personal de seguridad privada?",
+  opciones: ["a) Ministerio del Interior.", "b) Consejo de Seguridad Privada.", "c) Guardia Civil.", "d) Secretaría de Estado de Seguridad."],
+  correcta: "d) Secretaría de Estado de Seguridad.",
+  justificacion: "El artículo 8 atribuye la coordinación general al Secretario de Estado de Seguridad."
+},
+
+{
+  pregunta: "¿Qué artículo de la LO 4/2015 establece la obligación de colaboración ciudadana con las Fuerzas y Cuerpos de Seguridad?",
+  opciones: ["a) 4.", "b) 5.", "c) 6.", "d) 7."],
+  correcta: "a) 4.",
+  justificacion: "El artículo 4 dispone el deber de colaboración de los ciudadanos en la protección de la seguridad."
+},
+
+{
+  pregunta: "¿Qué tipo de infracción comete una empresa que incumple las medidas de seguridad obligatorias en el transporte de fondos?",
+  opciones: ["a) Leve.", "b) Grave.", "c) Muy grave.", "d) Penal."],
+  correcta: "b) Grave.",
+  justificacion: "El artículo 56.g) de la Ley 5/2014 considera grave el incumplimiento de las medidas de seguridad obligatorias."
+},
+
+{
+  pregunta: "¿Qué artículo de la LO 4/2015 regula la entrada y salida del territorio nacional?",
+  opciones: ["a) 25.", "b) 26.", "c) 27.", "d) 28."],
+  correcta: "a) 25.",
+  justificacion: "El artículo 25 regula la entrada y salida del territorio español, estableciendo el control fronterizo."
+},
+
+{
+  pregunta: "¿Cuál de las siguientes disposiciones finales de la Ley 5/2014 habilita al Gobierno para su desarrollo reglamentario?",
+  opciones: ["a) Primera.", "b) Segunda.", "c) Tercera.", "d) Cuarta."],
+  correcta: "b) Segunda.",
+  justificacion: "La disposición final segunda autoriza al Gobierno a dictar las disposiciones reglamentarias necesarias para la ejecución de la ley."
+},
+];
+
+let totalPreguntasRenderizadas = 0;
+
+function barajar(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+}
+
+function setProgress(current, total) {
+  const bar = document.getElementById('progressBar');
+  const pct = total > 0 ? Math.round((current / total) * 100) : 0;
+  bar.style.width = pct + '%';
+  bar.title = pct + '%';
+}
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+// Carga el test con preguntas y respuestas aleatorias
+function cargarTest() {
+  const numPreguntas = parseInt(document.getElementById('numPreguntas').value);
+  const testForm = document.getElementById('testForm');
+  const progressBar = document.getElementById('progressBar');
+  const testResult = document.getElementById('testResult');
+
+  testForm.innerHTML = '';
+  testResult.innerHTML = '';
+  progressBar.style.width = '0%';
+
+  if (!preguntasBanco || preguntasBanco.length === 0) {
+    testForm.innerHTML = '<p style="color:red;font-weight:bold;">⚠️ No hay preguntas en el banco.</p>';
+    return;
+  }
+
+  const letras = ['a)', 'b)', 'c)', 'd)', 'e)', 'f)']; // por si hay más de 4 opciones
+  const preguntasSeleccionadas = shuffle([...preguntasBanco]).slice(0, numPreguntas);
+
+  preguntasSeleccionadas.forEach((preguntaObj, index) => {
+    // Mezclamos las opciones (pero vamos a limpiar su prefijo "a) " si lo llevan)
+    const opcionesMezcladas = shuffle([...preguntaObj.opciones]);
+
+    // Convertimos cada opción en un objeto { texto, esCorrecta }
+    const opcionesObj = opcionesMezcladas.map(opcion => {
+      // Limpiar prefijos como "a) ", "b) " si existen
+      const textoLimpio = opcion.replace(/^[A-Za-z]\)\s*/, '').trim();
+      const esCorrecta = opcion === preguntaObj.correcta || textoLimpio === preguntaObj.correcta.replace(/^[A-Za-z]\)\s*/, '').trim();
+      return { texto: textoLimpio, esCorrecta };
+    });
+
+    // Renderizamos las opciones asignando letras según la posición (letras fijas)
+    const opcionesHTML = opcionesObj.map((opt, optIndex) => {
+      const marcaCorrecta = opt.esCorrecta ? 'true' : 'false';
+      const letra = letras[optIndex] || `${optIndex + 1})`; // fallback si hay >6 opciones
+      // No incluimos la letra dentro del texto de la opción; la mostramos separada
+      return `
+        <label class="option">
+          <input type="radio" name="pregunta${index}" value="${opt.texto.replace(/"/g, '&quot;')}" data-correct="${marcaCorrecta}">
+          <span style="font-weight:700; margin-right:10px; color:var(--muted)">${letra}</span>
+          ${opt.texto}
+        </label>
+      `;
+    }).join('');
+
+    const preguntaHTML = `
+      <div class="question">
+        <div class="q-head">
+          <span class="q-num">${index + 1}.</span>
+          <p class="q-text">${preguntaObj.pregunta}</p>
+        </div>
+        <div class="options">
+          ${opcionesHTML}
+        </div>
+        <div class="justification muted" style="display:none;">
+          <span class="correct">✔ ${preguntaObj.correcta.replace(/^[A-Za-z]\)\s*/, '')}</span><br>
+          ${preguntaObj.justificacion}
+        </div>
+      </div>
+    `;
+    testForm.insertAdjacentHTML('beforeend', preguntaHTML);
+  });
+
+  // Añadir botón corregir (evitar duplicados)
+  const botonCorregirExistente = Array.from(testForm.getElementsByTagName('button')).find(b => b.textContent === 'Corregir');
+  if (!botonCorregirExistente) {
+    const botonCorregir = document.createElement('button');
+    botonCorregir.type = 'button';
+    botonCorregir.className = 'btn success';
+    botonCorregir.textContent = 'Corregir';
+    botonCorregir.onclick = () => corregirTest();
+    testForm.appendChild(botonCorregir);
+  }
+}
+
+
+function corregirTest() {
+  const preguntas = document.querySelectorAll('.question');
+  let aciertos = 0;
+
+  preguntas.forEach((pregunta) => {
+    const radios = pregunta.querySelectorAll('input[type="radio"]');
+    const labels = pregunta.querySelectorAll('.option');
+    const justificacion = pregunta.querySelector('.justification');
+    let seleccionCorrecta = false;
+
+    // Limpiar clases anteriores
+    labels.forEach(l => {
+      l.classList.remove('correct-option', 'wrong-option');
+      const checkmark = l.querySelector('.checkmark');
+      if (checkmark) checkmark.remove();
+    });
+
+    radios.forEach(radio => {
+      const label = radio.closest('.option');
+      if (radio.checked && radio.dataset.correct === 'true') {
+        seleccionCorrecta = true;
+      }
+    });
+
+    radios.forEach(radio => {
+      const label = radio.closest('.option');
+
+      if (radio.dataset.correct === 'true') {
+        // Mostrar check verde en la opción correcta
+        label.classList.add('correct-option');
+        label.insertAdjacentHTML('afterbegin', `<span class="checkmark" style="color:#059669;font-weight:700;">✔</span>`);
+      }
+
+      if (radio.checked && radio.dataset.correct !== 'true') {
+        // Mostrar X roja en la opción elegida incorrecta
+        label.classList.add('wrong-option');
+        label.insertAdjacentHTML('afterbegin', `<span class="checkmark" style="color:#dc2626;font-weight:700;">✘</span>`);
+      }
+    });
+
+    // Mostrar la justificación al final
+    if (justificacion) {
+      justificacion.style.display = 'block';
+      justificacion.innerHTML = `
+        ${seleccionCorrecta 
+          ? `<span class="correct">✔ ${pregunta.querySelector('input[data-correct="true"]').value}</span><br>` 
+          : `<span class="incorrect">✘ ${pregunta.querySelector('input[data-correct="true"]').value}</span><br>`
+        }
+        ${pregunta.querySelector('.justification').textContent || ''}
+      `;
+    }
+
+    if (seleccionCorrecta) aciertos++;
+  });
+
+  // Mostrar resultado final
+  const total = preguntas.length;
+  const porcentaje = Math.round((aciertos / total) * 100);
+  const testResult = document.getElementById('testResult');
+  testResult.innerHTML = `
+    <div class="result-card">
+      <p class="score">Has acertado ${aciertos} de ${total} preguntas (${porcentaje}%).</p>
+      <p class="muted">${porcentaje >= 70 ? "✅ ¡Buen trabajo!" : "❌ Puedes mejorar."}</p>
+    </div>
+  `;
+  document.getElementById('progressBar').style.width = '100%';
+}
+
+
+function reiniciarTest() {
+  document.getElementById('testForm').innerHTML = '';
+  document.getElementById('testResult').innerHTML = '';
+  setProgress(0, 0);
+}
+  // ==========================
+// 🔹 TEMPORIZADOR CONFIGURABLE
+// ==========================
+
+// Variables del temporizador
+let tiempoTotal = 0;
+let tiempoRestante = 0;
+let temporizadorInterval;
+
+// Crear selector de tiempo en el panel de controles
+const selectTiempo = document.createElement('select');
+selectTiempo.id = 'tiempoSeleccionado';
+selectTiempo.innerHTML = `
+  <option value="0">Sin límite</option>
+  <option value="5">5 minutos</option>
+  <option value="10" selected>10 minutos</option>
+  <option value="15">15 minutos</option>
+  <option value="20">20 minutos</option>
+  <option value="30">30 minutos</option>
+  <option value="40">40 minutos</option>
+  <option value="50">50 minutos</option>
+  <option value="60">60 minutos</option>
+`;
+const labelTiempo = document.createElement('label');
+labelTiempo.htmlFor = 'tiempoSeleccionado';
+labelTiempo.textContent = 'Tiempo límite:';
+const controlsDiv = document.querySelector('.controls');
+controlsDiv.insertBefore(labelTiempo, controlsDiv.children[2]);
+controlsDiv.insertBefore(selectTiempo, controlsDiv.children[3]);
+
+// Crear elemento visual del temporizador
+const temporizadorDiv = document.createElement('div');
+temporizadorDiv.id = 'temporizador';
+temporizadorDiv.style.textAlign = 'center';
+temporizadorDiv.style.fontSize = '18px';
+temporizadorDiv.style.fontWeight = '700';
+temporizadorDiv.style.color = '#2563eb';
+temporizadorDiv.style.marginTop = '12px';
+controlsDiv.appendChild(temporizadorDiv);
+
+// Mostrar tiempo en formato mm:ss
+function mostrarTiempo() {
+  let min = Math.floor(tiempoRestante / 60);
+  let seg = tiempoRestante % 60;
+  temporizadorDiv.textContent = `⏳ Tiempo restante: ${min}:${seg.toString().padStart(2, '0')}`;
+}
+
+// Iniciar temporizador
+function iniciarTemporizador() {
+  const minutosSeleccionados = parseInt(document.getElementById('tiempoSeleccionado').value);
+  if (minutosSeleccionados === 0) {
+    temporizadorDiv.textContent = '⏳ Sin límite de tiempo';
+    return;
+  }
+
+  tiempoTotal = minutosSeleccionados * 60;
+  tiempoRestante = tiempoTotal;
+  mostrarTiempo();
+
+  temporizadorInterval = setInterval(() => {
+    tiempoRestante--;
+    mostrarTiempo();
+    if (tiempoRestante <= 0) {
+      clearInterval(temporizadorInterval);
+      temporizadorDiv.textContent = '⏰ ¡Tiempo agotado!';
+      finalizarTestPorTiempo();
+    }
+  }, 1000);
+}
+
+// Detener temporizador
+function detenerTemporizador() {
+  clearInterval(temporizadorInterval);
+}
+
+// Modificar función cargarTest para que inicie el temporizador
+const originalCargarTest = cargarTest;
+cargarTest = function() {
+  originalCargarTest();
+  detenerTemporizador(); // Por si se reinicia
+  iniciarTemporizador();
+};
+
+// Al finalizar el test manualmente (botón Enviar)
+const originalEvaluarTest = evaluarTest;
+evaluarTest = function() {
+  detenerTemporizador(); // Detiene el contador al pulsar Enviar
+  originalEvaluarTest();
+};
+
+// Cuando el tiempo se agota automáticamente
+function finalizarTestPorTiempo() {
+  // Evita ejecuciones dobles
+  if (window.__finalizadoPorTiempo__) return;
+  window.__finalizadoPorTiempo__ = true;
+
+  detenerTemporizador();
+  if (temporizadorDiv) temporizadorDiv.textContent = '⏰ ¡Tiempo agotado! Pulsa "Enviar" para corregir.';
+
+  // 🔒 Bloquear todas las respuestas
+  document.querySelectorAll('input[type="radio"]').forEach(r => {
+    r.disabled = true;
+    const opt = r.closest('.option');
+    if (opt) {
+      opt.style.opacity = '0.6';
+      opt.style.pointerEvents = 'none';
+    }
+  });
+
+  // ✅ Dejar el botón "Enviar" activo y hacerlo destacar en verde
+  const btnEnviar = document.querySelector('button.btn.success, button[type="submit"]');
+  if (btnEnviar) {
+    btnEnviar.disabled = false;
+    btnEnviar.style.opacity = '1';
+    btnEnviar.style.cursor = 'pointer';
+
+    // 💚 Efecto parpadeo verde suave
+    btnEnviar.style.animation = 'blinkGreen 1.2s infinite';
+    btnEnviar.style.transition = 'background-color 0.3s ease';
+    btnEnviar.style.backgroundColor = '#22c55e'; // verde suave (Tailwind: green-500)
+    btnEnviar.style.color = 'white';
+
+    // Inyectar animación CSS si no existe
+    if (!document.getElementById('blinkGreen-style')) {
+      const style = document.createElement('style');
+      style.id = 'blinkGreen-style';
+      style.textContent = `
+        @keyframes blinkGreen {
+          0%, 100% { background-color: #22c55e; }
+          50% { background-color: #86efac; } /* verde claro (green-300) */
+        }
+      `;
+      document.head.appendChild(style);
+    }
+  }
+
+  // 🔄 Mantener botón "Reiniciar" activo
+  const btnReiniciar = document.querySelector('button.btn.secondary');
+  if (btnReiniciar) {
+    btnReiniciar.disabled = false;
+  }
+}
+</script>
+</body>
+</html>
