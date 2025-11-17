@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test de Ministerio de Interior y Defensa</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --card: #ffffff;
+      --text: #111827;
+      --muted: #6b7280;
+      --primary: #2563eb;
+      --primary-dark: #1e40af;
+      --success: #059669;
+      --danger: #dc2626;
+      --ring: rgba(37, 99, 235, 0.25);
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: 'Roboto', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      padding: 24px;
+    }
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+    header.hero {
+      text-align: center;
+      margin-bottom: 16px;
+    }
+    .title {
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--primary-dark);
+      margin: 0 0 8px;
+    }
+    .subtitle {
+      color: var(--muted);
+      margin: 0;
+    }
+    .controls {
+      background: var(--card);
+      border-radius: 14px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.06);
+      padding: 16px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      justify-content: center;
+      position: sticky;
+      top: 12px;
+      z-index: 5;
+    }
+    .controls label { font-weight: 500; }
+    select {
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid #e5e7eb;
+      background: #fff;
+      outline: none;
+      transition: box-shadow .2s, border-color .2s;
+    }
+    select:focus { border-color: var(--primary); box-shadow: 0 0 0 4px var(--ring); }
+
+    .btn {
+      cursor: pointer;
+      border: none;
+      border-radius: 10px;
+      padding: 12px 18px;
+      font-weight: 700;
+      transition: transform .15s, background .2s, box-shadow .2s;
+      color: #fff;
+      background: var(--primary);
+      box-shadow: 0 6px 14px rgba(37,99,235,.2);
+    }
+    .btn:hover { transform: translateY(-1px); background: var(--primary-dark); }
+    .btn.secondary { background: #6b7280; }
+    .btn.secondary:hover { background: #374151; }
+    .btn.success { background: var(--success); }
+    .btn.success:hover { background: #047857; }
+    .btn.danger { background: var(--danger); }
+    .btn.danger:hover { background: #b91c1c; }
+
+    .progress {
+      width: 100%;
+      height: 10px;
+      background: #e5e7eb;
+      border-radius: 999px;
+      overflow: hidden;
+      margin-top: 8px;
+    }
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--primary), #60a5fa);
+      transition: width .3s ease;
+    }
+
+    .question {
+      margin: 14px 0;
+      padding: 18px;
+      background: var(--card);
+      border-radius: 14px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.06);
+    }
+    .q-head {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+    }
+    .q-num {
+      font-weight: 800;
+      color: var(--primary-dark);
+    }
+    .q-text { margin: 0; }
+
+    .options { margin-top: 10px; display: grid; gap: 8px; }
+    .option {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid #e5e7eb;
+      background: #fff;
+      transition: background .15s, border-color .15s, box-shadow .15s;
+      cursor: pointer;
+    }
+    .option input { transform: scale(1.2); }
+    .option:hover { background: #f9fafb; border-color: #d1d5db; }
+    .option.is-selected { box-shadow: 0 0 0 4px var(--ring); border-color: var(--primary); }
+
+    .justification {
+      margin-top: 10px; color: var(--muted);
+    }
+    .correct { color: var(--success); font-weight: 700; }
+    .incorrect { color: var(--danger); font-weight: 700; }
+
+    .option.correct-option {
+      border-color: rgba(5,150,105,.4);
+      background: #ecfdf5;
+    }
+    .option.wrong-option {
+      border-color: rgba(220,38,38,.4);
+      background: #fef2f2;
+    }
+
+    .result-card {
+      margin: 18px 0;
+      padding: 16px;
+      background: var(--card);
+      border-radius: 14px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.06);
+      text-align: center;
+    }
+    .score {
+      font-size: 22px;
+      font-weight: 800;
+      margin: 8px 0;
+    }
+    .muted { color: var(--muted); }
+    footer { text-align: center; margin-top: 24px; color: var(--muted); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="hero">
+      <h1 class="title">Test de Ministerio de Interior y Defensa</h1>
+      <p class="subtitle">Selecciona cuántas preguntas quieres y pulsa <strong>Comenzar</strong>.</p>
+    </header>
+
+    <div class="controls">
+      <label for="numPreguntas">Número de preguntas:</label>
+      <select id="numPreguntas">
+        <option value="10">10</option>
+        <option value="20">20</option>
+        <option value="30">30</option>
+        <option value="40">40</option>
+        <option value="50" selected>50</option>
+      </select>
+      <button class="btn" type="button" onclick="cargarTest()">Comenzar</button>
+      <button class="btn secondary" type="button" onclick="reiniciarTest()">Reiniciar</button>
+      <div class="progress" style="flex-basis: 100%;">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+    </div>
+
+    <form id="testForm"></form>
+
+    <div id="testResult"></div>
+    <footer>© Test de práctica — Ministerio de Interior y Defensa</footer>
+  </div>
+
+<script>
+const preguntasBanco = [
+  {
+    "pregunta": "Según el Real Decreto 829/2023, ¿quién tiene la competencia para crear, modificar y suprimir los departamentos ministeriales?",
+    "opciones": [
+      "a) El Presidente del Gobierno mediante Orden Ministerial.",
+      "b) El Consejo de Ministros mediante Real Decreto.",
+      "c) El Presidente del Gobierno mediante Real Decreto.",
+      "d) El Congreso de los Diputados mediante Ley Orgánica."
+    ],
+    "correcta": "c) El Presidente del Gobierno mediante Real Decreto.",
+    "justificacion": "Así lo establece el art. 2.2.j) de la Ley 50/1997 citada en el RD 829/2023."
+  },
+  {
+    "pregunta": "¿Cuál de los siguientes no es un departamento ministerial según el RD 829/2023?",
+    "opciones": [
+      "a) Ministerio de Defensa.",
+      "b) Ministerio de la Presidencia, Justicia y Relaciones con las Cortes.",
+      "c) Ministerio de Asuntos Sociales y Agenda 2030.",
+      "d) Ministerio del Interior."
+    ],
+    "correcta": "c) Ministerio de Asuntos Sociales y Agenda 2030.",
+    "justificacion": "Ese nombre no figura entre los 22 ministerios establecidos por el RD 829/2023."
+  },
+  {
+    "pregunta": "El Ministerio del Interior se estructura, según el RD 1009/2023, en los siguientes órganos superiores y directivos:",
+    "opciones": [
+      "a) Secretaría de Estado de Seguridad, Secretaría General Técnica y Subsecretaría del Interior.",
+      "b) Secretaría General de Instituciones Penitenciarias, Secretaría General Técnica y Dirección General de Tráfico.",
+      "c) Secretaría de Estado de Seguridad, Secretaría General de Instituciones Penitenciarias y Subsecretaría del Interior.",
+      "d) Dirección General de la Guardia Civil, Dirección General de Política Interior y Dirección General de Instituciones Penitenciarias."
+    ],
+    "correcta": "c) Secretaría de Estado de Seguridad, Secretaría General de Instituciones Penitenciarias y Subsecretaría del Interior.",
+    "justificacion": "Estos son los órganos superiores básicos que se mencionan expresamente en el artículo 5 del RD 1009/2023."
+  },
+  {
+    "pregunta": "¿Cuál de los siguientes órganos directivos depende de la Secretaría General de Instituciones Penitenciarias?",
+    "opciones": [
+      "a) Dirección General de Ejecución Penal y Reinserción Social.",
+      "b) Dirección General de Coordinación y Estudios.",
+      "c) Dirección General de Protección Civil y Emergencias.",
+      "d) Dirección General de Instituciones Penitenciarias."
+    ],
+    "correcta": "a) Dirección General de Ejecución Penal y Reinserción Social.",
+    "justificacion": "Es el órgano único que depende de dicha Secretaría General."
+  },
+  {
+    "pregunta": "Según el artículo 23 del RD 1009/2023, ¿cuál es el máximo número de asesores en el gabinete de un ministro que no sea vicepresidente?",
+    "opciones": [
+      "a) 3 asesores con nivel de subdirector general.",
+      "b) 5 asesores con nivel orgánico de subdirección general.",
+      "c) 7 asesores, uno de ellos con rango de dirección general.",
+      "d) 9 asesores, uno de ellos con rango de vicesecretaría."
+    ],
+    "correcta": "b) 5 asesores con nivel orgánico de subdirección general.",
+    "justificacion": "Así se establece en el art. 23.2 del RD 1009/2023."
+  },
+  {
+    "pregunta": "¿Cuál de las siguientes NO es función atribuida a la Secretaría de Estado de Seguridad según el RD 207/2024?",
+    "opciones": [
+      "a) Dirección y coordinación de la cooperación policial internacional.",
+      "b) Ejercicio del mando de las Fuerzas y Cuerpos de Seguridad del Estado.",
+      "c) Planificación de las políticas de desarrollo rural en materia de seguridad.",
+      "d) Dirección del Sistema Nacional de Protección de Infraestructuras Críticas."
+    ],
+    "correcta": "c) Planificación de las políticas de desarrollo rural en materia de seguridad.",
+    "justificacion": "Esta competencia no aparece en el RD 207/2024."
+  },
+  {
+    "pregunta": "La Oficina de Comunicación del Ministerio del Interior tiene nivel orgánico de:",
+    "opciones": [
+      "a) Subsecretaría.",
+      "b) Subdirección general.",
+      "c) Dirección general.",
+      "d) Dirección Adjunta."
+    ],
+    "correcta": "b) Subdirección general.",
+    "justificacion": "Así lo establece el artículo 1.4 del RD 207/2024."
+  },
+  {
+    "pregunta": "¿Cuál de los siguientes órganos depende directamente de la Secretaría de Estado de Seguridad?",
+    "opciones": [
+      "a) Gabinete del Ministro del Interior.",
+      "b) Centro de Coordinación Operativa de Seguridad Interior (CECOIN).",
+      "c) Centro de Inteligencia contra el Terrorismo y el Crimen Organizado (CITCO).",
+      "d) Dirección General de Política Interior."
+    ],
+    "correcta": "c) Centro de Inteligencia contra el Terrorismo y el Crimen Organizado (CITCO).",
+    "justificacion": "El artículo 2.03 del RD 207/2024 señala esta dependencia."
+  },
+  {
+    "pregunta": "El CITCO tiene entre sus competencias:",
+    "opciones": [
+      "a) Elaborar informes mensuales sobre amenazas.",
+      "b) Desarrollar estrategias nacionales de seguridad cibernética.",
+      "c) Establecer criterios de coordinación operativa de las FFCCSE.",
+      "d) Custodiar documentos clasificados de la UE."
+    ],
+    "correcta": "c) Establecer criterios de coordinación operativa de las FFCCSE.",
+    "justificacion": "Aparece expresamente entre las funciones del CITCO, según artículo 2.03 del RD 207/2024."
+  },
+  {
+    "pregunta": "¿Cuál de los siguientes no es un órgano directivo de la Secretaría de Estado de Seguridad?",
+    "opciones": [
+      "a) Dirección General de Coordinación y Estudios.",
+      "b) Dirección General de la Policía.",
+      "c) Dirección General de Protección Internacional.",
+      "d) Dirección General de Relaciones Internacionales y Extranjería."
+    ],
+    "correcta": "c) Dirección General de Protección Internacional.",
+    "justificacion": "Esta dirección depende de la Subsecretaría del Interior, no de la SES."
+  },
+  {
+    "pregunta": "¿Qué rango orgánico tiene el titular de la Dirección General de la Guardia Civil?",
+    "opciones": [
+      "a) Rango de Subsecretario.",
+      "b) Rango de Secretario de Estado.",
+      "c) Rango de Director General.",
+      "d) Rango de Secretario General."
+    ],
+    "correcta": "a) Rango de Subsecretario.",
+    "justificacion": "Así se establece en el art. 4 del RD 207/2024."
+  },
+  {
+    "pregunta": "La Junta de Gobierno de la Dirección General de la Policía se encuentra en el nivel:",
+    "opciones": [
+      "a) Periférico.",
+      "b) Central.",
+      "c) Operativo.",
+      "d) Consultivo."
+    ],
+    "correcta": "b) Central.",
+    "justificacion": "Se menciona como órgano en el nivel central en el art. 3.06 del RD 207/2024."
+  },
+  {
+    "pregunta": "¿Cuántas comisarías generales existen en el nivel central de la Policía Nacional según el RD 207/2024?",
+    "opciones": [
+      "a) 3",
+      "b) 4",
+      "c) 5",
+      "d) 6"
+    ],
+    "correcta": "c) 5",
+    "justificacion": "Son las comisarías generales de Información, Policía Judicial, Seguridad Ciudadana, Extranjería y Fronteras, y Policía Científica."
+  },
+  {
+    "pregunta": "En el nivel periférico de la Guardia Civil, ¿cuál de los siguientes no forma parte de la estructura?",
+    "opciones": [
+      "a) Zonas de la Guardia Civil.",
+      "b) Jefaturas Superiores.",
+      "c) Mando de Fronteras y Policía Marítima.",
+      "d) Jefatura de Unidades Especiales y de Reserva."
+    ],
+    "correcta": "b) Jefaturas Superiores.",
+    "justificacion": "Las Jefaturas Superiores son parte de la estructura periférica de la Policía Nacional, no de la Guardia Civil."
+  },
+  {
+    "pregunta": "Según el RD 207/2024, ¿qué órgano coordina el Comité Ejecutivo de Coordinación?",
+    "opciones": [
+      "a) Dirección General de Coordinación y Estudios.",
+      "b) Secretaría de Estado de Seguridad.",
+      "c) Subsecretaría del Interior.",
+      "d) Gabinete del Ministro."
+    ],
+    "correcta": "b) Secretaría de Estado de Seguridad.",
+    "justificacion": "Es presidido por la persona titular de la SES, según el art. 2.04."
+  },
+  {
+    "pregunta": "¿En qué artículo del RD 207/2024 se regulan las funciones generales del Ministerio del Interior?",
+    "opciones": [
+      "a) Artículo 1.",
+      "b) Artículo 2.",
+      "c) Artículo 5.",
+      "d) Disposición adicional primera."
+    ],
+    "correcta": "a) Artículo 1.",
+    "justificacion": "El artículo 1 define la organización general del Departamento."
+  },
+  {
+    "pregunta": "¿Cuál de las siguientes es una competencia específica del Ministerio del Interior según el artículo 1.01 del RD 207/2024?",
+    "opciones": [
+      "a) Propuesta de la política exterior.",
+      "b) Dirección de protección civil y emergencias.",
+      "c) Coordinación de las Fuerzas Armadas.",
+      "d) Gestión de sistemas de justicia."
+    ],
+    "correcta": "b) Dirección de protección civil y emergencias.",
+    "justificacion": "Es una competencia mencionada explícitamente en el artículo 1.01."
+  },
+  {
+    "pregunta": "El Director del Gabinete de la Secretaría de Estado de Seguridad ejerce además las funciones de:",
+    "opciones": [
+      "a) Relator Nacional contra la Trata de Seres Humanos.",
+      "b) Secretario General de Instituciones Penitenciarias.",
+      "c) Coordinador del Consejo de Política Interior.",
+      "d) Director del CITCO."
+    ],
+    "correcta": "a) Relator Nacional contra la Trata de Seres Humanos.",
+    "justificacion": "Así lo recoge el artículo 2.02 del RD 207/2024."
+  },
+  {
+    "pregunta": "¿Cuál de las siguientes opciones corresponde a una Subdirección General dependiente de la Secretaría de Estado de Seguridad?",
+    "opciones": [
+      "a) Subdirección General de Protección Internacional.",
+      "b) Subdirección General de Planificación y Gestión de Infraestructuras y Medios para la Seguridad.",
+      "c) Subdirección General de Recursos Humanos.",
+      "d) Subdirección General de Asistencia Jurídica."
+    ],
+    "correcta": "b) Subdirección General de Planificación y Gestión de Infraestructuras y Medios para la Seguridad.",
+    "justificacion": "Esta Subdirección depende directamente de la SES, según art. 2.05."
+  },
+  {
+    "pregunta": "La Dirección General de la Guardia Civil depende orgánicamente de:",
+    "opciones": [
+      "a) La Secretaría de Estado de Seguridad.",
+      "b) El Ministerio de Defensa.",
+      "c) El Ministerio del Interior.",
+      "d) El Consejo de Ministros."
+    ],
+    "correcta": "a) La Secretaría de Estado de Seguridad.",
+    "justificacion": "Es el órgano del que depende directamente según el art. 4 del RD 207/2024."
+  },
+  {
+    "pregunta": "La Subdirección General de Sistemas de Información y Comunicaciones para la Seguridad se encarga de:",
+    "opciones": [
+      "a) La supervisión e inspección de instituciones penitenciarias.",
+      "b) Estandarizar sistemas de información y comunicaciones.",
+      "c) Dirigir los centros de control penitenciario.",
+      "d) Gestionar operaciones policiales internacionales."
+    ],
+    "correcta": "b) Estandarizar sistemas de información y comunicaciones.",
+    "justificacion": "Esta función aparece en el art. 2.05 del RD 207/2024."
+  },
+{
+  pregunta: "¿Cuál de los siguientes es un órgano dependiente de la Subsecretaría del Interior según el RD 207/2024?",
+  opciones: [
+    "a) Dirección General de Coordinación y Estudios.",
+    "b) Dirección General de Política Interior.",
+    "c) Dirección General de Relaciones Internacionales y Extranjería.",
+    "d) Dirección General de la Guardia Civil."
+  ],
+  correcta: "b) Dirección General de Política Interior.",
+  justificacion: "La Dirección General de Política Interior depende de la Subsecretaría del Interior según el Art. 1.05.C del RD 207/2024."
+},
+{
+  pregunta: "¿Cuál es el número máximo de asesores permitidos en los gabinetes de las Secretarías de Estado según el artículo 23.3 del RD 1009/2023?",
+  opciones: [
+    "a) 5 asesores con rango de subdirección general.",
+    "b) 3 asesores con nivel orgánico de subdirección general.",
+    "c) 7 asesores con nivel orgánico de subdirección general.",
+    "d) 4 asesores con rango de dirección general."
+  ],
+  correcta: "b) 3 asesores con nivel orgánico de subdirección general.",
+  justificacion: "Según el art. 23.3 del RD 1009/2023, los gabinetes de las Secretarías de Estado cuentan con máximo tres asesores con nivel de subdirección general."
+},
+{
+  pregunta: "El artículo 1.02 del RD 207/2024 atribuye al Ministro del Interior la dirección de:",
+  opciones: [
+    "a) Todas las Fuerzas Armadas y Cuerpos de Seguridad.",
+    "b) Las competencias del Ministerio en materia de Administración Penitenciaria.",
+    "c) Las competencias del Consejo de Política Nuclear.",
+    "d) Las políticas de igualdad en materia de diversidad."
+  ],
+  correcta: "b) Las competencias del Ministerio en materia de Administración Penitenciaria.",
+  justificacion: "El artículo 1.02 recoge esta función como parte de la dirección del Ministerio del Interior."
+},
+{
+  pregunta: "¿Qué órgano ejerce el mando superior de las Fuerzas y Cuerpos de Seguridad del Estado según el RD 207/2024?",
+  opciones: [
+    "a) La Subsecretaría del Interior.",
+    "b) La Secretaría de Estado de Seguridad.",
+    "c) El Ministro del Interior.",
+    "d) La Dirección General de la Guardia Civil."
+  ],
+  correcta: "c) El Ministro del Interior.",
+  justificacion: "Según el artículo 1.02 del RD 207/2024, el Ministro del Interior ejerce el mando superior."
+},
+{
+  pregunta: "¿Cuál de las siguientes funciones NO corresponde a la Subdirección General de Planificación y Gestión de Infraestructuras y Medios para la Seguridad?",
+  opciones: [
+    "a) Controlar y coordinar la ejecución de programas derivados de compromisos internacionales.",
+    "b) Gestionar el patrimonio inmobiliario de la seguridad.",
+    "c) Elaborar informes anuales sobre banda ancha de emergencia.",
+    "d) Proponer proyectos y obras para infraestructuras de seguridad."
+  ],
+  correcta: "c) Elaborar informes anuales sobre banda ancha de emergencia.",
+  justificacion: "Esta función no aparece en el listado del art. 2.05 del RD 207/2024."
+},
+{
+  pregunta: "La Dirección General de Coordinación y Estudios depende de:",
+  opciones: [
+    "a) La Secretaría General Técnica.",
+    "b) La Secretaría de Estado de Seguridad.",
+    "c) La Subsecretaría del Interior.",
+    "d) La Secretaría General de Instituciones Penitenciarias."
+  ],
+  correcta: "b) La Secretaría de Estado de Seguridad.",
+  justificacion: "Esta dirección depende directamente de la SES, según el art. 1.05A del RD 207/2024."
+},
+{
+  pregunta: "¿Cuál de los siguientes órganos pertenece al ámbito de la Dirección General de la Guardia Civil?",
+  opciones: [
+    "a) Subdirección General de Recursos Humanos.",
+    "b) Mando de Fronteras y Policía Marítima.",
+    "c) Comisaría General de Extranjería.",
+    "d) División de Cooperación Internacional."
+  ],
+  correcta: "b) Mando de Fronteras y Policía Marítima.",
+  justificacion: "Este órgano está previsto en la estructura de la Guardia Civil según sus competencias territoriales."
+},
+{
+  pregunta: "La Dirección General de la Policía tiene el rango de:",
+  opciones: [
+    "a) Secretaría de Estado.",
+    "b) Secretaría General.",
+    "c) Subsecretaría.",
+    "d) Subdirección General."
+  ],
+  correcta: "c) Subsecretaría.",
+  justificacion: "El art. 3.01 del RD 207/2024 fija que el titular tiene rango de Subsecretario."
+},
+{
+  pregunta: "La División Económica y Técnica de la Policía Nacional se encarga de:",
+  opciones: [
+    "a) Gestionar los recursos humanos.",
+    "b) Gestionar la documentación de extranjeros.",
+    "c) Adquirir equipamientos técnicos.",
+    "d) Planificar operativos en materia de extranjería."
+  ],
+  correcta: "c) Adquirir equipamientos técnicos.",
+  justificacion: "Según el art. 3.05 del RD 207/2024 es una de sus competencias."
+},
+{
+  pregunta: "¿Cuál es el nivel orgánico del Centro Tecnológico de Seguridad (CETSE)?",
+  opciones: [
+    "a) Dirección General.",
+    "b) Subdirección General.",
+    "c) No tiene rango orgánico propio.",
+    "d) Dirección Adjunta."
+  ],
+  correcta: "b) Subdirección General.",
+  justificacion: "Forma parte de la Subdirección General de Sistemas de Información y Comunicaciones para la Seguridad."
+},
+{
+  pregunta: "¿A qué órgano compete la dirección y coordinación de las relaciones con el Comité Europeo para la Prevención de la Tortura?",
+  opciones: [
+    "a) Dirección General de Protección Internacional.",
+    "b) Secretaría de Estado de Seguridad.",
+    "c) Dirección General de Coordinación y Estudios.",
+    "d) Gabinete del Ministro del Interior."
+  ],
+  correcta: "b) Secretaría de Estado de Seguridad.",
+  justificacion: "Así lo recoge el art. 2.01.I del RD 207/2024."
+},
+{
+  pregunta: "¿Cuál es la función principal de la Comisaría General de Información?",
+  opciones: [
+    "a) Prever y coordinar los escenarios de emergencia en territorios rurales.",
+    "b) Captar, tratar y explotar información para la seguridad pública.",
+    "c) Gestionar las entradas y salidas de extranjeros.",
+    "d) Regular el juego y las apuestas ilegales."
+  ],
+  correcta: "b) Captar, tratar y explotar información para la seguridad pública.",
+  justificacion: "Esto se menciona como función esencial de la Comisaría de Información (art. 3.03.A RD 207/2024)."
+},
+{
+  pregunta: "¿Cuál es el órgano encargado de gestionar las campañas institucionales de publicidad del Ministerio del Interior?",
+  opciones: [
+    "a) Gabinete del Ministro.",
+    "b) Gabinete de la Secretaría de Estado.",
+    "c) Oficina de Comunicación.",
+    "d) Dirección General de Coordinación y Estudios."
+  ],
+  correcta: "c) Oficina de Comunicación.",
+  justificacion: "El art. 1.04 del RD 207/2024 menciona esta función expresamente."
+},
+{
+  pregunta: "¿Quién preside el Comité Ejecutivo de Coordinación?",
+  opciones: [
+    "a) La persona titular del Ministerio del Interior.",
+    "b) El director del Gabinete del Ministro.",
+    "c) El titular de la Secretaría de Estado de Seguridad.",
+    "d) El Director General de la Policía."
+  ],
+  correcta: "c) El titular de la Secretaría de Estado de Seguridad.",
+  justificacion: "Según art. 2.04 del RD 207/2024."
+},
+{
+  pregunta: "¿Cuál de las siguientes funciones NO corresponde al CITCO según el RD 207/2024?",
+  opciones: [
+    "a) Evaluación periódica de la amenaza terrorista.",
+    "b) Definir estructuras de datos para el sistema penitenciario.",
+    "c) Establecimiento de criterios de actuación operativa.",
+    "d) Punto nacional de contacto en inteligencia criminal estratégica."
+  ],
+  correcta: "b) Definir estructuras de datos para el sistema penitenciario.",
+  justificacion: "Esa función no figura entre las atribuidas al CITCO, según art. 2.03."
+},
+{
+  pregunta: "La Subdirección General de Recursos Humanos y Formación pertenece a:",
+  opciones: [
+    "a) Dirección General de la Guardia Civil.",
+    "b) Dirección General de la Policía.",
+    "c) Secretaría de Estado de Seguridad.",
+    "d) Subsecretaría del Interior."
+  ],
+  correcta: "b) Dirección General de la Policía.",
+  justificacion: "Así se establece en el art. 3.02 del RD 207/2024."
+},
+{
+  pregunta: "¿Cuál de los siguientes objetivos está relacionado con el Sistema Nacional de Protección de Infraestructuras Críticas?",
+  opciones: [
+    "a) Coordinar las actuaciones en materia de extranjería y fronteras.",
+    "b) Establecer los criterios y actuaciones en la lucha contra la trata.",
+    "c) Gestionar la protección de instalaciones sensibles frente a amenazas.",
+    "d) Supervisar las empresas de seguridad privada."
+  ],
+  correcta: "c) Gestionar la protección de instalaciones sensibles frente a amenazas.",
+  justificacion: "Es una función atribuida a la SES según el art. 2.01.M del RD 207/2024."
+},
+{
+  pregunta: "¿Qué órgano tiene competencia en el desarrollo de programas de infraestructura financiados con fondos europeos?",
+  opciones: [
+    "a) Subdirección General de Planificación y Gestión de Infraestructuras.",
+    "b) Dirección General de Protección Civil y Emergencias.",
+    "c) Dirección General de Instituciones Penitenciarias.",
+    "d) Subdirección General de Innovación y Cooperación Judicial."
+  ],
+  correcta: "a) Subdirección General de Planificación y Gestión de Infraestructuras.",
+  justificacion: "Esta función se establece en el art. 2.05.A.05 del RD 207/2024."
+},
+{
+  pregunta: "La Dirección General de Protección Internacional se encarga de la:",
+  opciones: [
+    "a) Gestión administrativa de los procesos electorales.",
+    "b) Coordinación de los servicios penitenciarios.",
+    "c) Aplicación del régimen de protección de refugiados y apátridas.",
+    "d) Dirección operativa de las unidades antiterroristas."
+  ],
+  correcta: "c) Aplicación del régimen de protección de refugiados y apátridas.",
+  justificacion: "Así se recoge en el art. 1.05.C.02 del RD 207/2024."
+},
+{
+  pregunta: "¿Cuál de las siguientes NO es una función de la Dirección General de la Policía?",
+  opciones: [
+    "a) Proponer a la Secretaría de Estado proyectos operativos.",
+    "b) Coordinar la protección de altas personalidades en el ámbito nacional.",
+    "c) Dirigir el control de entrada y salida de extranjeros.",
+    "d) Gestionar la expedición del DNI y pasaportes."
+  ],
+  correcta: "c) Dirigir el control de entrada y salida de extranjeros.",
+  justificacion: "Esta función corresponde a la Comisaría General de Extranjería y Fronteras."
+},
+{
+  pregunta: "¿Cuál de las siguientes unidades depende de la Dirección Adjunta Operativa de la Policía Nacional?",
+  opciones: [
+    "a) División de Personal.",
+    "b) Comisaría General de Seguridad Ciudadana.",
+    "c) Dirección General de Política Interior.",
+    "d) Subdirección General de Protección Internacional."
+  ],
+  correcta: "b) Comisaría General de Seguridad Ciudadana.",
+  justificacion: "Forma parte de las unidades operativas bajo la DAO (art. 3.03)."
+},
+
+];
+
+let totalPreguntasRenderizadas = 0;
+
+function barajar(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+}
+
+function setProgress(current, total) {
+  const bar = document.getElementById('progressBar');
+  const pct = total > 0 ? Math.round((current / total) * 100) : 0;
+  bar.style.width = pct + '%';
+  bar.title = pct + '%';
+}
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+// Carga el test con preguntas y respuestas aleatorias
+function cargarTest() {
+  const numPreguntas = parseInt(document.getElementById('numPreguntas').value);
+  const testForm = document.getElementById('testForm');
+  const progressBar = document.getElementById('progressBar');
+  const testResult = document.getElementById('testResult');
+
+  testForm.innerHTML = '';
+  testResult.innerHTML = '';
+  progressBar.style.width = '0%';
+
+  if (!preguntasBanco || preguntasBanco.length === 0) {
+    testForm.innerHTML = '<p style="color:red;font-weight:bold;">⚠️ No hay preguntas en el banco.</p>';
+    return;
+  }
+
+  const letras = ['a)', 'b)', 'c)', 'd)', 'e)', 'f)']; // por si hay más de 4 opciones
+  const preguntasSeleccionadas = shuffle([...preguntasBanco]).slice(0, numPreguntas);
+
+  preguntasSeleccionadas.forEach((preguntaObj, index) => {
+    // Mezclamos las opciones (pero vamos a limpiar su prefijo "a) " si lo llevan)
+    const opcionesMezcladas = shuffle([...preguntaObj.opciones]);
+
+    // Convertimos cada opción en un objeto { texto, esCorrecta }
+    const opcionesObj = opcionesMezcladas.map(opcion => {
+      // Limpiar prefijos como "a) ", "b) " si existen
+      const textoLimpio = opcion.replace(/^[A-Za-z]\)\s*/, '').trim();
+      const esCorrecta = opcion === preguntaObj.correcta || textoLimpio === preguntaObj.correcta.replace(/^[A-Za-z]\)\s*/, '').trim();
+      return { texto: textoLimpio, esCorrecta };
+    });
+
+    // Renderizamos las opciones asignando letras según la posición (letras fijas)
+    const opcionesHTML = opcionesObj.map((opt, optIndex) => {
+      const marcaCorrecta = opt.esCorrecta ? 'true' : 'false';
+      const letra = letras[optIndex] || `${optIndex + 1})`; // fallback si hay >6 opciones
+      // No incluimos la letra dentro del texto de la opción; la mostramos separada
+      return `
+        <label class="option">
+          <input type="radio" name="pregunta${index}" value="${opt.texto.replace(/"/g, '&quot;')}" data-correct="${marcaCorrecta}">
+          <span style="font-weight:700; margin-right:10px; color:var(--muted)">${letra}</span>
+          ${opt.texto}
+        </label>
+      `;
+    }).join('');
+
+    const preguntaHTML = `
+      <div class="question">
+        <div class="q-head">
+          <span class="q-num">${index + 1}.</span>
+          <p class="q-text">${preguntaObj.pregunta}</p>
+        </div>
+        <div class="options">
+          ${opcionesHTML}
+        </div>
+        <div class="justification muted" style="display:none;">
+          <span class="correct">✔ ${preguntaObj.correcta.replace(/^[A-Za-z]\)\s*/, '')}</span><br>
+          ${preguntaObj.justificacion}
+        </div>
+      </div>
+    `;
+    testForm.insertAdjacentHTML('beforeend', preguntaHTML);
+  });
+
+  // Añadir botón corregir (evitar duplicados)
+  const botonCorregirExistente = Array.from(testForm.getElementsByTagName('button')).find(b => b.textContent === 'Corregir');
+  if (!botonCorregirExistente) {
+    const botonCorregir = document.createElement('button');
+    botonCorregir.type = 'button';
+    botonCorregir.className = 'btn success';
+    botonCorregir.textContent = 'Corregir';
+    botonCorregir.onclick = () => corregirTest();
+    testForm.appendChild(botonCorregir);
+  }
+}
+
+
+function corregirTest() {
+  const preguntas = document.querySelectorAll('.question');
+  let aciertos = 0;
+
+  preguntas.forEach((pregunta) => {
+    const radios = pregunta.querySelectorAll('input[type="radio"]');
+    const labels = pregunta.querySelectorAll('.option');
+    const justificacion = pregunta.querySelector('.justification');
+    let seleccionCorrecta = false;
+
+    // Limpiar clases anteriores
+    labels.forEach(l => {
+      l.classList.remove('correct-option', 'wrong-option');
+      const checkmark = l.querySelector('.checkmark');
+      if (checkmark) checkmark.remove();
+    });
+
+    radios.forEach(radio => {
+      const label = radio.closest('.option');
+      if (radio.checked && radio.dataset.correct === 'true') {
+        seleccionCorrecta = true;
+      }
+    });
+
+    radios.forEach(radio => {
+      const label = radio.closest('.option');
+
+      if (radio.dataset.correct === 'true') {
+        // Mostrar check verde en la opción correcta
+        label.classList.add('correct-option');
+        label.insertAdjacentHTML('afterbegin', `<span class="checkmark" style="color:#059669;font-weight:700;">✔</span>`);
+      }
+
+      if (radio.checked && radio.dataset.correct !== 'true') {
+        // Mostrar X roja en la opción elegida incorrecta
+        label.classList.add('wrong-option');
+        label.insertAdjacentHTML('afterbegin', `<span class="checkmark" style="color:#dc2626;font-weight:700;">✘</span>`);
+      }
+    });
+
+    // Mostrar la justificación al final
+    if (justificacion) {
+      justificacion.style.display = 'block';
+      justificacion.innerHTML = `
+        ${seleccionCorrecta 
+          ? `<span class="correct">✔ ${pregunta.querySelector('input[data-correct="true"]').value}</span><br>` 
+          : `<span class="incorrect">✘ ${pregunta.querySelector('input[data-correct="true"]').value}</span><br>`
+        }
+        ${pregunta.querySelector('.justification').textContent || ''}
+      `;
+    }
+
+    if (seleccionCorrecta) aciertos++;
+  });
+
+  // Mostrar resultado final
+  const total = preguntas.length;
+  const porcentaje = Math.round((aciertos / total) * 100);
+  const testResult = document.getElementById('testResult');
+  testResult.innerHTML = `
+    <div class="result-card">
+      <p class="score">Has acertado ${aciertos} de ${total} preguntas (${porcentaje}%).</p>
+      <p class="muted">${porcentaje >= 70 ? "✅ ¡Buen trabajo!" : "❌ Puedes mejorar."}</p>
+    </div>
+  `;
+  document.getElementById('progressBar').style.width = '100%';
+}
+
+
+function reiniciarTest() {
+  document.getElementById('testForm').innerHTML = '';
+  document.getElementById('testResult').innerHTML = '';
+  setProgress(0, 0);
+}
+  // ==========================
+// 🔹 TEMPORIZADOR CONFIGURABLE
+// ==========================
+
+// Variables del temporizador
+let tiempoTotal = 0;
+let tiempoRestante = 0;
+let temporizadorInterval;
+
+// Crear selector de tiempo en el panel de controles
+const selectTiempo = document.createElement('select');
+selectTiempo.id = 'tiempoSeleccionado';
+selectTiempo.innerHTML = `
+  <option value="0">Sin límite</option>
+  <option value="5">5 minutos</option>
+  <option value="10" selected>10 minutos</option>
+  <option value="15">15 minutos</option>
+  <option value="20">20 minutos</option>
+  <option value="30">30 minutos</option>
+  <option value="40">40 minutos</option>
+  <option value="50">50 minutos</option>
+  <option value="60">60 minutos</option>
+`;
+const labelTiempo = document.createElement('label');
+labelTiempo.htmlFor = 'tiempoSeleccionado';
+labelTiempo.textContent = 'Tiempo límite:';
+const controlsDiv = document.querySelector('.controls');
+controlsDiv.insertBefore(labelTiempo, controlsDiv.children[2]);
+controlsDiv.insertBefore(selectTiempo, controlsDiv.children[3]);
+
+// Crear elemento visual del temporizador
+const temporizadorDiv = document.createElement('div');
+temporizadorDiv.id = 'temporizador';
+temporizadorDiv.style.textAlign = 'center';
+temporizadorDiv.style.fontSize = '18px';
+temporizadorDiv.style.fontWeight = '700';
+temporizadorDiv.style.color = '#2563eb';
+temporizadorDiv.style.marginTop = '12px';
+controlsDiv.appendChild(temporizadorDiv);
+
+// Mostrar tiempo en formato mm:ss
+function mostrarTiempo() {
+  let min = Math.floor(tiempoRestante / 60);
+  let seg = tiempoRestante % 60;
+  temporizadorDiv.textContent = `⏳ Tiempo restante: ${min}:${seg.toString().padStart(2, '0')}`;
+}
+
+// Iniciar temporizador
+function iniciarTemporizador() {
+  const minutosSeleccionados = parseInt(document.getElementById('tiempoSeleccionado').value);
+  if (minutosSeleccionados === 0) {
+    temporizadorDiv.textContent = '⏳ Sin límite de tiempo';
+    return;
+  }
+
+  tiempoTotal = minutosSeleccionados * 60;
+  tiempoRestante = tiempoTotal;
+  mostrarTiempo();
+
+  temporizadorInterval = setInterval(() => {
+    tiempoRestante--;
+    mostrarTiempo();
+    if (tiempoRestante <= 0) {
+      clearInterval(temporizadorInterval);
+      temporizadorDiv.textContent = '⏰ ¡Tiempo agotado!';
+      finalizarTestPorTiempo();
+    }
+  }, 1000);
+}
+
+// Detener temporizador
+function detenerTemporizador() {
+  clearInterval(temporizadorInterval);
+}
+
+// Modificar función cargarTest para que inicie el temporizador
+const originalCargarTest = cargarTest;
+cargarTest = function() {
+  originalCargarTest();
+  detenerTemporizador(); // Por si se reinicia
+  iniciarTemporizador();
+};
+
+// Al finalizar el test manualmente (botón Enviar)
+const originalEvaluarTest = evaluarTest;
+evaluarTest = function() {
+  detenerTemporizador(); // Detiene el contador al pulsar Enviar
+  originalEvaluarTest();
+};
+
+// Cuando el tiempo se agota automáticamente
+function finalizarTestPorTiempo() {
+  // Evita ejecuciones dobles
+  if (window.__finalizadoPorTiempo__) return;
+  window.__finalizadoPorTiempo__ = true;
+
+  detenerTemporizador();
+  if (temporizadorDiv) temporizadorDiv.textContent = '⏰ ¡Tiempo agotado! Pulsa "Enviar" para corregir.';
+
+  // 🔒 Bloquear todas las respuestas
+  document.querySelectorAll('input[type="radio"]').forEach(r => {
+    r.disabled = true;
+    const opt = r.closest('.option');
+    if (opt) {
+      opt.style.opacity = '0.6';
+      opt.style.pointerEvents = 'none';
+    }
+  });
+
+  // ✅ Dejar el botón "Enviar" activo y hacerlo destacar en verde
+  const btnEnviar = document.querySelector('button.btn.success, button[type="submit"]');
+  if (btnEnviar) {
+    btnEnviar.disabled = false;
+    btnEnviar.style.opacity = '1';
+    btnEnviar.style.cursor = 'pointer';
+
+    // 💚 Efecto parpadeo verde suave
+    btnEnviar.style.animation = 'blinkGreen 1.2s infinite';
+    btnEnviar.style.transition = 'background-color 0.3s ease';
+    btnEnviar.style.backgroundColor = '#22c55e'; // verde suave (Tailwind: green-500)
+    btnEnviar.style.color = 'white';
+
+    // Inyectar animación CSS si no existe
+    if (!document.getElementById('blinkGreen-style')) {
+      const style = document.createElement('style');
+      style.id = 'blinkGreen-style';
+      style.textContent = `
+        @keyframes blinkGreen {
+          0%, 100% { background-color: #22c55e; }
+          50% { background-color: #86efac; } /* verde claro (green-300) */
+        }
+      `;
+      document.head.appendChild(style);
+    }
+  }
+
+  // 🔄 Mantener botón "Reiniciar" activo
+  const btnReiniciar = document.querySelector('button.btn.secondary');
+  if (btnReiniciar) {
+    btnReiniciar.disabled = false;
+  }
+}
+</script>
+</body>
+</html>
