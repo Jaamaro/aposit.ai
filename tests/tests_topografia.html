@@ -1,0 +1,2266 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test de Topografía</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --card: #ffffff;
+      --text: #111827;
+      --muted: #6b7280;
+      --primary: #2563eb;
+      --primary-dark: #1e40af;
+      --success: #059669;
+      --danger: #dc2626;
+      --ring: rgba(37, 99, 235, 0.25);
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: 'Roboto', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      padding: 24px;
+    }
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+    header.hero {
+      text-align: center;
+      margin-bottom: 16px;
+    }
+    .title {
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--primary-dark);
+      margin: 0 0 8px;
+    }
+    .subtitle {
+      color: var(--muted);
+      margin: 0;
+    }
+    .controls {
+      background: var(--card);
+      border-radius: 14px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.06);
+      padding: 16px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      justify-content: center;
+      position: sticky;
+      top: 12px;
+      z-index: 5;
+    }
+    .controls label { font-weight: 500; }
+    select {
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid #e5e7eb;
+      background: #fff;
+      outline: none;
+      transition: box-shadow .2s, border-color .2s;
+    }
+    select:focus { border-color: var(--primary); box-shadow: 0 0 0 4px var(--ring); }
+
+    .btn {
+      cursor: pointer;
+      border: none;
+      border-radius: 10px;
+      padding: 12px 18px;
+      font-weight: 700;
+      transition: transform .15s, background .2s, box-shadow .2s;
+      color: #fff;
+      background: var(--primary);
+      box-shadow: 0 6px 14px rgba(37,99,235,.2);
+    }
+    .btn:hover { transform: translateY(-1px); background: var(--primary-dark); }
+    .btn.secondary { background: #6b7280; }
+    .btn.secondary:hover { background: #374151; }
+    .btn.success { background: var(--success); }
+    .btn.success:hover { background: #047857; }
+    .btn.danger { background: var(--danger); }
+    .btn.danger:hover { background: #b91c1c; }
+
+    .progress {
+      width: 100%;
+      height: 10px;
+      background: #e5e7eb;
+      border-radius: 999px;
+      overflow: hidden;
+      margin-top: 8px;
+    }
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--primary), #60a5fa);
+      transition: width .3s ease;
+    }
+
+    .question {
+      margin: 14px 0;
+      padding: 18px;
+      background: var(--card);
+      border-radius: 14px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.06);
+    }
+    .q-head {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+    }
+    .q-num {
+      font-weight: 800;
+      color: var(--primary-dark);
+    }
+    .q-text { margin: 0; }
+
+    .options { margin-top: 10px; display: grid; gap: 8px; }
+    .option {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid #e5e7eb;
+      background: #fff;
+      transition: background .15s, border-color .15s, box-shadow .15s;
+      cursor: pointer;
+    }
+    .option input { transform: scale(1.2); }
+    .option:hover { background: #f9fafb; border-color: #d1d5db; }
+    .option.is-selected { box-shadow: 0 0 0 4px var(--ring); border-color: var(--primary); }
+
+    .justification {
+      margin-top: 10px; color: var(--muted);
+    }
+    .correct { color: var(--success); font-weight: 700; }
+    .incorrect { color: var(--danger); font-weight: 700; }
+
+    .option.correct-option {
+      border-color: rgba(5,150,105,.4);
+      background: #ecfdf5;
+    }
+    .option.wrong-option {
+      border-color: rgba(220,38,38,.4);
+      background: #fef2f2;
+    }
+
+    .result-card {
+      margin: 18px 0;
+      padding: 16px;
+      background: var(--card);
+      border-radius: 14px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.06);
+      text-align: center;
+    }
+    .score {
+      font-size: 22px;
+      font-weight: 800;
+      margin: 8px 0;
+    }
+    .muted { color: var(--muted); }
+    footer { text-align: center; margin-top: 24px; color: var(--muted); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="hero">
+      <h1 class="title">Test de Topografía</h1>
+      <p class="subtitle">Selecciona cuántas preguntas quieres y pulsa <strong>Comenzar</strong>.</p>
+    </header>
+
+    <div class="controls">
+      <label for="numPreguntas">Número de preguntas:</label>
+      <select id="numPreguntas">
+        <option value="10">10</option>
+        <option value="20">20</option>
+        <option value="30">30</option>
+        <option value="40">40</option>
+        <option value="50" selected>50</option>
+      </select>
+      <button class="btn" type="button" onclick="cargarTest()">Comenzar</button>
+      <button class="btn secondary" type="button" onclick="reiniciarTest()">Reiniciar</button>
+      <div class="progress" style="flex-basis: 100%;">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+    </div>
+
+    <form id="testForm"></form>
+
+    <div id="testResult"></div>
+    <footer>© Test de práctica — Topografía</footer>
+  </div>
+
+<script>
+const preguntasBanco = [
+{
+  pregunta: "¿Cuál de las siguientes afirmaciones define correctamente la topografía?",
+  opciones: ["a) Ciencia que estudia los movimientos de la Tierra y su órbita.", "b) Ciencia que representa gráficamente la superficie terrestre y sus accidentes.", "c) Disciplina que se ocupa exclusivamente de la altitud de los terrenos.", "d) Técnica que sólo se usa en trabajos geológicos y astronómicos."],
+  correcta: "b) Ciencia que representa gráficamente la superficie terrestre y sus accidentes.",
+  justificacion: "La topografía se encarga de representar gráficamente la Tierra o parte de ella, incluyendo detalles de planimetría y altimetría."
+},
+{
+  pregunta: "¿Cuál de los siguientes enunciados NO corresponde al concepto de eje terrestre?",
+  opciones: ["a) Es una línea imaginaria que atraviesa la Tierra por los polos.", "b) Alrededor del eje se produce el movimiento de rotación.", "c) Marca la órbita solar de la Tierra.", "d) Es una referencia fundamental para definir los polos."],
+  correcta: "c) Marca la órbita solar de la Tierra.",
+  justificacion: "El eje terrestre es el alrededor del cual gira la Tierra en su movimiento de rotación; no define la órbita alrededor del Sol."
+},
+{
+  pregunta: "El Trópico de Capricornio está situado:",
+  opciones: ["a) A 23º 27' de latitud Norte.", "b) En el paralelo que divide ambos hemisferios.", "c) A 23º 27' de latitud Sur.", "d) A 66º de latitud Norte."],
+  correcta: "c) A 23º 27' de latitud Sur.",
+  justificacion: "El Trópico de Capricornio se encuentra a 23° 27' de latitud Sur."
+},
+{
+  pregunta: "El meridiano de referencia adoptado a nivel internacional es:",
+  opciones: ["a) El Meridiano de Cádiz.", "b) El Meridiano de Madrid.", "c) El Meridiano de Greenwich.", "d) El Meridiano de París."],
+  correcta: "c) El Meridiano de Greenwich.",
+  justificacion: "Greenwich se adoptó como meridiano de referencia internacional para la medición de longitudes."
+},
+{
+  pregunta: "¿Qué tipo de Norte indica la dirección que señala la brújula?",
+  opciones: ["a) Norte geográfico.", "b) Norte isométrico.", "c) Norte Lambert.", "d) Norte magnético."],
+  correcta: "d) Norte magnético.",
+  justificacion: "El Norte magnético es el indicado por la brújula, que sigue líneas del campo magnético terrestre."
+},
+{
+  pregunta: "¿Qué sistema de coordenadas se basa en paralelos y meridianos?",
+  opciones: ["a) Sistema cartesiano.", "b) Sistema de coordenadas UTM.", "c) Coordenadas geográficas.", "d) Coordenadas tridimensionales."],
+  correcta: "c) Coordenadas geográficas.",
+  justificacion: "Las coordenadas geográficas se basan en la latitud (paralelos) y la longitud (meridianos)."
+},
+{
+  pregunta: "¿Cuál de las siguientes no es una característica de los paralelos?",
+  opciones: ["a) Son perpendiculares al eje terrestre.", "b) Su longitud es constante.", "c) El Ecuador es el paralelo mayor.", "d) Indican latitud."],
+  correcta: "b) Su longitud es constante.",
+  justificacion: "La longitud de los paralelos varía, siendo el Ecuador el de mayor longitud."
+},
+{
+  pregunta: "La diferencia entre el acimut y el rumbo radica en:",
+  opciones: ["a) El acimut se mide desde el Norte geográfico y el rumbo desde el Norte magnético.", "b) El acimut utiliza grados centesimales y el rumbo grados sexagesimales.", "c) El rumbo es siempre menor de 90 grados.", "d) El acimut no depende de referencias geográficas."],
+  correcta: "a) El acimut se mide desde el Norte geográfico y el rumbo desde el Norte magnético.",
+  justificacion: "El acimut parte del Norte geográfico, mientras que el rumbo utiliza el Norte magnético."
+},
+{
+  pregunta: "¿Qué medida angular divide la circunferencia en 400 unidades?",
+  opciones: ["a) Graduación sexagesimal.", "b) Graduación decimales.", "c) Graduación centesimal.", "d) Graduación cartesiana."],
+  correcta: "c) Graduación centesimal.",
+  justificacion: "En el sistema centesimal, la circunferencia se divide en 400 grados."
+},
+{
+  pregunta: "¿Qué término se usa para referirse a una elevación del terreno menor que una montaña pero mayor que un cerro?",
+  opciones: ["a) Vega.", "b) Meseta.", "c) Colina.", "d) Barranco."],
+  correcta: "c) Colina.",
+  justificacion: "Una colina es una elevación natural del terreno, inferior en altura a una montaña."
+},
+{
+  pregunta: "La unidad fundamental para medir superficies en topografía es:",
+  opciones: ["a) El kilómetro cuadrado.", "b) El metro cuadrado.", "c) El decámetro cúbico.", "d) El metro cúbico."],
+  correcta: "b) El metro cuadrado.",
+  justificacion: "El metro cuadrado es la unidad básica para medir superficies topográficas."
+},
+{
+  pregunta: "¿Cuál de las siguientes unidades corresponde a un área equivalente a 10.000 metros cuadrados?",
+  opciones: ["a) Kilómetro cuadrado.", "b) Hectárea.", "c) Decámetro cuadrado.", "d) Miriámetro cuadrado."],
+  correcta: "b) Hectárea.",
+  justificacion: "Una hectárea es igual a 10.000 metros cuadrados."
+},
+{
+  pregunta: "La pendiente entre dos puntos se calcula como:",
+  opciones: ["a) Distancia reducida / desnivel x 100.", "b) Desnivel / distancia reducida x 100.", "c) Longitud / desnivel x 100.", "d) Desnivel x distancia en mapa."],
+  correcta: "b) Desnivel / distancia reducida x 100.",
+  justificacion: "La pendiente es el cociente entre el desnivel y la distancia horizontal, expresado en porcentaje."
+},
+{
+  pregunta: "La altimetría estudia:",
+  opciones: ["a) Accidente geográficos marinos.", "b) Alturas o diferencias de nivel.", "c) Tipos de rocas.", "d) Coordenadas cartesianas."],
+  correcta: "b) Alturas o diferencias de nivel.",
+  justificacion: "La altimetría se ocupa de medir diferencias de altitud."
+},
+{
+  pregunta: "¿Qué tipo de escalas se representan mediante dibujo y segmentos graduados?",
+  opciones: ["a) Escalas numéricas.", "b) Escalas gráficas.", "c) Escalas proporcionales.", "d) Escalas proyectadas."],
+  correcta: "b) Escalas gráficas.",
+  justificacion: "Las escalas gráficas se plasman mediante segmentos que representan distancias reales."
+},
+{
+  pregunta: "Las curvas de nivel próximas entre sí indican:",
+  opciones: ["a) Terreno llano.", "b) Pendiente suave.", "c) Pendiente pronunciada.", "d) El nivel del mar."],
+  correcta: "c) Pendiente pronunciada.",
+  justificacion: "Las curvas de nivel agrupadas representan un fuerte desnivel."
+},
+{
+  pregunta: "¿Cuál es la representación de un accidente terrestre formado por la combinación de dos entrantes?",
+  opciones: ["a) Un collado.", "b) Una depresión u hoya.", "c) Un cerro.", "d) Una sierra."],
+  correcta: "b) Una depresión u hoya.",
+  justificacion: "Una hoya se forma por la unión de dos entrantes."
+},
+{
+  pregunta: "El sistema de coordenadas geográficas permite determinar un punto en la superficie terrestre mediante:",
+  opciones: ["a) Longitud y altitud.", "b) Acimut y rumbo.", "c) Latitud y longitud.", "d) Latitud y declinación."],
+  correcta: "c) Latitud y longitud.",
+  justificacion: "La latitud y la longitud son las coordenadas que definen la ubicación de un punto en superficie."
+},
+{
+  pregunta: "Una llanura o meseta representa:",
+  opciones: ["a) Una elevación de terreno más alta que una montaña.", "b) Una superficie plana a un mismo nivel.", "c) La unión de dos salientes.", "d) El fondo de un valle glacial."],
+  correcta: "b) Una superficie plana a un mismo nivel.",
+  justificacion: "La llanura es una forma sin relieve, donde todo el terreno está en el mismo nivel."
+},
+{
+  pregunta: "¿Qué tipo de mapa es más utilizado para la navegación terrestre utilizando carreteras?",
+  opciones: ["a) Mapa topográfico.", "b) Mapa de carreteras.", "c) Mapa geológico.", "d) Mapa político."],
+  correcta: "b) Mapa de carreteras.",
+  justificacion: "Los mapas de carreteras señalan rutas, puertos, localidades y otros detalles útiles para desplazamientos."
+},
+{
+  pregunta: "El ángulo azimutal se mide desde:",
+  opciones: ["a) El Norte geográfico en sentido horario.", "b) El Norte magnético en sentido antihorario.", "c) El Este geográfico en sentido horario.", "d) El Sur magnético en sentido horario."],
+  correcta: "a) El Norte geográfico en sentido horario.",
+  justificacion: "El azimut se mide en grados desde el Norte geográfico hacia el Este siguiendo el sentido de las agujas del reloj."
+},
+{
+  pregunta: "Una 'sierra' se conforma geográficamente como:",
+  opciones: ["a) Una elevación aislada con cumbres suaves.", "b) Un alineamiento montañoso de gran longitud.", "c) Una pequeña colina entre dos valles.", "d) Un conjunto de montículos de escasa pendiente."],
+  correcta: "b) Un alineamiento montañoso de gran longitud.",
+  justificacion: "La sierra es una cadena montañosa con picos o elevaciones destacadas."
+},
+{
+  pregunta: "Las coordenadas UTM se basan en un sistema de:",
+  opciones: ["a) Proyección cilíndrica conforme.", "b) Coordenadas geodésicas puras.", "c) Proyección plana ortogonal.", "d) Proyección sinusoidal."],
+  correcta: "a) Proyección cilíndrica conforme.",
+  justificacion: "El sistema Universal Transversal Mercator utiliza una proyección cilíndrica conforme para representar la Tierra."
+},
+{
+  pregunta: "El perímetro de un polígono topográfico se calcula:",
+  opciones: ["a) Sumando todas las áreas interiores.", "b) Sumando la distancia entre todos sus vértices consecutivos.", "c) Restando las curvas de nivel.", "d) Multiplicando el lado mayor por el número de lados."],
+  correcta: "b) Sumando la distancia entre todos sus vértices consecutivos.",
+  justificacion: "El perímetro se obtiene sumando las distancias entre cada vértice del polígono."
+},
+{
+  pregunta: "Cuando la declinación magnética es positiva significa que:",
+  opciones: ["a) El Norte magnético está al Oeste del Norte geográfico.", "b) Ambas direcciones coinciden.", "c) El Norte magnético está al Este del Norte geográfico.", "d) Es imposible calcular una declinación positiva."],
+  correcta: "c) El Norte magnético está al Este del Norte geográfico.",
+  justificacion: "Declinación positiva implica que el Norte magnético se sitúa al Este respecto del Norte geográfico."
+},
+{
+  pregunta: "En una curva de nivel, la equidistancia es:",
+  opciones: ["a) La separación horizontal entre dos curvas.", "b) La distancia vertical entre dos curvas de nivel consecutivas.", "c) La diferencia de altura entre el punto más bajo y el más alto de un mapa.", "d) La distancia entre un punto y el meridiano cero."],
+  correcta: "b) La distancia vertical entre dos curvas de nivel consecutivas.",
+  justificacion: "La equidistancia marca el intervalo de altura entre curvas de nivel sucesivas."
+},
+{
+  pregunta: "Una representación topográfica a escala 1:50.000 significa que:",
+  opciones: ["a) 1 cm en el mapa equivale a 500 m en la realidad.", "b) 1 metro en el mapa equivale a 50 km.", "c) 50.000 metros se representan como 1 kilo.", "d) 1 unidad en el mapa representa 50 unidades en el terreno."],
+  correcta: "a) 1 cm en el mapa equivale a 500 m en la realidad.",
+  justificacion: "En la escala 1:50.000, cada centímetro en el mapa representa 50.000 cm o 500 metros reales."
+},
+{
+  pregunta: "¿Qué sistema de proyección es el más utilizado para cartografía militar?",
+  opciones: ["a) Proyección Mercator directa.", "b) Proyección UTM.", "c) Proyección azimutal polar.", "d) Proyección cónica simple."],
+  correcta: "b) Proyección UTM.",
+  justificacion: "La proyección UTM es ampliamente utilizada tanto en cartografía militar como civil."
+},
+{
+  pregunta: "La “altura ortométrica” se define como:",
+  opciones: ["a) La distancia entre el punto y el geoide.", "b) La distancia entre el punto y el elipsoide.", "c) La diferencia entre el nivel medio del mar y la altitud de referencia.", "d) La medida vertical real sin tomar curvas de nivel."],
+  correcta: "a) La distancia entre el punto y el geoide.",
+  justificacion: "La altura ortométrica es la medida desde el geoide (nivel medio del mar) hasta el punto en cuestión."
+},
+{
+  pregunta: "Una vaguada representa:",
+  opciones: ["a) Un alineamiento de crestas.", "b) Una depresión alargada o pequeño valle.", "c) Una elevación circular en el terreno.", "d) Una formación aislada sin desnivel."],
+  correcta: "b) Una depresión alargada o pequeño valle.",
+  justificacion: "Las vaguadas suelen estar marcadas por curvas de nivel que forman una “U” abierta hacia cotas más bajas."
+},
+{
+  pregunta: "El plano altimétrico se centra en representar:",
+  opciones: ["a) Ríos y lagos.", "b) La forma del relieve y la altura de los puntos.", "c) Únicamente los accidentes costeros.", "d) Los elementos construidos por el hombre."],
+  correcta: "b) La forma del relieve y la altura de los puntos.",
+  justificacion: "El plano altimétrico refleja elementos relacionados con el relieve y la altitud."
+},
+{
+  pregunta: "La escala de declinación se encuentra en:",
+  opciones: ["a) El margen inferior del mapa.", "b) La leyenda o simbología del mapa.", "c) Junto al mapa de cuadrícula UTM.", "d) La rosa de los vientos exclusivamente."],
+  correcta: "a) El margen inferior del mapa.",
+  justificacion: "Aunque varía según el tipo de mapa, la declinación se indica generalmente en los márgenes."
+},
+{
+  pregunta: "¿Cuál es la diferencia clave entre topografía y cartografía?",
+  opciones: ["a) La topografía es mayor precisión pero menor extensión que la cartografía.", "b) La cartografía solo usa fotografías aéreas.", "c) La topografía no representa curvas de nivel.", "d) La cartografía es un sistema exclusivo militar."],
+  correcta: "a) La topografía es mayor precisión pero menor extensión que la cartografía.",
+  justificacion: "Por su naturaleza descriptiva y detallada, la topografía cubre áreas menores con mayor detalle que la cartografía."
+},
+{
+  pregunta: "En topografía, el barómetro puede utilizarse para medir:",
+  opciones: ["a) La distancia horizontal.", "b) La diferencia de altitud.", "c) La dirección magnética.", "d) La inclinación del terreno."],
+  correcta: "b) La diferencia de altitud.",
+  justificacion: "El barómetro mide la presión atmosférica que varía con la altitud, por lo que puede emplearse en altimetría."
+},
+{
+  pregunta: "El datum geodésico define:",
+  opciones: ["a) El tipo de relieve.", "b) El origen de referencia para las coordenadas.", "c) La longitud de la proyección cartográfica.", "d) Las escalas de los mapas."],
+  correcta: "b) El origen de referencia para las coordenadas.",
+  justificacion: "El datum es un sistema de referencia desde el cual se establecen coordenadas geográficas."
+},
+{
+  pregunta: "¿Qué instrumento se utiliza para medir ángulos horizontales y verticales en topografía tradicional?",
+  opciones: ["a) Cinta topográfica.", "b) Nivela.", "c) Teodolito.", "d) Goniómetro."],
+  correcta: "c) Teodolito.",
+  justificacion: "El teodolito es un instrumento utilizado para medir ángulos con gran precisión en topografía."
+},
+{
+  pregunta: "Las líneas que unen puntos de igual altitud se llaman:",
+  opciones: ["a) Paralelos.", "b) Meridianos.", "c) Curvas de nivel.", "d) Sectores geodésicos."],
+  correcta: "c) Curvas de nivel.",
+  justificacion: "Las curvas de nivel representan en el mapa los puntos que comparten la misma altitud."
+},
+{
+  pregunta: "En la medición de una distancia inclinada con cinta se debe:",
+  opciones: ["a) Aplicar correcciones de proyección y temperatura.", "b) Solo estirar la cinta y anotar el valor.", "c) Hacer la corrección por ángulo siempre.", "d) Medir siempre en el plano horizontal."],
+  correcta: "a) Aplicar correcciones de proyección y temperatura.",
+  justificacion: "La medición con cinta en distancias inclinadas requiere corrección por proyección y condiciones ambientales."
+},
+{
+  pregunta: "Una ladera cóncava se identifica en un mapa topográfico porque:",
+  opciones: ["a) Las curvas de nivel son cada vez más cercanas entre sí al aumentar la altura.", "b) Las curvas de nivel se espacián progresivamente hacia cotas inferiores.", "c) No aparece en ningún tipo de mapa.", "d) Tiene forma de U invertida definida en todos los niveles."],
+  correcta: "b) Las curvas de nivel se espacián progresivamente hacia cotas inferiores.",
+  justificacion: "En una ladera cóncava, la pendiente es menor en la parte inferior que en la superior."
+},
+{
+  pregunta: "La altitud referida al nivel medio del mar se obtiene mediante:",
+  opciones: ["a) Longitud y latitud.", "b) Altura ortométrica.", "c) Correción barométrica exclusiva.", "d) Coordenadas cartesianas."],
+  correcta: "b) Altura ortométrica.",
+  justificacion: "La altura ortométrica se mide con respecto al nivel medio del mar, que se toma como referencia."
+},
+{
+  pregunta: "Una repercusión directa de la forma esferoide de la Tierra en la topografía es que:",
+  opciones: [
+    "a) Las distancias se pueden medir únicamente en grados.",
+    "b) Se aplica la proyección Mercator para representarla sin deformaciones.",
+    "c) Las proyecciones deben corregir su curvatura para obtener precisión.",
+    "d) No se pueden tomar medidas lineales exactas."
+  ],
+  correcta: "c) Las proyecciones deben corregir su curvatura para obtener precisión.",
+  justificacion: "La representación plana del terreno requiere ajustar la curvatura esférica a formatos rectangulares mediante proyecciones."
+},
+{
+  pregunta: "¿Cuál de los siguientes instrumentos se usa para la nivelación geométrica?",
+  opciones: [
+    "a) Estación total.",
+    "b) Teodolito.",
+    "c) Nivel óptico.",
+    "d) Planímetro."
+  ],
+  correcta: "c) Nivel óptico.",
+  justificacion: "La nivelación geométrica utiliza niveles ópticos para determinar diferencias de altitud."
+},
+{
+  pregunta: "En topografía, el “rumbo” se expresa:",
+  opciones: [
+    "a) Como ángulo entre el Norte geográfico y el objeto medido.",
+    "b) Como ángulo con referencia al Este geográfico.",
+    "c) En formato N-S y E-W, fraccionado en cuadrantes.",
+    "d) Únicamente en grados centesimales."
+  ],
+  correcta: "c) En formato N-S y E-W, fraccionado en cuadrantes.",
+  justificacion: "El rumbo se expresa como la dirección hacia la que se dirige una línea, en relación con los ejes cardinales."
+},
+{
+  pregunta: "El concepto de 'declinación magnética' hace referencia a:",
+  opciones: [
+    "a) La diferencia angular entre el Norte magnético y el Norte geográfico.",
+    "b) La desviación del eje terrestre.",
+    "c) La inclinación de los polos geográficos.",
+    "d) El ángulo entre el Este verdadero y el Este magnético."
+  ],
+  correcta: "a) La diferencia angular entre el Norte magnético y el Norte geográfico.",
+  justificacion: "La declinación magnética es el ángulo que separa el Norte geográfico del Norte magnético."
+},
+{
+  pregunta: "¿Qué instrumento moderno puede sustituir al teodolito y al distanciómetro?",
+  opciones: [
+    "a) Brújula cartográfica.",
+    "b) Estación total.",
+    "c) Planímetro digital.",
+    "d) Barómetro electrónico."
+  ],
+  correcta: "b) Estación total.",
+  justificacion: "La estación total integra medición de ángulos y distancias permitiendo levantamientos completos."
+},
+{
+  pregunta: "En la proyección UTM, la Tierra se divide en:",
+  opciones: [
+    "a) 6 husos de 60 grados.",
+    "b) 60 husos de 6 grados.",
+    "c) 360 husos de 1 grado.",
+    "d) 18 husos de 20 grados."
+  ],
+  correcta: "b) 60 husos de 6 grados.",
+  justificacion: "El sistema UTM divide la Tierra en 60 zonas longitudinales de 6° de ancho cada una."
+},
+{
+  pregunta: "El datum geodésico ETRS89 se utiliza principalmente en:",
+  opciones: [
+    "a) Estudios marítimos en el Pacífico.",
+    "b) Cartografía oficial en Europa.",
+    "c) Proyecciones cónicas polares.",
+    "d) Cartografía global del hemisferio sur."
+  ],
+  correcta: "b) Cartografía oficial en Europa.",
+  justificacion: "El sistema ETRS89 es el estándar geodésico empleado en Europa para coordenadas precisas."
+},
+{
+  pregunta: "Una unidad de medida empleada en altimetría es:",
+  opciones: [
+    "a) Grados centesimales.",
+    "b) Metros sobre el nivel del mar.",
+    "c) Escalas horizontales.",
+    "d) Hectáreas."
+  ],
+  correcta: "b) Metros sobre el nivel del mar.",
+  justificacion: "En altimetría, las alturas se expresan generalmente en metros sobre el nivel medio del mar."
+},
+{
+  pregunta: "¿Qué información es esencial en un mapa topográfico para su correcta interpretación?",
+  opciones: [
+    "a) La fecha de impresión del mapa únicamente.",
+    "b) La escala, el sistema de proyección y la leyenda.",
+    "c) El tipo de papel empleado en su impresión.",
+    "d) El tipo de vegetación principal del terreno."
+  ],
+  correcta: "b) La escala, el sistema de proyección y la leyenda.",
+  justificacion: "Estos elementos permiten interpretar y medir correctamente cualquier mapa topográfico."
+},
+{
+  pregunta: "Las curvas de nivel en forma de “V” apuntando hacia arriba indican:",
+  opciones: [
+    "a) Un torrente o cabecera de valle.",
+    "b) Una elevación cónica.",
+    "c) Una depresión circular.",
+    "d) La cumbre de una cadena montañosa."
+  ],
+  correcta: "a) Un torrente o cabecera de valle.",
+  justificacion: "Las curvas abiertas hacia cotas altas indican pendientes escarpadas asociadas a valles fluviales."
+},
+{
+  pregunta: "Las ondulaciones que presenta el geoide en relación al elipsoide de referencia se denominan:",
+  opciones: [
+    "a) Oscilaciones planimétricas.",
+    "b) Ondulaciones geoidales.",
+    "c) Proyecciones cónicas.",
+    "d) Desnivelaciones altimétricas absolutas."
+  ],
+  correcta: "b) Ondulaciones geoidales.",
+  justificacion: "El geoide no es uniforme y presenta variaciones de altura respecto del elipsoide."
+},
+{
+  pregunta: "Un camino rural con pendiente del 25% equivale a un ángulo aproximado de:",
+  opciones: [
+    "a) 14º.",
+    "b) 25º.",
+    "c) 45º.",
+    "d) 9,5º."
+  ],
+  correcta: "a) 14º.",
+  justificacion: "Una pendiente del 25% equivale a unos 14º aproximadamente en términos de ángulo."
+},
+{
+  pregunta: "La escala de un mapa 1:10.000 indica que:",
+  opciones: [
+    "a) El mapa representa una zona de alta montaña.",
+    "b) 10.000 metros en la realidad equivalen a 1 metro en el mapa.",
+    "c) 1 metro en el mapa representa 1.000 kilómetros.",
+    "d) Cada 10 cm del mapa equivalen a 100 metros reales."
+  ],
+  correcta: "b) 10.000 metros en la realidad equivalen a 1 metro en el mapa.",
+  justificacion: "La escala 1:10.000 significa que todo lo representado se reduce 10.000 veces respecto a la realidad."
+},
+{
+  pregunta: "En topografía, el término 'poligonación' se refiere a:",
+  opciones: [
+    "a) El proceso de medir el perímetro de una finca.",
+    "b) La unión de varias estaciones topográficas mediante líneas cerradas o abiertas.",
+    "c) El cálculo automatizado de las áreas de curvas de nivel.",
+    "d) La representación en mapa de los polígonos de un terreno."
+  ],
+  correcta: "b) La unión de varias estaciones topográficas mediante líneas cerradas o abiertas.",
+  justificacion: "La poligonación es una técnica básica de levantamiento topográfico para establecer redes de puntos."
+},
+{
+  pregunta: "La corrección por temperatura en las cintas métricas se aplica porque:",
+  opciones: [
+    "a) Las cintas se contraen en invierno y se dilatan en verano.",
+    "b) El campo magnético afecta a las mediciones en verano.",
+    "c) Las cintas no están graduadas para condiciones normales.",
+    "d) Los cambios de altura requieren corrección térmica directa."
+  ],
+  correcta: "a) Las cintas se contraen en invierno y se dilatan en verano.",
+  justificacion: "Las variaciones térmicas afectan la longitud real de las cintas metálicas y deben corregirse."
+},
+{
+  pregunta: "¿Qué elemento no aparece representado en un mapa topográfico?",
+  opciones: [
+    "a) Líneas de comunicación.",
+    "b) Límites administrativos.",
+    "c) Coordenadas geográficas.",
+    "d) Estado de cultivos agrícolas en tiempo real."
+  ],
+  correcta: "d) Estado de cultivos agrícolas en tiempo real.",
+  justificacion: "Los mapas topográficos representan elementos fijos del terreno, no estados de actividad agrícola."
+},
+{
+  pregunta: "¿Cuál de los siguientes métodos se utiliza para medir distancias indirectas en topografía?",
+  opciones: [
+    "a) Cinta graduada.",
+    "b) Distanciómetro electrónico.",
+    "c) Rueda odométrica.",
+    "d) Mapa topográfico."
+  ],
+  correcta: "b) Distanciómetro electrónico.",
+  justificacion: "Los distanciómetros miden distancias indirectamente usando señales láser o infrarrojas."
+},
+{
+  pregunta: "La línea que une puntos de igual valor en un mapa se denomina:",
+  opciones: [
+    "a) Isoseísta.",
+    "b) Isohipsa.",
+    "c) Isotermia.",
+    "d) Isofreática."
+  ],
+  correcta: "b) Isohipsa.",
+  justificacion: "Una isoipsa es una línea que une puntos de igual altura o altitud."
+},
+{
+  pregunta: "Si una escala gráfica en el mapa se estira o encoge al fotocopiarse:",
+  opciones: [
+    "a) Las medidas del mapa seguirán siendo válidas.",
+    "b) La escala gráfica también se verá afectada y conservará proporcionalidad.",
+    "c) La escala numérica no se verá modificada nunca.",
+    "d) Esto no afecta al cálculo de distancias reales."
+  ],
+  correcta: "b) La escala gráfica también se verá afectada y conservará proporcionalidad.",
+  justificacion: "La escala gráfica se distorsiona proporcionalmente con cualquier ampliación o reducción del mapa."
+},
+{
+  pregunta: "Un plano topográfico que represente 4 km² con escala 1:5.000 será de aproximadamente:",
+  opciones: [
+    "a) 4 m x 4 m.",
+    "b) 80 cm x 80 cm.",
+    "c) 40 cm x 40 cm.",
+    "d) 200 cm x 200 cm."
+  ],
+  correcta: "b) 80 cm x 80 cm.",
+  justificacion: "4 km² equivalen a 4.000.000 m²; a escala 1:5.000 representa un cuadrado de 800 m/5.000 = 0,16 m (~80 cm por lado)."
+},
+{
+  pregunta: "La diferencia entre latitud geográfica y latitud geocéntrica se debe a:",
+  opciones: [
+    "a) Que el eje terrestre no está perfectamente alineado.",
+    "b) Que la Tierra no es una esfera perfecta, sino un elipsoide achatado.",
+    "c) La influencia del campo magnético terrestre.",
+    "d) La corrección necesaria por declinación magnética."
+  ],
+  correcta: "b) Que la Tierra no es una esfera perfecta, sino un elipsoide achatado.",
+  justificacion: "La latitud geográfica se calcula respecto a la normal al elipsoide, mientras que la geocéntrica se mide respecto al centro de la Tierra."
+},
+{
+  pregunta: "¿Qué sistema es empleado para representar grandes áreas con mínimo error angular?",
+  opciones: [
+    "a) Proyección cónica conforme.",
+    "b) Proyección cilíndrica transversal.",
+    "c) Proyección azimutal equidistante.",
+    "d) Proyección sinusoidal."
+  ],
+  correcta: "a) Proyección cónica conforme.",
+  justificacion: "Las proyecciones cónicas son apropiadas para latitudes medias y grandes extensiones, minimizando la distorsión angular."
+},
+{
+  pregunta: "La planta es:",
+  opciones: [
+    "a) Una proyección horizontal sobre un plano, que representa la distribución de elementos.",
+    "b) El ángulo que forma la línea visual con el plano horizontal.",
+    "c) La elevación vertical de un objeto.",
+    "d) El plano sobre el que se proyectan los paralelos."
+  ],
+  correcta: "a) Una proyección horizontal sobre un plano, que representa la distribución de elementos.",
+  justificacion: "La planta muestra en plano los elementos distribuidos como si fueran vistos desde arriba."
+},
+{
+  pregunta: "En topografía, se denomina 'rumbo inverso' al:",
+  opciones: [
+    "a) Rumbo que se obtiene corrigiendo el acimut con declinación positiva.",
+    "b) Rumbo que se mide desde el Sur en vez del Norte.",
+    "c) Rumbo opuesto a una dirección determinada (sumando o restando 180 grados).",
+    "d) Rumbo que se utiliza cuando no hay brújula disponible."
+  ],
+  correcta: "c) Rumbo opuesto a una dirección determinada (sumando o restando 180 grados).",
+  justificacion: "El rumbo inverso cambia 180° la dirección, representando el mismo alineamiento en sentido opuesto."
+},
+{
+  pregunta: "Las líneas de máxima pendiente son aquellas que:",
+  opciones: [
+    "a) Unen las curvas de nivel más elevadas.",
+    "b) Indican el lugar donde termina la proyección UTM.",
+    "c) Siguen perpendicularmente a las curvas de nivel indicadas.",
+    "d) Coinciden en representación con los meridianos."
+  ],
+  correcta: "c) Siguen perpendicularmente a las curvas de nivel indicadas.",
+  justificacion: "La pendiente máxima se da en la dirección perpendicular a las curvas de nivel."
+},
+{
+  pregunta: "En un mapa a escala 1:25.000, la distancia de 5 cm equivale a:",
+  opciones: [
+    "a) 1.250 metros.",
+    "b) 250 metros.",
+    "c) 12.500 metros.",
+    "d) 25.000 metros."
+  ],
+  correcta: "a) 1.250 metros.",
+  justificacion: "1 cm equivale a 250 metros en esa escala. Por tanto, 5 cm equivalen a 1.250 metros."
+},
+{
+  pregunta: "La altitud absoluta de un punto es:",
+  opciones: [
+    "a) Su altura respecto al nivel del mar.",
+    "b) La distancia vertical respecto al punto más cercano.",
+    "c) La diferencia de altura con respecto a un punto arbitrario.",
+    "d) El diferencial entre curva de nivel superior e inferior."
+  ],
+  correcta: "a) Su altura respecto al nivel del mar.",
+  justificacion: "La altitud absoluta se mide desde el nivel medio del mar hasta el punto."
+},
+{
+  pregunta: "¿Qué componente de una estación total mide automáticamente ángulos horizontales y verticales?",
+  opciones: [
+    "a) El distanciómetro.",
+    "b) El goniómetro.",
+    "c) El teodolito integrado.",
+    "d) El nivel compensador."
+  ],
+  correcta: "c) El teodolito integrado.",
+  justificacion: "La estación total incorpora un teodolito electrónico que mide ángulos automáticamente."
+},
+{
+  pregunta: "¿Cuál de los siguientes elementos NO es parte de un mapa topográfico oficial?",
+  opciones: [
+    "a) Curvas de nivel.",
+    "b) Polígonos catastrales.",
+    "c) Redes de comunicaciones.",
+    "d) Construcciones humanas relevantes."
+  ],
+  correcta: "b) Polígonos catastrales.",
+  justificacion: "Los mapas catastrales son diferentes a los topográficos, aunque pueden complementarse para distintos fines."
+},
+{
+  pregunta: "La nivelación trigonométrica se basa en:",
+  opciones: [
+    "a) La medición directa con agua.",
+    "b) La medición angular y distancias inclinadas.",
+    "c) El barómetro para cálculo indirecto de desnivel.",
+    "d) La observación de las estrellas para dar un valor de latitud exacto."
+  ],
+  correcta: "b) La medición angular y distancias inclinadas.",
+  justificacion: "La nivelación trigonométrica opera mediante ángulos y distancias para calcular diferencias de altura."
+},
+{
+  pregunta: "La proyección UTM divide el globo en zonas que se identifican:",
+  opciones: [
+    "a) Solo por números según la longitud.",
+    "b) Por números y letras que indican longitudes y latitudes.",
+    "c) Por el estado de las mareas y la latitud geográfica.",
+    "d) Por su continuidad con el sistema centesimal."
+  ],
+  correcta: "b) Por números y letras que indican longitudes y latitudes.",
+  justificacion: "Las zonas UTM están numeradas longitudinalmente y subdivididas latitudinalmente con letras."
+},
+{
+  pregunta: "¿Qué tipo de distancias pueden medirse con una cinta métrica de acero?",
+  opciones: [
+    "a) Solo distancias horizontales.",
+    "b) Distancias inclinadas y horizontales, aplicando correcciones.",
+    "c) Únicamente distancias de menos de 10 metros.",
+    "d) Distancias elevadas sin necesidad de corrección térmica."
+  ],
+  correcta: "b) Distancias inclinadas y horizontales, aplicando correcciones.",
+  justificacion: "La cinta permite medir ambas distancias con las correcciones pertinentes."
+},
+{
+  pregunta: "Una ortofoto se diferencia de una fotografía aérea en que:",
+  opciones: [
+    "a) La ortofoto es siempre en blanco y negro.",
+    "b) La ortofoto ha sido corregida para eliminar la distorsión del relieve y perspectiva.",
+    "c) La fotografía aérea no puede ser georreferenciada.",
+    "d) La ortofoto únicamente se usa en grandes extensiones rurales."
+  ],
+  correcta: "b) La ortofoto ha sido corregida para eliminar la distorsión del relieve y perspectiva.",
+  justificacion: "Las ortofotos son imágenes aéreas ajustadas para que sean equivalentes a un mapa plano."
+},
+{
+  pregunta: "Los puntos cuya altitud se conoce con precisión se denominan:",
+  opciones: [
+    "a) Referencias locales.",
+    "b) Puntos geocéntricos.",
+    "c) Vértices geodésicos.",
+    "d) Vértices nivelados."
+  ],
+  correcta: "c) Vértices geodésicos.",
+  justificacion: "Son puntos señalizados en el terreno cuya altitud y coordenadas están comprobadas mediante métodos geodésicos."
+},
+{
+  pregunta: "Los meridianos son líneas imaginarias que:",
+  opciones: [
+    "a) Son paralelas al ecuador.",
+    "b) Unen ambos polos.",
+    "c) Son siempre paralelas entre sí.",
+    "d) Dividen el globo en zonas horarias únicamente."
+  ],
+  correcta: "b) Unen ambos polos.",
+  justificacion: "Los meridianos son semicircunferencias que unen los polos Norte y Sur."
+},
+{
+  pregunta: "Una escala 1:1000 en un plano urbano indica que:",
+  opciones: [
+    "a) Cada metro del plano representa 100 metros reales.",
+    "b) Cada centímetro del plano representa 10 metros reales.",
+    "c) Cada centímetro en el plano corresponde a 1 metro en la realidad.",
+    "d) La escala es demasiado pequeña para ver construcciones."
+  ],
+  correcta: "c) Cada centímetro en el plano corresponde a 1 metro en la realidad.",
+  justificacion: "En la escala 1:1000, 1 cm en el mapa equivale a 1000 cm, es decir, 1 metro real."
+},
+{
+  pregunta: "¿Qué instrumento permite medir la distancia de forma precisa mediante ondas electromagnéticas?",
+  opciones: [
+    "a) Nivel con láser.",
+    "b) Estación total.",
+    "c) Cinta invar.",
+    "d) Goniómetro manual."
+  ],
+  correcta: "b) Estación total.",
+  justificacion: "Además de medir ángulos, la estación total utiliza ondas infrarrojas o láser para medir distancias."
+},
+{
+  pregunta: "El concepto de geodesia se refiere a:",
+  opciones: [
+    "a) La ciencia que mide grandes extensiones de terreno sin instrumentos modernos.",
+    "b) La ciencia que estudia la forma y dimensiones de la Tierra para definir sistemas de coordenadas.",
+    "c) La ciencia encargada de generar mapas a escala regional.",
+    "d) El cálculo de proyecciones marinas exclusivamente."
+  ],
+  correcta: "b) La ciencia que estudia la forma y dimensiones de la Tierra para definir sistemas de coordenadas.",
+  justificacion: "La geodesia proporciona la base para sistemas de referencia globales y locales."
+},
+{
+  pregunta: "En un mapa topográfico con curvas de nivel cerradas y concéntricas, la forma del relieve es una:",
+  opciones: [
+    "a) Depresión si las curvas tienen valores decrecientes hacia el centro.",
+    "b) Cima o cerro si los valores aumentan hacia el centro.",
+    "c) Sierra si existe alargamiento en las curvas.",
+    "d) Fosa si las curvas carecen de equidistancia."
+  ],
+  correcta: "b) Cima o cerro si los valores aumentan hacia el centro.",
+  justificacion: "Las curvas cerradas en círculos, con valores ascendentes hacia el centro, representan una elevación."
+},
+{
+  pregunta: "Una brújula compensada con escala de acimut sirve para:",
+  opciones: [
+    "a) Determinar únicamente la distancia angular entre dos lugares.",
+    "b) Calcular la declinación magnética automáticamente.",
+    "c) Medir el ángulo de una dirección respecto al Norte magnético.",
+    "d) Corregir los errores de proyección cartográfica."
+  ],
+  correcta: "c) Medir el ángulo de una dirección respecto al Norte magnético.",
+  justificacion: "La brújula permite medir acimuts magnéticos que luego pueden corregirse para obtener acimuts geográficos."
+},
+{
+  pregunta: "El término 'anomalía de gravedad' se relaciona con:",
+  opciones: [
+    "a) La diferencia entre la gravedad real medida y la gravedad teórica calculada.",
+    "b) La aceleración de cuerpos en caída libre en zonas montañosas.",
+    "c) La fricción generada por el movimiento de placas tectónicas.",
+    "d) El efecto del viento sobre las mareas oceánicas."
+  ],
+  correcta: "a) La diferencia entre la gravedad real medida y la gravedad teórica calculada.",
+  justificacion: "Las anomalías de gravedad ayudan a entender diferencias estructurales en la corteza terrestre."
+},
+{
+  pregunta: "En la proyección UTM, el eje X (Este) tiene su origen en:",
+  opciones: [
+    "a) El ecuador geográfico.",
+    "b) El meridiano central de cada zona UTM desplazado 500 km al oeste.",
+    "c) El polo sur para zonas negativas.",
+    "d) El paralelo 45ºN por su simetría matemática."
+  ],
+  correcta: "b) El meridiano central de cada zona UTM desplazado 500 km al oeste.",
+  justificacion: "Se añade un falso Este de 500.000 metros para evitar coordenadas negativas."
+},
+{
+  pregunta: "Los datos geodésicos globales como WGS84 se usan en:",
+  opciones: [
+    "a) Sistemas de referencia de GPS y cartografía internacional.",
+    "b) Mapas locales de pequeña escala exclusivamente.",
+    "c) Sistemas de dirección postal.",
+    "d) Mapas rurales sin necesidad de precisión."
+  ],
+  correcta: "a) Sistemas de referencia de GPS y cartografía internacional.",
+  justificacion: "WGS84 es el sistema de referencia geodésico para los satélites GPS y cartografía global."
+},
+{
+  pregunta: "El ‘teodolito’ combinado con una mira y una brújula se utiliza para:",
+  opciones: [
+    "a) Calcular zonas horarias en navegación aérea.",
+    "b) Levantamientos de ángulos y direcciones con referencia magnética.",
+    "c) Medir la temperatura ambiente y la presión.",
+    "d) Obtener coordenadas polares para uso naval."
+  ],
+  correcta: "b) Levantamientos de ángulos y direcciones con referencia magnética.",
+  justificacion: "Combina lectura angular y dirección magnética, útil en levantamientos de campo."
+},
+{
+  pregunta: "Una sección transversal del terreno en un mapa topográfico se obtiene mediante:",
+  opciones: [
+    "a) La interpolación de las coordenadas UTM hacia una proyección cilíndrica.",
+    "b) El dibujo de un perfil que sigue las curvas de nivel entre dos puntos.",
+    "c) La superposición de dos mapas de diferente escala.",
+    "d) La eliminación de las curvas de nivel para generar un DSM."
+  ],
+  correcta: "b) El dibujo de un perfil que sigue las curvas de nivel entre dos puntos.",
+  justificacion: "La sección transversal se obtiene trazando un perfil perpendicular al terreno representado."
+},
+{
+  pregunta: "En un mapa a escala 1:100.000, una línea de 7 cm representa:",
+  opciones: ["a) 7 km.", "b) 14 km.", "c) 70 km.", "d) 700 metros."],
+  correcta: "a) 7 km.",
+  justificacion: "1 cm = 1 km en esa escala; por tanto, 7 cm = 7 km."
+},
+{
+  pregunta: "La diferencia entre rumbo y acimut se basa en que:",
+  opciones: [
+    "a) El rumbo se limita a 90º, mientras que el acimut es de 360º.",
+    "b) El rumbo usa referencias polares exclusivamente.",
+    "c) El acimut no puede corregirse por declinación magnética.",
+    "d) El rumbo solo aplica a la medida de distancias y no direcciones."
+  ],
+  correcta: "a) El rumbo se limita a 90º, mientras que el acimut es de 360º.",
+  justificacion: "El rumbo siempre se expresa en un cuadrante, mientras que el acimut recorre todo el círculo."
+},
+{
+  pregunta: "La vegetación se representa en un mapa topográfico mediante:",
+  opciones: [
+    "a) Símbolos convencionales específicos y colores asignados.",
+    "b) La ausencia de sombras en el relieve.",
+    "c) Signos aproximados según la escala del mapa.",
+    "d) Fotografías aéreas superpuestas obligatoriamente."
+  ],
+  correcta: "a) Símbolos convencionales específicos y colores asignados.",
+  justificacion: "El mapa topográfico utiliza simbología reconocida para representar vegetación."
+},
+{
+  pregunta: "¿Qué instrumento sustituye al nivel óptico tradicional automatizando el cálculo de altitudes?",
+  opciones: [
+    "a) Nivel láser.",
+    "b) Teodolito de arco reverso.",
+    "c) Goniómetro monofásico.",
+    "d) Estación total sin distanciómetro."
+  ],
+  correcta: "a) Nivel láser.",
+  justificacion: "El nivel láser proyecta líneas horizontales o verticales de forma automática para mediciones."
+},
+{
+  pregunta: "Una zona UTM con letra 'T' se refiere a:",
+  opciones: [
+    "a) La zona situada entre los paralelos 80ºN y 72ºN.",
+    "b) La banda de latitud comprendida entre 40ºN y 48ºN aproximadamente.",
+    "c) Una división de husos en los trópicos.",
+    "d) Un formato de proyección para datos militares únicamente."
+  ],
+  correcta: "b) La banda de latitud comprendida entre 40ºN y 48ºN aproximadamente.",
+  justificacion: "En el sistema UTM, las letras indican bandas de latitud de 8 grados cada una."
+},
+{
+  pregunta: "Una 'curva maestra' es aquella que:",
+  opciones: [
+    "a) Representa el eje principal de un río.",
+    "b) Se dibuja con intervalos mayores que las curvas normales para facilitar la lectura.",
+    "c) Representa datos alternativos al relieve.",
+    "d) Se usa exclusivamente en objetos marítimos."
+  ],
+  correcta: "b) Se dibuja con intervalos mayores que las curvas normales para facilitar la lectura.",
+  justificacion: "Las curvas maestras se dibujan más gruesas y separadas para indicar alturas significativas."
+},
+{
+  pregunta: "La escala 1:2.000 es más adecuada para representar:",
+  opciones: [
+    "a) Detalles urbanos como parcelas y edificaciones.",
+    "b) Mapas regionales de 200 km².",
+    "c) Elementos geológicos y mineros.",
+    "d) Rutas de navegación marítima."
+  ],
+  correcta: "a) Detalles urbanos como parcelas y edificaciones.",
+  justificacion: "En escalas grandes como 1:2.000 se pueden representar detalles muy precisos de superficie urbana."
+},
+{
+  pregunta: "Cuando una curva de nivel es interrumpida por un curso de agua:",
+  opciones: [
+    "a) Se detiene el trazo en el mapa para evitar confusión.",
+    "b) Siempre debe unirse con líneas discontinuas.",
+    "c) Solo se elimina si el río no está cartografiado.",
+    "d) La curva se adapta para respetar el cauce y continúa al otro lado siguiendo el relieve."
+  ],
+  correcta: "d) La curva se adapta para respetar el cauce y continúa al otro lado siguiendo el relieve.",
+  justificacion: "Las curvas se interrumpen y luego continúan respetando las formas del relieve atravesadas."
+},
+{
+  pregunta: "El término 'geoide' se refiere a:",
+  opciones: [
+    "a) El plano teórico de referencia basado en las montañas.",
+    "b) Una superficie equipotencial del campo gravitatorio terrestre que se equipara al nivel medio del mar.",
+    "c) La proyección cilíndrica usada en el UTM.",
+    "d) Un tipo de mapa con curvas equidistantes dinámicas."
+  ],
+  correcta: "b) Una superficie equipotencial del campo gravitatorio terrestre que se equipara al nivel medio del mar.",
+  justificacion: "El geoide es la referencia para la medición de alturas ortométricas."
+},
+{
+  pregunta: "Para obtener una altimetría precisa con estación total se debe:",
+  opciones: [
+    "a) Solo medir ángulos verticales sin usar distancias.",
+    "b) Combinar lectura de ángulos y distancias, aplicando el cálculo trigonométrico adecuado.",
+    "c) Usar brújula para ubicar los puntos necesarios.",
+    "d) Utilizar exclusivamente GPS de doble frecuencia."
+  ],
+  correcta: "b) Combinar lectura de ángulos y distancias, aplicando el cálculo trigonométrico adecuado.",
+  justificacion: "La estación total permite calcular altitudes mediante trigonometría con datos precisos de ángulos y distancias."
+},
+{
+  pregunta: "En un mapa a escala 1:1000, ¿cuál es la relación entre la dimensión real y la del mapa?",
+  opciones: [
+    "a) 1 cm = 100 m.",
+    "b) 1 cm = 10 m.",
+    "c) 1 cm = 1 m.",
+    "d) 1 cm = 0,1 m."
+  ],
+  correcta: "c) 1 cm = 1 m.",
+  justificacion: "Una escala 1:1000 representa 1 m real por cada centímetro en el mapa."
+},
+{
+  pregunta: "Los puntos de control aéreo para ortofotografías se obtienen con:",
+  opciones: [
+    "a) Teodolitos manuales exclusivamente.",
+    "b) GPS de alta precisión y receptores geodésicos.",
+    "c) Brújulas con declinación ajustada digitalmente.",
+    "d) Estimaciones de alineamiento con estrellas."
+  ],
+  correcta: "b) GPS de alta precisión y receptores geodésicos.",
+  justificacion: "Los puntos de control permiten ajustar las ortofotos al terreno con precisión, usando GPS de gran exactitud."
+},
+{
+  pregunta: "Una curva de nivel que presenta dos cotas iguales en lados opuestos de una loma representa:",
+  opciones: [
+    "a) Una meseta.",
+    "b) Un collado o paso de montaña.",
+    "c) Un valle seco.",
+    "d) Un barranco intenso."
+  ],
+  correcta: "b) Un collado o paso de montaña.",
+  justificacion: "Las curvas de nivel indican dos cimas cercanas con una depresión entre ellas: el collado."
+},
+{
+  pregunta: "El norte de cuadrícula se refiere a:",
+  opciones: [
+    "a) El norte que marca la brújula.",
+    "b) La dirección hacia el polo norte geográfico.",
+    "c) El norte que aparece en de los mapas UTM orientado a la cuadrícula.",
+    "d) Una dirección variable basada en la inclinación del eje terrestre."
+  ],
+  correcta: "c) El norte que aparece en de los mapas UTM orientado a la cuadrícula.",
+  justificacion: "El norte de cuadrícula coincide con el eje de la proyección UTM y difiere del geográfico y magnético."
+},
+{
+  pregunta: "¿Cuál es la unidad fundamental para expresar el ángulo en el sistema centesimal?",
+  opciones: [
+    "a) El radian.",
+    "b) El grado centesimal.",
+    "c) El grado sexagesimal.",
+    "d) El minuto de arco."
+  ],
+  correcta: "b) El grado centesimal.",
+  justificacion: "En el sistema centesimal, la circunferencia se divide en 400 grados centesimales (g)."
+},
+{
+  pregunta: "¿Qué coordenadas se expresan en metros dentro del sistema UTM?",
+  opciones: [
+    "a) Latitud y declinación.",
+    "b) Este y Norte.",
+    "c) Acimut y latitud.",
+    "d) Rumbo y referencia vertical."
+  ],
+  correcta: "b) Este y Norte.",
+  justificacion: "Las coordenadas UTM se dan en metros en los ejes Este (X) y Norte (Y)."
+},
+{
+  pregunta: "La altitud ortométrica se refiere a la altura:",
+  opciones: [
+    "a) Sobre el nivel del elipsoide.",
+    "b) Sobre el geoide o nivel medio del mar.",
+    "c) Desde el polo geográfico.",
+    "d) En relación al nivel de referencia geodésico local."
+  ],
+  correcta: "b) Sobre el geoide o nivel medio del mar.",
+  justificacion: "La altura ortométrica es la diferencia entre el punto y el nivel medio del mar, representado por el geoide."
+},
+{
+  pregunta: "El azimut observado con brújula requiere corrección cuando:",
+  opciones: [
+    "a) Se mide en el hemisferio sur únicamente.",
+    "b) Existe declinación magnética distinta de cero.",
+    "c) Solo se utiliza en zonas costeras.",
+    "d) Se compara con coordenadas UTM."
+  ],
+  correcta: "b) Existe declinación magnética distinta de cero.",
+  justificacion: "La declinación magnética debe aplicarse para convertir el acimut magnético en geográfico."
+},
+{
+  pregunta: "Las redes geodésicas de primer orden:",
+  opciones: [
+    "a) Cubren áreas pequeñas de forma muy precisa.",
+    "b) Son precisas, con enlaces entre estaciones separadas por cientos de kilómetros.",
+    "c) Solo se usan en cartografía náutica.",
+    "d) Se utilizan para medir pendientes del terreno exclusivamente."
+  ],
+  correcta: "b) Son precisas, con enlaces entre estaciones separadas por cientos de kilómetros.",
+  justificacion: "Las redes geodésicas de primer orden tienen gran precisión y cubren amplias extensiones."
+},
+{
+  pregunta: "El método de 'radiación' en topografía consiste en:",
+  opciones: [
+    "a) Tomar datos de radiación solar para proyectar sombras.",
+    "b) Medir distancias desde un punto central a varios puntos alrededor.",
+    "c) Dividir el terreno por líneas que parten de un vértice geodésico.",
+    "d) Aplicar tecnología radioeléctrica para comunicación entre equipos."
+  ],
+  correcta: "b) Medir distancias desde un punto central a varios puntos alrededor.",
+  justificacion: "Es un método típico de levantamiento que toma puntos en diferentes direcciones desde un punto base."
+},
+{
+  pregunta: "¿Cuál de los siguientes NO es un punto cardinal estándar?",
+  opciones: [
+    "a) Norte.",
+    "b) Sur.",
+    "c) Este.",
+    "d) Sudeste."
+  ],
+  correcta: "d) Sudeste.",
+  justificacion: "Los puntos cardinales principales son Norte, Sur, Este y Oeste. Sudeste es un punto intercardinal."
+},
+{
+  pregunta: "El rumbo N45°E corresponde en azimut a:",
+  opciones: [
+    "a) 45°.",
+    "b) 315°.",
+    "c) 135°.",
+    "d) 225°."
+  ],
+  correcta: "a) 45°.",
+  justificacion: "Los rumbos se convierten a acimut dependiendo del cuadrante; N45°E corresponde al primer cuadrante: 45°."
+},
+{
+  pregunta: "La poligonal cerrada en un levantamiento topográfico sirve para:",
+  opciones: [
+    "a) Establecer límites marítimos internacionales.",
+    "b) Crear una red fija de puntos de referencia interrelacionados.",
+    "c) Calcular exclusivamente el área de un edificio.",
+    "d) Registrar datos satelitales en una cuadrícula universal."
+  ],
+  correcta: "b) Crear una red fija de puntos de referencia interrelacionados.",
+  justificacion: "La poligonal cerrada se usa para levantar y controlar grandes áreas con precisión."
+},
+{
+  pregunta: "Una estación total difiere del teodolito convencional en que:",
+  opciones: [
+    "a) No mide ángulos horizontales.",
+    "b) Puede medir distancias con precisión electrónica.",
+    "c) Requiere cinta métrica en todos los casos.",
+    "d) Solo puede usarse para nivelación."
+  ],
+  correcta: "b) Puede medir distancias con precisión electrónica.",
+  justificacion: "La estación total integra funciones de teodolito y distanciómetro."
+},
+{
+  pregunta: "Las curvas de nivel con intervalos muy amplios significan que:",
+  opciones: [
+    "a) Existen pendientes muy pronunciadas.",
+    "b) El relieve es poco abrupto o plano.",
+    "c) La equidistancia no es constante.",
+    "d) Solo se representa altura real mediante acotes."
+  ],
+  correcta: "b) El relieve es poco abrupto o plano.",
+  justificacion: "Intervalos amplios entre curvas representan zonas con poca pendiente."
+},
+{
+  pregunta: "Los planos altimétricos permiten observar principalmente:",
+  opciones: [
+    "a) La forma del terreno con detalles de alturas.",
+    "b) La localización de ríos y vegetación.",
+    "c) Los límites políticos de las provincias.",
+    "d) Cambios en el uso del suelo agrícola."
+  ],
+  correcta: "a) La forma del terreno con detalles de alturas.",
+  justificacion: "Su objetivo es mostrar la altitud y relieve mediante curvas de nivel."
+},
+{
+  pregunta: "¿Qué tipo de mapa utilizarías para planificar una ruta a pie por montaña?",
+  opciones: [
+    "a) Mapa geológico.",
+    "b) Mapa topográfico.",
+    "c) Mapa de redes de transporte.",
+    "d) Mapa estatal administrativo."
+  ],
+  correcta: "b) Mapa topográfico.",
+  justificacion: "Los mapas topográficos incluyen curvas de nivel y detalles necesarios para rutas en terrenos montañosos."
+},
+{
+  pregunta: "Un protuberante representado por curvas que disminuyen su valor hacia el centro indica en el mapa:",
+  opciones: [
+    "a) Un valle.",
+    "b) Un hoyo o depresión.",
+    "c) Una cima o cerro.",
+    "d) Un cauce seco."
+  ],
+  correcta: "b) Un hoyo o depresión.",
+  justificacion: "Los valores decrecientes hacia el interior indican que se trata de una hondonada o depresión."
+},
+{
+  pregunta: "El término 'declinación isogónica' se refiere a:",
+  opciones: [
+    "a) Áreas donde la declinación magnética es nula.",
+    "b) Líneas donde la declinación magnética es constante.",
+    "c) Puntos donde el nivel del mar coincide con el geoide.",
+    "d) Regiones donde el norte de cuadrícula y geográfico son idénticos."
+  ],
+  correcta: "b) Líneas donde la declinación magnética es constante.",
+  justificacion: "Las líneas isogónicas unen puntos con igual declinación magnética."
+},
+{
+  pregunta: "El sistema de coordenadas geográficas usa unidades de:",
+  opciones: [
+    "a) Grados, minutos y segundos.",
+    "b) Metros lineales únicamente.",
+    "c) Grados centesimales exclusivamente.",
+    "d) Coordenadas alfa-numéricas."
+  ],
+  correcta: "a) Grados, minutos y segundos.",
+  justificacion: "Las coordenadas geográficas se expresan en grados, minutos y segundos de latitud y longitud."
+},
+{
+  pregunta: "El eje polar de la Tierra se encuentra inclinado aproximadamente:",
+  opciones: [
+    "a) 15° respecto al plano elíptico.",
+    "b) 23,5° respecto al plano de la eclíptica.",
+    "c) 30° respecto al plano ecuatorial.",
+    "d) 0° en los equinoccios."
+  ],
+  correcta: "b) 23,5° respecto al plano de la eclíptica.",
+  justificacion: "La inclinación del eje terrestre es responsable de las estaciones del año."
+},
+{
+  pregunta: "Cuando una proyección cartográfica es conforme significa que:",
+  opciones: [
+    "a) No presenta ninguna distorsión en distancias reales.",
+    "b) Preserva los ángulos localmente.",
+    "c) Mantiene las áreas iguales a la realidad.",
+    "d) Se utiliza exclusivamente en mapas hidrográficos."
+  ],
+  correcta: "b) Preserva los ángulos localmente.",
+  justificacion: "Las proyecciones conformes respetan los ángulos, aunque pueden distorsionar áreas."
+},
+{
+  pregunta: "Un mapa esquemático a escala 1:500.000 se utilizará principalmente para:",
+  opciones: [
+    "a) Detallar un proyecto de construcción.",
+    "b) Planificar una ruta a gran escala entre provincias.",
+    "c) Definir los límites oficiales de un municipio.",
+    "d) Levantamientos topográficos de precisión."
+  ],
+  correcta: "b) Planificar una ruta a gran escala entre provincias.",
+  justificacion: "Las escalas pequeñas como 1:500.000 representan grandes áreas con pocos detalles."
+},
+{
+  pregunta: "Una brújula sin corrección de declinación siempre indica:",
+  opciones: [
+    "a) El norte verdadero.",
+    "b) El norte cuadrícula.",
+    "c) El norte magnético.",
+    "d) El acimut con declinación implícita."
+  ],
+  correcta: "c) El norte magnético.",
+  justificacion: "La brújula se orienta según el campo magnético terrestre, indicando el norte magnético."
+},
+{
+  pregunta: "En el sistema UTM, los husos están definidos por meridianos separados cada:",
+  opciones: [
+    "a) 2° de longitud.",
+    "b) 6° de longitud.",
+    "c) 20° de latitud.",
+    "d) 10° de longitud."
+  ],
+  correcta: "b) 6° de longitud.",
+  justificacion: "La Tierra se divide en 60 husos UTM, cada uno de 6 grados de longitud."
+},
+{
+  pregunta: "El plano XY en la proyección UTM indica:",
+  opciones: [
+    "a) Las coordenadas relativas al eje Z del plano geocéntrico.",
+    "b) Una proyección horizontal donde los puntos se expresan en metros Este y Norte.",
+    "c) Un plano de altitud respecto al elipsoide en segundos radiales.",
+    "d) El plano tridimensional ortogonal usado por brújulas náuticas."
+  ],
+  correcta: "b) Una proyección horizontal donde los puntos se expresan en metros Este y Norte.",
+  justificacion: "El plano XY usa coordenadas métricas este (X) y norte (Y) en la proyección UTM."
+},
+{
+  pregunta: "La altitud de un punto sobre el nivel medio del mar se denomina:",
+  opciones: [
+    "a) Altura geodésica.",
+    "b) Altura ortométrica.",
+    "c) Altura elipsoidal.",
+    "d) Altitud diferida."
+  ],
+  correcta: "b) Altura ortométrica.",
+  justificacion: "La altura medida desde el geoide hasta un punto se denomina ortométrica."
+},
+{
+  pregunta: "Los planos que miden distancias a partir de proyecciones en eje horizontal usan:",
+  opciones: [
+    "a) Coordenadas cartesianas.",
+    "b) Coordenadas polares.",
+    "c) Coordenadas geográficas proyectadas.",
+    "d) Coordenadas del geoide únicamente."
+  ],
+  correcta: "a) Coordenadas cartesianas.",
+  justificacion: "Las mediciones lineales se basan en coordenadas cartesianas X e Y sobre el plano horizontal."
+},
+{
+  pregunta: "Para el cálculo de un desnivel usando trigonometría en taquimetría, se utiliza:",
+  opciones: [
+    "a) La distancia inclinada y el ángulo cenital.",
+    "b) El azimut magnético y el rumbo geográfico.",
+    "c) Únicamente una tabla de declinaciones.",
+    "d) Coordenadas geoidales de origen polar."
+  ],
+  correcta: "a) La distancia inclinada y el ángulo cenital.",
+  justificacion: "El desnivel se calcula multiplicando la distancia inclinada por el seno del ángulo cenital o de inclinación."
+},
+{
+  pregunta: "Un mapa de curvas de nivel representa la forma del terreno mediante:",
+  opciones: [
+    "a) Superposición de perfiles de laderas.",
+    "b) Líneas que unen puntos de igual altitud.",
+    "c) Sombras marcadas con base en la hora del día.",
+    "d) Sectores proyectados con ángulo de inclinación constante."
+  ],
+  correcta: "b) Líneas que unen puntos de igual altitud.",
+  justificacion: "Las curvas de nivel permiten identificar visualmente el relieve y pendientes."
+},
+{
+  pregunta: "Una estación total mide distancias mediante:",
+  opciones: [
+    "a) Cadena metálica calibrada.",
+    "b) Ondas de luz o infrarrojas.",
+    "c) Proyecciones cartesianas manuales.",
+    "d) Diferencias de presión atmosférica."
+  ],
+  correcta: "b) Ondas de luz o infrarrojas.",
+  justificacion: "Las estaciones totales miden distancias con precisión mediante tecnología óptica o infrarroja."
+},
+{
+  pregunta: "El norte verdadero coincide con:",
+  opciones: [
+    "a) El norte de cuadrícula en todo momento.",
+    "b) El eje de rotación terrestre en su intersección con la superficie.",
+    "c) El norte magnético cuando no hay declinación isogónica.",
+    "d) El punto de máxima elevación solar diaria."
+  ],
+  correcta: "b) El eje de rotación terrestre en su intersección con la superficie.",
+  justificacion: "El norte verdadero se refiere al punto donde el meridiano geográfico cruza el polo norte."
+},
+{
+  pregunta: "La cota de un punto en topografía es:",
+  opciones: [
+    "a) El ángulo cenital medido desde el norte geográfico.",
+    "b) La altitud del punto con respecto al nivel del mar.",
+    "c) La proyección horizontal del punto sobre el geoide.",
+    "d) La distancia angular entre dos curvas de nivel."
+  ],
+  correcta: "b) La altitud del punto con respecto al nivel del mar.",
+  justificacion: "La cota es la altura medida sobre un plano de referencia, generalmente el nivel medio del mar."
+},
+{
+  pregunta: "El método de nivelación directa utiliza:",
+  opciones: [
+    "a) Visado intermedio entre dos puntos con mira y nivel.",
+    "b) Proyección con brújula y clinómetro.",
+    "c) Corrección automática de rumbo en estación total.",
+    "d) Azimut de referencia cada 50 metros."
+  ],
+  correcta: "a) Visado intermedio entre dos puntos con mira y nivel.",
+  justificacion: "La nivelación directa usa un nivel óptico y una mira para obtener diferencias de altitud."
+},
+{
+  pregunta: "En un mapa topográfico, el sombreado del relieve se usa para:",
+  opciones: [
+    "a) Mostrar textura del suelo.",
+    "b) Resaltar la orientación de laderas mediante sombras simuladas.",
+    "c) Indicar vegetación perenne.",
+    "d) Negociar la escala más fácilmente."
+  ],
+  correcta: "b) Resaltar la orientación de laderas mediante sombras simuladas.",
+  justificacion: "El sombreado da sensación de tridimensionalidad e indica orientaciones diferentes del terreno."
+},
+{
+  pregunta: "La pendiente máxima se mide:",
+  opciones: [
+    "a) Como la diferencia angular entre dos meridianos contiguos.",
+    "b) Perpendicularmente a las curvas de nivel.",
+    "c) Paralela a los paralelos en carta geográfica.",
+    "d) Usando exclusivamente GPS de receptores múltiples."
+  ],
+  correcta: "b) Perpendicularmente a las curvas de nivel.",
+  justificacion: "La pendiente más pronunciada siempre se da en dirección perpendicular a las curvas de nivel."
+},
+{
+  pregunta: "Una línea que une puntos de igual profundidad se denomina:",
+  opciones: [
+    "a) Isohipsa.",
+    "b) Isóbata.",
+    "c) Isoyacente.",
+    "d) Isobárica."
+  ],
+  correcta: "b) Isóbata.",
+  justificacion: "Las isóbatas representan puntos de igual profundidad en zonas acuáticas."
+},
+{
+  pregunta: "La fórmula básica para calcular la escala en un mapa es:",
+  opciones: [
+    "a) Escala = distancia en mapa / distancia real.",
+    "b) Escala = distancia real / distancia en mapa.",
+    "c) Escala = distancia en mapa x distancia real.",
+    "d) Escala = (distancia en mapa - distancia real) / 100."
+  ],
+  correcta: "a) Escala = distancia en mapa / distancia real.",
+  justificacion: "Es la representación de la proporción entre lo medido en el mapa y la distancia real."
+},
+{
+  pregunta: "Para representar valores de altitud extremos en un mapa, se utilizan:",
+  opciones: [
+    "a) Sombras francesas.",
+    "b) Curvas de nivel suplementarias.",
+    "c) Curvas de nivel perdidas al multiplicar la escala.",
+    "d) Líneas isopletas descriptivas."
+  ],
+  correcta: "b) Curvas de nivel suplementarias.",
+  justificacion: "Se utilizan curvas adicionales entre las curvas principales para mayor detalle."
+},
+{
+  pregunta: "En una poligonal abierta, ¿cómo se verifica la precisión del cierre de la figura?",
+  opciones: [
+    "a) Comparando los acimuts calculados con los medidos.",
+    "b) Realizando un control por azimut inverso únicamente.",
+    "c) Sumando ángulos interiores y comprobando el error angular de cierre.",
+    "d) Corregiendo el rumbo con una vara calibrada."
+  ],
+  correcta: "c) Sumando ángulos interiores y comprobando el error angular de cierre.",
+  justificacion: "En poligonales abiertas se verifica el error de cierre angular para distribuirlo proporcionalmente."
+},
+{
+  pregunta: "En topografía, el 'limbo' es:",
+  opciones: [
+    "a) Una unidad angular auxiliar.",
+    "b) El anillo graduado del teodolito para la medida de ángulos.",
+    "c) Un elemento de nivelación auxiliar en altimetría.",
+    "d) El plano de proyección cartesiana general."
+  ],
+  correcta: "b) El anillo graduado del teodolito para la medida de ángulos.",
+  justificacion: "El limbo es el círculo graduado del teodolito donde se leen los ángulos."
+},
+{
+  pregunta: "Los niveles automáticos incorporan el sistema de compensación:",
+  opciones: [
+    "a) Por burbuja asistida digitalmente.",
+    "b) Por prismas reflectores estáticos.",
+    "c) Por péndulo que asegura la horizontalidad de la línea de visión.",
+    "d) Por control satelital de línea de referencia."
+  ],
+  correcta: "c) Por péndulo que asegura la horizontalidad de la línea de visión.",
+  justificacion: "Los niveles automáticos mantienen el colimador horizontal mediante compensador de péndulo."
+},
+{
+  pregunta: "Un mapa a escala 1:50.000 es más adecuado para:",
+  opciones: [
+    "a) Grandes escalas de detalle urbano.",
+    "b) Navegación regional por carreteras secundarias y terrenos.",
+    "c) Levantamientos arquitectónicos interiores.",
+    "d) Estudios de micro-topografía urbana."
+  ],
+  correcta: "b) Navegación regional por carreteras secundarias y terrenos.",
+  justificacion: "La escala 1:50.000 permite una visión más amplia del territorio con detalles moderados."
+},
+{
+  pregunta: "¿Qué instrumento permite medir asentamiento angular y distancia simultáneamente?",
+  opciones: [
+    "a) Taquímetro.",
+    "b) Golpe de prisma.",
+    "c) Nivel óptico digital.",
+    "d) Cinta métrica con sensor."
+  ],
+  correcta: "a) Taquímetro.",
+  justificacion: "El taquímetro combina teodolito y distanciómetro para realizar levantamientos rápidos."
+},
+{
+  pregunta: "Una superficie plana que corta un terreno inclinado se representa mediante:",
+  opciones: [
+    "a) Curvas de nivel verticales.",
+    "b) Líneas rectas paralelas entre sí, separadas según la pendiente.",
+    "c) Líneas oblicuas que no se cruzan con las curvas de nivel.",
+    "d) Símbolos especiales de cartografía de relieve."
+  ],
+  correcta: "b) Líneas rectas paralelas entre sí, separadas según la pendiente.",
+  justificacion: "Una sección plana se refleja en un modelo topográfico como líneas rectas paralelas si el terreno es una ladera continua."
+},
+{
+  pregunta: "¿Cuál de las siguientes definiciones describe mejor un punto fotogramétrico?",
+  opciones: [
+    "a) Un punto de referencia del terreno visible en una fotografía aérea y que sirve para el ajuste del plano.",
+    "b) Un punto resultante de la proyección estereográfica en un modelo digital.",
+    "c) Una coordenada hipotética usada en modelos tridimensionales.",
+    "d) Un punto marcado sobre un mapa topográfico para medir desniveles."
+  ],
+  correcta: "a) Un punto de referencia del terreno visible en una fotografía aérea y que sirve para el ajuste del plano.",
+  justificacion: "Los puntos fotogramétricos son esenciales para georreferenciar imágenes aéreas."
+},
+{
+  pregunta: "En los mapas topográficos, la escala gráfica se utiliza porque:",
+  opciones: [
+    "a) Permite medir distancias sin importar la ampliación o reducción del mapa.",
+    "b) Es la única escala válida para mapas militares.",
+    "c) Sirve para indicar el nivel de detalle de las sombras.",
+    "d) No requiere cálculo matemático."
+  ],
+  correcta: "a) Permite medir distancias sin importar la ampliación o reducción del mapa.",
+  justificacion: "A diferencia de la escala numérica, la gráfica mantiene la proporcionalidad aunque se fotocopie o proyecte."
+},
+{
+  pregunta: "En altimetría, 'curva de nivel madre' se refiere a:",
+  opciones: [
+    "a) La curva que indica el nivel del mar.",
+    "b) La curva que se dibuja cada cinco curvas de nivel para indicar altitud importante.",
+    "c) La curva que une las bases de todas las elevaciones del mapa.",
+    "d) La curva que rodea toda la zona topográfica medida."
+  ],
+  correcta: "b) La curva que se dibuja cada cinco curvas de nivel para indicar altitud importante.",
+  justificacion: "Las curvas madres son destacadas para facilitar la interpretación del relieve."
+},
+{
+  pregunta: "El método de interpolación más sencillo para generar curvas de nivel es:",
+  opciones: [
+    "a) Método geométrico lineal.",
+    "b) Método parabólico doble.",
+    "c) Interpolación fractal.",
+    "d) Ajuste estocástico polar."
+  ],
+  correcta: "a) Método geométrico lineal.",
+  justificacion: "La interpolación lineal es sencilla y suele emplearse entre puntos medidos a intervalos regulares."
+},
+{
+  pregunta: "Una brújula de prisma se utiliza sobre todo para:",
+  opciones: [
+    "a) Medir ángulos verticales.",
+    "b) Leer rumbos y acimuts con gran precisión en campo.",
+    "c) Calcular la proyección UTM.",
+    "d) Determinar la latitud geográfica."
+  ],
+  correcta: "b) Leer rumbos y acimuts con gran precisión en campo.",
+  justificacion: "Las brújulas de prisma permiten lectura simultánea de la dirección y la base, útil en topografía."
+},
+{
+  pregunta: "Una gráfica de perfil longitudinal representa:",
+  opciones: [
+    "a) Las variaciones de temperatura durante una fecha específica.",
+    "b) Las variaciones de altitud entre dos puntos según la distancia.",
+    "c) La inclinación magnética entre los trópicos.",
+    "d) La variación de acimuts durante una observación geodésica."
+  ],
+  correcta: "b) Las variaciones de altitud entre dos puntos según la distancia.",
+  justificacion: "El perfil longitudinal es fundamental en ingeniería para planificar trazados y pendientes."
+},
+{
+  pregunta: "¿Para qué se utiliza un planímetro en topografía?",
+  opciones: [
+    "a) Para medir áreas en planos o mapas.",
+    "b) Para nivelación de precisión.",
+    "c) Para medir ángulos de declinación.",
+    "d) Para representar puntos tridimensionales."
+  ],
+  correcta: "a) Para medir áreas en planos o mapas.",
+  justificacion: "Un planímetro permite calcular superficies a partir de los polígonos dibujados en mapas."
+},
+{
+  pregunta: "En el sistema de coordenadas UTM, el eje Y (norte) en el hemisferio sur:",
+  opciones: [
+    "a) Comienza en cero en el ecuador y aumenta hacia el sur.",
+    "b) Se desplaza artificialmente para evitar valores negativos.",
+    "c) Coincide siempre con el eje Z geodésico.",
+    "d) No se representa en mapas militares."
+  ],
+  correcta: "b) Se desplaza artificialmente para evitar valores negativos.",
+  justificacion: "Se añade un valor de 10.000.000 m al norte para asegurar coordenadas positivas en el hemisferio sur."
+},
+{
+  pregunta: "Una rebaja en relación al terreno se representa en el mapa mediante:",
+  opciones: [
+    "a) Curvas de nivel decrecientes hacia el interior.",
+    "b) Curvas superpuestas al nivel del mar.",
+    "c) Sombras inversas en zonas expuestas.",
+    "d) Exclusivamente un símbolo especial."
+  ],
+  correcta: "a) Curvas de nivel decrecientes hacia el interior.",
+  justificacion: "Una depresión se muestra con curvas que descienden hacia el centro, al contrario que una elevación."
+},
+{
+  pregunta: "El campo de aplicación principal de la taquimetría es:",
+  opciones: [
+    "a) Estudios de vegetación en áreas rurales.",
+    "b) Levantamientos rápidos en terrenos accidentados.",
+    "c) Cartografía hidrográfica exclusivamente.",
+    "d) Diseño de estructuras arquitectónicas interiores."
+  ],
+  correcta: "b) Levantamientos rápidos en terrenos accidentados.",
+  justificacion: "La taquimetría es ideal para levantamientos rápidos en terrenos con pendientes o irregularidades."
+},
+{
+  pregunta: "En altimetría, una 'nivelación compuesta' es:",
+  opciones: [
+    "a) El conjunto de varias nivelaciones directas unidas entre sí.",
+    "b) La combinación de declinación y azimut para nivelar zonas inclinadas.",
+    "c) El cálculo mixto entre alturas elipsoidales y geoidales.",
+    "d) La nivelación obtenida con GPS diferencial únicamente."
+  ],
+  correcta: "a) El conjunto de varias nivelaciones directas unidas entre sí.",
+  justificacion: "Las nivelaciones compuestas se realizan cuando es necesario enlazar varias pequeñas nivelaciones consecutivas."
+},
+{
+  pregunta: "Los meridianos convergen en los polos porque:",
+  opciones: [
+    "a) La Tierra es achatada y los polos ejercen atracción gravitatoria.",
+    "b) Son líneas de longitud que se encuentran en estos extremos.",
+    "c) La declinación magnética lo impone en zonas polares.",
+    "d) Representan líneas perpendiculares al plano ecuatorial."
+  ],
+  correcta: "b) Son líneas de longitud que se encuentran en estos extremos.",
+  justificacion: "Todos los meridianos se unen en los polos debido a su naturaleza de líneas longitudinales."
+},
+{
+  pregunta: "El valor de la escala 1:10.000 indica que:",
+  opciones: [
+    "a) 1 m en el mapa representa 1.000 m reales.",
+    "b) Cada centímetro representa 100 metros.",
+    "c) Cada kilómetro real ocupa 10 cm en el mapa.",
+    "d) El mapa cubre exactamente 10 km²."
+  ],
+  correcta: "b) Cada centímetro representa 100 metros.",
+  justificacion: "La escala 1:10.000 implica que 1 cm del mapa equivale a 10.000 cm, o 100 metros reales."
+},
+{
+  pregunta: "¿Cuál de los siguientes fenómenos afecta más a la declinación magnética?",
+  opciones: [
+    "a) La altura del terreno sobre el nivel del mar.",
+    "b) Las características geológicas locales del subsuelo.",
+    "c) Los movimientos tectónicos.",
+    "d) La distancia al ecuador geodésico."
+  ],
+  correcta: "b) Las características geológicas locales del subsuelo.",
+  justificacion: "La presencia de minerales magnéticos o variaciones geológicas puede alterar la declinación local."
+},
+{
+  pregunta: "En un mapa, cuanto mayor sea el denominador de una escala numérica:",
+  opciones: [
+    "a) Mayor será el detalle representado.",
+    "b) Menor será el área cubierta por el mapa.",
+    "c) Mayor será el área cubierta y menor el detalle.",
+    "d) No influye en la representación del mapa."
+  ],
+  correcta: "c) Mayor será el área cubierta y menor el detalle.",
+  justificacion: "Escalas pequeñas (denominador grande) cubren más terreno pero con menos detalle."
+},
+{
+  pregunta: "La distancia horizontal es:",
+  opciones: [
+    "a) La distancia medida directamente sobre la superficie del terreno.",
+    "b) La proyección horizontal de la distancia inclinada entre dos puntos.",
+    "c) La distancia que aparece siempre en una ortofotografía.",
+    "d) Una medida equivalente al desnivel absoluto."
+  ],
+  correcta: "b) La proyección horizontal de la distancia inclinada entre dos puntos.",
+  justificacion: "En topografía, se corrige la distancia inclinada para obtener la distancia reducida u horizontal."
+},
+{
+  pregunta: "La fórmula típica para obtener un desnivel mediante nivelación directa es:",
+  opciones: [
+    "a) Desnivel = lectura atrás - lectura adelante.",
+    "b) Desnivel = distancia horizontal x declinación magnética.",
+    "c) Desnivel = acimut + rumbo / 2.",
+    "d) Desnivel = altura geoidal - altura elipsoidal."
+  ],
+  correcta: "a) Desnivel = lectura atrás - lectura adelante.",
+  justificacion: "El desnivel entre dos puntos se calcula restando la lectura de la mira en el punto adelantado de la lectura del punto atrasado."
+},
+{
+  pregunta: "Un punto de cambio en nivelación se define como:",
+  opciones: [
+    "a) Un punto desde el cual ya no se puede nivelar directamente.",
+    "b) Un punto desde el que se cambia el nivel óptico por pérdida de visión.",
+    "c) Un punto controlado por GPS que corrige la declinación.",
+    "d) Un punto medio geoidado que no debe medirse dos veces."
+  ],
+  correcta: "b) Un punto desde el que se cambia el nivel óptico por pérdida de visión.",
+  justificacion: "Es un punto que se toma para continuar la nivelación desde otra posición del aparato."
+},
+{
+  pregunta: "En un mapa topográfico, la forma de las curvas de nivel indica:",
+  opciones: [
+    "a) Únicamente la elevación del terreno.",
+    "b) La altitud, el tipo de vegetación y la humedad superficial.",
+    "c) La forma del relieve y el sentido de la pendiente.",
+    "d) La geología y composición exacta del suelo."
+  ],
+  correcta: "c) La forma del relieve y el sentido de la pendiente.",
+  justificacion: "Las curvas de nivel representan las variaciones altitudinales y la pendiente del terreno."
+},
+{
+  pregunta: "El valor de una declinación magnética positiva indica que:",
+  opciones: [
+    "a) El norte magnético está al oeste del norte geográfico.",
+    "b) El norte magnético coincide con el norte geográfico.",
+    "c) El norte magnético está al este del norte geográfico.",
+    "d) El acimut no necesita corrección."
+  ],
+  correcta: "c) El norte magnético está al este del norte geográfico.",
+  justificacion: "Declinación positiva implica que el norte magnético se sitúa a la derecha (este) del geográfico."
+},
+{
+  pregunta: "La simbología de 'campos cultivados' en un mapa topográfico se representa mediante:",
+  opciones: [
+    "a) Líneas rectas paralelas inclinadas.",
+    "b) Líneas onduladas de contorno grueso.",
+    "c) Superficie sombreada gris uniforme.",
+    "d) Símbolos específicos con color verde punteado."
+  ],
+  correcta: "a) Líneas rectas paralelas inclinadas.",
+  justificacion: "Los campos cultivados suelen aparecer como trazos paralelos inclinados, representando los surcos."
+},
+{
+  pregunta: "Un meridiano es una línea imaginaria que:",
+  opciones: [
+    "a) Une los polos y es perpendicular al ecuador.",
+    "b) Es paralelo a la latitud equinoccial.",
+    "c) Representa un eje de coordenadas UTM en dirección este-oeste.",
+    "d) Siempre tiene una declinación nula respecto del norte magnético."
+  ],
+  correcta: "a) Une los polos y es perpendicular al ecuador.",
+  justificacion: "Los meridianos son líneas de longitud que conectan el polo norte con el polo sur."
+},
+{
+  pregunta: "Una coordenada geográfica de 40° 45' N, 3° 42' W indica:",
+  opciones: [
+    "a) Latitud de 40 grados norte y longitud de 3 grados 42 minutos este.",
+    "b) Longitud de 40 grados norte y latitud de 3 grados 42 minutos oeste.",
+    "c) Latitud de 40 grados norte y longitud de 3 grados 42 minutos oeste.",
+    "d) Una longitud parcial en sistema centesimal."
+  ],
+  correcta: "c) Latitud de 40 grados norte y longitud de 3 grados 42 minutos oeste.",
+  justificacion: "La notación indica primero latitud (N/S) y luego longitud (E/W)."
+},
+{
+  pregunta: "El eje Z en un sistema de coordenadas tridimensional topográfico se refiere a:",
+  opciones: [
+    "a) La latitud medida en grados.",
+    "b) La longitud medida en grados centesimales.",
+    "c) La altitud o cota de un punto.",
+    "d) La inclinación magnética local vertical."
+  ],
+  correcta: "c) La altitud o cota de un punto.",
+  justificacion: "El eje Z representa la altura de un punto respecto a un plano horizontal de referencia."
+},
+{
+  pregunta: "¿Qué tipo de nivel se utiliza para mediciones precisas en obras públicas?",
+  opciones: [
+    "a) Nivel láser de mano.",
+    "b) Nivel automático de precisión.",
+    "c) Nivel de burbuja con soporte simple.",
+    "d) Nivel de plomada manual."
+  ],
+  correcta: "b) Nivel automático de precisión.",
+  justificacion: "Los niveles automáticos o de precisión son ideales para trabajos de ingeniería civil."
+},
+{
+  pregunta: "Las coordenadas UTM colocan el origen X = 500.000 m para:",
+  opciones: [
+    "a) Evitar coordenadas negativas al este del meridiano central.",
+    "b) Generar mapas únicamente para el hemisferio sur.",
+    "c) Mantener la proyección geocéntrica igual al sistema centesimal.",
+    "d) Respetar la equivalencia con el sistema de coordenadas polares."
+  ],
+  correcta: "a) Evitar coordenadas negativas al este del meridiano central.",
+  justificacion: "El falso este de 500.000 m se añade para que todas las coordenadas sean positivas en el huso."
+},
+{
+  pregunta: "Una ladera convexa en perfil longitudinal se identifica porque:",
+  opciones: [
+    "a) Presenta una pendiente mayor al principio y menor al final.",
+    "b) Las curvas de nivel están más juntas en la parte baja.",
+    "c) Las curvas de nivel se separan progresivamente hacia cotas superiores.",
+    "d) No puede representarse en un mapa de escala 1:25.000."
+  ],
+  correcta: "a) Presenta una pendiente mayor al principio y menor al final.",
+  justificacion: "Una ladera convexa tiene mayor pendiente al inicio, disminuyendo hacia el final."
+},
+{
+  pregunta: "Para corregir una distancia medida con cinta en pendiente se debe:",
+  opciones: [
+    "a) Multiplicar por la pendiente media.",
+    "b) Proyectar la distancia al plano horizontal mediante trigonometría.",
+    "c) Calcular la diferencia entre acimut y rumbo.",
+    "d) Medir verticalmente con un distanciómetro."
+  ],
+  correcta: "b) Proyectar la distancia al plano horizontal mediante trigonometría.",
+  justificacion: "La distancia inclinada debe proyectarse horizontalmente para obtener la distancia real."
+},
+{
+  pregunta: "¿Qué curva de nivel se dibuja normalmente con un grosor mayor para facilitar la lectura del relieve?",
+  opciones: [
+    "a) Curva intermedia.",
+    "b) Curva maestra.",
+    "c) Curva suplementaria.",
+    "d) Curva de equidistancia."
+  ],
+  correcta: "b) Curva maestra.",
+  justificacion: "Las curvas maestras se resaltan en grosor para señalar intervalos significativos de altura."
+},
+{
+  pregunta: "Una escala de 1:250.000 sería adecuada para:",
+  opciones: [
+    "a) Cartografía detallada de carreteras en zonas urbanas.",
+    "b) Mapas regionales para desplazamientos largos.",
+    "c) Definir perímetros exactos de parcelas agrícolas.",
+    "d) Levantar perfiles altimétricos en obras públicas."
+  ],
+  correcta: "b) Mapas regionales para desplazamientos largos.",
+  justificacion: "Escalas de 1:250.000 cubren grandes extensiones con detalles orientativos útiles a nivel regional."
+},
+{
+  pregunta: "El plano cenital es el plano:",
+  opciones: [
+    "a) Perpendicular al plano del horizonte y pasa por el observador.",
+    "b) Horizontal que corta al eje magnético terrestre.",
+    "c) Vertical orientado según la meridiana local.",
+    "d) Que se utiliza únicamente en nivelación geométrica."
+  ],
+  correcta: "a) Perpendicular al plano del horizonte y pasa por el observador.",
+  justificacion: "El plano cenital es el que pasa por el cenit y es perpendicular al horizonte."
+},
+{
+  pregunta: "Un nivel de burbuja se usa para:",
+  opciones: [
+    "a) Medir el azimut en campo sin brújula.",
+    "b) Verificar la horizontalidad o verticalidad de un instrumento.",
+    "c) Medir altitudes precisas sin correcciones.",
+    "d) Calcular el desnivel en un polígono altimétrico."
+  ],
+  correcta: "b) Verificar la horizontalidad o verticalidad de un instrumento.",
+  justificacion: "El nivel de burbuja ayuda a asegurar que el instrumento está perfectamente horizontal o vertical."
+},
+{
+  pregunta: "La 'equidistancia' de un mapa topográfico es:",
+  opciones: [
+    "a) La diferencia de altitud entre dos curvas consecutivas.",
+    "b) La distancia entre dos puntos de igual latitud.",
+    "c) Una relación constante entre meridianos y paralelos.",
+    "d) El espacio entre zonas UTM adyacentes."
+  ],
+  correcta: "a) La diferencia de altitud entre dos curvas consecutivas.",
+  justificacion: "La equidistancia fija la separación altitudinal entre curvas en un mapa topográfico."
+},
+{
+  pregunta: "Un levantamiento taquimétrico manual suele combinar:",
+  opciones: [
+    "a) Teodolito y cinta métrica.",
+    "b) Cinta métrica y GPS diferencial.",
+    "c) Estación total y planímetro.",
+    "d) Proyección Lambert y brújula solar."
+  ],
+  correcta: "a) Teodolito y cinta métrica.",
+  justificacion: "La taquimetría clásica usa teodolito para ángulos y cinta para distancias."
+},
+{
+  pregunta: "¿Cuál de las siguientes representa un formato de coordenadas geográficas válidas?",
+  opciones: [
+    "a) X=746500, Y=4412000",
+    "b) N 41° 24' 12\" W 2° 10' 26\"",
+    "c) 10 km norte, 12 km este",
+    "d) 41-24-12, 002-10-26"
+  ],
+  correcta: "b) N 41° 24' 12\" W 2° 10' 26\"",
+  justificacion: "Es una representación con grados, minutos y segundos, usada en coordenadas geográficas."
+},
+{
+  pregunta: "Un modelo digital de elevaciones (DEM) representa:",
+  opciones: [
+    "a) La inclinación magnética sobre un área amplia.",
+    "b) Un conjunto de valores en cuadrícula que indican la altitud de cada punto.",
+    "c) Una nube de puntos sin referencia espacial.",
+    "d) Cambios en la vegetación sin indicación de relieve."
+  ],
+  correcta: "b) Un conjunto de valores en cuadrícula que indican la altitud de cada punto.",
+  justificacion: "Los modelos digitales de elevación representan el relieve mediante celdas con valores de altitud."
+},
+{
+  pregunta: "La lectura de la mira en una nivelación se realiza:",
+  opciones: [
+    "a) Desde el punto más alto del mapa.",
+    "b) A través del anteojo del nivel enfocado en las graduaciones de la mira.",
+    "c) Usando exclusivamente una brújula con clinómetro.",
+    "d) Mediante medición de distancia producida por láser."
+  ],
+  correcta: "b) A través del anteojo del nivel enfocado en las graduaciones de la mira.",
+  justificacion: "Se usan miras graduadas para leer alturas a través del nivel óptico."
+},
+
+];
+
+let totalPreguntasRenderizadas = 0;
+
+function barajar(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+}
+
+function setProgress(current, total) {
+  const bar = document.getElementById('progressBar');
+  const pct = total > 0 ? Math.round((current / total) * 100) : 0;
+  bar.style.width = pct + '%';
+  bar.title = pct + '%';
+}
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+// Carga el test con preguntas y respuestas aleatorias
+function cargarTest() {
+  const numPreguntas = parseInt(document.getElementById('numPreguntas').value);
+  const testForm = document.getElementById('testForm');
+  const progressBar = document.getElementById('progressBar');
+  const testResult = document.getElementById('testResult');
+
+  testForm.innerHTML = '';
+  testResult.innerHTML = '';
+  progressBar.style.width = '0%';
+
+  if (!preguntasBanco || preguntasBanco.length === 0) {
+    testForm.innerHTML = '<p style="color:red;font-weight:bold;">⚠️ No hay preguntas en el banco.</p>';
+    return;
+  }
+
+  const letras = ['a)', 'b)', 'c)', 'd)', 'e)', 'f)']; // por si hay más de 4 opciones
+  const preguntasSeleccionadas = shuffle([...preguntasBanco]).slice(0, numPreguntas);
+
+  preguntasSeleccionadas.forEach((preguntaObj, index) => {
+    // Mezclamos las opciones (pero vamos a limpiar su prefijo "a) " si lo llevan)
+    const opcionesMezcladas = shuffle([...preguntaObj.opciones]);
+
+    // Convertimos cada opción en un objeto { texto, esCorrecta }
+    const opcionesObj = opcionesMezcladas.map(opcion => {
+      // Limpiar prefijos como "a) ", "b) " si existen
+      const textoLimpio = opcion.replace(/^[A-Za-z]\)\s*/, '').trim();
+      const esCorrecta = opcion === preguntaObj.correcta || textoLimpio === preguntaObj.correcta.replace(/^[A-Za-z]\)\s*/, '').trim();
+      return { texto: textoLimpio, esCorrecta };
+    });
+
+    // Renderizamos las opciones asignando letras según la posición (letras fijas)
+    const opcionesHTML = opcionesObj.map((opt, optIndex) => {
+      const marcaCorrecta = opt.esCorrecta ? 'true' : 'false';
+      const letra = letras[optIndex] || `${optIndex + 1})`; // fallback si hay >6 opciones
+      // No incluimos la letra dentro del texto de la opción; la mostramos separada
+      return `
+        <label class="option">
+          <input type="radio" name="pregunta${index}" value="${opt.texto.replace(/"/g, '&quot;')}" data-correct="${marcaCorrecta}">
+          <span style="font-weight:700; margin-right:10px; color:var(--muted)">${letra}</span>
+          ${opt.texto}
+        </label>
+      `;
+    }).join('');
+
+    const preguntaHTML = `
+      <div class="question">
+        <div class="q-head">
+          <span class="q-num">${index + 1}.</span>
+          <p class="q-text">${preguntaObj.pregunta}</p>
+        </div>
+        <div class="options">
+          ${opcionesHTML}
+        </div>
+        <div class="justification muted" style="display:none;">
+          <span class="correct">✔ ${preguntaObj.correcta.replace(/^[A-Za-z]\)\s*/, '')}</span><br>
+          ${preguntaObj.justificacion}
+        </div>
+      </div>
+    `;
+    testForm.insertAdjacentHTML('beforeend', preguntaHTML);
+  });
+
+  // Añadir botón corregir (evitar duplicados)
+  const botonCorregirExistente = Array.from(testForm.getElementsByTagName('button')).find(b => b.textContent === 'Corregir');
+  if (!botonCorregirExistente) {
+    const botonCorregir = document.createElement('button');
+    botonCorregir.type = 'button';
+    botonCorregir.className = 'btn success';
+    botonCorregir.textContent = 'Corregir';
+    botonCorregir.onclick = () => corregirTest();
+    testForm.appendChild(botonCorregir);
+  }
+}
+
+
+function corregirTest() {
+  const preguntas = document.querySelectorAll('.question');
+  let aciertos = 0;
+
+  preguntas.forEach((pregunta) => {
+    const radios = pregunta.querySelectorAll('input[type="radio"]');
+    const labels = pregunta.querySelectorAll('.option');
+    const justificacion = pregunta.querySelector('.justification');
+    let seleccionCorrecta = false;
+
+    // Limpiar clases anteriores
+    labels.forEach(l => {
+      l.classList.remove('correct-option', 'wrong-option');
+      const checkmark = l.querySelector('.checkmark');
+      if (checkmark) checkmark.remove();
+    });
+
+    radios.forEach(radio => {
+      const label = radio.closest('.option');
+      if (radio.checked && radio.dataset.correct === 'true') {
+        seleccionCorrecta = true;
+      }
+    });
+
+    radios.forEach(radio => {
+      const label = radio.closest('.option');
+
+      if (radio.dataset.correct === 'true') {
+        // Mostrar check verde en la opción correcta
+        label.classList.add('correct-option');
+        label.insertAdjacentHTML('afterbegin', `<span class="checkmark" style="color:#059669;font-weight:700;">✔</span>`);
+      }
+
+      if (radio.checked && radio.dataset.correct !== 'true') {
+        // Mostrar X roja en la opción elegida incorrecta
+        label.classList.add('wrong-option');
+        label.insertAdjacentHTML('afterbegin', `<span class="checkmark" style="color:#dc2626;font-weight:700;">✘</span>`);
+      }
+    });
+
+    // Mostrar la justificación al final
+    if (justificacion) {
+      justificacion.style.display = 'block';
+      justificacion.innerHTML = `
+        ${seleccionCorrecta 
+          ? `<span class="correct">✔ ${pregunta.querySelector('input[data-correct="true"]').value}</span><br>` 
+          : `<span class="incorrect">✘ ${pregunta.querySelector('input[data-correct="true"]').value}</span><br>`
+        }
+        ${pregunta.querySelector('.justification').textContent || ''}
+      `;
+    }
+
+    if (seleccionCorrecta) aciertos++;
+  });
+
+  // Mostrar resultado final
+  const total = preguntas.length;
+  const porcentaje = Math.round((aciertos / total) * 100);
+  const testResult = document.getElementById('testResult');
+  testResult.innerHTML = `
+    <div class="result-card">
+      <p class="score">Has acertado ${aciertos} de ${total} preguntas (${porcentaje}%).</p>
+      <p class="muted">${porcentaje >= 70 ? "✅ ¡Buen trabajo!" : "❌ Puedes mejorar."}</p>
+    </div>
+  `;
+  document.getElementById('progressBar').style.width = '100%';
+}
+
+
+function reiniciarTest() {
+  document.getElementById('testForm').innerHTML = '';
+  document.getElementById('testResult').innerHTML = '';
+  setProgress(0, 0);
+}
+  // ==========================
+// 🔹 TEMPORIZADOR CONFIGURABLE
+// ==========================
+
+// Variables del temporizador
+let tiempoTotal = 0;
+let tiempoRestante = 0;
+let temporizadorInterval;
+
+// Crear selector de tiempo en el panel de controles
+const selectTiempo = document.createElement('select');
+selectTiempo.id = 'tiempoSeleccionado';
+selectTiempo.innerHTML = `
+  <option value="0">Sin límite</option>
+  <option value="5">5 minutos</option>
+  <option value="10" selected>10 minutos</option>
+  <option value="15">15 minutos</option>
+  <option value="20">20 minutos</option>
+  <option value="30">30 minutos</option>
+  <option value="40">40 minutos</option>
+  <option value="50">50 minutos</option>
+  <option value="60">60 minutos</option>
+`;
+const labelTiempo = document.createElement('label');
+labelTiempo.htmlFor = 'tiempoSeleccionado';
+labelTiempo.textContent = 'Tiempo límite:';
+const controlsDiv = document.querySelector('.controls');
+controlsDiv.insertBefore(labelTiempo, controlsDiv.children[2]);
+controlsDiv.insertBefore(selectTiempo, controlsDiv.children[3]);
+
+// Crear elemento visual del temporizador
+const temporizadorDiv = document.createElement('div');
+temporizadorDiv.id = 'temporizador';
+temporizadorDiv.style.textAlign = 'center';
+temporizadorDiv.style.fontSize = '18px';
+temporizadorDiv.style.fontWeight = '700';
+temporizadorDiv.style.color = '#2563eb';
+temporizadorDiv.style.marginTop = '12px';
+controlsDiv.appendChild(temporizadorDiv);
+
+// Mostrar tiempo en formato mm:ss
+function mostrarTiempo() {
+  let min = Math.floor(tiempoRestante / 60);
+  let seg = tiempoRestante % 60;
+  temporizadorDiv.textContent = `⏳ Tiempo restante: ${min}:${seg.toString().padStart(2, '0')}`;
+}
+
+// Iniciar temporizador
+function iniciarTemporizador() {
+  const minutosSeleccionados = parseInt(document.getElementById('tiempoSeleccionado').value);
+  if (minutosSeleccionados === 0) {
+    temporizadorDiv.textContent = '⏳ Sin límite de tiempo';
+    return;
+  }
+
+  tiempoTotal = minutosSeleccionados * 60;
+  tiempoRestante = tiempoTotal;
+  mostrarTiempo();
+
+  temporizadorInterval = setInterval(() => {
+    tiempoRestante--;
+    mostrarTiempo();
+    if (tiempoRestante <= 0) {
+      clearInterval(temporizadorInterval);
+      temporizadorDiv.textContent = '⏰ ¡Tiempo agotado!';
+      finalizarTestPorTiempo();
+    }
+  }, 1000);
+}
+
+// Detener temporizador
+function detenerTemporizador() {
+  clearInterval(temporizadorInterval);
+}
+
+// Modificar función cargarTest para que inicie el temporizador
+const originalCargarTest = cargarTest;
+cargarTest = function() {
+  originalCargarTest();
+  detenerTemporizador(); // Por si se reinicia
+  iniciarTemporizador();
+};
+
+// Al finalizar el test manualmente (botón Enviar)
+const originalEvaluarTest = evaluarTest;
+evaluarTest = function() {
+  detenerTemporizador(); // Detiene el contador al pulsar Enviar
+  originalEvaluarTest();
+};
+
+// Cuando el tiempo se agota automáticamente
+function finalizarTestPorTiempo() {
+  // Evita ejecuciones dobles
+  if (window.__finalizadoPorTiempo__) return;
+  window.__finalizadoPorTiempo__ = true;
+
+  detenerTemporizador();
+  if (temporizadorDiv) temporizadorDiv.textContent = '⏰ ¡Tiempo agotado! Pulsa "Enviar" para corregir.';
+
+  // 🔒 Bloquear todas las respuestas
+  document.querySelectorAll('input[type="radio"]').forEach(r => {
+    r.disabled = true;
+    const opt = r.closest('.option');
+    if (opt) {
+      opt.style.opacity = '0.6';
+      opt.style.pointerEvents = 'none';
+    }
+  });
+
+  // ✅ Dejar el botón "Enviar" activo y hacerlo destacar en verde
+  const btnEnviar = document.querySelector('button.btn.success, button[type="submit"]');
+  if (btnEnviar) {
+    btnEnviar.disabled = false;
+    btnEnviar.style.opacity = '1';
+    btnEnviar.style.cursor = 'pointer';
+
+    // 💚 Efecto parpadeo verde suave
+    btnEnviar.style.animation = 'blinkGreen 1.2s infinite';
+    btnEnviar.style.transition = 'background-color 0.3s ease';
+    btnEnviar.style.backgroundColor = '#22c55e'; // verde suave (Tailwind: green-500)
+    btnEnviar.style.color = 'white';
+
+    // Inyectar animación CSS si no existe
+    if (!document.getElementById('blinkGreen-style')) {
+      const style = document.createElement('style');
+      style.id = 'blinkGreen-style';
+      style.textContent = `
+        @keyframes blinkGreen {
+          0%, 100% { background-color: #22c55e; }
+          50% { background-color: #86efac; } /* verde claro (green-300) */
+        }
+      `;
+      document.head.appendChild(style);
+    }
+  }
+
+  // 🔄 Mantener botón "Reiniciar" activo
+  const btnReiniciar = document.querySelector('button.btn.secondary');
+  if (btnReiniciar) {
+    btnReiniciar.disabled = false;
+  }
+}
+</script>
+</body>
+</html>
