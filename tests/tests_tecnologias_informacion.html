@@ -1,0 +1,3691 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test de Tecnologías de la Información y la Comunicación</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --card: #ffffff;
+      --text: #111827;
+      --muted: #6b7280;
+      --primary: #2563eb;
+      --primary-dark: #1e40af;
+      --success: #059669;
+      --danger: #dc2626;
+      --ring: rgba(37, 99, 235, 0.25);
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: 'Roboto', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      padding: 24px;
+    }
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+    header.hero {
+      text-align: center;
+      margin-bottom: 16px;
+    }
+    .title {
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--primary-dark);
+      margin: 0 0 8px;
+    }
+    .subtitle {
+      color: var(--muted);
+      margin: 0;
+    }
+    .controls {
+      background: var(--card);
+      border-radius: 14px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.06);
+      padding: 16px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      justify-content: center;
+      position: sticky;
+      top: 12px;
+      z-index: 5;
+    }
+    .controls label { font-weight: 500; }
+    select {
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid #e5e7eb;
+      background: #fff;
+      outline: none;
+      transition: box-shadow .2s, border-color .2s;
+    }
+    select:focus { border-color: var(--primary); box-shadow: 0 0 0 4px var(--ring); }
+
+    .btn {
+      cursor: pointer;
+      border: none;
+      border-radius: 10px;
+      padding: 12px 18px;
+      font-weight: 700;
+      transition: transform .15s, background .2s, box-shadow .2s;
+      color: #fff;
+      background: var(--primary);
+      box-shadow: 0 6px 14px rgba(37,99,235,.2);
+    }
+    .btn:hover { transform: translateY(-1px); background: var(--primary-dark); }
+    .btn.secondary { background: #6b7280; }
+    .btn.secondary:hover { background: #374151; }
+    .btn.success { background: var(--success); }
+    .btn.success:hover { background: #047857; }
+    .btn.danger { background: var(--danger); }
+    .btn.danger:hover { background: #b91c1c; }
+
+    .progress {
+      width: 100%;
+      height: 10px;
+      background: #e5e7eb;
+      border-radius: 999px;
+      overflow: hidden;
+      margin-top: 8px;
+    }
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--primary), #60a5fa);
+      transition: width .3s ease;
+    }
+
+    .question {
+      margin: 14px 0;
+      padding: 18px;
+      background: var(--card);
+      border-radius: 14px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.06);
+    }
+    .q-head {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+    }
+    .q-num {
+      font-weight: 800;
+      color: var(--primary-dark);
+    }
+    .q-text { margin: 0; }
+
+    .options { margin-top: 10px; display: grid; gap: 8px; }
+    .option {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid #e5e7eb;
+      background: #fff;
+      transition: background .15s, border-color .15s, box-shadow .15s;
+      cursor: pointer;
+    }
+    .option input { transform: scale(1.2); }
+    .option:hover { background: #f9fafb; border-color: #d1d5db; }
+    .option.is-selected { box-shadow: 0 0 0 4px var(--ring); border-color: var(--primary); }
+
+    .justification {
+      margin-top: 10px; color: var(--muted);
+    }
+    .correct { color: var(--success); font-weight: 700; }
+    .incorrect { color: var(--danger); font-weight: 700; }
+
+    .option.correct-option {
+      border-color: rgba(5,150,105,.4);
+      background: #ecfdf5;
+    }
+    .option.wrong-option {
+      border-color: rgba(220,38,38,.4);
+      background: #fef2f2;
+    }
+
+    .result-card {
+      margin: 18px 0;
+      padding: 16px;
+      background: var(--card);
+      border-radius: 14px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.06);
+      text-align: center;
+    }
+    .score {
+      font-size: 22px;
+      font-weight: 800;
+      margin: 8px 0;
+    }
+    .muted { color: var(--muted); }
+    footer { text-align: center; margin-top: 24px; color: var(--muted); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="hero">
+      <h1 class="title">Test de Tecnologías de la Información y la Comunicación</h1>
+      <p class="subtitle">Selecciona cuántas preguntas quieres y pulsa <strong>Comenzar</strong>.</p>
+    </header>
+
+    <div class="controls">
+      <label for="numPreguntas">Número de preguntas:</label>
+      <select id="numPreguntas">
+        <option value="10">10</option>
+        <option value="20">20</option>
+        <option value="30">30</option>
+        <option value="40">40</option>
+        <option value="50" selected>50</option>
+      </select>
+      <button class="btn" type="button" onclick="cargarTest()">Comenzar</button>
+      <button class="btn secondary" type="button" onclick="reiniciarTest()">Reiniciar</button>
+      <div class="progress" style="flex-basis: 100%;">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+    </div>
+
+    <form id="testForm"></form>
+
+    <div id="testResult"></div>
+    <footer>© Test de práctica — Tecnologías de la Información y la Comunicación</footer>
+  </div>
+
+<script>
+const preguntasBanco = [
+{
+  pregunta: "La Red SARA tiene como objetivo principal:",
+  opciones: [
+    "a) Permitir la comunicación segura entre administraciones públicas",
+    "b) Proporcionar acceso gratuito a Internet para los ciudadanos",
+    "c) Conectar los centros educativos con redes sociales oficiales",
+    "d) Gestionar el comercio electrónico internacional"
+  ],
+  correcta: "a) Permitir la comunicación segura entre administraciones públicas",
+  justificacion: "La Red SARA conecta diferentes organismos públicos con alta seguridad y fiabilidad."
+},
+{
+  pregunta: "El Esquema Nacional de Seguridad establece:",
+  opciones: [
+    "a) Las condiciones para el uso de software privada en la Administración",
+    "b) Los principios básicos para una protección adecuada de la información",
+    "c) La necesidad de guardar secreto profesional en el sector privado",
+    "d) La regulación de los derechos laborales en telecomunicaciones"
+  ],
+  correcta: "b) Los principios básicos para una protección adecuada de la información",
+  justificacion: "Se establece el marco para garantizar la seguridad de los sistemas de información en el sector público."
+},
+{
+  pregunta: "Una de las principales funciones de la Agencia Española de Protección de Datos es:",
+  opciones: [
+    "a) Supervisar el cumplimiento de la legislación sobre protección de datos",
+    "b) Garantizar la neutralidad de la red en el ámbito estatal",
+    "c) Instalar redes inalámbricas en edificios públicos",
+    "d) Regular los precios de servicios de telecomunicaciones"
+  ],
+  correcta: "a) Supervisar el cumplimiento de la legislación sobre protección de datos",
+  justificacion: "La AEPD es el organismo encargado de velar por la protección de datos personales."
+},
+{
+  pregunta: "El artículo 13 del Reglamento General de Protección de Datos (RGPD) obliga a que:",
+  opciones: [
+    "a) Los datos personales solo puedan ser tratados en servidores físicos",
+    "b) Se informe a los interesados sobre el tratamiento de sus datos personales",
+    "c) Los ciudadanos paguen por ejercer el derecho de acceso",
+    "d) Las empresas informen al Ministerio del Interior sobre su política de datos"
+  ],
+  correcta: "b) Se informe a los interesados sobre el tratamiento de sus datos personales",
+  justificacion: "La información es clave para el tratamiento transparente de los datos personales."
+},
+{
+  pregunta: "¿Cuál de los siguientes es un requisito del Esquema Nacional de Interoperabilidad?",
+  opciones: [
+    "a) La conexión de los sistemas de la Administración a redes sociales",
+    "b) El uso de formatos y estándares abiertos en la gestión de documentos electrónicos",
+    "c) La prohibición del uso de certificados digitales",
+    "d) La contratación obligatoria de servicios en la nube"
+  ],
+  correcta: "b) El uso de formatos y estándares abiertos en la gestión de documentos electrónicos",
+  justificacion: "El ENI fomenta la interoperabilidad mediante estándares abiertos."
+},
+{
+  pregunta: "El concepto de 'firma electrónica reconocida' implica que:",
+  opciones: [
+    "a) Equivale legalmente a la firma manuscrita y se basa en un certificado cualificado",
+    "b) Solo puede ser utilizado por funcionarios de la Administración",
+    "c) No requiere el uso de certificados emitidos por un tercero",
+    "d) Solo tendrá validez en trámites internacionales"
+  ],
+  correcta: "a) Equivale legalmente a la firma manuscrita y se basa en un certificado cualificado",
+  justificacion: "Según la normativa europea eIDAS, la firma reconocida es la más segura y con plenos efectos jurídicos."
+},
+{
+  pregunta: "El registro electrónico de apoderamientos permite:",
+  opciones: [
+    "a) Delegar electrónica y formalmente la representación ante la Administración",
+    "b) Acceder a las cuentas bancarias de un tercero",
+    "c) Firmar contratos blindados sin presencia física",
+    "d) Certificar la autoría de informes científicos"
+  ],
+  correcta: "a) Delegar electrónica y formalmente la representación ante la Administración",
+  justificacion: "Es un servicio previsto por la Ley 39/2015 para facilitar la representación."
+},
+{
+  pregunta: "La Ley 39/2015 obliga a relacionarse electrónicamente con la Administración Pública a:",
+  opciones: [
+    "a) Todos los ciudadanos sin excepción",
+    "b) Personas jurídicas, profesionales colegiados y empleados públicos",
+    "c) Solo empresas con más de 100 trabajadores",
+    "d) Asociaciones no gubernamentales únicamente"
+  ],
+  correcta: "b) Personas jurídicas, profesionales colegiados y empleados públicos",
+  justificacion: "El artículo 14.2 de la Ley 39/2015 establece esta obligación."
+},
+{
+  pregunta: "El derecho a la portabilidad de los datos permite al interesado:",
+  opciones: [
+    "a) Denegar el acceso de terceros a datos ajenos",
+    "b) Solicitar que sus datos sean transmitidos a otro responsable del tratamiento",
+    "c) Transferir datos confidenciales a la nube sin autorización",
+    "d) Usar datos personales en procesos disciplinarios"
+  ],
+  correcta: "b) Solicitar que sus datos sean transmitidos a otro responsable del tratamiento",
+  justificacion: "Este derecho está recogido en el artículo 20 del RGPD."
+},
+{
+  pregunta: "El DNI electrónico contiene un certificado que permite:",
+  opciones: [
+    "a) Garantizar la finalidad exclusiva de acceso físico",
+    "b) Identificar al titular y realizar firmas electrónicas seguras",
+    "c) Sustituir las contraseñas en apps bancarias",
+    "d) Borrar automáticamente los datos personales tras su uso"
+  ],
+  correcta: "b) Identificar al titular y realizar firmas electrónicas seguras",
+  justificacion: "El DNIe incorpora certificados para identificación y firma digital."
+},
+{
+  pregunta: "El Esquema Nacional de Seguridad clasifica los sistemas según:",
+  opciones: [
+    "a) El tamaño del organismo que los utiliza",
+    "b) El nivel de seguridad exigible, en base al impacto sobre la información",
+    "c) La ubicación del sistema dentro de España",
+    "d) La tecnología empleada en la red interna"
+  ],
+  correcta: "b) El nivel de seguridad exigible, en base al impacto sobre la información",
+  justificacion: "El ENS establece niveles básico, medio y alto según la criticidad."
+},
+{
+  pregunta: "Para considerar válido un consentimiento en protección de datos debe ser:",
+  opciones: [
+    "a) Libre, específico, informado e inequívoco",
+    "b) Aceptado siempre por escrito",
+    "c) Firmado digitalmente con certificado cualificado",
+    "d) Presentado junto a copia autenticada del DNI"
+  ],
+  correcta: "a) Libre, específico, informado e inequívoco",
+  justificacion: "El artículo 7 del RGPD señala estos requisitos para un consentimiento válido."
+},
+{
+  pregunta: "El principio de minimización de datos establece que:",
+  opciones: [
+    "a) Se pueden recopilar todos los datos posibles mientras sirvan al proceso",
+    "b) Solo deben solicitarse los datos necesarios y pertinentes para el fin del tratamiento",
+    "c) No es necesario borrar los datos obsoletos si están cifrados",
+    "d) Es obligatorio recopilar datos de geolocalización en todos los tratamientos"
+  ],
+  correcta: "b) Solo deben solicitarse los datos necesarios y pertinentes para el fin del tratamiento",
+  justificacion: "Este principio del RGPD busca limitar el tratamiento de datos al mínimo necesario."
+},
+{
+  pregunta: "Según la Ley 40/2015, los sistemas de información de las administraciones deben:",
+  opciones: [
+    "a) No poder interoperar para garantizar la privacidad",
+    "b) Estar interconectados para evitar duplicidad de esfuerzos",
+    "c) Ser revisados solo cada 5 años",
+    "d) Utilizar exclusivamente software propietario"
+  ],
+  correcta: "b) Estar interconectados para evitar duplicidad de esfuerzos",
+  justificacion: "La Ley 40/2015 establece la cooperación mediante sistemas interoperables."
+},
+{
+  pregunta: "Los 'datos especialmente protegidos' incluyen:",
+  opciones: [
+    "a) Datos de afiliación sindical, salud o ideología",
+    "b) Contraseñas de correo electrónico",
+    "c) Códigos de tarjetas de crédito",
+    "d) Información sobre transmisiones de propiedad"
+  ],
+  correcta: "a) Datos de afiliación sindical, salud o ideología",
+  justificacion: "Según el RGPD y la Ley Orgánica 3/2018."
+},
+{
+  pregunta: "Un 'responsable del tratamiento' es la persona o entidad que:",
+  opciones: [
+    "a) Presta servicios como proveedor externo de IT",
+    "b) Decide la finalidad y medios del tratamiento de datos personales",
+    "c) Supervisa las redes de comunicación de Europa",
+    "d) Gestiona la firma electrónica en un organismo internacional"
+  ],
+  correcta: "b) Decide la finalidad y medios del tratamiento de datos personales",
+  justificacion: "Definido en el artículo 4 del RGPD."
+},
+{
+  pregunta: "La Ley 39/2015 establece como derecho de los ciudadanos:",
+  opciones: [
+    "a) Rechazar el uso de sistemas electrónicos en cualquier caso",
+    "b) No aportar documentos que ya estén en poder de la Administración",
+    "c) Ser atendidos exclusivamente de manera presencial",
+    "d) Presentar solicitudes sin identificación digital"
+  ],
+  correcta: "b) No aportar documentos que ya estén en poder de la Administración",
+  justificacion: "Esto evita la duplicidad documental y agiliza trámites."
+},
+{
+  pregunta: "En el Esquema Nacional de Interoperabilidad, la 'interoperabilidad semántica' implica:",
+  opciones: [
+    "a) El uso de redes neuronales para interpretar los datos automáticamente",
+    "b) Que los datos tengan el mismo significado entre distintos sistemas",
+    "c) La uniformidad en la codificación de la información biométrica",
+    "d) Usar cifras encriptadas en formatos de archivo estándar"
+  ],
+  correcta: "b) Que los datos tengan el mismo significado entre distintos sistemas",
+  justificacion: "Es uno de los pilares del ENI para garantizar comprensión mutua entre sistemas distintos."
+},
+{
+  pregunta: "El 'derecho al olvido' se refiere a:",
+  opciones: [
+    "a) La eliminación de datos personales cuando no sean necesarios o se retire el consentimiento",
+    "b) La obligación de las empresas de cambiar las contraseñas periódicamente",
+    "c) El derecho a denunciar a quien reenvíe nuestros datos sin consentimiento",
+    "d) La imposibilidad de recuperar información borrada de sistemas militares"
+  ],
+  correcta: "a) La eliminación de datos personales cuando no sean necesarios o se retire el consentimiento",
+  justificacion: "Recogido en el artículo 17 del RGPD."
+},
+{
+  pregunta: "En las comunicaciones seguras se utiliza el protocolo HTTPS para:",
+  opciones: [
+    "a) Asegurar la compatibilidad con dispositivos IoT",
+    "b) Proteger las comunicaciones mediante cifrado en tránsito",
+    "c) Realizar auditorías internas sobre redes privadas",
+    "d) Controlar el acceso físico a los servidores"
+  ],
+  correcta: "b) Proteger las comunicaciones mediante cifrado en tránsito",
+  justificacion: "HTTPS utiliza SSL/TLS para proteger la información transmitida."
+},
+{
+  pregunta: "¿Qué establece la Ley 34/2002, de Servicios de la Sociedad de la Información y Comercio Electrónico (LSSI)?",
+  opciones: [
+    "a) La prohibición del comercio electrónico entre particulares",
+    "b) Las obligaciones de los prestadores de servicios en línea",
+    "c) La regulación de los precios de acceso a internet",
+    "d) El estándar europeo de firma electrónica avanzada"
+  ],
+  correcta: "b) Las obligaciones de los prestadores de servicios en línea",
+  justificacion: "La LSSI regula aspectos como la contratación electrónica, el spam y las obligaciones informativas de los prestadores."
+},
+{
+  pregunta: "En el Esquema Nacional de Seguridad (ENS), el nivel 'medio' se aplica a sistemas que:",
+  opciones: [
+    "a) Solo manejan datos públicos y no sensibles",
+    "b) Afectan a derechos de ciudadanos y servicios esenciales",
+    "c) Son de uso exclusivo de la Policía Local",
+    "d) No requieren medidas de seguridad especiales"
+  ],
+  correcta: "b) Afectan a derechos de ciudadanos y servicios esenciales",
+  justificacion: "El nivel medio se aplica en casos con impacto significativo en la prestación de servicios públicos."
+},
+{
+  pregunta: "El 'derecho de acceso' en protección de datos permite al interesado:",
+  opciones: [
+    "a) Solicitar la eliminación inmediata de sus datos",
+    "b) Conocer si se están tratando o no sus datos personales y con qué fines",
+    "c) Impedir que sus datos se conserven más de un año",
+    "d) Acceder al código fuente del sistema de información"
+  ],
+  correcta: "b) Conocer si se están tratando o no sus datos personales y con qué fines",
+  justificacion: "Este derecho aparece regulado en el artículo 15 del RGPD."
+},
+{
+  pregunta: "La red interadministrativa del Sistema de Información Administrativa (SIA) sirve para:",
+  opciones: [
+    "a) Registrar las bases de datos censales municipales",
+    "b) Enlazar los servicios de atención sanitaria de forma centralizada",
+    "c) Compartir información sobre procedimientos y servicios entre administraciones",
+    "d) Desarrollar herramientas de inteligencia artificial"
+  ],
+  correcta: "c) Compartir información sobre procedimientos y servicios entre administraciones",
+  justificacion: "El SIA facilita interoperabilidad y coordinación entre organismos públicos."
+},
+{
+  pregunta: "El Esquema Nacional de Interoperabilidad contempla diferentes niveles de interoperabilidad, entre ellos:",
+  opciones: [
+    "a) Legal, organizativa, semántica y técnica",
+    "b) Digital, física, estructural y rural",
+    "c) Financiera, estratégica y ejecutiva",
+    "d) Moral, jurídica y empresarial"
+  ],
+  correcta: "a) Legal, organizativa, semántica y técnica",
+  justificacion: "Estas son las capas establecidas para garantizar interoperabilidad total entre sistemas públicos."
+},
+{
+  pregunta: "El Registro Electrónico General permite:",
+  opciones: [
+    "a) Registrar la propiedad intelectual de una obra",
+    "b) Presentar solicitudes, escritos y comunicaciones dirigidos a la Administración",
+    "c) Inscribir patentes electrónicas a nombre de un Estado miembro",
+    "d) Obtener automáticamente certificados digitalizados"
+  ],
+  correcta: "b) Presentar solicitudes, escritos y comunicaciones dirigidos a la Administración",
+  justificacion: "Es la vía principal de presentación de documentos en la administración electrónica."
+},
+{
+  pregunta: "¿Cuál de los siguientes no es un derecho del interesado según el RGPD?",
+  opciones: [
+    "a) Derecho de acceso",
+    "b) Derecho de limitación del tratamiento",
+    "c) Derecho de reparación física",
+    "d) Derecho de rectificación"
+  ],
+  correcta: "c) Derecho de reparación física",
+  justificacion: "Este no forma parte de los derechos del interesado en el tratamiento de datos personales."
+},
+{
+  pregunta: "Las cookies técnicas en una página web:",
+  opciones: [
+    "a) Siempre requieren consentimiento del usuario",
+    "b) Son necesarias para el funcionamiento básico del sitio y no requieren consentimiento",
+    "c) Están prohibidas por el RGPD",
+    "d) Recogen datos de salud del usuario"
+  ],
+  correcta: "b) Son necesarias para el funcionamiento básico del sitio y no requieren consentimiento",
+  justificacion: "Las cookies técnicas permiten que una web funcione correctamente y están exentas de consentimiento."
+},
+{
+  pregunta: "Un sistema de cifrado asimétrico se caracteriza por:",
+  opciones: [
+    "a) Utilizar una única clave secreta",
+    "b) Utilizar una clave pública para cifrar y una privada para descifrar",
+    "c) No poder usarse en firmas digitales",
+    "d) Emplear claves de longitud fija de 64 bits"
+  ],
+  correcta: "b) Utilizar una clave pública para cifrar y una privada para descifrar",
+  justificacion: "Este sistema permite la firma digital y el intercambio seguro de información."
+},
+{
+  pregunta: "Para ejercer el derecho a la supresión ('derecho al olvido') se requiere que:",
+  opciones: [
+    "a) Los datos ya no sean necesarios o se retire el consentimiento",
+    "b) Exista una infracción penal relacionada con los datos",
+    "c) El interesado presente un certificado médico",
+    "d) El interesado lo solicite durante un procedimiento judicial"
+  ],
+  correcta: "a) Los datos ya no sean necesarios o se retire el consentimiento",
+  justificacion: "El artículo 17 del RGPD recoge los supuestos que permiten solicitar la supresión."
+},
+{
+  pregunta: "Los sistemas basados en 'blockchain' se caracterizan principalmente por:",
+  opciones: [
+    "a) Ser completamente controlados por una autoridad central",
+    "b) Permitir una gestión descentralizada e inmutable de registros digitales",
+    "c) Exigir servidores físicos ubicados en Madrid",
+    "d) Utilizar siempre la misma clave para todas las operaciones"
+  ],
+  correcta: "b) Permitir una gestión descentralizada e inmutable de registros digitales",
+  justificacion: "Blockchain permite registrar transacciones de forma segura sin intermediarios."
+},
+{
+  pregunta: "Uno de los objetivos principales del ENISE (Encuentro Internacional de Seguridad de la Información) es:",
+  opciones: [
+    "a) Promover la firma de tratados internacionales con exclusividad militar",
+    "b) Fomentar la cultura de la ciberseguridad en España",
+    "c) Capacitar a técnicos en reparación de terminales móviles",
+    "d) Desarrollar herramientas de espionaje"
+  ],
+  correcta: "b) Fomentar la cultura de la ciberseguridad en España",
+  justificacion: "Organizado por el INCIBE, tiene como objeto reunir expertos en seguridad digital."
+},
+{
+  pregunta: "Los sistemas de control de acceso en ciberseguridad persiguen:",
+  opciones: [
+    "a) Impedir el acceso físico a los edificios",
+    "b) Asegurar que los usuarios solo accedan a los recursos que tienen autorizados",
+    "c) Garantizar la libre distribución de contraseñas",
+    "d) Conectar usuarios mediante protocolos inalámbricos sin cifrado"
+  ],
+  correcta: "b) Asegurar que los usuarios solo accedan a los recursos que tienen autorizados",
+  justificacion: "Controlar los permisos es una de las bases de la seguridad informática."
+},
+{
+  pregunta: "Según la Ley 40/2015, el uso de medios electrónicos en la actuación administrativa debe:",
+  opciones: [
+    "a) Ser el método preferente para garantizar la eficiencia",
+    "b) Ser aplicado exclusivamente en las relaciones con ciudadanos",
+    "c) Utilizar siempre tecnología de mercado privada",
+    "d) Ser evitado salvo emergencia"
+  ],
+  correcta: "a) Ser el método preferente para garantizar la eficiencia",
+  justificacion: "La Ley fomenta la administración electrónica como una herramienta de eficiencia y transparencia."
+},
+{
+  pregunta: "¿Qué se requiere para que una firma electrónica avanzada sea válida?",
+  opciones: [
+    "a) Que esté basada en un certificado cualificado y alojada en una tarjeta física",
+    "b) Que esté vinculada al firmante y detecte cualquier modificación posterior",
+    "c) Que utilice las mismas claves que la firma manuscrita",
+    "d) Que se genere exclusivamente en servidores estatales"
+  ],
+  correcta: "b) Que esté vinculada al firmante y detecte cualquier modificación posterior",
+  justificacion: "La firma avanzada asegura autenticidad e integridad del documento según el eIDAS."
+},
+{
+  pregunta: "El concepto de 'interoperabilidad técnica' hace referencia a:",
+  opciones: [
+    "a) La capacidad de que los datos tengan el mismo significado",
+    "b) El correcto funcionamiento de los sistemas desde el punto de vista de la infraestructura tecnológica",
+    "c) La aplicación de las leyes europeas de seguridad nacional",
+    "d) La portabilidad del derecho a la rectificación"
+  ],
+  correcta: "b) El correcto funcionamiento de los sistemas desde el punto de vista de la infraestructura tecnológica",
+  justificacion: "Es uno de los niveles del Esquema Nacional de Interoperabilidad (ENI)."
+},
+{
+  pregunta: "La Directiva NIS en el ámbito de ciberseguridad busca:",
+  opciones: [
+    "a) Regular el uso del correo electrónico en funcionarios",
+    "b) Mejorar la seguridad y disponibilidad de los servicios esenciales en la UE",
+    "c) Proteger la propiedad intelectual de software europeo",
+    "d) Desarrollar sistemas de inteligencia artificial de uso público"
+  ],
+  correcta: "b) Mejorar la seguridad y disponibilidad de los servicios esenciales en la UE",
+  justificacion: "La Directiva NIS (UE) regula aspectos clave para la protección de sectores críticos."
+},
+{
+  pregunta: "El INCIBE (Instituto Nacional de Ciberseguridad) depende del:",
+  opciones: [
+    "a) Ministerio del Interior",
+    "b) Ministerio de Economía y Transformación Digital",
+    "c) Ministerio de Asuntos Exteriores",
+    "d) Ministerio de Defensa"
+  ],
+  correcta: "b) Ministerio de Economía y Transformación Digital",
+  justificacion: "El INCIBE actúa en el ámbito de la ciberseguridad con competencias económicas y tecnológicas."
+},
+{
+  pregunta: "Las 'amenazas persistentes avanzadas' (APT) suelen caracterizarse por:",
+  opciones: [
+    "a) Ataques rápidos sin planificación",
+    "b) Intrusiones complejas, prolongadas y dirigidas a objetivos concretos",
+    "c) Uso de software libre para atacar infraestructuras críticas",
+    "d) Exclusivamente por ser ataques hechos con malware gratuito"
+  ],
+  correcta: "b) Intrusiones complejas, prolongadas y dirigidas a objetivos concretos",
+  justificacion: "Las APT son ataques sofisticados y diseñados con objetivos específicos."
+},
+{
+  pregunta: "El 'nivel alto' de seguridad en el ENS se aplica a sistemas que:",
+  opciones: [
+    "a) No tienen impacto en los servicios públicos",
+    "b) Suponen un grave perjuicio para los derechos de los ciudadanos o la seguridad nacional",
+    "c) Solo manejan datos ambientales",
+    "d) No requieren cifrado"
+  ],
+  correcta: "b) Suponen un grave perjuicio para los derechos de los ciudadanos o la seguridad nacional",
+  justificacion: "Los sistemas de alto impacto exigen medidas de seguridad reforzadas según el ENS."
+},
+{
+  pregunta: "La identificación de los interesados ante la Administración Electrónica se realiza mediante:",
+  opciones: [
+    "a) Contraseñas temporales emitidas por empresas privadas",
+    "b) Sistemas de firma electrónica, certificado digital o Cl@ve",
+    "c) Código secreto de acceso enviado por SMS",
+    "d) Avisos electrónicos sin garantías legales"
+  ],
+  correcta: "b) Sistemas de firma electrónica, certificado digital o Cl@ve",
+  justificacion: "La Ley 39/2015 establece estos mecanismos como válidos para la identificación electrónica."
+},
+{
+  pregunta: "En el marco del RGPD, el Delegado de Protección de Datos (DPO) es obligatorio en:",
+  opciones: [
+    "a) Todas las empresas privadas sin excepción",
+    "b) Organismos públicos y entidades que tratan datos a gran escala",
+    "c) Empresas que solo manejan datos laborales",
+    "d) Pequeños negocios locales con menos de 10 empleados"
+  ],
+  correcta: "b) Organismos públicos y entidades que tratan datos a gran escala",
+  justificacion: "El artículo 37 del RGPD regula esta obligación para ciertos responsables."
+},
+{
+  pregunta: "El término 'phishing' se refiere a:",
+  opciones: [
+    "a) Uso autorizado de aplicaciones bancarias",
+    "b) Técnica de suplantación de identidad para obtener datos personales",
+    "c) Puesta en marcha de protocolos de seguridad biométrica",
+    "d) Técnica para asegurar redes corporativas"
+  ],
+  correcta: "b) Técnica de suplantación de identidad para obtener datos personales",
+  justificacion: "Se trata de un delito informático basado en engaño al usuario."
+},
+{
+  pregunta: "Según la Ley 40/2015, el funcionamiento íntegramente electrónico de las Administraciones Públicas tiene como finalidad:",
+  opciones: [
+    "a) Reducir la transparencia y automatizar sanciones",
+    "b) Facilitar la interoperabilidad y el acceso de los ciudadanos a los servicios públicos",
+    "c) Eliminar el trabajo de los funcionarios",
+    "d) Limitar el acceso de las personas mayores a la Administración"
+  ],
+  correcta: "b) Facilitar la interoperabilidad y el acceso de los ciudadanos a los servicios públicos",
+  justificacion: "La digitalización busca mejorar la eficiencia y el acceso universal."
+},
+{
+  pregunta: "La Ley Orgánica 3/2018 de Protección de Datos Personales y garantía de los derechos digitales adapta en España:",
+  opciones: [
+    "a) La Ley de Propiedad Intelectual",
+    "b) El RGPD de la Unión Europea",
+    "c) El Código Penal en materia de ciberataques",
+    "d) La Directiva NIS sobre seguridad en redes"
+  ],
+  correcta: "b) El RGPD de la Unión Europea",
+  justificacion: "La LOPDGDD adapta y desarrolla el RGPD en el ordenamiento interno."
+},
+{
+  pregunta: "El Esquema Nacional de Seguridad se basa en el principio de:",
+  opciones: [
+    "a) Seguridad estática para evitar cambios tecnológicos",
+    "b) Proporcionalidad en las medidas adoptadas según el impacto",
+    "c) Secreto absoluto de todos los sistemas de información",
+    "d) Uso exclusivo de servidores europeos"
+  ],
+  correcta: "b) Proporcionalidad en las medidas adoptadas según el impacto",
+  justificacion: "El ENS vincula la seguridad a una evaluación del riesgo y el impacto posible."
+},
+{
+  pregunta: "La Agencia Española de Protección de Datos tiene entre sus funciones:",
+  opciones: [
+    "a) Emitir certificados digitales",
+    "b) Realizar inspecciones y sancionar infracciones en materia de datos",
+    "c) Gestionar el correo electrónico oficial de los ciudadanos",
+    "d) Controlar redes de telecomunicaciones internacionales"
+  ],
+  correcta: "b) Realizar inspecciones y sancionar infracciones en materia de datos",
+  justificacion: "La AEPD vela por el cumplimiento de la normativa de protección de datos."
+},
+{
+  pregunta: "En la Administración Electrónica, el sellado de tiempo permite:",
+  opciones: [
+    "a) Garantizar la autoría de un documento mediante fichero comprimido",
+    "b) Asegurar la existencia de un dato en un momento concreto",
+    "c) Reconstruir un expediente electrónico en caso de pérdida",
+    "d) Eliminar ficheros sensibles tras un periodo"
+  ],
+  correcta: "b) Asegurar la existencia de un dato en un momento concreto",
+  justificacion: "Es una medida de seguridad que verifica la fecha y hora de creación o firma."
+},
+{
+  pregunta: "El concepto de 'integridad de la información' implica que:",
+  opciones: [
+    "a) La información debe estar siempre en formato encriptado",
+    "b) Los datos no sean alterados o manipulados de forma no autorizada",
+    "c) Los archivos deben guardarse siempre en papel y formato digital",
+    "d) La veracidad de los datos no será relevante"
+  ],
+  correcta: "b) Los datos no sean alterados o manipulados de forma no autorizada",
+  justificacion: "La integridad es uno de los principios fundamentales del ENS."
+},
+{
+  pregunta: "Los principios de protección de datos recogidos en el artículo 5 del RGPD incluyen:",
+  opciones: [
+    "a) Exactitud, minimización y limitación del plazo de conservación",
+    "b) Tratamiento ilimitado, reconocimiento automático y anonimización obligatoria",
+    "c) Procesamiento intercontinental sin seguridad cifrada",
+    "d) Uso de datos biométricos sin consentimiento"
+  ],
+  correcta: "a) Exactitud, minimización y limitación del plazo de conservación",
+  justificacion: "Estos principios rigen todo tratamiento de datos personales."
+},
+{
+  pregunta: "El documento 'Política de Seguridad' según el ENS debe:",
+  opciones: [
+    "a) Ser publicado en acceso abierto en la web del organismo",
+    "b) Ser aprobado por el órgano directivo máximo de cada organización",
+    "c) Elaborarse únicamente en casos de fallo de seguridad",
+    "d) Incluir solo las medidas técnicas, no organizativas"
+  ],
+  correcta: "b) Ser aprobado por el órgano directivo máximo de cada organización",
+  justificacion: "La política de seguridad es el marco estratégico de seguridad exigido por el ENS."
+},
+{
+  pregunta: "La interoperabilidad en la Administración Pública tiene como objetivo:",
+  opciones: [
+    "a) Evitar el intercambio de datos entre territorios",
+    "b) Facilitar el intercambio de información entre sistemas y organismos",
+    "c) Crear bases de datos independientes sin comunicación",
+    "d) Asegurar que todos los trámites sean presenciales"
+  ],
+  correcta: "b) Facilitar el intercambio de información entre sistemas y organismos",
+  justificacion: "La interoperabilidad permite integrar servicios y evitar duplicidad de esfuerzos."
+},
+{
+  pregunta: "Una 'brecha de seguridad' según el RGPD implica:",
+  opciones: [
+    "a) Una filtración o incidente que afecte a la confidencialidad, integridad o disponibilidad de datos personales",
+    "b) Una mala configuración del navegador web",
+    "c) Un cambio de contraseña no autorizado",
+    "d) Un corte puntual de conexión sin impacto en los datos"
+  ],
+  correcta: "a) Una filtración o incidente que afecte a la confidencialidad, integridad o disponibilidad de datos personales",
+  justificacion: "El artículo 4 del RGPD define la brecha de seguridad como un incidente con datos personales."
+},
+{
+  pregunta: "La Ley 11/2007 fue reemplazada por:",
+  opciones: [
+    "a) La Ley 39/2015 y la Ley 40/2015",
+    "b) La Ley 34/2002",
+    "c) La Ley Orgánica 3/2018",
+    "d) El Reglamento UE 910/2014"
+  ],
+  correcta: "a) La Ley 39/2015 y la Ley 40/2015",
+  justificacion: "Estas leyes establecen el régimen actual de administración electrónica."
+},
+{
+  pregunta: "La suplantación de identidad electrónica es:",
+  opciones: [
+    "a) Un delito tipificado en el Código Penal cuando se emplea con intención fraudulenta",
+    "b) Una herramienta de análisis para mejorar la seguridad",
+    "c) Un acto permitido cuando no causa daño económico",
+    "d) Excluida del ámbito de protección de datos"
+  ],
+  correcta: "a) Un delito tipificado en el Código Penal cuando se emplea con intención fraudulenta",
+  justificacion: "Es un delito relacionado con el uso indebido de medios electrónicos para suplantar a una persona."
+},
+{
+  pregunta: "La 'confidencialidad' de un sistema exige que:",
+  opciones: [
+    "a) Los datos estén disponibles de forma permanente",
+    "b) Solo las personas autorizadas accedan a la información",
+    "c) Los datos estén almacenados en un país de la UE",
+    "d) Los datos sean accesibles para cualquier organismo estatal"
+  ],
+  correcta: "b) Solo las personas autorizadas accedan a la información",
+  justificacion: "Es uno de los principios básicos de la seguridad de la información."
+},
+{
+  pregunta: "El 'hash' es una técnica utilizada para:",
+  opciones: [
+    "a) Cifrar documentos con clave pública",
+    "b) Generar un resumen único de un dato o archivo",
+    "c) Abrir conexiones seguras mediante VPN",
+    "d) Eliminar metadatos de una fotografía"
+  ],
+  correcta: "b) Generar un resumen único de un dato o archivo",
+  justificacion: "Los hashes se emplean para firmar y garantizar la integridad sin exponer la información original."
+},
+{
+  pregunta: "Un certificado electrónico cualificado está emitido por:",
+  opciones: [
+    "a) Cualquier entidad que tenga página web",
+    "b) Un proveedor cualificado de servicios de confianza",
+    "c) El Ministerio de Transporte",
+    "d) Un servidor público de software libre"
+  ],
+  correcta: "b) Un proveedor cualificado de servicios de confianza",
+  justificacion: "Según el Reglamento eIDAS, un certificado cualificado lo emite un proveedor homologado."
+},
+{
+  pregunta: "¿Qué deben hacer los responsables del tratamiento ante una brecha de seguridad grave?",
+  opciones: [
+    "a) Poner una multa al usuario afectado",
+    "b) Notificarlo a la AEPD en un plazo máximo de 72 horas",
+    "c) Informarlo solo si se trata de una filtración de datos de menores",
+    "d) Esperar al informe anual de seguridad"
+  ],
+  correcta: "b) Notificarlo a la AEPD en un plazo máximo de 72 horas",
+  justificacion: "El RGPD obliga a informar a la autoridad de control si la brecha afecta a derechos o libertades."
+},
+{
+  pregunta: "El concepto de 'disponibilidad' en seguridad de la información significa que:",
+  opciones: [
+    "a) La información debe almacenarse en servidores internacionales",
+    "b) La información debe estar accesible cuando se requiera por usuarios autorizados",
+    "c) Los datos deben poder ser modificados sin límites por el usuario",
+    "d) La información debe eliminarse tras su consulta"
+  ],
+  correcta: "b) La información debe estar accesible cuando se requiera por usuarios autorizados",
+  justificacion: "Disponibilidad es uno de los tres pilares de la seguridad junto a confidencialidad e integridad."
+},
+{
+  pregunta: "Uno de los objetivos principales del Esquema Nacional de Interoperabilidad es:",
+  opciones: [
+    "a) Garantizar la creación de bases de datos en papel",
+    "b) Asegurar la posibilidad de intercambio de información entre administraciones",
+    "c) Dificultar la integración de datos entre organismos",
+    "d) Reducir los derechos de los ciudadanos en procedimientos electrónicos"
+  ],
+  correcta: "b) Asegurar la posibilidad de intercambio de información entre administraciones",
+  justificacion: "La interoperabilidad es clave para la eficiencia y coordinación administrativa."
+},
+{
+  pregunta: "¿Qué es el 'cifrado simétrico'?",
+  opciones: [
+    "a) Un sistema de cifrado que utiliza la misma clave para cifrar y descifrar",
+    "b) Un sistema que solo cifra datos visuales",
+    "c) Un proceso que utiliza claves distintas para cifrar y descifrar",
+    "d) Una técnica exclusiva de firma digital"
+  ],
+  correcta: "a) Un sistema de cifrado que utiliza la misma clave para cifrar y descifrar",
+  justificacion: "El cifrado simétrico es rápido, pero requiere una clave compartida entre las partes."
+},
+{
+  pregunta: "El Reglamento eIDAS regula:",
+  opciones: [
+    "a) La circulación de datos diplomáticos dentro de las embajadas europeas",
+    "b) La identificación y firma electrónica en la Unión Europea",
+    "c) El intercambio de claves USB para autenticación",
+    "d) Únicamente las comunicaciones militares electrónicas"
+  ],
+  correcta: "b) La identificación y firma electrónica en la Unión Europea",
+  justificacion: "El reglamento 910/2014 (eIDAS) establece normativa común para firma, sello y confianza digital."
+},
+{
+  pregunta: "El entorno Cl@ve permite:",
+  opciones: [
+    "a) El acceso a servicios electrónicos públicos con diferentes sistemas de identificación",
+    "b) Controlar el bloqueo de aplicaciones móviles en España",
+    "c) Firmar contratos laborales blindados",
+    "d) Gestionar el contenido de redes sociales gubernamentales"
+  ],
+  correcta: "a) El acceso a servicios electrónicos públicos con diferentes sistemas de identificación",
+  justificacion: "Cl@ve es un sistema común de identificación para trámites electrónicos en la Administración Pública."
+},
+{
+  pregunta: "El derecho de oposición permite que el interesado:",
+  opciones: [
+    "a) Impida el tratamiento de todos sus datos en cualquier circunstancia",
+    "b) Se oponga al tratamiento de sus datos cuando existan motivos relacionados con su situación particular",
+    "c) Solicite una indemnización automática por el uso de sus datos",
+    "d) Solicite la eliminación de sus datos aunque se requieran legalmente"
+  ],
+  correcta: "b) Se oponga al tratamiento de sus datos cuando existan motivos relacionados con su situación particular",
+  justificacion: "Este derecho se regula en el artículo 21 del RGPD."
+},
+{
+  pregunta: "Las firmas electrónicas que no están basadas en un certificado reconocido:",
+  opciones: [
+    "a) No tienen ningún valor jurídico en España",
+    "b) Pueden ser válidas siempre que se garantice autenticidad e integridad",
+    "c) Solo se usan como métodos de acceso en redes sociales",
+    "d) Están prohibidas en el sector público"
+  ],
+  correcta: "b) Pueden ser válidas siempre que se garantice autenticidad e integridad",
+  justificacion: "La Ley señala que la firma electrónica tiene efectos jurídicos si cumple estos requisitos."
+},
+{
+  pregunta: "Las TIC en la Administración Pública permiten:",
+  opciones: [
+    "a) Incrementar los trámites en papel para mayor control",
+    "b) Disminuir la participación ciudadana",
+    "c) Mejorar la eficiencia, accesibilidad y transparencia",
+    "d) Reducir los derechos al acceso a la información"
+  ],
+  correcta: "c) Mejorar la eficiencia, accesibilidad y transparencia",
+  justificacion: "Las TIC sirven para facilitar y agilizar los procedimientos administrativos."
+},
+{
+  pregunta: "El Delegado de Protección de Datos (DPO) debe:",
+  opciones: [
+    "a) Ser formado específicamente en derecho, informática y seguridad",
+    "b) Ser siempre un empleado interno de la organización",
+    "c) Ser designado por organismos públicos y algunas entidades privadas según el RGPD",
+    "d) Gestionar igual las brechas de datos de ciudadanos y empresas internacionales"
+  ],
+  correcta: "c) Ser designado por organismos públicos y algunas entidades privadas según el RGPD",
+  justificacion: "El artículo 37 del RGPD establece su designación en estos casos."
+},
+{
+  pregunta: "La Ley 39/2015 regula fundamentalmente:",
+  opciones: [
+    "a) El procedimiento administrativo común de las Administraciones Públicas",
+    "b) La organización interna del Ministerio de Defensa",
+    "c) Los procedimientos disciplinarios en juzgados",
+    "d) El comercio fluvial nacional"
+  ],
+  correcta: "a) El procedimiento administrativo común de las Administraciones Públicas",
+  justificacion: "Es la ley base del régimen electrónico en las relaciones con los ciudadanos."
+},
+{
+  pregunta: "¿En qué consiste una 'auditoría de seguridad' en el ENS?",
+  opciones: [
+    "a) En analizar únicamente el diseño visual del sistema",
+    "b) En revisar el cumplimiento de los requisitos de seguridad y detectar vulnerabilidades",
+    "c) En realizar encuestas exclusivamente a los ciudadanos",
+    "d) En probar el rendimiento de procesos bioquímicos"
+  ],
+  correcta: "b) En revisar el cumplimiento de los requisitos de seguridad y detectar vulnerabilidades",
+  justificacion: "Las auditorías son obligatorias al menos cada dos años según el ENS."
+},
+{
+  pregunta: "La autenticación multifactor incluye:",
+  opciones: [
+    "a) Solo el uso de PIN personal",
+    "b) Factores como contraseña, token físico y biometría",
+    "c) Exclusivamente el control por reconocimiento facial",
+    "d) La combinación de dos contraseñas idénticas"
+  ],
+  correcta: "b) Factores como contraseña, token físico y biometría",
+  justificacion: "La autenticación multifactor añade capas de seguridad para verificar la identidad del usuario."
+},
+{
+  pregunta: "Un ataque de denegación de servicio (DoS) consiste en:",
+  opciones: [
+    "a) Manipular datos confidenciales de manera sigilosa",
+    "b) Saturar un servidor o red para que deje de funcionar",
+    "c) Infectar un sistema con spyware para obtener datos",
+    "d) Suplantar el acceso de un usuario legítimo"
+  ],
+  correcta: "b) Saturar un servidor o red para que deje de funcionar",
+  justificacion: "El DoS busca hacer un servicio indisponible a sus usuarios legítimos."
+},
+{
+  pregunta: "El 'sello electrónico' previsto en el eIDAS permite:",
+  opciones: [
+    "a) Garantizar la identidad de una persona física",
+    "b) Probar el origen y la integridad de un documento en nombre de una persona jurídica",
+    "c) Eliminar automáticamente los datos protegidos de un servidor",
+    "d) Encriptar las comunicaciones entre administraciones"
+  ],
+  correcta: "b) Probar el origen y la integridad de un documento en nombre de una persona jurídica",
+  justificacion: "El sello electrónico está asociado a entidades, a diferencia de la firma."
+},
+{
+  pregunta: "El principio de 'exactitud' en protección de datos establece que:",
+  opciones: [
+    "a) Los datos deben ser eliminados cuando no se usen",
+    "b) Los datos deben ser adecuados, actualizados y precisos",
+    "c) Los datos deben almacenarse exclusivamente de forma offline",
+    "d) La administración puede modificar datos sin consentimiento"
+  ],
+  correcta: "b) Los datos deben ser adecuados, actualizados y precisos",
+  justificacion: "Es uno de los principios recogidos en el artículo 5 del RGPD."
+},
+{
+  pregunta: "Los sistemas de control biométrico son considerados según el RGPD como:",
+  opciones: [
+    "a) Datos de carácter público",
+    "b) Datos especialmente protegidos o sensibles",
+    "c) Información no personal",
+    "d) Datos sin relevancia jurídica"
+  ],
+  correcta: "b) Datos especialmente protegidos o sensibles",
+  justificacion: "Los datos biométricos están clasificados como categorías especiales en el artículo 9 del RGPD."
+},
+{
+  pregunta: "La firma electrónica 'simple' es válida para:",
+  opciones: [
+    "a) Cualquier tipo de contrato con efectos legales plenos",
+    "b) Trámites de bajo riesgo que no requieran máxima seguridad",
+    "c) Procedimientos judiciales internacionales",
+    "d) El acceso a bases de datos fiscales europeas"
+  ],
+  correcta: "b) Trámites de bajo riesgo que no requieran máxima seguridad",
+  justificacion: "Las firmas simple no ofrecen las garantías plenas de la avanzada o reconocida."
+},
+{
+  pregunta: "El Plan Digital 2026, en relación con la administración pública, tiene como objetivo:",
+  opciones: [
+    "a) Reconvertir las infraestructuras digitales en agrícolas",
+    "b) Impulsar la transformación digital y la ciberseguridad en el sector público",
+    "c) Limitar el acceso de los ciudadanos a los trámites electrónicos",
+    "d) Crear oficinas físicas sin integración digital"
+  ],
+  correcta: "b) Impulsar la transformación digital y la ciberseguridad en el sector público",
+  justificacion: "El Plan Digital España 2026 incluye la modernización de la administración y la seguridad."
+},
+{
+  pregunta: "El phishing puede prevenirse mediante:",
+  opciones: [
+    "a) Desactivar el firewall del sistema",
+    "b) Verificar la autenticidad de los enlaces y el remitente",
+    "c) Hacer clic rápido para evitar cortes",
+    "d) Enviar datos personales sin cifrado"
+  ],
+  correcta: "b) Verificar la autenticidad de los enlaces y el remitente",
+  justificacion: "La educación y las precauciones frente al correo electrónico fraudulento son claves."
+},
+{
+  pregunta: "En el marco del Esquema Nacional de Seguridad, se exige que cada organización:",
+  opciones: [
+    "a) Utilice exclusivamente software libre",
+    "b) Establezca y mantenga una política de seguridad aprobada por el órgano directivo",
+    "c) Realice auditorías de seguridad cada cinco años",
+    "d) Permita el acceso de todos los empleados sin restricciones a los sistemas"
+  ],
+  correcta: "b) Establezca y mantenga una política de seguridad aprobada por el órgano directivo",
+  justificacion: "La política de seguridad es un documento clave exigido por el ENS."
+},
+{
+  pregunta: "La Ley 40/2015 establece que la sede electrónica debe:",
+  opciones: [
+    "a) Estar alojada en servidores ubicados fuera de la UE",
+    "b) Ser accesible por medios electrónicos para todos los ciudadanos",
+    "c) Permitir solo consultas, no operaciones de trámite",
+    "d) Ser gestionada exclusivamente por el Ministerio del Interior"
+  ],
+  correcta: "b) Ser accesible por medios electrónicos para todos los ciudadanos",
+  justificacion: "La sede electrónica es la puerta de acceso electrónica a la administración pública."
+},
+{
+  pregunta: "El Reglamento eIDAS establece que la firma electrónica cualificada:",
+  opciones: [
+    "a) Debe generarse con un certificado cualificado y un dispositivo seguro de creación de firmas",
+    "b) Es válida solo para trámites privados",
+    "c) No tiene valor fuera de España",
+    "d) Puede generarse sin necesidad de certificado"
+  ],
+  correcta: "a) Debe generarse con un certificado cualificado y un dispositivo seguro de creación de firmas",
+  justificacion: "La firma cualificada tiene los mismos efectos legales que la firma manuscrita en la UE."
+},
+{
+  pregunta: "El RGPD establece que el tratamiento de datos personales debe basarse en:",
+  opciones: [
+    "a) La libertad absoluta del responsable",
+    "b) Al menos una base jurídica válida",
+    "c) El consentimiento obligatorio en todos los casos",
+    "d) La anonimización irreversible de todos los datos"
+  ],
+  correcta: "b) Al menos una base jurídica válida",
+  justificacion: "El tratamiento puede basarse en consentimiento, contrato, obligación legal, entre otros."
+},
+{
+  pregunta: "Una de las funciones del Ens (Esquema Nacional de Seguridad) es:",
+  opciones: [
+    "a) Establecer redes sociales para el Ministerio de Interior",
+    "b) Garantizar la seguridad de la información en los sistemas públicos",
+    "c) Regular el comercio electrónico internacional",
+    "d) Controlar la gestión energética de los servidores"
+  ],
+  correcta: "b) Garantizar la seguridad de la información en los sistemas públicos",
+  justificacion: "El ENS fija medidas y principios para proteger la información en la administración."
+},
+{
+  pregunta: "La 'pseudonimización' de datos, según el RGPD, consiste en:",
+  opciones: [
+    "a) Eliminar permanentemente todos los datos personales",
+    "b) Separar los datos de identificación de los datos tratados, pero permitiendo su vinculación bajo condiciones",
+    "c) Permitir el acceso libre a datos anonimizados",
+    "d) Sumar claves aleatorias para cifrar metadatos"
+  ],
+  correcta: "b) Separar los datos de identificación de los datos tratados, pero permitiendo su vinculación bajo condiciones",
+  justificacion: "Pseudonimizar no es anonimizar completamente, sino dificultar la identificación."
+},
+{
+  pregunta: "En la Administración Pública, el 'Registro de Actividades de Tratamiento' es obligatorio para:",
+  opciones: [
+    "a) Cualquier tratamiento de datos personales",
+    "b) Solo para organismos internacionales",
+    "c) Únicamente para empresas de más de 250 empleados",
+    "d) Únicamente si los datos se usan para fines comerciales"
+  ],
+  correcta: "a) Cualquier tratamiento de datos personales",
+  justificacion: "El artículo 30 del RGPD obliga a tener un registro detallado de todas las actividades de tratamiento."
+},
+{
+  pregunta: "Las comunicaciones electrónicas seguras se basan en:",
+  opciones: [
+    "a) Cifrado, autenticación y uso de certificados digitales",
+    "b) Uso de correo electrónico convencional sin cifrado",
+    "c) Distribución de claves en texto plano",
+    "d) Envío de documentos solo por redes privadas"
+  ],
+  correcta: "a) Cifrado, autenticación y uso de certificados digitales",
+  justificacion: "Estos son los fundamentos para garantizar seguridad en las comunicaciones online."
+},
+{
+  pregunta: "El derecho de rectificación según el RGPD permite al interesado:",
+  opciones: [
+    "a) Eliminar sus datos personales",
+    "b) Solicitar la modificación de datos incorrectos o incompletos",
+    "c) Acceder a todos los datos de forma gratuita siempre que quiera",
+    "d) Establecer un plazo obligatorio de conservación de los datos en el sistema"
+  ],
+  correcta: "b) Solicitar la modificación de datos incorrectos o incompletos",
+  justificacion: "Este derecho está regulado en el artículo 16 del RGPD."
+},
+{
+  pregunta: "Las copias de respaldo en un sistema deben:",
+  opciones: [
+    "a) Desactivarse para mejorar el rendimiento",
+    "b) Ser almacenadas en un lugar seguro y comprobadas periódicamente",
+    "c) Guardarse en el mismo equipo que los datos originales",
+    "d) Ser eliminadas semanalmente según el RGPD"
+  ],
+  correcta: "b) Ser almacenadas en un lugar seguro y comprobadas periódicamente",
+  justificacion: "Las copias de respaldo garantizan la disponibilidad e integridad en caso de fallo."
+},
+{
+  pregunta: "El uso del estándar PDF/A en la administración electrónica permite:",
+  opciones: [
+    "a) Incluir elementos de programación activa",
+    "b) Garantizar la preservación a largo plazo del documento",
+    "c) Proteger los metadatos mediante cifrado automático",
+    "d) Excluir automáticamente la firma electrónica"
+  ],
+  correcta: "b) Garantizar la preservación a largo plazo del documento",
+  justificacion: "PDF/A es un formato de archivo para preservación digital a largo plazo."
+},
+{
+  pregunta: "El 'derecho a la limitación del tratamiento' se aplica cuando:",
+  opciones: [
+    "a) Los datos son utilizados exclusivamente para fines comerciales",
+    "b) Se solicita que los datos no sean tratados mientras se verifica su exactitud",
+    "c) Los datos son excesivos respecto al fin",
+    "d) No se trata de datos personales"
+  ],
+  correcta: "b) Se solicita que los datos no sean tratados mientras se verifica su exactitud",
+  justificacion: "La limitación implica suspender temporalmente el tratamiento sin suprimir los datos."
+},
+{
+  pregunta: "El concepto de 'sistema de información' en la Ley 40/2015 incluye:",
+  opciones: [
+    "a) Solo las redes públicas de comunicación",
+    "b) Conjunto organizado de recursos para el tratamiento de información",
+    "c) Exclusivamente bases de datos privadas con acceso restringido",
+    "d) Únicamente la estructura física de servidores"
+  ],
+  correcta: "b) Conjunto organizado de recursos para el tratamiento de información",
+  justificacion: "La Ley 40/2015 define los sistemas de información de forma amplia, incluyendo hardware y software."
+},
+{
+  pregunta: "Las bases jurídicas del tratamiento establecidas en el RGPD incluyen:",
+  opciones: [
+    "a) Consentimiento, contrato y obligación legal",
+    "b) Interés legítimo, prohibición y anonimato",
+    "c) Consentimiento exclusivo del responsable",
+    "d) Resolución judicial automática"
+  ],
+  correcta: "a) Consentimiento, contrato y obligación legal",
+  justificacion: "Estas son algunas de las bases de legitimación para el tratamiento de datos personales."
+},
+{
+  pregunta: "La 'identificación electrónica' según el eIDAS puede utilizar:",
+  opciones: [
+    "a) Exclusivamente tarjetas físicas emitidas por el Estado",
+    "b) Sistemas como DNIe, Cl@ve o certificados cualificados",
+    "c) Contraseñas temporales enviadas por SMS sin verificación",
+    "d) Sistemas de acceso anónimo sin control"
+  ],
+  correcta: "b) Sistemas como DNIe, Cl@ve o certificados cualificados",
+  justificacion: "Estos sistemas están regulados como mecanismos válidos de identificación electrónica."
+},
+{
+  pregunta: "Las medidas de seguridad 'organizativas' se refieren a:",
+  opciones: [
+    "a) Controles físicos en salas de servidores",
+    "b) Procedimientos internos como formación, responsabilidades y control de acceso",
+    "c) Cifrado de archivos en la nube",
+    "d) Exclusivamente la instalación de cortafuegos"
+  ],
+  correcta: "b) Procedimientos internos como formación, responsabilidades y control de acceso",
+  justificacion: "Las medidas organizativas complementan las técnicas y garantizan una seguridad integral."
+},
+{
+  pregunta: "Una 'declaración de conformidad' según el ENS tiene como objetivo:",
+  opciones: [
+    "a) Certificar que un sistema es conforme a las medidas de seguridad establecidas",
+    "b) Autorizar el uso de dispositivos móviles personales en redes administrativas",
+    "c) Acreditar la validez internacional de un contrato digital",
+    "d) Reemplazar la auditoría de seguridad del ENS"
+  ],
+  correcta: "a) Certificar que un sistema es conforme a las medidas de seguridad establecidas",
+  justificacion: "La declaración de conformidad es un documento necesario para acreditar el cumplimiento del ENS."
+},
+{
+  pregunta: "El principio de transparencia obliga al responsable del tratamiento a:",
+  opciones: [
+    "a) Guardar secreto sobre las fuentes de los datos",
+    "b) Proporcionar información clara y accesible sobre el tratamiento de datos personales",
+    "c) Cifrar todos los datos biométricos sin excepción",
+    "d) Publicar todos los tratamientos en el BOE"
+  ],
+  correcta: "b) Proporcionar información clara y accesible sobre el tratamiento de datos personales",
+  justificacion: "La transparencia es un principio fundamental del RGPD para el tratamiento de datos."
+},
+{
+  pregunta: "Las relaciones entre Administraciones Públicas mediante medios electrónicos están reguladas por:",
+  opciones: [
+    "a) La Ley Orgánica 3/2018",
+    "b) La Ley 40/2015",
+    "c) El Código Civil",
+    "d) La Ley de Comercio Electrónico"
+  ],
+  correcta: "b) La Ley 40/2015",
+  justificacion: "La Ley 40/2015 regula las relaciones electrónicas entre las administraciones públicas."
+},
+{
+  pregunta: "El borrado seguro de datos implica:",
+  opciones: [
+    "a) Eliminar un archivo arrastrándolo a la papelera",
+    "b) Sobrescribir los datos con técnicas específicas para impedir su recuperación",
+    "c) Borrar solo los metadatos de acceso",
+    "d) Cambiar el nombre del archivo sin modificar el contenido"
+  ],
+  correcta: "b) Sobrescribir los datos con técnicas específicas para impedir su recuperación",
+  justificacion: "El borrado seguro evita la reconstrucción de la información mediante herramientas forenses."
+},
+{
+  pregunta: "El derecho a la portabilidad de los datos permite que el interesado:",
+  opciones: [
+    "a) Solicite que sus datos sean transferidos a otro responsable en un formato estructurado y de uso común",
+    "b) Anule la actividad del responsable del tratamiento sin causa",
+    "c) Reclame la eliminación de todos los datos personales sin excepción",
+    "d) Importe datos ajenos sin consentimiento"
+  ],
+  correcta: "a) Solicite que sus datos sean transferidos a otro responsable en un formato estructurado y de uso común",
+  justificacion: "El artículo 20 del RGPD regula el derecho a la portabilidad en condiciones específicas."
+},
+{
+  pregunta: "El concepto de 'ciberseguridad' en la administración pública incluye:",
+  opciones: [
+    "a) La protección de los sistemas de información frente a amenazas y vulneraciones",
+    "b) Solo medidas para proteger datos económicos",
+    "c) La exclusión de redes de comunicaciones locales",
+    "d) La destrucción regulada de todos los datos sensibles"
+  ],
+  correcta: "a) La protección de los sistemas de información frente a amenazas y vulneraciones",
+  justificacion: "La ciberseguridad se define como la protección contra ataques y accesos no autorizados."
+},
+{
+  pregunta: "El sistema Cl@ve Permanente está diseñado para:",
+  opciones: [
+    "a) Usuarios que necesitan cambiar su identidad periódicamente",
+    "b) Emplear usuario y contraseña con un segundo factor de autenticación",
+    "c) Funcionarios con acceso a sistemas militares",
+    "d) Generar certificados cualificados automáticamente"
+  ],
+  correcta: "b) Emplear usuario y contraseña con un segundo factor de autenticación",
+  justificacion: "Cl@ve Permanente es un sistema de identificación basada en credenciales y códigos de un solo uso."
+},
+{
+  pregunta: "Según el RGPD, el principio de limitación de la finalidad establece que:",
+  opciones: [
+    "a) Los datos deben estar disponibles para cualquier uso futuro",
+    "b) Los datos solo pueden utilizarse para los fines específicos, explícitos y legítimos para los que fueron recogidos",
+    "c) Los datos pueden emplearse para fines informativos o comerciales libremente",
+    "d) Los datos deben destruirse al finalizar la recogida"
+  ],
+  correcta: "b) Los datos solo pueden utilizarse para los fines específicos, explícitos y legítimos para los que fueron recogidos",
+  justificacion: "Esto impide usos no autorizados o incompatibles con la finalidad inicial."
+},
+{
+  pregunta: "La 'interoperabilidad organizativa' implica que:",
+  opciones: [
+    "a) Las organizaciones compartan sus políticas y procesos para colaborar",
+    "b) Los sistemas usen la misma clave de cifrado",
+    "c) Las redes sean gestionadas por un único organismo",
+    "d) Las instituciones públicas utilicen siempre el mismo software"
+  ],
+  correcta: "a) Las organizaciones compartan sus políticas y procesos para colaborar",
+  justificacion: "Es un nivel del Esquema Nacional de Interoperabilidad que facilita la coordinación institucional."
+},
+{
+  pregunta: "Las comunicaciones seguras con HTTPS se basan en el uso de:",
+  opciones: [
+    "a) Algoritmos de cifrado simétrico sin certificados",
+    "b) Certificados digitales y cifrado mediante TLS",
+    "c) Claves compartidas sin cifrar",
+    "d) Protocolos de texto plano que reducen tiempo de carga"
+  ],
+  correcta: "b) Certificados digitales y cifrado mediante TLS",
+  justificacion: "HTTPS usa TLS/SSL para proteger las comunicaciones entre navegador y servidor."
+},
+{
+  pregunta: "La red SARA facilita:",
+  opciones: [
+    "a) La conexión segura y el intercambio de información entre Administraciones Públicas",
+    "b) El seguimiento de delitos electrónicos in situ",
+    "c) El acceso a todos los sistemas bancarios nacionales",
+    "d) El aislamiento de administraciones pequeñas"
+  ],
+  correcta: "a) La conexión segura y el intercambio de información entre Administraciones Públicas",
+  justificacion: "Red SARA es la infraestructura de interconexión de administraciones españolas."
+},
+{
+  pregunta: "Un servidor VPN se utiliza para:",
+  opciones: [
+    "a) Cifrar las comunicaciones y acceder a recursos de forma remota y segura",
+    "b) Desactivar la protección contra el malware",
+    "c) Crear dominios falsos en la red",
+    "d) Permitir el acceso anónimo a redes no autorizadas"
+  ],
+  correcta: "a) Cifrar las comunicaciones y acceder a recursos de forma remota y segura",
+  justificacion: "VPN (Red Privada Virtual) protege el tráfico y permite acceso seguro a redes privadas."
+},
+{
+  pregunta: "La 'cadena de custodia digital' garantiza que:",
+  opciones: [
+    "a) Los correos electrónicos puedan destruírse en cualquier momento",
+    "b) La evidencia digital no ha sido alterada desde su obtención",
+    "c) Todos los datos sean accesibles por cualquier usuario autorizado",
+    "d) Las claves de acceso estén disponibles físicamente"
+  ],
+  correcta: "b) La evidencia digital no ha sido alterada desde su obtención",
+  justificacion: "La cadena de custodia establece la trazabilidad del tratamiento de evidencias informáticas."
+},
+{
+  pregunta: "El Esquema Nacional de Seguridad exige como medida básica:",
+  opciones: [
+    "a) Identificar claramente los roles y responsabilidades en materia de seguridad",
+    "b) Compartir contraseñas entre usuarios autorizados",
+    "c) Autorizar el uso de dispositivos no registrados",
+    "d) Eliminar la trazabilidad de eventos de seguridad"
+  ],
+  correcta: "a) Identificar claramente los roles y responsabilidades en materia de seguridad",
+  justificacion: "La gestión organizativa conforme al ENS asigna funciones claras en seguridad de la información."
+},
+{
+  pregunta: "El sello electrónico cualificado garantiza:",
+  opciones: [
+    "a) La identidad de una persona física sobre un documento",
+    "b) La integridad del documento emitido en nombre de una entidad jurídica",
+    "c) El acceso libre al contenido firmado",
+    "d) El uso obligatorio de huellas digitales"
+  ],
+  correcta: "b) La integridad del documento emitido en nombre de una entidad jurídica",
+  justificacion: "El sello electrónico cualificado es equivalente a la firma para las entidades."
+},
+{
+  pregunta: "El derecho de acceso previsto en el artículo 15 del RGPD permite al interesado:",
+  opciones: [
+    "a) Conocer si sus datos se están tratando y obtener copia de los mismos",
+    "b) Bloquear el tratamiento de datos de manera indefinida",
+    "c) Modificar directamente los datos en la base de datos",
+    "d) Impedir el uso histórico de sus datos"
+  ],
+  correcta: "a) Conocer si sus datos se están tratando y obtener copia de los mismos",
+  justificacion: "Es uno de los derechos fundamentales del interesado en el RGPD."
+},
+{
+  pregunta: "El fichero log en un sistema informático sirve para:",
+  opciones: [
+    "a) Comunicar directamente el sistema con redes sociales",
+    "b) Registrar actividades y eventos sucedidos en el sistema",
+    "c) Instalar actualizaciones automáticas en el sistema",
+    "d) Guardar claves confidenciales del administrador"
+  ],
+  correcta: "b) Registrar actividades y eventos sucedidos en el sistema",
+  justificacion: "El log permite analizar lo ocurrido y detectar anomalías o accesos no autorizados."
+},
+{
+  pregunta: "La Ley 34/2002 (LSSI) establece normativas sobre:",
+  opciones: [
+    "a) Servicios de información, comercio electrónico y comunicaciones comerciales",
+    "b) Documentación electrónica en tratados internacionales",
+    "c) Protección de datos biométricos en redes sociales",
+    "d) Uso de VPNs para organismos públicos"
+  ],
+  correcta: "a) Servicios de información, comercio electrónico y comunicaciones comerciales",
+  justificacion: "La LSSI regula servicios de la sociedad de la información y publicidad electrónica."
+},
+{
+  pregunta: "¿Qué es el 'spear phishing'?",
+  opciones: [
+    "a) Una técnica avanzada de cifrado",
+    "b) Un ataque de phishing personalizado dirigido a un individuo concreto",
+    "c) Una forma de firma electrónica reconocida",
+    "d) Pública forma de auditoría de seguridad"
+  ],
+  correcta: "b) Un ataque de phishing personalizado dirigido a un individuo concreto",
+  justificacion: "El spear phishing utiliza información particular para aumentar el éxito del engaño."
+},
+{
+  pregunta: "La Directiva NIS está relacionada con:",
+  opciones: [
+    "a) La seguridad de las redes y sistemas informáticos en sectores esenciales",
+    "b) Las firmas electrónicas cualificadas",
+    "c) El comercio electrónico entre particulares",
+    "d) Las redes sociales educativas"
+  ],
+  correcta: "a) La seguridad de las redes y sistemas informáticos en sectores esenciales",
+  justificacion: "Es la primera normativa europea en materia de ciberseguridad a gran escala."
+},
+{
+  pregunta: "La 'integridad de los datos' se refiere a que:",
+  opciones: [
+    "a) Los datos deben estar siempre accesibles sin restricciones",
+    "b) La información no debe ser alterada o corrompida de forma no autorizada",
+    "c) Toda la información debe cifrarse en tránsito",
+    "d) Solo sistemas biométricos pueden acceder a los datos"
+  ],
+  correcta: "b) La información no debe ser alterada o corrompida de forma no autorizada",
+  justificacion: "La integridad es uno de los pilares de la seguridad en el ENS."
+},
+{
+  pregunta: "¿Cuál de los siguientes es un ejemplo de medida física de seguridad?",
+  opciones: [
+    "a) El uso de contraseñas robustas",
+    "b) El control de acceso mediante lectores biométricos en la entrada al CPD",
+    "c) La política de contraseñas",
+    "d) La auditoría de logs"
+  ],
+  correcta: "b) El control de acceso mediante lectores biométricos en la entrada al CPD",
+  justificacion: "Las medidas físicas protegen el acceso al entorno físico, como salas de servidores."
+},
+{
+  pregunta: "¿Qué organismo regula en España la supervisión del cumplimiento de la normativa de protección de datos?",
+  opciones: [
+    "a) El Instituto Nacional de Ciberseguridad (INCIBE)",
+    "b) La Agencia Española de Protección de Datos (AEPD)",
+    "c) El Consejo General del Poder Judicial",
+    "d) El Ministerio de Consumo"
+  ],
+  correcta: "b) La Agencia Española de Protección de Datos (AEPD)",
+  justificacion: "La AEPD es la autoridad independiente en materia de protección de datos."
+},
+{
+  pregunta: "La 'evaluación de impacto' en la protección de datos se exige cuando:",
+  opciones: [
+    "a) El tratamiento sea probablemente de alto riesgo para los derechos y libertades de las personas",
+    "b) Se trate de datos sin importancia histórica",
+    "c) Los datos sean públicos en una red social",
+    "d) El tratamiento sea temporal"
+  ],
+  correcta: "a) El tratamiento sea probablemente de alto riesgo para los derechos y libertades de las personas",
+  justificacion: "La DPIA (art. 35 RGPD) es obligatoria en tratamientos con alto riesgo."
+},
+{
+  pregunta: "Según el RGPD, el consentimiento debe ser:",
+  opciones: [
+    "a) Implícito y deducido del comportamiento del usuario",
+    "b) Libre, específico, informado e inequívoco",
+    "c) Válido solo si se firma con certificado cualificado",
+    "d) Permanente y no revocable"
+  ],
+  correcta: "b) Libre, específico, informado e inequívoco",
+  justificacion: "El artículo 4.11 del RGPD define los requisitos básicos del consentimiento válido."
+},
+{
+  pregunta: "La interoperabilidad semántica implica que:",
+  opciones: [
+    "a) Los datos compartidos entre sistemas tengan el mismo significado",
+    "b) Las contraseñas de los sistemas estén traducidas a diferentes lenguas",
+    "c) Los servidores incluyan sensores semánticos",
+    "d) Los datos deban almacenarse siempre en formato físico"
+  ],
+  correcta: "a) Los datos compartidos entre sistemas tengan el mismo significado",
+  justificacion: "Es uno de los niveles del Esquema Nacional de Interoperabilidad."
+},
+{
+  pregunta: "El principio de 'minimización de datos' obliga a que:",
+  opciones: [
+    "a) Se recopilen todos los datos posibles para análisis avanzados",
+    "b) Solo se recojan los datos estrictamente necesarios para la finalidad",
+    "c) Se borren los datos a los seis meses",
+    "d) Se reduzca la calidad de los datos para proteger la privacidad"
+  ],
+  correcta: "b) Solo se recojan los datos estrictamente necesarios para la finalidad",
+  justificacion: "El artículo 5.1.c del RGPD destaca la minimización como principio esencial."
+},
+{
+  pregunta: "Una firma electrónica avanzada debe:",
+  opciones: [
+    "a) Estar basada en un certificado cualificado y dispositivo seguro",
+    "b) Identificar al firmante y detectar cualquier modificación realizada tras la firma",
+    "c) Permitir únicamente la firma de documentos impresos",
+    "d) Utilizar protocolos exclusivamente basados en SSL 1.0"
+  ],
+  correcta: "b) Identificar al firmante y detectar cualquier modificación realizada tras la firma",
+  justificacion: "La firma avanzada garantiza autenticidad e integridad, pero no necesariamente usa un certificado cualificado."
+},
+{
+  pregunta: "El *Data Protection Officer* o Delegado de Protección de Datos es responsable de:",
+  opciones: [
+    "a) Sancionar directamente a los responsables del tratamiento",
+    "b) Supervisar el cumplimiento de la normativa de protección de datos dentro de la organización",
+    "c) Desarrollar sistemas informáticos para el RGPD",
+    "d) Gestionar los pagos de indemnizaciones por brechas de seguridad"
+  ],
+  correcta: "b) Supervisar el cumplimiento de la normativa de protección de datos dentro de la organización",
+  justificacion: "El DPO actúa como garante del cumplimiento de las obligaciones de protección de datos."
+},
+{
+  pregunta: "¿Cuál de los siguientes es un dato especialmente protegido según el RGPD?",
+  opciones: [
+    "a) Número de teléfono de una empresa",
+    "b) Datos de salud de una persona",
+    "c) Correo electrónico corporativo",
+    "d) Fecha de nacimiento"
+  ],
+  correcta: "b) Datos de salud de una persona",
+  justificacion: "Los datos de salud pertenecen a las categorías especiales del art. 9 RGPD."
+},
+{
+  pregunta: "¿Qué se entiende por 'brecha de seguridad' según el RGPD?",
+  opciones: [
+    "a) Una interrupción temporal de conexión a internet",
+    "b) Cualquier incidente que produzca destrucción, pérdida o acceso no autorizado a datos personales",
+    "c) El acceso a datos confidenciales por parte de responsables autorizados",
+    "d) Situaciones donde los datos se procesan exclusivamente en CGI"
+  ],
+  correcta: "b) Cualquier incidente que produzca destrucción, pérdida o acceso no autorizado a datos personales",
+  justificacion: "Una brecha puede comprometer la seguridad de datos personales."
+},
+{
+  pregunta: "El Esquema Nacional de Seguridad es aplicable:",
+  opciones: [
+    "a) Solo a sistemas de información privados certificados por la UE",
+    "b) A sistemas de información de las Administraciones Públicas y los prestadores que actúan por cuenta de dichas administraciones",
+    "c) Únicamente a bases de datos de la Guardia Civil",
+    "d) Solo a sistemas que no tratan datos personales"
+  ],
+  correcta: "b) A sistemas de información de las Administraciones Públicas y los prestadores que actúan por cuenta de dichas administraciones",
+  justificacion: "El ENS regula sistemas públicos y proveedores externos relacionados."
+},
+{
+  pregunta: "Un 'certificado digital' es:",
+  opciones: [
+    "a) Un documento que solo prueba la identidad visual del usuario",
+    "b) Un fichero electrónico que vincula una clave pública a la identidad de una persona o entidad",
+    "c) Un programa que se instala en dispositivos Apple exclusivamente",
+    "d) Una clave secreta guardada en el navegador"
+  ],
+  correcta: "b) Un fichero electrónico que vincula una clave pública a la identidad de una persona o entidad",
+  justificacion: "Los certificados permiten identificar al usuario y firmar digitalmente."
+},
+{
+  pregunta: "El Derecho a la Supresión ('derecho al olvido') permite que el interesado:",
+  opciones: [
+    "a) Obligue al responsable a eliminar sus datos cuando ya no sean necesarios o cuando retire su consentimiento",
+    "b) Exija compensación económica automática por tratamiento indebido de datos",
+    "c) Elimine datos de terceros si lo solicita",
+    "d) Inhabilite todos los sistemas informáticos antes de la eliminación"
+  ],
+  correcta: "a) Obligue al responsable a eliminar sus datos cuando ya no sean necesarios o cuando retire su consentimiento",
+  justificacion: "Este derecho está regulado en el artículo 17 del RGPD."
+},
+{
+  pregunta: "El sello electrónico cualificado se utiliza principalmente para:",
+  opciones: [
+    "a) Garantizar la integridad de documentos firmados en nombre de una entidad jurídica",
+    "b) Suplantar la identidad digital de personas físicas",
+    "c) cifrar comunicaciones secretas entre empresas privadas",
+    "d) sustituir a la firma electrónica presencial"
+  ],
+  correcta: "a) Garantizar la integridad de documentos firmados en nombre de una entidad jurídica",
+  justificacion: "El sello identifica a la entidad y tiene efectos equivalentes a la firma en el ámbito empresarial."
+},
+{
+  pregunta: "La autenticación de doble factor:",
+  opciones: [
+    "a) Siempre requiere una firma electrónica avanzada",
+    "b) Combina dos elementos de autenticación, como contraseña y dispositivo físico",
+    "c) No es válida en el sector público",
+    "d) Reemplaza la necesidad de contraseñas seguras"
+  ],
+  correcta: "b) Combina dos elementos de autenticación, como contraseña y dispositivo físico",
+  justificacion: "2FA aumenta la seguridad al exigir algo que el usuario sabe y algo que tiene."
+},
+{
+  pregunta: "Según la Ley 39/2015, las notificaciones electrónicas:",
+  opciones: [
+    "a) Son opcionales para las personas jurídicas",
+    "b) Deben realizarse obligatoriamente a través de la Dirección Electrónica Habilitada",
+    "c) Solo se envían en horario laboral si son urgentes",
+    "d) Deben hacerse también en formato papel para ser válidas"
+  ],
+  correcta: "b) Deben realizarse obligatoriamente a través de la Dirección Electrónica Habilitada",
+  justificacion: "Las notificaciones electrónicas son obligatorias para ciertos sujetos y se usan medios oficiales."
+},
+{
+  pregunta: "El almacenamiento en la nube (cloud computing) plantea como riesgo principal:",
+  opciones: [
+    "a) La imposible recuperación de datos borrados",
+    "b) La pérdida de control y la dependencia de proveedores externos",
+    "c) La obligación de hacer copias solo en disco físico",
+    "d) La prohibición del acceso remoto a los datos"
+  ],
+  correcta: "b) La pérdida de control y la dependencia de proveedores externos",
+  justificacion: "El cloud debe gestionarse con cautela en términos de seguridad y privacidad."
+},
+{
+  pregunta: "Una auditoría de seguridad informática tiene como objetivo:",
+  opciones: [
+    "a) Mejorar la visibilidad de una organización en redes sociales",
+    "b) Revisar la eficacia de las medidas de seguridad implantadas",
+    "c) Crear un sistema de vigilancia electrónico obligatorio",
+    "d) Eliminar los registros de actividad (logs) para evitar rastros"
+  ],
+  correcta: "b) Revisar la eficacia de las medidas de seguridad implantadas",
+  justificacion: "Las auditorías permiten identificar vulnerabilidades y asegurar cumplimiento del ENS."
+},
+{
+  pregunta: "¿Qué es la 'RedIRIS' en España?",
+  opciones: [
+    "a) Una red privada de empresas TIC",
+    "b) Una red académica y de investigación de alta capacidad",
+    "c) Una subsidiaria tecnológica del Ministerio del Interior",
+    "d) Una red social para funcionarios"
+  ],
+  correcta: "b) Una red académica y de investigación de alta capacidad",
+  justificacion: "RedIRIS conecta universidades y centros de investigación con gran capacidad y seguridad."
+},
+{
+  pregunta: "El principio de responsabilidad proactiva en el RGPD implica que:",
+  opciones: [
+    "a) Los sistemas deben bloquearse automáticamente ante un ataque",
+    "b) El responsable del tratamiento debe demostrar cumplimiento de la normativa",
+    "c) Las administraciones están exentas de realizar análisis de riesgos",
+    "d) El delegado de protección de datos no debe realizar auditorías"
+  ],
+  correcta: "b) El responsable del tratamiento debe demostrar cumplimiento de la normativa",
+  justificacion: "Este principio obliga no solo a cumplir, sino a demostrar que se cumple con las medidas adecuadas."
+},
+{
+  pregunta: "Según el ENS, un incidente de seguridad debe:",
+  opciones: [
+    "a) Ser comunicado al delegado de protección de datos en un plazo de 24 horas, aunque no afecte a datos personales",
+    "b) Ser gestionado utilizando procedimientos definidos en el plan de seguridad",
+    "c) Generar una auditoría externa inmediatamente",
+    "d) Ser ignorado si no afecta a la prestación del servicio"
+  ],
+  correcta: "b) Ser gestionado utilizando procedimientos definidos en el plan de seguridad",
+  justificacion: "Los sistemas deben tener un procedimiento estructurado de gestión de incidentes."
+},
+{
+  pregunta: "El cifrado de datos permite proteger:",
+  opciones: [
+    "a) Únicamente datos no personales",
+    "b) Datos durante su almacenamiento y transmisión",
+    "c) Solo datos en equipos de sobremesa",
+    "d) Información destruida en formato físico"
+  ],
+  correcta: "b) Datos durante su almacenamiento y transmisión",
+  justificacion: "El cifrado es una técnica clave para garantizar la confidencialidad de la información."
+},
+{
+  pregunta: "Una 'brecha de confidencialidad' en materia de seguridad de la información implica que:",
+  opciones: [
+    "a) La información no disponible fue eliminada accidentalmente",
+    "b) Se ha accedido sin autorización a datos personales o sensibles",
+    "c) El sistema ha sido apagado por seguridad",
+    "d) Toda la base de datos ha sido destruida"
+  ],
+  correcta: "b) Se ha accedido sin autorización a datos personales o sensibles",
+  justificacion: "La confidencialidad se ve comprometida cuando personas no autorizadas acceden a información protegida."
+},
+{
+  pregunta: "El Reglamento eIDAS se aplica a:",
+  opciones: [
+    "a) La gestión documental de archivos policiales",
+    "b) La identificación electrónica y servicios de confianza en transacciones electrónicas dentro de la UE",
+    "c) La firma manuscrita en contratos internacionales",
+    "d) El bloqueo de redes sociales en emergencias"
+  ],
+  correcta: "b) La identificación electrónica y servicios de confianza en transacciones electrónicas dentro de la UE",
+  justificacion: "El eIDAS establece normativas comunes para firma y sello electrónico en Europa."
+},
+{
+  pregunta: "La *Dirección Electrónica Habilitada Única* (DEHú) sirve para:",
+  opciones: [
+    "a) Notificar electrónicamente a los ciudadanos de forma centralizada",
+    "b) Gestionar correos privados de empresas privadas",
+    "c) Enviar mensajes instantáneos de texto para marcar presencia",
+    "d) Generar certificados instantáneos para APIs públicas"
+  ],
+  correcta: "a) Notificar electrónicamente a los ciudadanos de forma centralizada",
+  justificacion: "La DEHú permite gestionar notificaciones oficiales en un solo punto de acceso."
+},
+{
+  pregunta: "El 'cifrado en tránsito' de datos se utiliza para:",
+  opciones: [
+    "a) Proteger la información mientras se almacena en servidores",
+    "b) Asegurar que los datos viajen cifrados entre origen y destino",
+    "c) Cifrar únicamente los archivos locales de un sistema",
+    "d) Convertir automáticamente documentos físicos a digitales"
+  ],
+  correcta: "b) Asegurar que los datos viajen cifrados entre origen y destino",
+  justificacion: "El cifrado en tránsito evita que los datos sean interceptados durante su transmisión."
+},
+{
+  pregunta: "¿Cuál de las siguientes es una medida obligatoria según el Esquema Nacional de Seguridad?",
+  opciones: [
+    "a) Uso de contraseñas compartidas entre equipos técnicos",
+    "b) Revisión periódica de los registros de actividad y seguridad",
+    "c) Eliminar los sistemas de respaldo de datos",
+    "d) Permitir el acceso a redes públicas sin cifrar"
+  ],
+  correcta: "b) Revisión periódica de los registros de actividad y seguridad",
+  justificacion: "Es una de las medidas de control continuo para detectar actividades sospechosas."
+},
+{
+  pregunta: "La autenticación biométrica se considera más segura que una contraseña porque:",
+  opciones: [
+    "a) Es imposible de suplantar mediante ingeniería social",
+    "b) Los rasgos biométricos son únicos y no pueden copiarse fácilmente",
+    "c) Permite el acceso a cualquier sistema sin registro previo",
+    "d) Elimina la necesidad de tener permisos propios"
+  ],
+  correcta: "b) Los rasgos biométricos son únicos y no pueden copiarse fácilmente",
+  justificacion: "Aunque también tiene riesgos, la biometría es más difícil de suplantar que las contraseñas."
+},
+{
+  pregunta: "El *Sistema Cl@ve Firma* está diseñado para:",
+  opciones: [
+    "a) Firmar electrónicamente documentos administrativos mediante claves concertadas",
+    "b) Firmar físicamente en eventos con certificado en papel",
+    "c) Sustituir la firma avanzada con sello digital",
+    "d) Gestionar accesos biométricos en estaciones de trabajo"
+  ],
+  correcta: "a) Firmar electrónicamente documentos administrativos mediante claves concertadas",
+  justificacion: "Cl@ve Firma permite realizar firmas electrónicas sin necesidad de tener certificado propio."
+},
+{
+  pregunta: "Una de las finalidades del ENI (Esquema Nacional de Interoperabilidad) es:",
+  opciones: [
+    "a) Reducir el acceso al público general a la información administrativa",
+    "b) Facilitar el intercambio de datos entre aras de diferentes administraciones públicas",
+    "c) Establecer criterios de calidad para aplicaciones de juegos de móviles",
+    "d) Impedir la conexión de sistemas independientes"
+  ],
+  correcta: "b) Facilitar el intercambio de datos entre aras de diferentes administraciones públicas",
+  justificacion: "El ENI fomenta la interoperabilidad técnica, semántica y organizativa."
+},
+{
+  pregunta: "El 'Reglamento General de Protección de Datos' (RGPD) es directamente aplicable:",
+  opciones: [
+    "a) Solo a Estados miembros que lo hayan adaptado mediante ley",
+    "b) A todos los Estados miembros de la UE sin necesidad de transposición",
+    "c) Exclusivamente en trámites relacionados con comercio internacional",
+    "d) En operaciones policiales y militares exclusivamente"
+  ],
+  correcta: "b) A todos los Estados miembros de la UE sin necesidad de transposición",
+  justificacion: "Es un reglamento, por lo que es directamente aplicable en toda la UE desde 2018."
+},
+{
+  pregunta: "La 'firma digital' se basa principalmente en:",
+  opciones: [
+    "a) El intercambio de frases secretas entre dos servidores",
+    "b) Algoritmos criptográficos de clave pública para garantizar autenticidad",
+    "c) La geolocalización automática del usuario",
+    "d) La explotación de vulnerabilidades criptográficas"
+  ],
+  correcta: "b) Algoritmos criptográficos de clave pública para garantizar autenticidad",
+  justificacion: "La firma digital utiliza criptografía asimétrica para verificar la identidad y la integridad."
+},
+{
+  pregunta: "El *Plan de Recuperación y Resiliencia* en sus medidas sobre digitalización contempla:",
+  opciones: [
+    "a) Ampliar el uso del papel en la Administración",
+    "b) La mejora de las infraestructuras digitales y ciberseguridad",
+    "c) El cierre de servicios públicos electrónicos no esenciales",
+    "d) La creación de redes privadas no interoperables"
+  ],
+  correcta: "b) La mejora de las infraestructuras digitales y ciberseguridad",
+  justificacion: "El plan busca modernizar la Administración y reforzar la resiliencia digital."
+},
+{
+  pregunta: "Un 'ataque de fuerza bruta' se utiliza para:",
+  opciones: [
+    "a) Explotar una vulnerabilidad en el cifrado de disco",
+    "b) Intentar descifrar contraseñas probando combinaciones de forma sistemática",
+    "c) Engañar al usuario mediante mensajes falsos",
+    "d) Cargar ficheros benignos en un sistema seguro"
+  ],
+  correcta: "b) Intentar descifrar contraseñas probando combinaciones de forma sistemática",
+  justificacion: "El ataque de fuerza bruta prueba posibles claves hasta acertar."
+},
+{
+  pregunta: "El 'principio de responsabilidad proactiva' obliga al responsable del tratamiento a:",
+  opciones: [
+    "a) Registrar automáticamente todos los accesos a bases de datos públicas",
+    "b) Garantizar y demostrar el cumplimiento de la normativa de protección de datos",
+    "c) Proteger siempre los datos mediante anonimización",
+    "d) Realizar copias de seguridad cada hora sin excepción"
+  ],
+  correcta: "b) Garantizar y demostrar el cumplimiento de la normativa de protección de datos",
+  justificacion: "Es un principio clave del RGPD que obliga a actuar y a poder probar que se actúa."
+},
+{
+  pregunta: "La 'interoperabilidad legal' implica que:",
+  opciones: [
+    "a) Las leyes de cada país sean traducidas a todos los idiomas de la UE",
+    "b) Los datos y servicios se ajusten a las exigencias normativas en su intercambio entre administraciones",
+    "c) El acceso legal a bases de datos esté permitido sin autorización",
+    "d) La legislación impida el acceso electrónico a servicios públicos"
+  ],
+  correcta: "b) Los datos y servicios se ajusten a las exigencias normativas en su intercambio entre administraciones",
+  justificacion: "Interoperabilidad legal asegura que los marcos legislativos permitan el intercambio de datos entre sistemas."
+},
+{
+  pregunta: "Un 'sistema de gestión de contenido' (CMS) se utiliza para:",
+  opciones: [
+    "a) Gestionar contenido digital sin necesidad de programación",
+    "b) Instalar antivirus de forma automática",
+    "c) Desarrollar redes neuronales aplicadas",
+    "d) Destruir los metadatos de informes confidenciales"
+  ],
+  correcta: "a) Gestionar contenido digital sin necesidad de programación",
+  justificacion: "Los CMS permiten administrar sitios web, documentos y contenidos sin conocimientos técnicos profundos."
+},
+{
+  pregunta: "El uso de estándares abiertos en documentos electrónicos favorece:",
+  opciones: [
+    "a) Mayor dependencia de proveedores privados",
+    "b) La interoperabilidad y accesibilidad a largo plazo",
+    "c) La desaparición de copias de seguridad",
+    "d) El cifrado obligatorio de metadatos"
+  ],
+  correcta: "b) La interoperabilidad y accesibilidad a largo plazo",
+  justificacion: "Los estándares abiertos permiten que diferentes sistemas puedan intercambiar y leer información."
+},
+{
+  pregunta: "El 'derecho a no ser objeto de decisiones automatizadas' según el RGPD implica que:",
+  opciones: [
+    "a) El individuo puede exigir que las decisiones con efectos jurídicos no se basen únicamente en tratamiento automatizado",
+    "b) Todas las decisiones deben tomarse sin intervención humana",
+    "c) Los algoritmos pueden tomar decisiones si el usuario no lo impide físicamente",
+    "d) Solo las decisiones comerciales están reguladas"
+  ],
+  correcta: "a) El individuo puede exigir que las decisiones con efectos jurídicos no se basen únicamente en tratamiento automatizado",
+  justificacion: "El RGPD protege contra decisiones sin supervisión humana cuando afectan a derechos."
+},
+{
+  pregunta: "Según el Esquema Nacional de Seguridad, la 'clasificación de la información' sirve para:",
+  opciones: [
+    "a) Determinar el nivel de acceso según el tipo de datos y su sensibilidad",
+    "b) Ordenar los archivos en función de su tamaño",
+    "c) Asignar colores a los archivos para mejorar su estética",
+    "d) Subir automáticamente los documentos a internet"
+  ],
+  correcta: "a) Determinar el nivel de acceso según el tipo de datos y su sensibilidad",
+  justificacion: "La clasificación permite proteger la información en función de su importancia y riesgo."
+},
+{
+  pregunta: "La 'evaluación de impacto relativa a la protección de datos' (EIPD) es obligatoria cuando:",
+  opciones: [
+    "a) Todos los datos tratados sean de carácter público",
+    "b) El tratamiento entrañe un alto riesgo para los derechos y libertades de las personas físicas",
+    "c) Los datos sean recopilados con fines estadísticos",
+    "d) El tratamiento dure menos de un mes"
+  ],
+  correcta: "b) El tratamiento entrañe un alto riesgo para los derechos y libertades de las personas físicas",
+  justificacion: "Las EIPD son obligatorias para tratamientos de alto riesgo según el artículo 35 RGPD."
+},
+{
+  pregunta: "La técnica de 'pharming' consiste en:",
+  opciones: [
+    "a) Una estafa mediante SMS con enlaces fraudulentos",
+    "b) Redirigir al usuario a páginas web falsas sin que lo note",
+    "c) Virus diseñado para bloquear el equipo de forma permanente",
+    "d) El envío de correos masivos desde dirección legítima"
+  ],
+  correcta: "b) Redirigir al usuario a páginas web falsas sin que lo note",
+  justificacion: "El pharming manipula el DNS o la máquina para redirigir a sitios fraudulentos."
+},
+{
+  pregunta: "El 'hash' de un archivo sirve para:",
+  opciones: [
+    "a) Comprimir el archivo sin pérdida",
+    "b) Generar una huella digital del contenido para verificar integridad",
+    "c) Cifrar el archivo con clave simétrica",
+    "d) Crear índices automáticos en sistemas documentales"
+  ],
+  correcta: "b) Generar una huella digital del contenido para verificar integridad",
+  justificacion: "El hash permite asegurar que el contenido no fue alterado sin conocer el texto original."
+},
+{
+  pregunta: "Una vulnerabilidad 'zero day' es aquella que:",
+  opciones: [
+    "a) Ya ha sido corregida por el proveedor oficial",
+    "b) Es desconocida por el fabricante y aún no existe parche disponible",
+    "c) Solo afecta a sistemas obsoletos sin soporte",
+    "d) Únicamente se propaga mediante dispositivos USB"
+  ],
+  correcta: "b) Es desconocida por el fabricante y aún no existe parche disponible",
+  justificacion: "Las vulnerabilidades zero-day son extremadamente peligrosas porque pueden ser explotadas antes de que existan soluciones."
+},
+{
+  pregunta: "La 'identidad digital' de una persona está formada por:",
+  opciones: [
+    "a) El conjunto de certificados caducados que posea",
+    "b) La combinación de atributos personales en el entorno digital, incluyendo credenciales y comportamiento",
+    "c) Únicamente su nombre y apellido",
+    "d) El histórico de páginas visitadas en internet"
+  ],
+  correcta: "b) La combinación de atributos personales en el entorno digital, incluyendo credenciales y comportamiento",
+  justificacion: "La identidad digital es el conjunto de características e interacciones asociadas a una persona en medios electrónicos."
+},
+{
+  pregunta: "¿Cuál de los siguientes es un ejemplo de dato seudonimizado?",
+  opciones: [
+    "a) El nombre completo del usuario",
+    "b) Un número aleatorio que reemplaza el DNI, conservando la posibilidad de revertirlo bajo condiciones",
+    "c) Datos totalmente irreconocibles sin clave de descifrado",
+    "d) Contraseñas cifradas almacenadas en servidores públicos"
+  ],
+  correcta: "b) Un número aleatorio que reemplaza el DNI, conservando la posibilidad de revertirlo bajo condiciones",
+  justificacion: "En la seudonimización se ocultan los datos directos, pero se conserva la relación bajo control."
+},
+{
+  pregunta: "Para prevenir ataques de ingeniería social, se recomienda:",
+  opciones: [
+    "a) Cambiar los servidores con frecuencia",
+    "b) Capacitar a los usuarios y empleados en medidas de seguridad",
+    "c) Desactivar los antivirus en horas de trabajo",
+    "d) Limitar temporalmente todo acceso a internet"
+  ],
+  correcta: "b) Capacitar a los usuarios y empleados en medidas de seguridad",
+  justificacion: "La ingeniería social se basa en engaños al usuario, por lo que la formación es clave."
+},
+{
+  pregunta: "El protocolo HTTPS garantiza:",
+  opciones: [
+    "a) Que sea imposible interceptar el tráfico de red",
+    "b) Confidencialidad e integridad en la comunicación mediante el uso de certificados y cifrado",
+    "c) Que el contenido web sea accesible más rápidamente",
+    "d) Que todos los contenidos sean verificados por la ONU"
+  ],
+  correcta: "b) Confidencialidad e integridad en la comunicación mediante el uso de certificados y cifrado",
+  justificacion: "HTTPS utiliza TLS para cifrar la comunicación y autenticar al servidor."
+},
+{
+  pregunta: "La 'Ley 11/2007' fue sustituida por:",
+  opciones: [
+    "a) La Ley 40/2015 y la Ley 39/2015",
+    "b) El Reglamento 2010/9 UE",
+    "c) La Directiva 95/46/CE",
+    "d) La Ley 15/2003"
+  ],
+  correcta: "a) La Ley 40/2015 y la Ley 39/2015",
+  justificacion: "Ambas leyes completaron la transición a una administración electrónica moderna."
+},
+{
+  pregunta: "Un 'certificado cualificado' debe ser:",
+  opciones: [
+    "a) Emitido por un prestador de servicios de confianza cualificado y almacenado en un dispositivo seguro",
+    "b) Generado únicamente por el interesado mediante software gratuito",
+    "c) Exclusivo para empleados públicos",
+    "d) Impreso y sellado en formato físico"
+  ],
+  correcta: "a) Emitido por un prestador de servicios de confianza cualificado y almacenado en un dispositivo seguro",
+  justificacion: "Estos requisitos se establecen en el Reglamento eIDAS para garantizar la máxima protección."
+},
+{
+  pregunta: "La confidencialidad en la seguridad de la información garantiza que:",
+  opciones: [
+    "a) Los datos estén disponibles ante cualquier demanda, sin restricciones",
+    "b) Solamente las personas autorizadas pueden acceder a la información",
+    "c) Los datos privados siempre se cifren antes de ser eliminados",
+    "d) Cualquier modificación del dato sea irrelevante"
+  ],
+  correcta: "b) Solamente las personas autorizadas pueden acceder a la información",
+  justificacion: "Es uno de los tres pilares de la seguridad junto a la integridad y la disponibilidad."
+},
+{
+  pregunta: "Una función del *Instituto Nacional de Ciberseguridad* (INCIBE) es:",
+  opciones: [
+    "a) Gestionar los presupuestos de contratación en seguridad del Estado",
+    "b) Proteger el ciberespacio en España y gestionar incidentes relacionados con la ciberseguridad",
+    "c) Gestionar las redes sociales de organismos públicos",
+    "d) Auditar exclusivamente sistemas biométricos"
+  ],
+  correcta: "b) Proteger el ciberespacio en España y gestionar incidentes relacionados con la ciberseguridad",
+  justificacion: "El INCIBE coordina la respuesta a incidentes en España y promueve la seguridad digital."
+},
+{
+  pregunta: "Una 'cookie de sesión' se emplea específicamente para:",
+  opciones: [
+    "a) Recopilar permanentemente datos personales sin consentimiento",
+    "b) Mantener y gestionar la sesión activa de un usuario durante la navegación",
+    "c) Almacenar contraseñas en texto plano",
+    "d) Realizar seguimiento publicitario a largo plazo"
+  ],
+  correcta: "b) Mantener y gestionar la sesión activa de un usuario durante la navegación",
+  justificacion: "Las cookies de sesión se eliminan automáticamente al cerrar el navegador."
+},
+{
+  pregunta: "El sistema Cl@ve permite:",
+  opciones: [
+    "a) Acceder a servicios electrónicos mediante diferentes métodos de identificación electrónica",
+    "b) Obtener la dirección postal exacta de cualquier funcionario activo",
+    "c) Sustituir el DNI como documento oficial",
+    "d) Firmar contratos laborales sin consentimiento del trabajador"
+  ],
+  correcta: "a) Acceder a servicios electrónicos mediante diferentes métodos de identificación electrónica",
+  justificacion: "Cl@ve permite acceso mediante PIN, firma con certificado o Cl@ve Permanente."
+},
+{
+  pregunta: "¿En qué consiste la 'firma en la nube'?",
+  opciones: [
+    "a) El almacenamiento temporal de firmas manuscritas en servidores del gobierno",
+    "b) La firma electrónica que se genera y almacena de forma segura en servidores y no en el dispositivo del usuario",
+    "c) El uso exclusivo del DNI electrónico como forma de firma digital",
+    "d) La firma sobre documentos digitalizados mediante tinta electrónica"
+  ],
+  correcta: "b) La firma electrónica que se genera y almacena de forma segura en servidores y no en el dispositivo del usuario",
+  justificacion: "La firma en la nube evita riesgos asociados al robo o pérdida de certificados locales."
+},
+{
+  pregunta: "El derecho de oposición en el RGPD permite al interesado:",
+  opciones: [
+    "a) Solicitar la suspensión permanente de cualquier tratamiento con fines personalizados",
+    "b) Impedir un tratamiento basado en interés legítimo o interés público, si hay motivos relacionados con su situación particular",
+    "c) Acceder íntegramente a los datos de otros sujetos",
+    "d) Exigir que su nombre desaparezca de todo registro oficial"
+  ],
+  correcta: "b) Impedir un tratamiento basado en interés legítimo o interés público, si hay motivos relacionados con su situación particular",
+  justificacion: "El derecho de oposición se dirige a impedir tratamientos concretos por motivos personales."
+},
+{
+  pregunta: "Cuando se produce una brecha de datos personales, el RGPD exige que:",
+  opciones: [
+    "a) Se comunique a la autoridad de control antes de 72 horas desde que se tuvo conocimiento",
+    "b) Se comunique de forma inmediata a todo el país a través de nota de prensa",
+    "c) Se eliminen los datos compilados sin necesidad de notificar",
+    "d) No se realice ninguna conservación de pruebas"
+  ],
+  correcta: "a) Se comunique a la autoridad de control antes de 72 horas desde que se tuvo conocimiento",
+  justificacion: "La notificación en 72 horas es obligatoria en la mayoría de los casos según artículo 33 del RGPD."
+},
+{
+  pregunta: "El concepto de 'datos personales' según el RGPD incluye:",
+  opciones: [
+    "a) Solo la información genética o biométrica",
+    "b) Cualquier información que permita identificar directa o indirectamente a una persona física",
+    "c) Únicamente los datos recogidos en bases de datos públicas",
+    "d) Los datos anonimizados empleados para análisis estadísticos"
+  ],
+  correcta: "b) Cualquier información que permita identificar directa o indirectamente a una persona física",
+  justificacion: "La definición del artículo 4 del RGPD abarca cualquier dato que pueda asociarse a una persona."
+},
+{
+  pregunta: "Las 'medidas técnicas' para protección de datos incluyen:",
+  opciones: [
+    "a) Formación de empleados",
+    "b) Cifrado de datos y uso de firewalls",
+    "c) Establecer tiempos de vacaciones del personal",
+    "d) Protocolos de comunicación interna"
+  ],
+  correcta: "b) Cifrado de datos y uso de firewalls",
+  justificacion: "Las medidas técnicas son herramientas tecnológicas como cifrado, antivirus y control de accesos."
+},
+{
+  pregunta: "El ESQUEMA NACIONAL DE INTEROPERABILIDAD está desarrollado bajo la Ley:",
+  opciones: [
+    "a) Ley 39/2015",
+    "b) Ley 40/2015",
+    "c) LO 3/2018",
+    "d) Ley 34/2002"
+  ],
+  correcta: "b) Ley 40/2015",
+  justificacion: "El ENI está regulado por el Real Decreto 4/2010, en desarrollo de la Ley 40/2015."
+},
+{
+  pregunta: "Una vulnerabilidad conocida pero sin parche disponible en el momento de su explotación es denominada:",
+  opciones: [
+    "a) Ataque DoS",
+    "b) Exploit Zero-Day",
+    "c) Intrusión en capa 7",
+    "d) Brecha procesal"
+  ],
+  correcta: "b) Exploit Zero-Day",
+  justificacion: "Un exploit zero-day aprovecha una vulnerabilidad aún no resuelta por los desarrolladores."
+},
+{
+  pregunta: "La 'firma electrónica reconocida' es equivalente a la firma manuscrita cuando:",
+  opciones: [
+    "a) Se basa en un certificado cualificado y se realiza con un dispositivo seguro",
+    "b) Se usa únicamente para trámites internos",
+    "c) Se vincula a cualquier dirección de correo electrónico",
+    "d) Se firma al mismo tiempo en papel y digital"
+  ],
+  correcta: "a) Se basa en un certificado cualificado y se realiza con un dispositivo seguro",
+  justificacion: "Según el Reglamento eIDAS, la firma reconocida tiene el mismo efecto jurídico que la manuscrita."
+},
+{
+  pregunta: "Un ataque de 'ingeniería social' busca:",
+  opciones: [
+    "a) Comprometer únicamente dispositivos móviles",
+    "b) Engañar al usuario para obtener acceso o información confidencial",
+    "c) Infectar sistemas a través de código inyectado",
+    "d) Congelar servidores mediante saturación"
+  ],
+  correcta: "b) Engañar al usuario para obtener acceso o información confidencial",
+  justificacion: "La ingeniería social manipula a los usuarios, no a la tecnología."
+},
+{
+  pregunta: "La 'Dirección Electrónica Habilitada' se utiliza para:",
+  opciones: [
+    "a) Recibir notificaciones electrónicas oficiales",
+    "b) Enviar correos personales cifrados",
+    "c) Compartir bases de datos con organismos privados",
+    "d) Gestionar formularios de exportación sin firma"
+  ],
+  correcta: "a) Recibir notificaciones electrónicas oficiales",
+  justificacion: "La DEH (o DEHú) centraliza notificaciones electrónicas de organismos públicos."
+},
+{
+  pregunta: "El 'derecho a la limitación del tratamiento' según RGPD sirve para:",
+  opciones: [
+    "a) Solicitar la eliminación inmediata de datos personales",
+    "b) Bloquear temporalmente el tratamiento de datos mientras se resuelve una reclamación",
+    "c) Evitar la destrucción de los datos tras el final del tratamiento",
+    "d) Permitir el acceso universal a la información"
+  ],
+  correcta: "b) Bloquear temporalmente el tratamiento de datos mientras se resuelve una reclamación",
+  justificacion: "Este derecho permite suspender el tratamiento sin eliminar los datos."
+},
+{
+  pregunta: "El protocolo IMAP se utiliza para:",
+  opciones: [
+    "a) Transferir archivos entre servidores",
+    "b) Acceder al correo electrónico de forma remota",
+    "c) Realizar conexiones SSH en red",
+    "d) Controlar sesiones en bases de datos"
+  ],
+  correcta: "b) Acceder al correo electrónico de forma remota",
+  justificacion: "IMAP permite gestionar el correo electrónico en el servidor."
+},
+{
+  pregunta: "La autenticación multifactor (MFA) mejora la seguridad porque:",
+  opciones: [
+    "a) Elimina la necesidad de contraseñas",
+    "b) Obliga al usuario a identificarse mediante dos o más factores distintos",
+    "c) Genera contraseñas automáticas diarias",
+    "d) Se basa exclusivamente en certificados biométricos"
+  ],
+  correcta: "b) Obliga al usuario a identificarse mediante dos o más factores distintos",
+  justificacion: "El MFA aumenta la seguridad combinando algo que se sabe, algo que se tiene o algo que se es."
+},
+{
+  pregunta: "El acceso a los sistemas de información en la administración pública debe:",
+  opciones: [
+    "a) Estar siempre habilitado para todos los empleados",
+    "b) Implementarse bajo el principio de mínimo privilegio",
+    "c) Reducirse solo a los accesos web",
+    "d) Gestionarse mediante cualquier aplicación móvil"
+  ],
+  correcta: "b) Implementarse bajo el principio de mínimo privilegio",
+  justificacion: "Este principio limita los permisos del usuario a lo estrictamente necesario."
+},
+{
+  pregunta: "El 'malware' se define como:",
+  opciones: [
+    "a) Software legal que mejora el rendimiento del sistema",
+    "b) Software malicioso diseñado para infiltrarse o dañar sistemas",
+    "c) Un programa para cifrar ficheros de forma segura",
+    "d) Un nuevo tipo de hardware para servidores"
+  ],
+  correcta: "b) Software malicioso diseñado para infiltrarse o dañar sistemas",
+  justificacion: "El malware incluye virus, troyanos, ransomware, entre otros."
+},
+{
+  pregunta: "La 'firma centralizada' o en la nube se caracteriza por:",
+  opciones: [
+    "a) Guardar el certificado digital en el mismo ordenador del usuario",
+    "b) Ejecutarse en un servidor seguro accesible por múltiples dispositivos",
+    "c) No requerir verificación por terceros",
+    "d) Bloquear automáticamente cualquier intento de acceso remoto"
+  ],
+  correcta: "b) Ejecutarse en un servidor seguro accesible por múltiples dispositivos",
+  justificacion: "La firma en la nube evita la necesidad de que el certificado esté en el dispositivo del usuario."
+},
+{
+  pregunta: "Una VPN aporta seguridad porque:",
+  opciones: [
+    "a) Oculta el tráfico bajo protocolos no cifrados",
+    "b) Cifra los datos que se transmiten entre el usuario y la red privada",
+    "c) Abre puertos de red externos para mejorar la velocidad",
+    "d) Desactiva la IP del dispositivo temporalmente"
+  ],
+  correcta: "b) Cifra los datos que se transmiten entre el usuario y la red privada",
+  justificacion: "Las VPN aseguran la transmisión de datos a través de un túnel seguro."
+},
+{
+  pregunta: "Una cookie es un archivo que:",
+  opciones: [
+    "a) Se utiliza para el funcionamiento básico del sistema operativo",
+    "b) Se almacena en el navegador y contiene información sobre la sesión o preferencias",
+    "c) Siempre envía datos personales a terceros",
+    "d) Solo se genera en dispositivos móviles"
+  ],
+  correcta: "b) Se almacena en el navegador y contiene información sobre la sesión o preferencias",
+  justificacion: "Las cookies se emplean para gestionar sesiones o recordar preferencias de usuario."
+},
+{
+  pregunta: "¿Qué es un 'firewall'?",
+  opciones: [
+    "a) Una herramienta para edición de vídeo en tiempo real",
+    "b) Un sistema de control que filtra el tráfico de red",
+    "c) Un tipo de virus que ataca servidores",
+    "d) Un método de autenticación sin clave"
+  ],
+  correcta: "b) Un sistema de control que filtra el tráfico de red",
+  justificacion: "El firewall protege el sistema controlando qué tráfico es permitido o bloqueado."
+},
+{
+  pregunta: "El 'Plan Nacional de Ciberseguridad' en España busca:",
+  opciones: [
+    "a) Desplegar sensores físicos en todos los edificios públicos",
+    "b) Coordinar recursos y capacidades frente a ataques cibernéticos",
+    "c) Gestionar el acceso wifi en centros educativos",
+    "d) Establecer redes sociales seguras para ciudadanos"
+  ],
+  correcta: "b) Coordinar recursos y capacidades frente a ataques cibernéticos",
+  justificacion: "El plan busca fortalecer la ciberseguridad nacional mediante prevención y respuesta."
+},
+{
+  pregunta: "Los sistemas SIEM (Security Information and Event Management) permiten:",
+  opciones: [
+    "a) Gestionar bases de datos bancarias",
+    "b) Monitorear, correlacionar y analizar eventos de seguridad en tiempo real",
+    "c) Facilitar el acceso remoto universal",
+    "d) Editar los registros de actividad para evitar alertas"
+  ],
+  correcta: "b) Monitorear, correlacionar y analizar eventos de seguridad en tiempo real",
+  justificacion: "Los SIEM centralizan los eventos de seguridad para detectar anomalías y ataques."
+},
+{
+  pregunta: "El DNI electrónico contiene:",
+  opciones: [
+    "a) Solo la firma manuscrita del ciudadano",
+    "b) Una clave pública y privada para firma y autenticación",
+    "c) Únicamente un código QR con datos físicos",
+    "d) Información visual sin uso digital"
+  ],
+  correcta: "b) Una clave pública y privada para firma y autenticación",
+  justificacion: "El chip integrado contiene certificados para identificación y firma electrónica."
+},
+{
+  pregunta: "Los ataques de 'phishing' se caracterizan por:",
+  opciones: [
+    "a) Infectar físicamente los discos duros",
+    "b) Suplantar identidades mediante correos o mensajes fraudulentos para robar credenciales",
+    "c) Bloquear servidores mediante sobrecarga deliberada",
+    "d) Eliminar claves públicas en certificados digitales"
+  ],
+  correcta: "b) Suplantar identidades mediante correos o mensajes fraudulentos para robar credenciales",
+  justificacion: "El phishing intenta engañar al usuario con correos o webs falsas."
+},
+{
+  pregunta: "El protocolo SMTP se utiliza principalmente para:",
+  opciones: [
+    "a) Sincronizar calendarios entre usuarios",
+    "b) Transferir correos electrónicos entre servidores",
+    "c) Almacenar correos en una base de datos",
+    "d) Crear páginas web desde emails"
+  ],
+  correcta: "b) Transferir correos electrónicos entre servidores",
+  justificacion: "SMTP (Simple Mail Transfer Protocol) es el protocolo estándar para enviar correos."
+},
+{
+  pregunta: "Una máquina 'air-gapped' es un equipo que:",
+  opciones: [
+    "a) Tiene acceso limitado por tiempo",
+    "b) Está aislado físicamente de cualquier red para protección extrema",
+    "c) Solo se conecta cuando está en modo avión",
+    "d) Utiliza ventilación avanzada para refrigeración"
+  ],
+  correcta: "b) Está aislado físicamente de cualquier red para protección extrema",
+  justificacion: "Se emplea en entornos altamente sensibles para evitar accesos remotos."
+},
+{
+  pregunta: "Según el RGPD, el tratamiento de datos de menores requiere:",
+  opciones: [
+    "a) Consentimiento del menor si tiene 14 años o más en España",
+    "b) Consentimiento directo de los responsables parentales en todos los casos",
+    "c) Que el menor firme libremente",
+    "d) Una notificación judicial"
+  ],
+  correcta: "a) Consentimiento del menor si tiene 14 años o más en España",
+  justificacion: "La LO 3/2018 establece el límite de los 14 años para el consentimiento autónomo."
+},
+{
+  pregunta: "El ataque 'Man in the Middle' (MitM) implica:",
+  opciones: [
+    "a) Bloquear la comunicación sin interferir en ella",
+    "b) Interceptar y posiblemente modificar la comunicación entre dos partes sin que estas lo sepan",
+    "c) Borrar los datos del usuario de forma directa",
+    "d) Forzar respuestas automáticas en webs fraudulentas"
+  ],
+  correcta: "b) Interceptar y posiblemente modificar la comunicación entre dos partes sin que estas lo sepan",
+  justificacion: "El atacante se sitúa entre dos comunicantes para interceptar o manipular datos."
+},
+{
+  pregunta: "La plataforma SIR (Sistema de Interconexión de Registros) permite:",
+  opciones: [
+    "a) Enviar documentos en papel de una administración a otra",
+    "b) Registrar digitalmente documentos para su envío entre administraciones públicas",
+    "c) Bloquear automáticamente documentos sin firma",
+    "d) Acceder al contenido de bases judiciales sin control"
+  ],
+  correcta: "b) Registrar digitalmente documentos para su envío entre administraciones públicas",
+  justificacion: "SIR posibilita el intercambio seguro de registros digitales en la Administración."
+},
+{
+  pregunta: "La 'trazabilidad' en los sistemas informáticos se refiere a:",
+  opciones: [
+    "a) El seguimiento de procesos y operaciones realizadas sobre los datos",
+    "b) El aumento del ancho de banda para servidores públicos",
+    "c) La navegación privada sin registro",
+    "d) El rastreo de direcciones IP externas"
+  ],
+  correcta: "a) El seguimiento de procesos y operaciones realizadas sobre los datos",
+  justificacion: "La trazabilidad permite investigar o auditar acciones sobre los sistemas."
+},
+{
+  pregunta: "El 'cifrado de extremo a extremo' garantiza que:",
+  opciones: [
+    "a) Solo los usuarios con acceso autorizado puedan descifrar la información",
+    "b) La comunicación sea reenviada por intermediarios confiables",
+    "c) El servidor también tenga copia de las claves de cifrado",
+    "d) Los datos sean accesibles aunque el receptor no esté disponible"
+  ],
+  correcta: "a) Solo los usuarios con acceso autorizado puedan descifrar la información",
+  justificacion: "Este cifrado asegura que ni siquiera los intermediarios puedan leer el contenido."
+},
+{
+  pregunta: "El 'sello de tiempo electrónico' se usa para:",
+  opciones: [
+    "a) Registrar el momento exacto de creación o firma de un documento",
+    "b) Certificar la autenticidad de un documento físico",
+    "c) Eliminar automáticamente la firma cuando expira",
+    "d) Almacenar de forma segura las contraseñas del usuario"
+  ],
+  correcta: "a) Registrar el momento exacto de creación o firma de un documento",
+  justificacion: "El sello de tiempo vincula el documento a un instante verificable."
+},
+{
+  pregunta: "¿Qué es una 'red TOR'?",
+  opciones: [
+    "a) Una red militar que garantiza integridad total",
+    "b) Una red de anonimización que enruta tráfico cifrado a través de múltiples nodos",
+    "c) Un tipo de virus muy dañino",
+    "d) Un protocolo de cifrado europeo"
+  ],
+  correcta: "b) Una red de anonimización que enruta tráfico cifrado a través de múltiples nodos",
+  justificacion: "TOR dificulta rastrear el origen y destino del tráfico, usado para anonimato."
+},
+{
+  pregunta: "La 'política de seguridad' en un sistema de información incluye:",
+  opciones: [
+    "a) Reglas organizativas y técnicas para proteger la información",
+    "b) El historial de accesos de los últimos 30 días",
+    "c) Solo medidas tecnológicas avanzadas, no organizativas",
+    "d) Exclusivamente el listado de empleados autorizados"
+  ],
+  correcta: "a) Reglas organizativas y técnicas para proteger la información",
+  justificacion: "Es un documento fundamental que establece roles, medidas y responsabilidades."
+},
+{
+  pregunta: "El ataque DDoS (Distributed Denial of Service) se caracteriza porque:",
+  opciones: [
+    "a) Usa únicamente un equipo para atacar el sistema",
+    "b) Utiliza múltiples dispositivos para saturar un servicio o servidor",
+    "c) Se basa en suplantar identidad por correo",
+    "d) Es seguro para redes internas y no requiere protección"
+  ],
+  correcta: "b) Utiliza múltiples dispositivos para saturar un servicio o servidor",
+  justificacion: "El ataque DDoS busca colapsar un sistema mediante peticiones masivas simultáneas."
+},
+{
+  pregunta: "Un 'backup incremental' consiste en:",
+  opciones: [
+    "a) Hacer una copia completa cada día de todos los archivos",
+    "b) Hacer copia solo de los archivos que han cambiado desde el último backup",
+    "c) Generar duplicados de archivos físicos en escritorio",
+    "d) Cifrar todos los archivos sin almacenarlos"
+  ],
+  correcta: "b) Hacer copia solo de los archivos que han cambiado desde el último backup",
+  justificacion: "Los backups incrementales son más eficientes porque solo copian cambios."
+},
+{
+  pregunta: "En el *Modelo de Madurez de Seguridad* (MSS), un sistema 'proactivo' implica:",
+  opciones: [
+    "a) El sistema responde únicamente cuando ocurre un incidente",
+    "b) El sistema anticipa amenazas y actúa antes de que se produzcan",
+    "c) No se implementan medidas de protección avanzada",
+    "d) Se eliminan la trazabilidad y logs para ahorrar espacio"
+  ],
+  correcta: "b) El sistema anticipa amenazas y actúa antes de que se produzcan",
+  justificacion: "La seguridad proactiva se basa en prevención, no solo reacción."
+},
+{
+  pregunta: "Un 'certificado revocado' es aquel que:",
+  opciones: [
+    "a) Nunca fue emitido oficialmente",
+    "b) Ha sido anulado antes de su caducidad, por compromisos o errores",
+    "c) Se ha transformado en clave simétrica",
+    "d) Ha expirado automáticamente y no se puede renovar"
+  ],
+  correcta: "b) Ha sido anulado antes de su caducidad, por compromisos o errores",
+  justificacion: "Los certificados revocados se registran en las CRL o con OCSP para evitar su uso."
+},
+{
+  pregunta: "El concepto de 'Big Data' implica:",
+  opciones: [
+    "a) Grandes volúmenes de datos gestionados con técnicas convencionales",
+    "b) Procesamiento y análisis de grandes volúmenes, velocidad y variedad de datos",
+    "c) Almacenar siempre datos en discos locales",
+    "d) No usar algoritmos de aprendizaje automático"
+  ],
+  correcta: "b) Procesamiento y análisis de grandes volúmenes, velocidad y variedad de datos",
+  justificacion: "Big Data se basa en las 3Vs: volumen, velocidad y variedad."
+},
+{
+  pregunta: "El 'derecho a la portabilidad' permite al interesado:",
+  opciones: [
+    "a) Obligar al responsable a exportar sus datos a otro proveedor en formato legible y estructurado",
+    "b) Eliminar sus datos en cualquier momento sin excepción",
+    "c) Impedir la transferencia de datos a otros servicios",
+    "d) Solicitar compensación financiera sin motivo"
+  ],
+  correcta: "a) Obligar al responsable a exportar sus datos a otro proveedor en formato legible y estructurado",
+  justificacion: "La portabilidad permite mover datos entre responsables cuando el tratamiento se basa en consentimiento o contrato."
+},
+{
+  pregunta: "En España, el organismo encargado de gestionar incidentes de seguridad en la Administración es:",
+  opciones: [
+    "a) AEPD",
+    "b) CCN-CERT",
+    "c) INCIBE-CERT",
+    "d) SEPE"
+  ],
+  correcta: "b) CCN-CERT",
+  justificacion: "El CCN-CERT (Centro Criptológico Nacional) coordina incidentes de ciberseguridad en la Administración."
+},
+{
+  pregunta: "El 'Esquema Nacional de Seguridad' establece niveles de seguridad basados en:",
+  opciones: [
+    "a) El tipo de hardware instalado",
+    "b) La categoría del sistema según impacto: bajo, medio y alto",
+    "c) El número de usuarios concurrentes",
+    "d) El tamaño de la sala de servidores"
+  ],
+  correcta: "b) La categoría del sistema según impacto: bajo, medio y alto",
+  justificacion: "Cada categoría determina las medidas comunes y específicas que se deben adoptar."
+},
+{
+  pregunta: "La 'Ley Orgánica 3/2018' adapta en España:",
+  opciones: [
+    "a) El Esquema Nacional de Seguridad",
+    "b) El Reglamento General de Protección de Datos",
+    "c) El Código Penal en materia digital",
+    "d) El Real Decreto de desarrollo del ENS"
+  ],
+  correcta: "b) El Reglamento General de Protección de Datos",
+  justificacion: "LO 3/2018 (LOPDGDD) complementa y adapta el RGPD a la normativa española."
+},
+{
+  pregunta: "En el ámbito de la ciberseguridad, el término 'payload' se refiere a:",
+  opciones: [
+    "a) El código cargado por un antivirus para neutralizar amenazas",
+    "b) La parte de un malware que ejecuta la acción maliciosa tras una infección",
+    "c) El tamaño de la clave de cifrado en un ataque",
+    "d) El mensaje de error que aparece tras un ataque"
+  ],
+  correcta: "b) La parte de un malware que ejecuta la acción maliciosa tras una infección",
+  justificacion: "El payload es el contenido dañino que lleva a cabo las acciones maliciosas tras la infección."
+},
+{
+  pregunta: "¿Cuál de los siguientes no es un principio del Esquema Nacional de Seguridad?",
+  opciones: [
+    "a) Continuidad de la actividad",
+    "b) Proporcionalidad en las medidas",
+    "c) Uso exclusivo de software libre",
+    "d) Prevención, reacción y recuperación"
+  ],
+  correcta: "c) Uso exclusivo de software libre",
+  justificacion: "Aunque se fomenta el uso de estándares abiertos, no es un principio del ENS el usar solo software libre."
+},
+{
+  pregunta: "El 'cifrado simétrico' se caracteriza por:",
+  opciones: [
+    "a) Utilizar claves distintas para cifrado y descifrado",
+    "b) Utilizar la misma clave para cifrar y descifrar",
+    "c) Poderse usar sin hardware específico",
+    "d) Ser más seguro que el cifrado asimétrico"
+  ],
+  correcta: "b) Utilizar la misma clave para cifrar y descifrar",
+  justificacion: "El cifrado simétrico emplea una única clave, lo que lo hace más rápido pero con desafíos de intercambio seguro."
+},
+{
+  pregunta: "Una 'API' (Application Programming Interface) se utiliza para:",
+  opciones: [
+    "a) Editar bases de datos en tiempo real",
+    "b) Permitir que una aplicación acceda a funciones o datos de otra",
+    "c) Imprimir automáticamente documentos de forma segura",
+    "d) Realizar procesos de cifrado avanzado sin claves"
+  ],
+  correcta: "b) Permitir que una aplicación acceda a funciones o datos de otra",
+  justificacion: "Las APIs permiten la comunicación entre aplicaciones sin compartir su código interno."
+},
+{
+  pregunta: "El término 'ATAQUE INSIDER' hace referencia a:",
+  opciones: [
+    "a) Ataques externos a una red por usuarios anónimos",
+    "b) Acciones maliciosas llevadas a cabo por personal interno con acceso autorizado",
+    "c) Ataques de denegación de servicio en servidores públicos",
+    "d) Virus recibidos por correos con adjuntos"
+  ],
+  correcta: "b) Acciones maliciosas llevadas a cabo por personal interno con acceso autorizado",
+  justificacion: "El 'insider threat' representa una amenaza interna, difícil de detectar, ya que proviene de personal con acceso legítimo."
+},
+{
+  pregunta: "La operación 'hash' de una contraseña permite:",
+  opciones: [
+    "a) Almacenar la contraseña en texto plano en un servidor",
+    "b) Guardar una representación irreversible de la contraseña",
+    "c) Enviar la contraseña a través de redes comunes sin riesgo",
+    "d) Crear una copia exacta de la clave privada"
+  ],
+  correcta: "b) Guardar una representación irreversible de la contraseña",
+  justificacion: "El hash asegura que la contraseña real no se almacene ni sea recuperable, solo verificable."
+},
+{
+  pregunta: "El 'principio de integridad' en seguridad de la información garantiza:",
+  opciones: [
+    "a) Que la información solo sea accesible a personas autorizadas",
+    "b) Que la información no sea alterada de forma no autorizada",
+    "c) Que los sistemas estén disponibles 24/7",
+    "d) Que las contraseñas se comuniquen por fax"
+  ],
+  correcta: "b) Que la información no sea alterada de forma no autorizada",
+  justificacion: "La integridad protege la exactitud y completitud de los datos."
+},
+{
+  pregunta: "El procedimiento 'OCSP' se utiliza para:",
+  opciones: [
+    "a) Consultar en tiempo real el estado de revocación de un certificado",
+    "b) Validar criptográficamente un sello documental físico",
+    "c) Generar claves públicas para firmas en la nube",
+    "d) Renovar automáticamente certificados caducados"
+  ],
+  correcta: "a) Consultar en tiempo real el estado de revocación de un certificado",
+  justificacion: "OCSP (Online Certificate Status Protocol) permite comprobar si un certificado ha sido revocado."
+},
+{
+  pregunta: "En el contexto de la seguridad informática, el término 'rootkit' se refiere a:",
+  opciones: [
+    "a) Un antivirus especializado en auto-reparación",
+    "b) Un software malicioso diseñado para ocultar procesos y archivos en un sistema",
+    "c) Un método de autenticación basado en claves biométricas",
+    "d) Un sistema de encriptación de alto nivel"
+  ],
+  correcta: "b) Un software malicioso diseñado para ocultar procesos y archivos en un sistema",
+  justificacion: "Los rootkits permiten el acceso persistente y encubierto al sistema."
+},
+{
+  pregunta: "¿Cuál es la finalidad de los 'sistemas IDS' (Intrusion Detection Systems)?",
+  opciones: [
+    "a) Detectar intentos de intrusión en una red o sistema",
+    "b) Bloquear automáticamente todos los ataques en tiempo real",
+    "c) Cifrar los datos almacenados en unidades externas",
+    "d) Crear alertas físicas mediante luces de emergencia"
+  ],
+  correcta: "a) Detectar intentos de intrusión en una red o sistema",
+  justificacion: "Los IDS monitorizan y alertan sobre actividades sospechosas, aunque no siempre bloquean."
+},
+{
+  pregunta: "El 'modelo OSI' en redes divide la comunicación en:",
+  opciones: [
+    "a) 5 capas jerárquicas",
+    "b) 7 capas funcionales",
+    "c) 10 capas físicas",
+    "d) 4 protocolos internos"
+  ],
+  correcta: "b) 7 capas funcionales",
+  justificacion: "El modelo de referencia OSI organiza la comunicación en 7 capas desde física a aplicación."
+},
+{
+  pregunta: "La 'firma electrónica avanzada' requiere:",
+  opciones: [
+    "a) Tener un certificado cualificado siempre",
+    "b) Estar vinculada al firmante de manera única y permitir su identificación",
+    "c) Ser impresa y firmada a mano por duplicado",
+    "d) Ser almacenada en servidores gubernamentales"
+  ],
+  correcta: "b) Estar vinculada al firmante de manera única y permitir su identificación",
+  justificacion: "Según el Reglamento eIDAS, la firma avanzada no necesita ser cualificada, pero sí cumplir vínculo e identificación."
+},
+{
+  pregunta: "La técnica 'port scanning' permite:",
+  opciones: [
+    "a) Bloquear el acceso a todas las direcciones IP externas",
+    "b) Escanear puertos de un sistema para identificar servicios activos",
+    "c) Cifrar puertos de intercambio de datos",
+    "d) Destruir archivos en función del puerto usado"
+  ],
+  correcta: "b) Escanear puertos de un sistema para identificar servicios activos",
+  justificacion: "El port scanning busca puertos abiertos que puedan ser vulnerables."
+},
+{
+  pregunta: "Un 'honeypot' en seguridad informática es un sistema diseñado para:",
+  opciones: [
+    "a) Distribuir malware quitando restricciones de red",
+    "b) Atraer a los atacantes para analizar su comportamiento y técnicas",
+    "c) Servir como sistema de respaldo de producción",
+    "d) Filtrar emails no deseados automáticamente"
+  ],
+  correcta: "b) Atraer a los atacantes para analizar su comportamiento y técnicas",
+  justificacion: "El honeypot es una trampa para estudiar ataques y sus vectores."
+},
+{
+  pregunta: "En la gestión de logs, la 'retención' se refiere a:",
+  opciones: [
+    "a) Eliminar todos los registros cada semana",
+    "b) Mantener los registros solo el tiempo necesario legal o estratégicamente",
+    "c) Hacer copias ilimitadas de todos los registros",
+    "d) Truncar el contenido de los logs inmediatamente tras su lectura"
+  ],
+  correcta: "b) Mantener los registros solo el tiempo necesario legal o estratégicamente",
+  justificacion: "La retención define cuánto tiempo deben conservarse los registros para análisis o cumplimiento normativo."
+},
+{
+  pregunta: "La 'crisis reputacional' tras un ciberataque puede ser mitigada por:",
+  opciones: [
+    "a) Ocultar el incidente todo lo posible",
+    "b) Una postura transparente, notificación responsable y medidas correctivas",
+    "c) La falta de colaboración con las autoridades",
+    "d) Bloquear el acceso de la prensa al sitio web corporativo"
+  ],
+  correcta: "b) Una postura transparente, notificación responsable y medidas correctivas",
+  justificacion: "La gestión adecuada de incidentes reduce el impacto en la confianza y reputación institucional."
+},
+{
+  pregunta: "El uso de contraseñas débiles puede ser mitigado mediante:",
+  opciones: [
+    "a) Reutilización de claves entre servicios",
+    "b) Implementación obligatoria de contraseñas complejas o gestores de contraseñas",
+    "c) Eliminación de claves en entornos digitales",
+    "d) Comunicación de contraseñas por SMS"
+  ],
+  correcta: "b) Implementación obligatoria de contraseñas complejas o gestores de contraseñas",
+  justificacion: "Las claves robustas y los gestores reducen el riesgo de ataques de fuerza bruta o phishing."
+},
+{
+  pregunta: "Las 'redes privadas virtuales' (VPN) se utilizan principalmente para:",
+  opciones: [
+    "a) Mejorar la velocidad doméstica de internet",
+    "b) Crear conexiones seguras y cifradas a través de redes públicas",
+    "c) Eliminar el acceso a servidores remotos",
+    "d) Aumentar la latencia en comunicaciones cifradas"
+  ],
+  correcta: "b) Crear conexiones seguras y cifradas a través de redes públicas",
+  justificacion: "Las VPN protegen el tráfico entre el usuario y la red destino."
+},
+{
+  pregunta: "Un 'filtrado de contenido' en el sistema de seguridad sirve para:",
+  opciones: [
+    "a) Localizar archivos obsoletos en la red",
+    "b) Bloquear el acceso a contenido malicioso o inapropiado según política",
+    "c) Restablecer sesiones automáticamente tras caída del servidor",
+    "d) hacer 'ping' a sistemas para verificar su latencia"
+  ],
+  correcta: "b) Bloquear el acceso a contenido malicioso o inapropiado según política",
+  justificacion: "El filtrado de contenido se usa para prevenir accesos no deseados o peligrosos."
+},
+{
+  pregunta: "El 'Plan de Continuidad de Negocio' (BCP) tiene como objetivo principal:",
+  opciones: [
+    "a) Aumentar los ingresos tras un ataque",
+    "b) Garantizar que las operaciones críticas puedan continuar en caso de incidente grave",
+    "c) Eliminar automáticamente los sistemas afectados tras fallas",
+    "d) Sustituir todos los datos por copias físicas de respaldo"
+  ],
+  correcta: "b) Garantizar que las operaciones críticas puedan continuar en caso de incidente grave",
+  justificacion: "Un BCP es crucial para minimizar el impacto operativo tras un incidente grave de seguridad."
+},
+{
+  pregunta: "En un ataque de 'SQL Injection', el atacante busca:",
+  opciones: [
+    "a) Interceptar transmisiones FTP",
+    "b) Insertar código malicioso en consultas a bases de datos para manipular la información",
+    "c) Sobrescribir las claves de cifrado mediante procesos inseguros",
+    "d) Borrar automáticamente los registros de sistema"
+  ],
+  correcta: "b) Insertar código malicioso en consultas a bases de datos para manipular la información",
+  justificacion: "La inyección SQL permite manipular o acceder a datos sin autorización mediante comandos maliciosos."
+},
+{
+  pregunta: "El 'nivel de seguridad alto' en el Esquema Nacional de Seguridad implica:",
+  opciones: [
+    "a) Exigir medidas más estrictas en confidencialidad, integridad y disponibilidad",
+    "b) Permitir el uso de contraseñas simples en sistemas aislados",
+    "c) No requerir medidas específicas en seguridad física",
+    "d) Eliminar la necesidad de auditorías de seguridad"
+  ],
+  correcta: "a) Exigir medidas más estrictas en confidencialidad, integridad y disponibilidad",
+  justificacion: "Los sistemas clasificados como de nivel alto requieren controles reforzados según el ENS."
+},
+{
+  pregunta: "La técnica de 'sandboxing' se utiliza para:",
+  opciones: [
+    "a) Ejecutar aplicaciones en un entorno aislado para evitar que afecten al sistema principal",
+    "b) Almacenar datos en servidores seguros",
+    "c) Capturar tráfico de red de forma permanente",
+    "d) Crear certificados digitales temporales"
+  ],
+  correcta: "a) Ejecutar aplicaciones en un entorno aislado para evitar que afecten al sistema principal",
+  justificacion: "Las sandbox permiten ejecutar código potencialmente peligroso sin comprometer el sistema."
+},
+{
+  pregunta: "El 'modelo de madurez CMMI' en desarrollo de software evalúa:",
+  opciones: [
+    "a) El grado de cumplimiento de estándares de hacking ético",
+    "b) La madurez de los procesos organizativos de desarrollo y mantenimiento de sistemas",
+    "c) La calidad del hardware utilizado",
+    "d) La eficiencia energética de un centro de datos"
+  ],
+  correcta: "b) La madurez de los procesos organizativos de desarrollo y mantenimiento de sistemas",
+  justificacion: "CMMI mide la mejora continua y calidad en los procesos de desarrollo de software."
+},
+{
+  pregunta: "Para realizar una 'copia de seguridad diferencial':",
+  opciones: [
+    "a) Solo se copian los datos que han cambiado desde la última copia completa",
+    "b) Se eliminan los datos antiguos para hacer espacio",
+    "c) Se realiza una copia total del sistema en cada ocasión",
+    "d) Se copian los datos no utilizados en más de un año"
+  ],
+  correcta: "a) Solo se copian los datos que han cambiado desde la última copia completa",
+  justificacion: "Las copias diferenciales agilizan la recuperación porque dependen de una copia completa anterior."
+},
+{
+  pregunta: "El 'phishing dirigido' se conoce como:",
+  opciones: [
+    "a) Vishing",
+    "b) Spear phishing",
+    "c) Smishing",
+    "d) Spoofing"
+  ],
+  correcta: "b) Spear phishing",
+  justificacion: "En el spear phishing, el ataque se dirige a una persona específica mediante correos personalizados."
+},
+{
+  pregunta: "Una *autoridad de certificación* (CA) tiene como misión:",
+  opciones: [
+    "a) Enviar certificados impresos a domicilio",
+    "b) Emitir y gestionar certificados digitales para autenticación y firma",
+    "c) Eliminar certificados poco usados",
+    "d) Bloquear automáticamente los certificados codificados"
+  ],
+  correcta: "b) Emitir y gestionar certificados digitales para autenticación y firma",
+  justificacion: "Las CA son entidades de confianza en la infraestructura digital."
+},
+{
+  pregunta: "El 'Análisis de Riesgos' en un sistema informático tiene como finalidad:",
+  opciones: [
+    "a) Identificar amenazas, vulnerabilidades y el impacto potencial para tomar medidas",
+    "b) Simplificar las auditorías externas",
+    "c) Eliminar todos los riesgos mediante software",
+    "d) Diseñar estrategias de marketing digital"
+  ],
+  correcta: "a) Identificar amenazas, vulnerabilidades y el impacto potencial para tomar medidas",
+  justificacion: "El análisis de riesgos permite priorizar recursos y medidas de seguridad de forma racional."
+},
+{
+  pregunta: "El ataque conocido como 'ransomware' se caracteriza por:",
+  opciones: [
+    "a) Ocultar completamente la actividad maliciosa en el sistema",
+    "b) Cifrar archivos y exigir un rescate para su recuperación",
+    "c) Volcar datos a servidores seguros sin permiso",
+    "d) Rastrear teclas pulsadas sin cifrar datos"
+  ],
+  correcta: "b) Cifrar archivos y exigir un rescate para su recuperación",
+  justificacion: "El ransomware secuestra los datos mediante cifrado para pedir un pago por su liberación."
+},
+{
+  pregunta: "El término *hash collision* se refiere a:",
+  opciones: [
+    "a) Cuando dos entradas diferentes generan el mismo resumen hash",
+    "b) Cuando un hash es incapaz de generar resultados al azar",
+    "c) Cuando el hash deja de funcionar y debe reiniciarse",
+    "d) Cuando solo se puede usar SHA-1 para firmas"
+  ],
+  correcta: "a) Cuando dos entradas diferentes generan el mismo resumen hash",
+  justificacion: "Las colisiones son un problema de seguridad cuando se pretende usar hashes como identificadores únicos."
+},
+{
+  pregunta: "¿Cuál de los siguientes protocolos se utiliza para *transferencia segura de archivos*?",
+  opciones: [
+    "a) FTP",
+    "b) SFTP",
+    "c) HTTP",
+    "d) POP3"
+  ],
+  correcta: "b) SFTP",
+  justificacion: "SFTP es una versión segura del protocolo de transferencia de archivos con cifrado SSH."
+},
+{
+  pregunta: "En el modelo de 'Seguridad Zero Trust', se asume que:",
+  opciones: [
+    "a) Todos los usuarios internos son confiables",
+    "b) No se confía en ninguna entidad dentro o fuera de la red sin antes verificar",
+    "c) Las conexiones internas no requieren autenticación",
+    "d) Todo tráfico debe ser bloqueado permanentemente"
+  ],
+  correcta: "b) No se confía en ninguna entidad dentro o fuera de la red sin antes verificar",
+  justificacion: "El modelo Zero Trust elimina las suposiciones de confianza entre dispositivos y usuarios."
+},
+{
+  pregunta: "El sistema *CEF* (Connecting Europe Facility) se ha creado para:",
+  opciones: [
+    "a) Financiar obras públicas fuera de la UE",
+    "b) Facilitar servicios digitales interoperables entre administraciones europeas",
+    "c) Cifrar los datos almacenados en redes privadas",
+    "d) Gestionar certificados electrónicos nacionales"
+  ],
+  correcta: "b) Facilitar servicios digitales interoperables entre administraciones europeas",
+  justificacion: "CEF favorece la digitalización y cooperación administrativa en la UE."
+},
+{
+  pregunta: "Las 'listas blancas' (whitelisting) en seguridad permiten:",
+  opciones: [
+    "a) Bloquear todo el software por defecto salvo lo autorizado",
+    "b) Instalar únicamente hardware homologado gubernamental",
+    "c) Crear contraseñas automáticas en dispositivos seguros",
+    "d) Eliminar el tráfico cifrado no autorizado"
+  ],
+  correcta: "a) Bloquear todo el software por defecto salvo lo autorizado",
+  justificacion: "El whitelisting refuerza la seguridad al permitir solo lo previamente autorizado."
+},
+{
+  pregunta: "En materia de certificación digital, el 'sello electrónico' sirve para:",
+  opciones: [
+    "a) Sustituir a firmas manuscritas en contratos físicos",
+    "b) Garantizar la integridad y autenticidad de datos automatizados por una entidad sin intervención humana directa",
+    "c) Sustituir el DNI en operaciones bancarias",
+    "d) Firmar documentos únicamente con clave pública"
+  ],
+  correcta: "b) Garantizar la integridad y autenticidad de datos automatizados por una entidad sin intervención humana directa",
+  justificacion: "El sello electrónico asegura la autenticidad e integridad, especialmente en sistemas automatizados."
+},
+{
+  pregunta: "El método 'autenticación con token' permite:",
+  opciones: [
+    "a) Transmitir contraseñas en texto plano por correo electrónico",
+    "b) Verificar la identidad mediante un código generado por un dispositivo o aplicación",
+    "c) Eliminar la necesidad de claves de acceso",
+    "d) Generar un hash automático del documento firmado"
+  ],
+  correcta: "b) Verificar la identidad mediante un código generado por un dispositivo o aplicación",
+  justificacion: "La autenticación con tokens genera claves únicas temporales como segundo factor."
+},
+{
+  pregunta: "Una *amenaza persistente avanzada* (APT) se caracteriza por:",
+  opciones: [
+    "a) Ataques simples basados en correos masivos",
+    "b) Operaciones sofisticadas, dirigidas y prolongadas para infiltrarse en sistemas específicos",
+    "c) Explorar sitios web en búsqueda de datos aleatorios",
+    "d) Ataques automáticos de poca duración"
+  ],
+  correcta: "b) Operaciones sofisticadas, dirigidas y prolongadas para infiltrarse en sistemas específicos",
+  justificacion: "Las APT suelen estar apoyadas por grupos organizados con altos recursos."
+},
+{
+  pregunta: "Según el artículo 32 RGPD, las medidas de seguridad deben establecerse teniendo en cuenta:",
+  opciones: [
+    "a) El tamaño de la empresa únicamente",
+    "b) El coste y el tipo de datos personales tratados, el estado de la técnica y los riesgos",
+    "c) Las recomendaciones verbales de los usuarios",
+    "d) La capacidad de almacenamiento de la nube"
+  ],
+  correcta: "b) El coste y el tipo de datos personales tratados, el estado de la técnica y los riesgos",
+  justificacion: "El artículo 32 exige medidas adecuadas teniendo en cuenta múltiples factores relacionados con el tratamiento."
+},
+{
+  pregunta: "La Directiva NIS (Network and Information Systems) tiene como objetivo:",
+  opciones: [
+    "a) Regular el comercio electrónico entre Estados miembros",
+    "b) Establecer medidas para garantizar un alto nivel común de seguridad en redes y sistemas de información dentro de la UE",
+    "c) Sustituir el RGPD en la protección de datos personales",
+    "d) Establecer estándares únicamente para la defensa militar europea"
+  ],
+  correcta: "b) Establecer medidas para garantizar un alto nivel común de seguridad en redes y sistemas de información dentro de la UE",
+  justificacion: "La Directiva NIS es el marco europeo para la ciberseguridad en sectores esenciales."
+},
+{
+  pregunta: "En el contexto de ciberseguridad, 'spoofing' se refiere a:",
+  opciones: [
+    "a) El uso de VPN para proteger la identidad",
+    "b) Falsificar la identidad de origen de una comunicación para engañar al destinatario",
+    "c) Copiar la firma digital de un documento",
+    "d) Eliminar registros de auditoría automáticamente"
+  ],
+  correcta: "b) Falsificar la identidad de origen de una comunicación para engañar al destinatario",
+  justificacion: "El spoofing modifica direcciones IP, correo o DNS para engañar a sistemas o usuarios."
+},
+{
+  pregunta: "Según el Esquema Nacional de Interoperabilidad, la 'interoperabilidad semántica' busca:",
+  opciones: [
+    "a) Que los sistemas usen la misma base de datos centralizada",
+    "b) Que los datos intercambiados sean interpretados correctamente y de forma uniforme",
+    "c) Eliminar metadatos antes de compartir información",
+    "d) Reducir el número de formatos de archivo permitidos"
+  ],
+  correcta: "b) Que los datos intercambiados sean interpretados correctamente y de forma uniforme",
+  justificacion: "La interoperabilidad semántica asegura el significado compartido en los intercambios de información."
+},
+{
+  pregunta: "La técnica 'Keylogger' se utiliza para:",
+  opciones: [
+    "a) Reducir los errores de tipeo del usuario",
+    "b) Registrar las teclas pulsadas en un dispositivo para capturar información, como contraseñas",
+    "c) Aumentar la velocidad del sistema operativo",
+    "d) Interpretar comandos entre servidores"
+  ],
+  correcta: "b) Registrar las teclas pulsadas en un dispositivo para capturar información, como contraseñas",
+  justificacion: "Los keyloggers son herramientas maliciosas usadas para capturar información confidencial."
+},
+{
+  pregunta: "El 'principio de minimización de datos' en el RGPD establece que:",
+  opciones: [
+    "a) Solo deben tratarse los datos estrictamente necesarios para la finalidad prevista",
+    "b) Las organizaciones pueden recopilar datos ilimitados si están cifrados",
+    "c) Los datos deben eliminarse al cabo de 24 horas",
+    "d) Se permite tratar datos excesivos si están anonimizados"
+  ],
+  correcta: "a) Solo deben tratarse los datos estrictamente necesarios para la finalidad prevista",
+  justificacion: "La minimización es una obligación del artículo 5 del RGPD."
+},
+{
+  pregunta: "La 'Ley 34/2002 de Servicios de la Sociedad de la Información' regula:",
+  opciones: [
+    "a) Las telecomunicaciones exclusivamente militares",
+    "b) Comercio electrónico y servicios en internet en España",
+    "c) El sistema escolar digitalizado",
+    "d) El acceso seguro a bases de datos policiales"
+  ],
+  correcta: "b) Comercio electrónico y servicios en internet en España",
+  justificacion: "Esta ley establece las obligaciones básicas de proveedores de servicios digitales."
+},
+{
+  pregunta: "El 'Control de Acceso Basado en Roles' (RBAC) concede permisos según:",
+  opciones: [
+    "a) El tipo de dispositivo utilizado",
+    "b) El rol o función asignado al usuario dentro de la organización",
+    "c) La geolocalización del usuario en tiempo real",
+    "d) La dirección IP de origen"
+  ],
+  correcta: "b) El rol o función asignado al usuario dentro de la organización",
+  justificacion: "RBAC organiza permisos en función de responsabilidades y roles dentro del sistema."
+},
+{
+  pregunta: "Un 'dispositivo de hardware de seguridad' como un HSM se utiliza para:",
+  opciones: [
+    "a) Realizar copias de seguridad automáticas",
+    "b) Generar y proteger claves criptográficas en un entorno físico seguro",
+    "c) Bloquear accesos remotos según IP",
+    "d) Emitir certificados biométricos externos"
+  ],
+  correcta: "b) Generar y proteger claves criptográficas en un entorno físico seguro",
+  justificacion: "Los HSMs se emplean en sistemas de alta seguridad para firmas digitales."
+},
+{
+  pregunta: "¿Cuál es el objetivo principal del sistema de 'auditoría de seguridad'?",
+  opciones: [
+    "a) Calcular el ancho de banda consumido por cada usuario",
+    "b) Evaluar el cumplimiento de políticas de seguridad y detectar posibles fallos",
+    "c) Monitorizar documentos físicos y digitales",
+    "d) Exigir la renovación automática de certificados"
+  ],
+  correcta: "b) Evaluar el cumplimiento de políticas de seguridad y detectar posibles fallos",
+  justificacion: "Las auditorías son parte del ciclo de mejora en la seguridad de la información."
+},
+{
+  pregunta: "El concepto *BYOD* (Bring Your Own Device) plantea como riesgo principal:",
+  opciones: [
+    "a) Que los empleados utilicen dispositivo con poca memoria RAM",
+    "b) Que equipos personales accedan a la red corporativa sin las medidas de seguridad adecuadas",
+    "c) Incrementar la velocidad de trabajo por dispositivos duplicados",
+    "d) Reducir los ataques basados en ingeniería social"
+  ],
+  correcta: "b) Que equipos personales accedan a la red corporativa sin las medidas de seguridad adecuadas",
+  justificacion: "El BYOD puede introducir vulnerabilidades si no se controlan debidamente los dispositivos."
+},
+{
+  pregunta: "El 'apagado seguro' de sistemas críticos forma parte de:",
+  opciones: [
+    "a) Las medidas del Plan de Forma Física",
+    "b) Los procedimientos de respuesta ante incidentes",
+    "c) Las listas de roles y repetición de proceso",
+    "d) La eliminación de claves criptográficas"
+  ],
+  correcta: "b) Los procedimientos de respuesta ante incidentes",
+  justificacion: "El apagado controlado evita daños adicionales en caso de incidentes de alta gravedad."
+},
+{
+  pregunta: "La técnica 'obfuscación' se utiliza para:",
+  opciones: [
+    "a) Aumentar el rendimiento del servidor de claves",
+    "b) Ocultar el código fuente de un programa para dificultar su análisis o ingeniería inversa",
+    "c) Dividir el tráfico de red en segmentos cifrados",
+    "d) Proteger certificados con tokens físicos"
+  ],
+  correcta: "b) Ocultar el código fuente de un programa para dificultar su análisis o ingeniería inversa",
+  justificacion: "La obfuscación es una técnica usada en software para dificultar la comprensión del código."
+},
+{
+  pregunta: "El 'principio de disponibilidad' en la seguridad de la información implica que:",
+  opciones: [
+    "a) Los datos estén cifrados en reposo",
+    "b) La información esté accesible cuando sea necesaria por los usuarios autorizados",
+    "c) Se preserve la confidencialidad en todos los dispositivos",
+    "d) Se generen múltiples copias de los datos cada hora"
+  ],
+  correcta: "b) La información esté accesible cuando sea necesaria por los usuarios autorizados",
+  justificacion: "La disponibilidad es uno de los tres pilares básicos de la seguridad de la información."
+},
+{
+  pregunta: "El ataque 'Cross-Site Scripting' (XSS) permite al atacante:",
+  opciones: [
+    "a) Insertar código que será ejecutado por la víctima al visitar una web vulnerable",
+    "b) Borrar archivos alojados en servidores remotos",
+    "c) Descifrar certificados electrónicos cualificados",
+    "d) Alterar el reloj del sistema electrónico"
+  ],
+  correcta: "a) Insertar código que será ejecutado por la víctima al visitar una web vulnerable",
+  justificacion: "El XSS se basa en introducir scripts maliciosos en páginas web legítimas."
+},
+{
+  pregunta: "La técnica de 'whaling' es un tipo de:",
+  opciones: [
+    "a) Intento de acceso físico no autorizado",
+    "b) Ataque de phishing dirigido a altos ejecutivos",
+    "c) Vulnerabilidad de credenciales en equipo compartido",
+    "d) Falla de sincronización DNS"
+  ],
+  correcta: "b) Ataque de phishing dirigido a altos ejecutivos",
+  justificacion: "El whaling es un spear phishing dirigido a personas de alto nivel dentro de una organización."
+},
+{
+  pregunta: "El término 'doble factor de autenticación' implica:",
+  opciones: [
+    "a) Dos contraseñas introducidas en momentos distintos",
+    "b) Dos métodos de verificación combinados como contraseña + código o biometría",
+    "c) Dos usuarios conectados simultáneamente al sistema",
+    "d) Dos auditorías diarias de seguridad"
+  ],
+  correcta: "b) Dos métodos de verificación combinados como contraseña + código o biometría",
+  justificacion: "El doble factor es una medida común para reforzar autenticación."
+},
+{
+  pregunta: "¿Cuál de los siguientes elementos no es obligatorio según la política de gestión de incidencias?",
+  opciones: [
+    "a) Registro de incidente y priorización",
+    "b) Notificación al responsable de protección de datos",
+    "c) Comunicación automática a medios de comunicación",
+    "d) Acciones de mitigación y recuperación"
+  ],
+  correcta: "c) Comunicación automática a medios de comunicación",
+  justificacion: "La comunicación al público no es automática, solo en ciertos casos de impacto o obligación legal."
+},
+{
+  pregunta: "El cifrado 'AES' es conocido por:",
+  opciones: [
+    "a) Ser inseguro ante ataques por fuerza bruta",
+    "b) Ser el estándar de cifrado simétrico más utilizado en sistemas actuales",
+    "c) Requerir el uso de claves públicas exclusivamente",
+    "d) Ser de uso obligatorio en certificados digitales cualificados"
+  ],
+  correcta: "b) Ser el estándar de cifrado simétrico más utilizado en sistemas actuales",
+  justificacion: "AES es robusto y utilizado en múltiples niveles de seguridad, incluyendo gubernamental."
+},
+{
+  pregunta: "Una herramienta como 'Wireshark' sirve para:",
+  opciones: [
+    "a) Gestionar certificados en un sistema operativo",
+    "b) Capturar, analizar y visualizar el tráfico en una red",
+    "c) Crear copias de seguridad en servidores remotos",
+    "d) Desactivar el acceso de usuarios no autorizados"
+  ],
+  correcta: "b) Capturar, analizar y visualizar el tráfico en una red",
+  justificacion: "Wireshark es un analizador de protocolos de red."
+},
+{
+  pregunta: "El 'archivo electrónico único' en la administración pública se utiliza para:",
+  opciones: [
+    "a) Almacenar copias físicas de documentos en un único servidor",
+    "b) Conservar expedientes en soporte digital con todas las actuaciones relacionadas",
+    "c) Acceder a las redes privadas mediante certificados electrónicos",
+    "d) Firmar digitalmente toda la documentación sin excepción"
+  ],
+  correcta: "b) Conservar expedientes en soporte digital con todas las actuaciones relacionadas",
+  justificacion: "El archivo único garantiza la integridad, conservación y accesibilidad de los expedientes electrónicos."
+},
+{
+  pregunta: "La 'identidad digital' puede incluir entre otros elementos:",
+  opciones: [
+    "a) La firma manuscrita de un testigo",
+    "b) Credenciales electrónicas, metadatos y comportamiento en línea",
+    "c) Solo datos biométricos irrefutables",
+    "d) Copias de certificados físicos en soporte papel"
+  ],
+  correcta: "b) Credenciales electrónicas, metadatos y comportamiento en línea",
+  justificacion: "La identidad digital se construye con múltiples elementos que permiten identificar a una persona en la red."
+},
+{
+  pregunta: "¿Cuál de los siguientes es un principio del Esquema Nacional de Interoperabilidad?",
+  opciones: [
+    "a) Uso exclusivo de aplicaciones propietarias",
+    "b) Simplificación administrativa y cooperación entre administraciones",
+    "c) Prohibición de utilización de metadatos",
+    "d) Cifrado obligatorio de toda la información en reposo"
+  ],
+  correcta: "b) Simplificación administrativa y cooperación entre administraciones",
+  justificacion: "El ENI fomenta la interoperabilidad y cooperación entre organismos públicos."
+},
+{
+  pregunta: "Un 'token de autenticación' generalmente:",
+  opciones: [
+    "a) Se recibe por correo postal para comprobar tu identidad",
+    "b) Genera códigos dinámicos temporales como segundo factor de verificación",
+    "c) Sustituye la firma manuscrita en contratos superiores a un año",
+    "d) Se utiliza como documento de identificación oficial único"
+  ],
+  correcta: "b) Genera códigos dinámicos temporales como segundo factor de verificación",
+  justificacion: "Los tokens son una herramienta habitual en sistemas de autenticación multifactor."
+},
+{
+  pregunta: "El *Plan Digital 2025* del Gobierno de España incluye, entre sus objetivos principales:",
+  opciones: [
+    "a) Desconectar internet en zonas rurales para ampliar infraestructuras seguras",
+    "b) Acelerar el despliegue del 5G y reforzar la ciberseguridad",
+    "c) Sustituir la firma digital por la física en procesos gubernamentales",
+    "d) Crear centros de datos solo para usos militares"
+  ],
+  correcta: "b) Acelerar el despliegue del 5G y reforzar la ciberseguridad",
+  justificacion: "El Plan Digital 2025 trata de impulsar la modernización digital del país y aumentar la resiliencia."
+},
+{
+  pregunta: "El 'Registro Nacional de Identidad Digital' tiene como finalidad:",
+  opciones: [
+    "a) Guardar contraseñas personales cifradas",
+    "b) Gestionar las identidades electrónicas y los certificados de ciudadanos y empresas",
+    "c) Reemplazar los registros civiles en casos de fraude",
+    "d) Automatizar la custodia de escritos judiciales"
+  ],
+  correcta: "b) Gestionar las identidades electrónicas y los certificados de ciudadanos y empresas",
+  justificacion: "Este registro facilita la gestión centralizada de identidades digitales y sus certificados asociados."
+},
+{
+  pregunta: "El 'Certificado Electrónico de Empleado Público' permite:",
+  opciones: [
+    "a) Acceder sin restricción a cualquier información de la Administración",
+    "b) Identificarse y firmar electrónicamente en nombre de la administración",
+    "c) Crear cuentas personales de correo en servidores públicos",
+    "d) Evitar la trazabilidad de acciones en sistemas públicos"
+  ],
+  correcta: "b) Identificarse y firmar electrónicamente en nombre de la administración",
+  justificacion: "El certificado de empleado público vincula al usuario con su cargo para la firma y autenticación."
+},
+{
+  pregunta: "La 'firma electrónica simple' se caracteriza por:",
+  opciones: [
+    "a) No tener valor legal en ningún caso",
+    "b) Ser fácil de falsificar, por lo que está prohibida por la UE",
+    "c) Ser una firma electrónica sin alto nivel de seguridad, aunque reconocida legalmente",
+    "d) Requerir siempre un dispositivo criptográfico seguro"
+  ],
+  correcta: "c) Ser una firma electrónica sin alto nivel de seguridad, aunque reconocida legalmente",
+  justificacion: "La firma simple puede ser válida en ciertos contextos, aunque tiene un nivel de seguridad limitado."
+},
+{
+  pregunta: "El *Centro Criptológico Nacional* (CCN) es responsable de:",
+  opciones: [
+    "a) La protección de redes privadas empresariales",
+    "b) Establecer directrices de ciberseguridad en redes de la administración pública española",
+    "c) Regular los planes de estudios sobre ciberseguridad",
+    "d) Emitir sentencias de delitos informáticos"
+  ],
+  correcta: "b) Establecer directrices de ciberseguridad en redes de la administración pública española",
+  justificacion: "El CCN depende del CNI y supervisa la seguridad en las redes del sector público."
+},
+{
+  pregunta: "Una característica clave del *cloud computing* es:",
+  opciones: [
+    "a) La necesidad de gestionar hardware local propio",
+    "b) La disponibilidad de recursos escalables bajo demanda vía internet",
+    "c) La obligación de usar redes privadas de pago",
+    "d) La prohibición de acceso remoto mediante autenticación"
+  ],
+  correcta: "b) La disponibilidad de recursos escalables bajo demanda vía internet",
+  justificacion: "La nube permite contratar recursos (almacenamiento, procesamiento) según sea necesario."
+},
+{
+  pregunta: "El ataque *Social Engineering Toolkit* (SET) permite:",
+  opciones: [
+    "a) Ejecutar pruebas automatizadas de ingeniería social para auditorías de seguridad",
+    "b) Generar certificados electrónicos para firmas masivas",
+    "c) Crear herramientas de bloqueo de ataques web",
+    "d) Monitorear cambios en servidores remotos utilizando solo firmas SHA-256"
+  ],
+  correcta: "a) Ejecutar pruebas automatizadas de ingeniería social para auditorías de seguridad",
+  justificacion: "SET es una herramienta usada por auditores para simular ataques de ingeniería social."
+},
+{
+  pregunta: "En la gestión de la seguridad de la información, el concepto 'resiliencia' se refiere a:",
+  opciones: [
+    "a) La capacidad del sistema para recuperarse rápidamente tras un incidente",
+    "b) La eliminación permanente de todos los riesgos detectados",
+    "c) La protección de datos sin encriptarlos",
+    "d) La reducción de la velocidad de respuesta del sistema ante ataques"
+  ],
+  correcta: "a) La capacidad del sistema para recuperarse rápidamente tras un incidente",
+  justificacion: "La resiliencia es clave para garantizar continuidad y minimizar impactos."
+},
+{
+  pregunta: "El 'Pseudocódigo malicioso' es una técnica que se utiliza para:",
+  opciones: [
+    "a) Ocultar el código malicioso bajo apariencia legítima",
+    "b) Mejorar la lectura del código fuente para los analistas forenses",
+    "c) Garantizar integridad de documentos mediante simbolización",
+    "d) Evitar la carga de malware en dispositivos móviles"
+  ],
+  correcta: "a) Ocultar el código malicioso bajo apariencia legítima",
+  justificacion: "El pseudocódigo malicioso puede camuflar malware, dificultando su detección."
+},
+{
+  pregunta: "El término 'Data Breach' se define como:",
+  opciones: [
+    "a) La pérdida de respaldo físico por caída del servidor",
+    "b) El acceso, divulgación o uso no autorizado de datos personales",
+    "c) Un error de formato al generar certificados digitales",
+    "d) La interrupción de las comunicaciones por mantenimiento"
+  ],
+  correcta: "b) El acceso, divulgación o uso no autorizado de datos personales",
+  justificacion: "Según el RGPD, un Data Breach implica exposición ilegal de datos personales."
+},
+{
+  pregunta: "¿Qué técnica se utiliza para verificar que un archivo no ha sido alterado?",
+  opciones: [
+    "a) Encriptación simétrica",
+    "b) Generación de un hash o suma de comprobación",
+    "c) Firma manuscrita registrada",
+    "d) Anonimización de datos"
+  ],
+  correcta: "b) Generación de un hash o suma de comprobación",
+  justificacion: "Los algoritmos hash permiten comprobar la integridad comparando el valor original con uno nuevo."
+},
+{
+  pregunta: "El 'Esquema Nacional de Seguridad' (ENS) establece como una obligación general:",
+  opciones: [
+    "a) Organizar jornadas de ciberseguridad obligatorias para todos los empleados",
+    "b) Adoptar medidas de seguridad escalables según los riesgos asociados al sistema",
+    "c) Desarrollar aplicaciones sin conexión a internet",
+    "d) Mantener los sistemas sin actualizaciones para evitar incompatibilidades"
+  ],
+  correcta: "b) Adoptar medidas de seguridad escalables según los riesgos asociados al sistema",
+  justificacion: "El ENS establece medidas proporcionales al riesgo, no medidas universales sin distinción."
+},
+{
+  pregunta: "Un certificado de 'sello electrónico cualificado' sirve para:",
+  opciones: [
+    "a) Firmar de forma manuscrita documentos con apoyo digital",
+    "b) Garantizar el origen y la integridad de documentos firmados automáticamente por personas jurídicas",
+    "c) Cifrar archivos generados por entidades públicas solamente",
+    "d) Certificar la presencia de una persona en un local físico"
+  ],
+  correcta: "b) Garantizar el origen y la integridad de documentos firmados automáticamente por personas jurídicas",
+  justificacion: "Este sello sustituye la firma de persona física para automatizaciones legales de empresas y administraciones."
+},
+{
+  pregunta: "La herramienta 'Nmap' se utiliza principalmente para:",
+  opciones: [
+    "a) Monitorear accesos remotos siguiendo un log de sesiones",
+    "b) Escanear redes para identificar dispositivos y puertos abiertos",
+    "c) Extraer claves de cifrado mediante fuerza bruta",
+    "d) Simular tráfico cifrado exclusivo de tecnología militar"
+  ],
+  correcta: "b) Escanear redes para identificar dispositivos y puertos abiertos",
+  justificacion: "Nmap es una herramienta poderosa para mapear redes, detectar vulnerabilidades y servicios activos."
+},
+{
+  pregunta: "Según el RGPD, los datos personales deben almacenarse:",
+  opciones: [
+    "a) Por un tiempo indefinido si están cifrados",
+    "b) El mínimo tiempo necesario para cumplir la finalidad del tratamiento",
+    "c) Siempre en almacenamiento en la nube para facilitar el control",
+    "d) En cualquier formato siempre que se conserven íntegros"
+  ],
+  correcta: "b) El mínimo tiempo necesario para cumplir la finalidad del tratamiento",
+  justificacion: "El principio de limitación del plazo obliga a no almacenar datos más allá de su necesidad."
+},
+{
+  pregunta: "¿Cuál de las siguientes afirmaciones sobre el 'Esquema Nacional de Interoperabilidad' es correcta?",
+  opciones: [
+    "a) Prohíbe la reutilización de datos entre administraciones",
+    "b) Facilita el intercambio de datos y servicios entre administraciones de forma segura y eficaz",
+    "c) Solo se aplica en sitios web privados",
+    "d) Elimina los metadatos de todos los documentos electrónicos"
+  ],
+  correcta: "b) Facilita el intercambio de datos y servicios entre administraciones de forma segura y eficaz",
+  justificacion: "El ENI fomenta interoperabilidad técnica, semántica y organizativa en la Administración."
+},
+];
+
+let totalPreguntasRenderizadas = 0;
+
+function barajar(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+}
+
+function setProgress(current, total) {
+  const bar = document.getElementById('progressBar');
+  const pct = total > 0 ? Math.round((current / total) * 100) : 0;
+  bar.style.width = pct + '%';
+  bar.title = pct + '%';
+}
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+// Carga el test con preguntas y respuestas aleatorias
+function cargarTest() {
+  const numPreguntas = parseInt(document.getElementById('numPreguntas').value);
+  const testForm = document.getElementById('testForm');
+  const progressBar = document.getElementById('progressBar');
+  const testResult = document.getElementById('testResult');
+
+  testForm.innerHTML = '';
+  testResult.innerHTML = '';
+  progressBar.style.width = '0%';
+
+  if (!preguntasBanco || preguntasBanco.length === 0) {
+    testForm.innerHTML = '<p style="color:red;font-weight:bold;">⚠️ No hay preguntas en el banco.</p>';
+    return;
+  }
+
+  const letras = ['a)', 'b)', 'c)', 'd)', 'e)', 'f)']; // por si hay más de 4 opciones
+  const preguntasSeleccionadas = shuffle([...preguntasBanco]).slice(0, numPreguntas);
+
+  preguntasSeleccionadas.forEach((preguntaObj, index) => {
+    // Mezclamos las opciones (pero vamos a limpiar su prefijo "a) " si lo llevan)
+    const opcionesMezcladas = shuffle([...preguntaObj.opciones]);
+
+    // Convertimos cada opción en un objeto { texto, esCorrecta }
+    const opcionesObj = opcionesMezcladas.map(opcion => {
+      // Limpiar prefijos como "a) ", "b) " si existen
+      const textoLimpio = opcion.replace(/^[A-Za-z]\)\s*/, '').trim();
+      const esCorrecta = opcion === preguntaObj.correcta || textoLimpio === preguntaObj.correcta.replace(/^[A-Za-z]\)\s*/, '').trim();
+      return { texto: textoLimpio, esCorrecta };
+    });
+
+    // Renderizamos las opciones asignando letras según la posición (letras fijas)
+    const opcionesHTML = opcionesObj.map((opt, optIndex) => {
+      const marcaCorrecta = opt.esCorrecta ? 'true' : 'false';
+      const letra = letras[optIndex] || `${optIndex + 1})`; // fallback si hay >6 opciones
+      // No incluimos la letra dentro del texto de la opción; la mostramos separada
+      return `
+        <label class="option">
+          <input type="radio" name="pregunta${index}" value="${opt.texto.replace(/"/g, '&quot;')}" data-correct="${marcaCorrecta}">
+          <span style="font-weight:700; margin-right:10px; color:var(--muted)">${letra}</span>
+          ${opt.texto}
+        </label>
+      `;
+    }).join('');
+
+    const preguntaHTML = `
+      <div class="question">
+        <div class="q-head">
+          <span class="q-num">${index + 1}.</span>
+          <p class="q-text">${preguntaObj.pregunta}</p>
+        </div>
+        <div class="options">
+          ${opcionesHTML}
+        </div>
+        <div class="justification muted" style="display:none;">
+          <span class="correct">✔ ${preguntaObj.correcta.replace(/^[A-Za-z]\)\s*/, '')}</span><br>
+          ${preguntaObj.justificacion}
+        </div>
+      </div>
+    `;
+    testForm.insertAdjacentHTML('beforeend', preguntaHTML);
+  });
+
+  // Añadir botón corregir (evitar duplicados)
+  const botonCorregirExistente = Array.from(testForm.getElementsByTagName('button')).find(b => b.textContent === 'Corregir');
+  if (!botonCorregirExistente) {
+    const botonCorregir = document.createElement('button');
+    botonCorregir.type = 'button';
+    botonCorregir.className = 'btn success';
+    botonCorregir.textContent = 'Corregir';
+    botonCorregir.onclick = () => corregirTest();
+    testForm.appendChild(botonCorregir);
+  }
+}
+
+
+function corregirTest() {
+  const preguntas = document.querySelectorAll('.question');
+  let aciertos = 0;
+
+  preguntas.forEach((pregunta) => {
+    const radios = pregunta.querySelectorAll('input[type="radio"]');
+    const labels = pregunta.querySelectorAll('.option');
+    const justificacion = pregunta.querySelector('.justification');
+    let seleccionCorrecta = false;
+
+    // Limpiar clases anteriores
+    labels.forEach(l => {
+      l.classList.remove('correct-option', 'wrong-option');
+      const checkmark = l.querySelector('.checkmark');
+      if (checkmark) checkmark.remove();
+    });
+
+    radios.forEach(radio => {
+      const label = radio.closest('.option');
+      if (radio.checked && radio.dataset.correct === 'true') {
+        seleccionCorrecta = true;
+      }
+    });
+
+    radios.forEach(radio => {
+      const label = radio.closest('.option');
+
+      if (radio.dataset.correct === 'true') {
+        // Mostrar check verde en la opción correcta
+        label.classList.add('correct-option');
+        label.insertAdjacentHTML('afterbegin', `<span class="checkmark" style="color:#059669;font-weight:700;">✔</span>`);
+      }
+
+      if (radio.checked && radio.dataset.correct !== 'true') {
+        // Mostrar X roja en la opción elegida incorrecta
+        label.classList.add('wrong-option');
+        label.insertAdjacentHTML('afterbegin', `<span class="checkmark" style="color:#dc2626;font-weight:700;">✘</span>`);
+      }
+    });
+
+    // Mostrar la justificación al final
+    if (justificacion) {
+      justificacion.style.display = 'block';
+      justificacion.innerHTML = `
+        ${seleccionCorrecta 
+          ? `<span class="correct">✔ ${pregunta.querySelector('input[data-correct="true"]').value}</span><br>` 
+          : `<span class="incorrect">✘ ${pregunta.querySelector('input[data-correct="true"]').value}</span><br>`
+        }
+        ${pregunta.querySelector('.justification').textContent || ''}
+      `;
+    }
+
+    if (seleccionCorrecta) aciertos++;
+  });
+
+  // Mostrar resultado final
+  const total = preguntas.length;
+  const porcentaje = Math.round((aciertos / total) * 100);
+  const testResult = document.getElementById('testResult');
+  testResult.innerHTML = `
+    <div class="result-card">
+      <p class="score">Has acertado ${aciertos} de ${total} preguntas (${porcentaje}%).</p>
+      <p class="muted">${porcentaje >= 70 ? "✅ ¡Buen trabajo!" : "❌ Puedes mejorar."}</p>
+    </div>
+  `;
+  document.getElementById('progressBar').style.width = '100%';
+}
+
+
+function reiniciarTest() {
+  document.getElementById('testForm').innerHTML = '';
+  document.getElementById('testResult').innerHTML = '';
+  setProgress(0, 0);
+}
+  // ==========================
+// 🔹 TEMPORIZADOR CONFIGURABLE
+// ==========================
+
+// Variables del temporizador
+let tiempoTotal = 0;
+let tiempoRestante = 0;
+let temporizadorInterval;
+
+// Crear selector de tiempo en el panel de controles
+const selectTiempo = document.createElement('select');
+selectTiempo.id = 'tiempoSeleccionado';
+selectTiempo.innerHTML = `
+  <option value="0">Sin límite</option>
+  <option value="5">5 minutos</option>
+  <option value="10" selected>10 minutos</option>
+  <option value="15">15 minutos</option>
+  <option value="20">20 minutos</option>
+  <option value="30">30 minutos</option>
+  <option value="40">40 minutos</option>
+  <option value="50">50 minutos</option>
+  <option value="60">60 minutos</option>
+`;
+const labelTiempo = document.createElement('label');
+labelTiempo.htmlFor = 'tiempoSeleccionado';
+labelTiempo.textContent = 'Tiempo límite:';
+const controlsDiv = document.querySelector('.controls');
+controlsDiv.insertBefore(labelTiempo, controlsDiv.children[2]);
+controlsDiv.insertBefore(selectTiempo, controlsDiv.children[3]);
+
+// Crear elemento visual del temporizador
+const temporizadorDiv = document.createElement('div');
+temporizadorDiv.id = 'temporizador';
+temporizadorDiv.style.textAlign = 'center';
+temporizadorDiv.style.fontSize = '18px';
+temporizadorDiv.style.fontWeight = '700';
+temporizadorDiv.style.color = '#2563eb';
+temporizadorDiv.style.marginTop = '12px';
+controlsDiv.appendChild(temporizadorDiv);
+
+// Mostrar tiempo en formato mm:ss
+function mostrarTiempo() {
+  let min = Math.floor(tiempoRestante / 60);
+  let seg = tiempoRestante % 60;
+  temporizadorDiv.textContent = `⏳ Tiempo restante: ${min}:${seg.toString().padStart(2, '0')}`;
+}
+
+// Iniciar temporizador
+function iniciarTemporizador() {
+  const minutosSeleccionados = parseInt(document.getElementById('tiempoSeleccionado').value);
+  if (minutosSeleccionados === 0) {
+    temporizadorDiv.textContent = '⏳ Sin límite de tiempo';
+    return;
+  }
+
+  tiempoTotal = minutosSeleccionados * 60;
+  tiempoRestante = tiempoTotal;
+  mostrarTiempo();
+
+  temporizadorInterval = setInterval(() => {
+    tiempoRestante--;
+    mostrarTiempo();
+    if (tiempoRestante <= 0) {
+      clearInterval(temporizadorInterval);
+      temporizadorDiv.textContent = '⏰ ¡Tiempo agotado!';
+      finalizarTestPorTiempo();
+    }
+  }, 1000);
+}
+
+// Detener temporizador
+function detenerTemporizador() {
+  clearInterval(temporizadorInterval);
+}
+
+// Modificar función cargarTest para que inicie el temporizador
+const originalCargarTest = cargarTest;
+cargarTest = function() {
+  originalCargarTest();
+  detenerTemporizador(); // Por si se reinicia
+  iniciarTemporizador();
+};
+
+// Al finalizar el test manualmente (botón Enviar)
+const originalEvaluarTest = evaluarTest;
+evaluarTest = function() {
+  detenerTemporizador(); // Detiene el contador al pulsar Enviar
+  originalEvaluarTest();
+};
+
+// Cuando el tiempo se agota automáticamente
+function finalizarTestPorTiempo() {
+  // Evita ejecuciones dobles
+  if (window.__finalizadoPorTiempo__) return;
+  window.__finalizadoPorTiempo__ = true;
+
+  detenerTemporizador();
+  if (temporizadorDiv) temporizadorDiv.textContent = '⏰ ¡Tiempo agotado! Pulsa "Enviar" para corregir.';
+
+  // 🔒 Bloquear todas las respuestas
+  document.querySelectorAll('input[type="radio"]').forEach(r => {
+    r.disabled = true;
+    const opt = r.closest('.option');
+    if (opt) {
+      opt.style.opacity = '0.6';
+      opt.style.pointerEvents = 'none';
+    }
+  });
+
+  // ✅ Dejar el botón "Enviar" activo y hacerlo destacar en verde
+  const btnEnviar = document.querySelector('button.btn.success, button[type="submit"]');
+  if (btnEnviar) {
+    btnEnviar.disabled = false;
+    btnEnviar.style.opacity = '1';
+    btnEnviar.style.cursor = 'pointer';
+
+    // 💚 Efecto parpadeo verde suave
+    btnEnviar.style.animation = 'blinkGreen 1.2s infinite';
+    btnEnviar.style.transition = 'background-color 0.3s ease';
+    btnEnviar.style.backgroundColor = '#22c55e'; // verde suave (Tailwind: green-500)
+    btnEnviar.style.color = 'white';
+
+    // Inyectar animación CSS si no existe
+    if (!document.getElementById('blinkGreen-style')) {
+      const style = document.createElement('style');
+      style.id = 'blinkGreen-style';
+      style.textContent = `
+        @keyframes blinkGreen {
+          0%, 100% { background-color: #22c55e; }
+          50% { background-color: #86efac; } /* verde claro (green-300) */
+        }
+      `;
+      document.head.appendChild(style);
+    }
+  }
+
+  // 🔄 Mantener botón "Reiniciar" activo
+  const btnReiniciar = document.querySelector('button.btn.secondary');
+  if (btnReiniciar) {
+    btnReiniciar.disabled = false;
+  }
+}
+</script>
+</body>
+</html>
