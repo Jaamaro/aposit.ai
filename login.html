@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Acceso restringido</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f4f4f4;
+    }
+    .login-box {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    input {
+      padding: 10px;
+      width: 100%;
+      margin-bottom: 10px;
+    }
+    button {
+      padding: 10px;
+      width: 100%;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-box">
+    <h2>🔐 Acceso</h2>
+    <input type="password" id="code" placeholder="Introduce tu clave de acceso" />
+    <button onclick="checkCode()">Entrar</button>
+    <p id="error" style="color: red; display: none;">Clave incorrecta</p>
+  </div>
+
+  <script>
+    function checkCode() {
+      const validCode = "rd4/2015"; // Cambia esto por tu código
+      const userCode = document.getElementById("code").value;
+      if (userCode === validCode) {
+        // Guardar acceso en la sesión (para que no vuelva a pedir código hasta que cierre navegador)
+        sessionStorage.setItem("accesoPermitido", "true");
+        window.location = "index.html"; // Cambia esto a tu página principal
+      } else {
+        document.getElementById("error").style.display = "block";
+      }
+    }
+  </script>
+</body>
+</html>
