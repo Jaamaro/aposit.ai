@@ -1,0 +1,2246 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test de Fuerzas y Cuerpos de Seguridad</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --card: #ffffff;
+      --text: #111827;
+      --muted: #6b7280;
+      --primary: #2563eb;
+      --primary-dark: #1e40af;
+      --success: #059669;
+      --danger: #dc2626;
+      --ring: rgba(37, 99, 235, 0.25);
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: 'Roboto', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      padding: 24px;
+    }
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+    header.hero {
+      text-align: center;
+      margin-bottom: 16px;
+    }
+    .title {
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--primary-dark);
+      margin: 0 0 8px;
+    }
+    .subtitle {
+      color: var(--muted);
+      margin: 0;
+    }
+    .controls {
+      background: var(--card);
+      border-radius: 14px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.06);
+      padding: 16px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      justify-content: center;
+      position: sticky;
+      top: 12px;
+      z-index: 5;
+    }
+    .controls label { font-weight: 500; }
+    select {
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid #e5e7eb;
+      background: #fff;
+      outline: none;
+      transition: box-shadow .2s, border-color .2s;
+    }
+    select:focus { border-color: var(--primary); box-shadow: 0 0 0 4px var(--ring); }
+
+    .btn {
+      cursor: pointer;
+      border: none;
+      border-radius: 10px;
+      padding: 12px 18px;
+      font-weight: 700;
+      transition: transform .15s, background .2s, box-shadow .2s;
+      color: #fff;
+      background: var(--primary);
+      box-shadow: 0 6px 14px rgba(37,99,235,.2);
+    }
+    .btn:hover { transform: translateY(-1px); background: var(--primary-dark); }
+    .btn.secondary { background: #6b7280; }
+    .btn.secondary:hover { background: #374151; }
+    .btn.success { background: var(--success); }
+    .btn.success:hover { background: #047857; }
+    .btn.danger { background: var(--danger); }
+    .btn.danger:hover { background: #b91c1c; }
+
+    .progress {
+      width: 100%;
+      height: 10px;
+      background: #e5e7eb;
+      border-radius: 999px;
+      overflow: hidden;
+      margin-top: 8px;
+    }
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--primary), #60a5fa);
+      transition: width .3s ease;
+    }
+
+    .question {
+      margin: 14px 0;
+      padding: 18px;
+      background: var(--card);
+      border-radius: 14px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.06);
+    }
+    .q-head {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+    }
+    .q-num {
+      font-weight: 800;
+      color: var(--primary-dark);
+    }
+    .q-text { margin: 0; }
+
+    .options { margin-top: 10px; display: grid; gap: 8px; }
+    .option {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid #e5e7eb;
+      background: #fff;
+      transition: background .15s, border-color .15s, box-shadow .15s;
+      cursor: pointer;
+    }
+    .option input { transform: scale(1.2); }
+    .option:hover { background: #f9fafb; border-color: #d1d5db; }
+    .option.is-selected { box-shadow: 0 0 0 4px var(--ring); border-color: var(--primary); }
+
+    .justification {
+      margin-top: 10px; color: var(--muted);
+    }
+    .correct { color: var(--success); font-weight: 700; }
+    .incorrect { color: var(--danger); font-weight: 700; }
+
+    .option.correct-option {
+      border-color: rgba(5,150,105,.4);
+      background: #ecfdf5;
+    }
+    .option.wrong-option {
+      border-color: rgba(220,38,38,.4);
+      background: #fef2f2;
+    }
+
+    .result-card {
+      margin: 18px 0;
+      padding: 16px;
+      background: var(--card);
+      border-radius: 14px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.06);
+      text-align: center;
+    }
+    .score {
+      font-size: 22px;
+      font-weight: 800;
+      margin: 8px 0;
+    }
+    .muted { color: var(--muted); }
+    footer { text-align: center; margin-top: 24px; color: var(--muted); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="hero">
+      <h1 class="title">Test de Fuerzas y Cuerpos de Seguridad</h1>
+      <p class="subtitle">Selecciona cuántas preguntas quieres y pulsa <strong>Comenzar</strong>.</p>
+    </header>
+
+    <div class="controls">
+      <label for="numPreguntas">Número de preguntas:</label>
+      <select id="numPreguntas">
+        <option value="10">10</option>
+        <option value="20">20</option>
+        <option value="30">30</option>
+        <option value="40">40</option>
+        <option value="50" selected>50</option>
+      </select>
+      <button class="btn" type="button" onclick="cargarTest()">Comenzar</button>
+      <button class="btn secondary" type="button" onclick="reiniciarTest()">Reiniciar</button>
+      <div class="progress" style="flex-basis: 100%;">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+    </div>
+
+    <form id="testForm"></form>
+
+    <div id="testResult"></div>
+    <footer>© Test de práctica — Fuerzas y Cuerpos de Seguridad</footer>
+  </div>
+
+<script>
+const preguntasBanco = [
+{
+  pregunta: "Según el artículo 1 de la Ley Orgánica 2/1986, ¿quién es responsable del mantenimiento de la seguridad pública?",
+  opciones: ["a) Solo el Gobierno de la Nación.", "b) El Gobierno de la Nación y las Cortes Generales.", "c) El Gobierno de la Nación, las Comunidades Autónomas y las Corporaciones Locales.", "d) Solo los Cuerpos de Seguridad del Estado."],
+  correcta: "c) El Gobierno de la Nación, las Comunidades Autónomas y las Corporaciones Locales.",
+  justificacion: "El artículo 1 establece que el mantenimiento de la seguridad pública corresponde al Gobierno de la Nación, Comunidades Autónomas y Corporaciones Locales."
+},
+{
+  pregunta: "¿Cuál de las siguientes fuerzas NO se incluye dentro de las Fuerzas y Cuerpos de Seguridad según el artículo 2 de la LO 2/1986?",
+  opciones: ["a) Guardia Civil.", "b) Policía Nacional.", "c) Policía Portuaria.", "d) Policías Locales."],
+  correcta: "c) Policía Portuaria.",
+  justificacion: "La Policía Portuaria no forma parte de las Fuerzas y Cuerpos de Seguridad recogidas en el artículo 2 de la LO 2/1986."
+},
+{
+  pregunta: "La Ley Orgánica 2/1986 establece que los principios básicos de actuación están regulados en el artículo:",
+  opciones: ["a) 3.", "b) 4.", "c) 5.", "d) 6."],
+  correcta: "c) 5.",
+  justificacion: "El artículo 5 de la LO 2/1986 contiene los principios básicos de actuación de los cuerpos policiales."
+},
+{
+  pregunta: "¿Cuál de las siguientes NO es una misión común de las Fuerzas y Cuerpos de Seguridad según el artículo 11 de la LO 2/1986?",
+  opciones: ["a) Velar por el cumplimiento de las leyes.", "b) Prevenir la comisión de actos delictivos.", "c) Ejercer funciones de policía judicial.", "d) Dirigir el proceso penal."],
+  correcta: "d) Dirigir el proceso penal.",
+  justificacion: "La dirección del proceso penal corresponde al Poder Judicial y el Ministerio Fiscal, no a los cuerpos policiales."
+},
+{
+  pregunta: "Uno de los principios básicos de actuación según la LO 2/1986 es:",
+  opciones: ["a) Mantener la seguridad ciudadana por encima de la legalidad.", "b) Actuar con integridad y dignidad.", "c) Sujetarse siempre a la autoridad política.", "d) Ejecutar órdenes sin cuestionarlas."],
+  correcta: "b) Actuar con integridad y dignidad.",
+  justificacion: "El artículo 5 incluye la integridad y dignidad como principio básico en el apartado b)."
+},
+{
+  pregunta: "Respecto al principio de 'secreto profesional' recogido en la LO 2/1986, este exige que los agentes:",
+  opciones: ["a) Faciliten siempre la información a cualquier autoridad.", "b) No difundan hechos o informaciones que lleguen a su conocimiento por razón de su cargo.", "c) Declaren solo ante autoridades políticas.", "d) No guarden silencio ante los medios de comunicación."],
+  correcta: "b) No difundan hechos o informaciones que lleguen a su conocimiento por razón de su cargo.",
+  justificacion: "El secreto profesional obliga a proteger la confidencialidad de la información obtenida en servicio."
+},
+{
+  pregunta: "La LO 2/1986 establece que las Fuerzas y Cuerpos de Seguridad actuarán con especial colaboración con:",
+  opciones: ["a) El Defensor del Pueblo.", "b) La Administración tributaria.", "c) La Administración de Justicia.", "d) Los Ayuntamientos."],
+  correcta: "c) La Administración de Justicia.",
+  justificacion: "Según el artículo 5, las fuerzas de seguridad deben colaborar especialmente con las autoridades judiciales."
+},
+{
+  pregunta: "¿Conforme a la LO 2/1986, qué cuerpo está obligado a actuar en todo el territorio nacional?",
+  opciones: ["a) Policía Local.", "b) Policía Nacional.", "c) Guardia Civil.", "d) Ambas b) y c)."],
+  correcta: "d) Ambas b) y c).",
+  justificacion: "Tanto la Policía Nacional como la Guardia Civil tienen ámbito de actuación nacional."
+},
+{
+  pregunta: "Según la LO 2/1986, la coordinación entre cuerpos policiales corresponde a:",
+  opciones: ["a) El Ministerio de Justicia.", "b) El Ministerio del Interior.", "c) El Tribunal Supremo.", "d) La Fiscalía General del Estado."],
+  correcta: "b) El Ministerio del Interior.",
+  justificacion: "El Ministerio del Interior es el responsable de coordinar las actuaciones entre los cuerpos policiales."
+},
+{
+  pregunta: "¿Cuál de las siguientes competencias corresponde específicamente a las Policías Locales según la LO 2/1986?",
+  opciones: ["a) Investigación de delitos graves.", "b) Policía administrativa en el ámbito municipal.", "c) Protección de altas personalidades del Estado.", "d) Control de fronteras."],
+  correcta: "b) Policía administrativa en el ámbito municipal.",
+  justificacion: "Las Policías Locales ejercen principalmente funciones de policía administrativa a nivel municipal."
+},
+{
+  pregunta: "El artículo 6 de la LO 2/1986 trata sobre:",
+  opciones: ["a) Las disposiciones estatutarias comunes.", "b) El régimen disciplinario.", "c) La dependencia orgánica.", "d) La formación policial."],
+  correcta: "a) Las disposiciones estatutarias comunes.",
+  justificacion: "El artículo 6 establece las disposiciones administrativas comunes para todos los cuerpos policiales."
+},
+{
+  pregunta: "El principio de neutralidad política recogido en el artículo 5 obliga a los agentes a:",
+  opciones: ["a) Abstenerse de cualquier posicionamiento político en el ejercicio de su función.", "b) Defender los intereses del partido en el poder.", "c) Apoyar públicamente las políticas de seguridad del gobierno.", "d) Participar en campañas informativas del Estado."],
+  correcta: "a) Abstenerse de cualquier posicionamiento político en el ejercicio de su función.",
+  justificacion: "La neutralidad política implica que el agente no debe mostrar preferencias políticas durante el servicio."
+},
+{
+  pregunta: "La Guardia Civil y la Policía Nacional dependen orgánicamente de:",
+  opciones: ["a) El Ministerio de Justicia.", "b) El Ministerio de Defensa.", "c) El Ministerio del Interior.", "d) Las Delegaciones del Gobierno."],
+  correcta: "c) El Ministerio del Interior.",
+  justificacion: "Ambos cuerpos dependen orgánicamente del Ministerio del Interior."
+},
+{
+  pregunta: "Según la LO 2/1986, el régimen jurídico de las Policías Autonómicas se basa en:",
+  opciones: ["a) El artículo 104 de la Constitución.", "b) El Estatuto de Autonomía correspondiente y la LO 2/1986.", "c) El artículo 149.1.18 CE.", "d) La Ley Orgánica 1/1992."],
+  correcta: "b) El Estatuto de Autonomía correspondiente y la LO 2/1986.",
+  justificacion: "Las Policías Autonómicas se regulan por sus Estatutos y en el marco de la LO 2/1986."
+},
+{
+  pregunta: "Una de las funciones específicas de la Guardia Civil es:",
+  opciones: ["a) La vigilancia del tráfico encargado por los ayuntamientos.", "b) La investigación de delitos económicos en aduanas.", "c) La vigilancia fiscal del Estado.", "d) El control de pasaportes en aeropuertos."],
+  correcta: "c) La vigilancia fiscal del Estado.",
+  justificacion: "La vigilancia fiscal forma parte de las funciones específicas de la Guardia Civil, según el artículo 12."
+},
+{
+  pregunta: "¿Cuál de los siguientes principios no aparece expresamente en el artículo 5 de la LO 2/1986?",
+  opciones: ["a) Integridad y dignidad.", "b) Colegio profesional.", "c) Secreto profesional.", "d) Relaciones con la comunidad."],
+  correcta: "b) Colegio profesional.",
+  justificacion: "El artículo 5 no menciona la existencia de colegios profesionales para integrantes de los cuerpos."
+},
+{
+  pregunta: "La Policía Nacional tiene encomendada la actuación en:",
+  opciones: ["a) Zonas rurales.", "b) Poblaciones urbanas.", "c) Todo el territorio nacional sin excepción.", "d) Ámbito exclusivamente autonómico."],
+  correcta: "b) Poblaciones urbanas.",
+  justificacion: "Por su naturaleza, la Policía Nacional se despliega principalmente en zonas urbanas."
+},
+{
+  pregunta: "Según la LO 2/1986, ¿cuál es la naturaleza de la Guardia Civil?",
+  opciones: ["a) Civil.", "b) Militar.", "c) Civil con funciones militares.", "d) Policial con dependencia municipal."],
+  correcta: "b) Militar.",
+  justificacion: "La Guardia Civil tiene una naturaleza militar según el artículo 9 de la LO 2/1986."
+},
+{
+  pregunta: "¿Cuál es la finalidad de la coordinación entre Guardia Civil y Policía Nacional según el artículo 12?",
+  opciones: ["a) Garantizar la eficiencia operativa.", "b) Supervisar las actuaciones disciplinarias internas.", "c) Evitar duplicidades en la gestión administrativa.", "d) Reforzar la presencia territorial de la Guardia Civil."],
+  correcta: "a) Garantizar la eficiencia operativa.",
+  justificacion: "La coordinación busca que ambas fuerzas trabajen eficientemente en sus respectivas áreas."
+},
+{
+  pregunta: "Según la LO 2/1986, ¿a quién corresponde la vigilancia del tráfico fuera del casco urbano?",
+  opciones: ["a) Policía Local.", "b) Guardia Civil.", "c) Policía Nacional.", "d) Policías Autonómicas."],
+  correcta: "b) Guardia Civil.",
+  justificacion: "La Guardia Civil tiene encomendada la vigilancia del tráfico en vías interurbanas."
+},
+{
+  pregunta: "El artículo 9 de la LO 2/1986 establece que la Guardia Civil depende orgánicamente del Ministerio:",
+  opciones: ["a) De Justicia.", "b) De Defensa.", "c) Del Interior.", "d) De ambos, Defensa e Interior."],
+  correcta: "d) De ambos, Defensa e Interior.",
+  justificacion: "La Guardia Civil depende del Ministerio de Defensa en sus funciones militares y del Interior en las policiales."
+},
+{
+  pregunta: "La LO 2/1986 dispone que los miembros de las Fuerzas y Cuerpos de Seguridad deben actuar con especial consideración hacia:",
+  opciones: ["a) Los medios de comunicación.", "b) Los representantes políticos.", "c) Los ciudadanos.", "d) Los mandos superiores."],
+  correcta: "c) Los ciudadanos.",
+  justificacion: "El artículo 5 señala que su actuación debe centrarse en la protección y el respeto a los ciudadanos."
+},
+{
+  pregunta: "¿Cuál de los siguientes cuerpos policiales tiene la función de resguardar el orden público en zonas rurales?",
+  opciones: ["a) Policía Local.", "b) Policía Nacional.", "c) Guardia Civil.", "d) Policías Autonómicas."],
+  correcta: "c) Guardia Civil.",
+  justificacion: "La Guardia Civil actúa preferentemente en zonas rurales, según la LO 2/1986."
+},
+{
+  pregunta: "¿Cuál de los siguientes principios está orientado a la confianza y colaboración entre policía y sociedad?",
+  opciones: ["a) Integridad y dignidad.", "b) Relaciones con la comunidad.", "c) Adecuación al ordenamiento jurídico.", "d) Secreto profesional."],
+  correcta: "b) Relaciones con la comunidad.",
+  justificacion: "El artículo 5 incluye este principio para fomentar relaciones positivas con los ciudadanos."
+},
+{
+  pregunta: "En relación con la actuación en materia de extranjería, ¿a quién corresponde principalmente esta competencia según la LO 2/1986?",
+  opciones: ["a) Policía Local.", "b) Policía Nacional.", "c) Guardia Civil.", "d) Todas las anteriores."],
+  correcta: "b) Policía Nacional.",
+  justificacion: "La Policía Nacional tiene asignada la función de control de extranjeros."
+},
+{
+  pregunta: "Las Policías Autonómicas actúan:",
+  opciones: ["a) En todo el territorio nacional.", "b) Solo en el ámbito de su Comunidad Autónoma.", "c) En colaboración con la Policía Local.", "d) Únicamente ante los tribunales de justicia."],
+  correcta: "b) Solo en el ámbito de su Comunidad Autónoma.",
+  justificacion: "Según la LO 2/1986, las competencias de estas policías se limitan a su territorio autonómico."
+},
+{
+  pregunta: "Los agentes de las Fuerzas y Cuerpos de Seguridad deberán identificarse:",
+  opciones: ["a) Siempre al inicio de cualquier intervención.", "b) Solo si son requeridos por el ciudadano.", "c) Durante cada detención policial.", "d) En todo momento y circunstancia durante el servicio."],
+  correcta: "b) Solo si son requeridos por el ciudadano.",
+  justificacion: "El artículo 5 indica que deberán identificarse cuando sean requeridos, siempre que sea compatible con la seguridad."
+},
+{
+  pregunta: "¿Cuál de los siguientes es un principio específico de actuación recogido en el artículo 5 de la LO 2/1986?",
+  opciones: ["a) Intervención proporcional.", "b) Respeto al derecho a la intimidad.", "c) Lealtad a la Corona.", "d) Respeto al principio de legalidad."],
+  correcta: "a) Intervención proporcional.",
+  justificacion: "El artículo 5 insiste en la proporcionalidad en el uso de la fuerza."
+},
+{
+  pregunta: "El artículo 7 de la LO 2/1986 regula:",
+  opciones: ["a) La dirección del Ministerio del Interior.", "b) La organización periférica del Estado.", "c) La Policía Judicial.", "d) Las funciones de las Corporaciones Locales."],
+  correcta: "c) La Policía Judicial.",
+  justificacion: "Este artículo se refiere a la organización y funciones de la Policía Judicial."
+},
+{
+  pregunta: "La vigilancia del tráfico en vías interurbanas puede ser ejercida por:",
+  opciones: ["a) Policía Local.", "b) Policía Nacional.", "c) Guardia Civil.", "d) Policías Autonómicas con acuerdo."],
+  correcta: "c) Guardia Civil.",
+  justificacion: "Por norma general, la Guardia Civil tiene asignada esta misión en vías interurbanas."
+},
+{
+  pregunta: "Según la LO 2/1986, la colaboración entre policías autonómicas y el Estado se articula a través de:",
+  opciones: ["a) Convenios de colaboración.", "b) Reuniones del Consejo de Ministros.", "c) Mandato judicial expreso.", "d) Acuerdos del Tribunal Constitucional."],
+  correcta: "a) Convenios de colaboración.",
+  justificacion: "Los convenios articulan la cooperación entre cuerpos autonómicos y estatales."
+},
+{
+  pregunta: "¿Qué principio del artículo 5 obliga a los agentes a mantener la confidencialidad de la información que manejan?",
+  opciones: ["a) Integridad y dignidad.", "b) Secreto profesional.", "c) Relaciones con la comunidad.", "d) Adecuación al ordenamiento jurídico."],
+  correcta: "b) Secreto profesional.",
+  justificacion: "El principio de secreto profesional obliga a mantener la confidencialidad de la información conocida por el servicio."
+},
+{
+  pregunta: "¿Cuál de las siguientes características define a la Guardia Civil según el artículo 9 de la LO 2/1986?",
+  opciones: ["a) Es un cuerpo civil.", "b) Tiene naturaleza militar.", "c) Actúa solo en autopistas.", "d) Solo actúa en territorio urbano."],
+  correcta: "b) Tiene naturaleza militar.",
+  justificacion: "El artículo 9 establece la naturaleza militar de la Guardia Civil."
+},
+{
+  pregunta: "Las Policías Locales tienen entre sus funciones:",
+  opciones: ["a) Control de armas y explosivos.", "b) Policía administrativa en el ámbito municipal.", "c) Control de fronteras.", "d) Investigación de delitos graves."],
+  correcta: "b) Policía administrativa en el ámbito municipal.",
+  justificacion: "Esta es una de las funciones asignadas en el artículo 53 de la LO 2/1986."
+},
+{
+  pregunta: "El artículo 12 de la LO 2/1986 se refiere a:",
+  opciones: ["a) Los principios básicos de actuación.", "b) Las funciones específicas de la Guardia Civil y Policía Nacional.", "c) El régimen disciplinario.", "d) Las policías autonómicas."],
+  correcta: "b) Las funciones específicas de la Guardia Civil y Policía Nacional.",
+  justificacion: "El artículo 12 establece las funciones específicas de ambos cuerpos."
+},
+{
+  pregunta: "Los cuerpos de policía autonómica se regulan en:",
+  opciones: ["a) Ley Orgánica 2/1986.", "b) Ley Orgánica 5/2007.", "c) Ley Orgánica 15/1999.", "d) El Estatuto de la Función Pública."],
+  correcta: "a) Ley Orgánica 2/1986.",
+  justificacion: "La LO 2/1986 regula tanto los cuerpos estatales como autonómicos y locales."
+},
+{
+  pregunta: "Un agente de policía está obligado, según la LO 2/1986, a:",
+  opciones: ["a) Prestar declaración jurada ante los medios.", "b) Identificarse cuando sea requerido, si la situación lo permite.", "c) Entregar información a cualquier ciudadano.", "d) Utilizar siempre la fuerza ante resistencia."],
+  correcta: "b) Identificarse cuando sea requerido, si la situación lo permite.",
+  justificacion: "El artículo 5 indica claramente esta obligación dentro de los límites de seguridad."
+},
+{
+  pregunta: "La dependencia funcional de un cuerpo policial se refiere a:",
+  opciones: ["a) Su organización interna.", "b) Su relación con la autoridad competente en una materia específica.", "c) Su jerarquía dentro del ministerio.", "d) Su estructura salarial."],
+  correcta: "b) Su relación con la autoridad competente en una materia específica.",
+  justificacion: "La dependencia funcional implica obedecer a la autoridad correspondiente en la materia de actuación."
+},
+{
+  pregunta: "El artículo 10 de la LO 2/1986 trata sobre:",
+  opciones: ["a) La colaboración entre Policía Nacional y Guardia Civil.", "b) La coordinación con autoridades judiciales.", "c) La cooperación internacional en materia policial.", "d) El control del orden público en el extranjero."],
+  correcta: "c) La cooperación internacional en materia policial.",
+  justificacion: "El artículo 10 regula la cooperación internacional con las autoridades de otros países."
+},
+{
+  pregunta: "¿Cuál es el objeto principal de la Ley Orgánica 2/1986?",
+  opciones: ["a) La creación de un cuerpo único estatal.", "b) La regulación de las Fuerzas y Cuerpos de Seguridad del Estado y sus funciones.", "c) Establecer el salario del personal policial.", "d) Regular la justicia penal."],
+  correcta: "b) La regulación de las Fuerzas y Cuerpos de Seguridad del Estado y sus funciones.",
+  justificacion: "El objetivo de la ley es establecer el marco general de organización y funciones de todos los cuerpos policiales."
+},
+{
+  pregunta: "Según el artículo 12 de la LO 2/1986, ¿cuál de las siguientes es una función exclusiva de la Policía Nacional?",
+  opciones: ["a) La vigilancia del tráfico interurbano.", "b) El control de entrada y salida del territorio nacional.", "c) El resguardo fiscal del Estado.", "d) El control de armas y explosivos."],
+  correcta: "b) El control de entrada y salida del territorio nacional.",
+  justificacion: "El artículo 12 asigna expresamente a la Policía Nacional el control de entrada y salida de españoles y extranjeros."
+},
+{
+  pregunta: "¿Cuál de los siguientes principios obliga a los agentes a actuar sin discriminación?",
+  opciones: ["a) Adecuación al ordenamiento jurídico.", "b) Dedicación profesional.", "c) Neutralidad política.", "d) Relaciones con la comunidad."],
+  correcta: "a) Adecuación al ordenamiento jurídico.",
+  justificacion: "Este principio incluye actuar sin discriminación por razón alguna, recogido en el art. 5."
+},
+{
+  pregunta: "La Guardia Civil tiene asignada una función específica que no corresponde a la Policía Nacional:",
+  opciones: ["a) La investigación de delitos.", "b) El control de armas y explosivos.", "c) La protección de edificios públicos.", "d) La policía judicial."],
+  correcta: "b) El control de armas y explosivos.",
+  justificacion: "El artículo 12 atribuye a la Guardia Civil este control como función específica."
+},
+{
+  pregunta: "Según el artículo 13, las Fuerzas y Cuerpos de Seguridad deberán actuar con especial respeto por:",
+  opciones: ["a) La Administración Pública.", "b) La opinión pública.", "c) La Constitución y el resto del ordenamiento jurídico.", "d) Los medios de comunicación."],
+  correcta: "c) La Constitución y el resto del ordenamiento jurídico.",
+  justificacion: "El artículo 13 exige actuar con sujeción estricta a la Constitución."
+},
+{
+  pregunta: "¿Quién puede crear cuerpos de policía propios según la LO 2/1986?",
+  opciones: ["a) Las Diputaciones Provinciales.", "b) Los Ayuntamientos.", "c) Las Comunidades Autónomas.", "d) Ambas b) y c)."],
+  correcta: "d) Ambas b) y c).",
+  justificacion: "La ley permite la creación de policías autonómicas y locales."
+},
+{
+  pregunta: "¿Cuál de los siguientes ES un cuerpo de seguridad dependiente de una Comunidad Autónoma?",
+  opciones: ["a) Mossos d'Esquadra.", "b) Policía Portuaria.", "c) Unidad Militar de Emergencias.", "d) Vigilancia Aduanera."],
+  correcta: "a) Mossos d'Esquadra.",
+  justificacion: "Los Mossos son cuerpo policial autonómico según la LO 2/1986."
+},
+{
+  pregunta: "El principio de proporcionalidad afecta especialmente:",
+  opciones: ["a) Al uso de armas de fuego.", "b) Al régimen disciplinario.", "c) A la formación policial.", "d) A la asignación de destinos."],
+  correcta: "a) Al uso de armas de fuego.",
+  justificacion: "El artículo 5 exige proporcionalidad especialmente cuando se usa la fuerza."
+},
+{
+  pregunta: "¿En qué artículo se regula la Policía Judicial dentro de la LO 2/1986?",
+  opciones: ["a) Artículo 5.", "b) Artículo 6.", "c) Artículo 7.", "d) Artículo 9."],
+  correcta: "c) Artículo 7.",
+  justificacion: "El artículo 7 trata específicamente la Policía Judicial."
+},
+{
+  pregunta: "El régimen estatutario de los cuerpos policiales debe regularse mediante:",
+  opciones: ["a) Reglamento aprobado por el Gobierno.", "b) Ley autonómica.", "c) Ley Orgánica.", "d) Decreto ley."],
+  correcta: "c) Ley Orgánica.",
+  justificacion: "El artículo 3 exige que el régimen estatutario se establezca por Ley Orgánica."
+},
+{
+  pregunta: "Cuando actúan como Policía Judicial, la Policía Nacional y la Guardia Civil dependen:",
+  opciones: ["a) Del Ministerio del Interior.", "b) De los jueces y tribunales.", "c) De la Fiscalía General del Estado.", "d) De las Delegaciones del Gobierno."],
+  correcta: "b) De los jueces y tribunales.",
+  justificacion: "Como Policía Judicial actúan bajo dependencia funcional de jueces, tribunales y fiscales."
+},
+{
+  pregunta: "El artículo 8 de la LO 2/1986 regula:",
+  opciones: ["a) La cooperación internacional.", "b) La Policía Judicial.", "c) Las funciones de los policías locales.", "d) La obligación de portar arma en servicio."],
+  correcta: "b) La Policía Judicial.",
+  justificacion: "El artículo 8 desarrolla la estructura y actuación de la Policía Judicial."
+},
+{
+  pregunta: "La competencia de protección de altas personalidades está asignada a:",
+  opciones: ["a) Policías Autonómicas.", "b) Guardia Civil.", "c) Policía Nacional.", "d) Todas las anteriores con autorización."],
+  correcta: "c) Policía Nacional.",
+  justificacion: "Es una función específica de la Policía Nacional recogida en el artículo 12."
+},
+{
+  pregunta: "La LO 2/1986 establece que la vigilancia en el campo y vías interurbanas corresponde preferentemente a:",
+  opciones: ["a) Policía Nacional.", "b) Policía Local.", "c) Guardia Civil.", "d) Policía Autonómica."],
+  correcta: "c) Guardia Civil.",
+  justificacion: "Es una de las funciones específicas de la Guardia Civil."
+},
+{
+  pregunta: "Las Policías Locales dependen orgánicamente de:",
+  opciones: ["a) El Ministerio del Interior.", "b) Las Delegaciones del Gobierno.", "c) Los Ayuntamientos.", "d) Las Diputaciones Provinciales."],
+  correcta: "c) Los Ayuntamientos.",
+  justificacion: "Las policías locales dependen orgánicamente del municipio."
+},
+{
+  pregunta: "La LO 2/1986 obliga a los agentes a cumplir y hacer cumplir:",
+  opciones: ["a) El programa gubernamental en materia de seguridad.", "b) Las resoluciones del Tribunal Constitucional.", "c) Las leyes, decretos y sentencias judiciales.", "d) Las órdenes políticas recibidas."],
+  correcta: "c) Las leyes, decretos y sentencias judiciales.",
+  justificacion: "Conforme a su misión de garantizar el cumplimiento del ordenamiento jurídico."
+},
+{
+  pregunta: "El artículo 13 señala que las Fuerzas y Cuerpos de Seguridad deben respetar:",
+  opciones: ["a) La supremacía del Parlamento.", "b) El ordenamiento jurídico y los derechos fundamentales.", "c) La disciplina militar.", "d) Las instrucciones de los mandos políticos."],
+  correcta: "b) El ordenamiento jurídico y los derechos fundamentales.",
+  justificacion: "El artículo 13 exige escrupuloso respeto a la Constitución y derechos fundamentales."
+},
+{
+  pregunta: "Las Fuerzas y Cuerpos de Seguridad deberán actuar con absoluta neutralidad:",
+  opciones: ["a) Administrativa.", "b) Política.", "c) Sindical.", "d) Penal."],
+  correcta: "b) Política.",
+  justificacion: "El principio de neutralidad política está recogido expresamente en el artículo 5."
+},
+{
+  pregunta: "La cooperación policial con organismos internacionales se recoge en:",
+  opciones: ["a) Artículo 5.", "b) Artículo 10.", "c) Artículo 11.", "d) Artículo 7."],
+  correcta: "b) Artículo 10.",
+  justificacion: "Este artículo regula la cooperación internacional en materia policial."
+},
+{
+  pregunta: "¿Qué cuerpo debe auxiliar preferentemente al ciudadano en situaciones de emergencia en zonas rurales?",
+  opciones: ["a) Policía Local.", "b) Guardia Civil.", "c) Policía Nacional.", "d) Policías Autonómicas."],
+  correcta: "b) Guardia Civil.",
+  justificacion: "La GC tiene asignada la protección ciudadana preferente en áreas rurales."
+},
+{
+  pregunta: "Las Fuerzas y Cuerpos de Seguridad deberán actuar siempre con sujeción a:",
+  opciones: ["a) La autoridad política competente.", "b) Las normas de régimen interior del Ministerio del Interior.", "c) La Constitución y el resto del ordenamiento jurídico.", "d) Los principios de actuación fijados por el poder ejecutivo."],
+  correcta: "c) La Constitución y el resto del ordenamiento jurídico.",
+  justificacion: "Este principio aparece expresamente citado en los artículos 5 y 13."
+},
+{
+  pregunta: "Según la LO 2/1986, la función de perseguir delitos y poner a disposición judicial a los responsables corresponde a:",
+  opciones: ["a) Solo a la Policía Judicial.", "b) A todos los miembros de las Fuerzas y Cuerpos de Seguridad.", "c) Exclusivamente a la Guardia Civil.", "d) Únicamente a las Policías Autonómicas."],
+  correcta: "b) A todos los miembros de las Fuerzas y Cuerpos de Seguridad.",
+  justificacion: "El artículo 11 establece como misión de todas las fuerzas policiales la persecución de delitos."
+},
+{
+  pregunta: "El principio de “dignidad e integridad” obliga a los agentes a:",
+  opciones: ["a) Actuar con firmeza y dureza.", "b) Ajustarse al criterio del mando superior.", "c) Adoptar un comportamiento ejemplar en todo momento.", "d) Informar de los errores del mando político."],
+  correcta: "c) Adoptar un comportamiento ejemplar en todo momento.",
+  justificacion: "Este principio obliga a actuar con dignidad e integridad, según el artículo 5."
+},
+{
+  pregunta: "Las Fuerzas y Cuerpos de Seguridad tienen como una de sus misiones:",
+  opciones: ["a) Vigilar el cumplimiento del Derecho Internacional.", "b) Mantener el orden público.", "c) Convocar elecciones municipales.", "d) Fiscalizar los ingresos del Estado."],
+  correcta: "b) Mantener el orden público.",
+  justificacion: "Es una misión común recogida en el artículo 11 de la LO 2/1986."
+},
+{
+  pregunta: "Una de las funciones específicas de la Policía Nacional según el artículo 12 es:",
+  opciones: ["a) Vigilar costas y fronteras.", "b) Realizar el control de entrada y salida de españoles y extranjeros.", "c) Prevenir delitos electrónicos.", "d) Supervisar el uso de armas blancas."],
+  correcta: "b) Realizar el control de entrada y salida de españoles y extranjeros.",
+  justificacion: "Esta es una competencia específica asignada a la Policía Nacional."
+},
+{
+  pregunta: "Según la LO 2/1986, las unidades de Policía Judicial actúan bajo la dirección de:",
+  opciones: ["a) El Ministerio del Interior.", "b) El Ministro de Justicia.", "c) Los jueces, tribunales y fiscales.", "d) El Tribunal Constitucional."],
+  correcta: "c) Los jueces, tribunales y fiscales.",
+  justificacion: "El artículo 7 indica que actúan bajo dependencia funcional de jueces y fiscales."
+},
+{
+  pregunta: "La utilización de fuerza por parte de los agentes según el artículo 5:",
+  opciones: ["a) Está prohibida en cualquier caso.", "b) Debe ser siempre gradual y proporcional.", "c) Siempre debe ser autorizada por un superior.", "d) Debe buscar la neutralización inmediata."],
+  correcta: "b) Debe ser siempre gradual y proporcional.",
+  justificacion: "El uso de fuerza debe ser proporcional a la situación que se afronta."
+},
+{
+  pregunta: "Las Policías Autonómicas pueden colaborar con la Guardia Civil y la Policía Nacional mediante:",
+  opciones: ["a) Leyes estatales obligatorias.", "b) Convenios de colaboración.", "c) Orden judicial expresa.", "d) Acuerdos de las Diputaciones Provinciales."],
+  correcta: "b) Convenios de colaboración.",
+  justificacion: "La LO 2/1986 prevé que la colaboración se articule mediante convenios."
+},
+{
+  pregunta: "La protección de edificios públicos e instalaciones clave es generalmente competencia de:",
+  opciones: ["a) Policía Local.", "b) Guardia Civil.", "c) Policía Nacional.", "d) Policías Autonómicas."],
+  correcta: "c) Policía Nacional.",
+  justificacion: "Esta función está atribuida a la Policía Nacional según el artículo 12."
+},
+{
+  pregunta: "Según el artículo 6, el régimen estatutario disciplinario de los cuerpos policiales se establecerá a través de:",
+  opciones: ["a) Reglamento.", "b) Ley ordinaria.", "c) Ley Orgánica.", "d) Instrucción del Ministerio del Interior."],
+  correcta: "c) Ley Orgánica.",
+  justificacion: "El artículo 6 indica que tanto el régimen estatutario como el disciplinario deben regularse mediante Ley Orgánica."
+},
+{
+  pregunta: "Las Policías Locales podrán ejercer funciones de policía judicial:",
+  opciones: ["a) Sin necesidad de requisitos legales.", "b) Cuando sean requeridas por la autoridad competente.", "c) De forma permanente en el término municipal.", "d) Únicamente si lo autoriza la Policía Nacional."],
+  correcta: "b) Cuando sean requeridas por la autoridad competente.",
+  justificacion: "El artículo 7 permite que las Policías Locales actúen como Policía Judicial a requerimiento."
+},
+{
+  pregunta: "La Ley Orgánica 2/1986 regula:",
+  opciones: ["a) Relación de puestos de trabajo de la Policía Nacional.", "b) El régimen de los funcionarios en el ámbito judicial.", "c) La estructura y funciones de las Fuerzas y Cuerpos de Seguridad.", "d) Sólo la Guardia Civil."],
+  correcta: "c) La estructura y funciones de las Fuerzas y Cuerpos de Seguridad.",
+  justificacion: "El objeto de la Ley es establecer el marco general de organización y funciones de todos los cuerpos policiales."
+},
+{
+  pregunta: "La Policía Local depende orgánicamente de:",
+  opciones: ["a) Ministerio del Interior.", "b) Delegación del Gobierno.", "c) Ministerio de Justicia.", "d) Ayuntamiento."],
+  correcta: "d) Ayuntamiento.",
+  justificacion: "Los cuerpos de Policía Local dependen orgánicamente de sus respectivos ayuntamientos."
+},
+{
+  pregunta: "Uno de los principios recogidos en el artículo 5 de la LO 2/1986 establece que los agentes deberán:",
+  opciones: ["a) Colaborar con la justicia cuando sea posible.", "b) Mantener el secreto profesional incluso frente a los tribunales.", "c) Obedecer órdenes de los superiores aunque sean ilegales.", "d) Reducir el uso de la fuerza al mínimo indispensable."],
+  correcta: "d) Reducir el uso de la fuerza al mínimo indispensable.",
+  justificacion: "Este principio aparece recogido en relación con la proporcionalidad en el uso de la fuerza."
+},
+{
+  pregunta: "¿Cuál de los siguientes cuerpos es considerado un cuerpo de naturaleza militar?",
+  opciones: ["a) Policía Nacional.", "b) Guardia Civil.", "c) Policía Foral.", "d) Mossos d'Esquadra."],
+  correcta: "b) Guardia Civil.",
+  justificacion: "La Guardia Civil es un cuerpo de naturaleza militar según el artículo 9."
+},
+{
+  pregunta: "La colaboración internacional policial se encuentra en el artículo:",
+  opciones: ["a) Art. 10.", "b) Art. 8.", "c) Art. 12.", "d) Art. 15."],
+  correcta: "a) Art. 10.",
+  justificacion: "El artículo 10 regula la colaboración internacional en materia policial."
+},
+{
+  pregunta: "La custodia de presos y detenidos corresponde, según la LO 2/1986:",
+  opciones: ["a) A la Policía Local.", "b) Exclusivamente a la Guardia Civil.", "c) A la Guardia Civil y a la Policía Nacional.", "d) Exclusivamente a los Mossos d’Esquadra."],
+  correcta: "c) A la Guardia Civil y a la Policía Nacional.",
+  justificacion: "Ambos cuerpos tienen asignada esta función en el artículo 12."
+},
+{
+  pregunta: "¿Cuál de las siguientes es una función asignada específicamente a la Guardia Civil?",
+  opciones: ["a) Control de extranjeros.", "b) Estática y vigilancia de edificios públicos.", "c) Resguardo fiscal del Estado.", "d) Policía administrativa general."],
+  correcta: "c) Resguardo fiscal del Estado.",
+  justificacion: "Es una función específica atribuida por el artículo 12 a la Guardia Civil."
+},
+{
+  pregunta: "En caso de conflicto entre cuerpos policiales, la coordinación es competencia de:",
+  opciones: ["a) Tribunales de Justicia.", "b) Ayuntamientos.", "c) Ministerio del Interior.", "d) Congreso de los Diputados."],
+  correcta: "c) Ministerio del Interior.",
+  justificacion: "El Ministerio del Interior coordina los cuerpos de seguridad del Estado."
+},
+{
+  pregunta: "El artículo 5 de la LO 2/1986 incluye el principio de:",
+  opciones: ["a) Igualdad jurídica.", "b) Dedicación profesional.", "c) Libertad de criterio.", "d) Retirada inmediata en caso de peligro."],
+  correcta: "b) Dedicación profesional.",
+  justificacion: "Este principio aparece expresamente recogido en el artículo 5."
+},
+{
+  pregunta: "Los cuerpos de Policía Autonómica tienen como límite de actuación:",
+  opciones: ["a) Las pautas establecidas por la Policía Nacional.", "b) El marco local.", "c) Su propio territorio autonómico.", "d) Las instrucciones judiciales."],
+  correcta: "c) Su propio territorio autonómico.",
+  justificacion: "Su ámbito funcional y territorial se limita a la Comunidad Autónoma correspondiente."
+},
+{
+  pregunta: "Según la LO 2/1986, ¿qué Cuerpo tiene encomendada la investigación y persecución del contrabando?",
+  opciones: ["a) Policía Nacional.", "b) Servicio de Vigilancia Aduanera.", "c) Guardia Civil.", "d) Policía Autonómica."],
+  correcta: "c) Guardia Civil.",
+  justificacion: "El artículo 12 asigna a la Guardia Civil la investigación y persecución del contrabando como función específica."
+},
+{
+  pregunta: "La sujeción a la legalidad es un principio básico de actuación recogido en el artículo:",
+  opciones: ["a) 4.", "b) 5.", "c) 6.", "d) 9."],
+  correcta: "b) 5.",
+  justificacion: "El artículo 5 recoge este principio, estableciendo que las actuaciones deben ajustarse al ordenamiento jurídico."
+},
+{
+  pregunta: "La Policía Local ejerce funciones de policía administrativa en el ámbito:",
+  opciones: ["a) Autonómico.", "b) Estatal.", "c) Municipal.", "d) Provincial."],
+  correcta: "c) Municipal.",
+  justificacion: "El artículo 53 establece que la Policía Local ejerce funciones en el ámbito del municipio."
+},
+{
+  pregunta: "Según la LO 2/1986, la Guardia Civil se caracteriza por:",
+  opciones: ["a) Su naturaleza civil.", "b) Su carácter autonómico en origen.", "c) Ser un instituto armado de naturaleza militar.", "d) Estar adscrita a la Policía Nacional."],
+  correcta: "c) Ser un instituto armado de naturaleza militar.",
+  justificacion: "El artículo 9 describe a la Guardia Civil como un instituto armado de naturaleza militar."
+},
+{
+  pregunta: "El principio de actuación profesional exige a los agentes:",
+  opciones: ["a) Optimizar recursos materiales.", "b) Operar con diligencia y eficacia en el desempeño de sus funciones.", "c) Seguir formación durante toda su carrera.", "d) Poner siempre la seguridad ciudadana por encima de la legalidad."],
+  correcta: "b) Operar con diligencia y eficacia en el desempeño de sus funciones.",
+  justificacion: "Este aspecto forma parte del principio de dedicación profesional recogido en el artículo 5."
+},
+{
+  pregunta: "En virtud del artículo 6, el régimen disciplinario del personal de las Fuerzas y Cuerpos de Seguridad se establecerá mediante:",
+  opciones: ["a) Instrucciones internas.", "b) Reglamento aprobado por Real Decreto.", "c) Ley Orgánica.", "d) Decreto ley."],
+  correcta: "c) Ley Orgánica.",
+  justificacion: "La LO 2/1986 exige que tanto el régimen estatutario como el disciplinario se regulen mediante Ley Orgánica."
+},
+{
+  pregunta: "Las funciones de la Policía Nacional recogidas en el artículo 12 NO incluyen:",
+  opciones: ["a) El control de entrada y salida del territorio nacional.", "b) La vigilancia fiscal del Estado.", "c) La expedición del DNI y pasaportes.", "d) La protección de edificios públicos."],
+  correcta: "b) La vigilancia fiscal del Estado.",
+  justificacion: "Esta función está asignada a la Guardia Civil, no a la Policía Nacional."
+},
+{
+  pregunta: "La coordinación operativa entre Policía Nacional y Guardia Civil se realiza principalmente a través del:",
+  opciones: ["a) Ministerio del Interior.", "b) Congreso de los Diputados.", "c) Consejo de Políticas de Seguridad.", "d) Tribunal Supremo."],
+  correcta: "a) Ministerio del Interior.",
+  justificacion: "El Ministerio del Interior es el órgano superior encargado de la coordinación operativa entre ambos cuerpos."
+},
+{
+  pregunta: "Una de las misiones comunes recogidas en el artículo 11 es:",
+  opciones: ["a) Vigilar la seguridad vial.", "b) Determinar la legalidad de las actuaciones judiciales.", "c) Prevenir la comisión de delitos.", "d) Dirigir investigaciones fiscales."],
+  correcta: "c) Prevenir la comisión de delitos.",
+  justificacion: "Una de las misiones comunes es prevenir actos delictivos según el artículo 11."
+},
+{
+  pregunta: "¿Cuál de los siguientes cuerpos tiene naturaleza civil?",
+  opciones: ["a) Guardia Civil.", "b) Policía Nacional.", "c) Unidad Militar de Emergencias.", "d) Servicio de Vigilancia Aduanera."],
+  correcta: "b) Policía Nacional.",
+  justificacion: "La Policía Nacional tiene naturaleza civil según la LO 2/1986."
+},
+{
+  pregunta: "De acuerdo con el artículo 5, los agentes deberán actuar con imparcialidad, lo que implica:",
+  opciones: ["a) No favorecer a ninguna persona por razón de parentesco.", "b) No mostrar preferencia política ni sindical en el ejercicio de su cargo.", "c) Dar preferencia al interés del Estado sobre el ciudadano.", "d) Asegurar la obediencia ciega a los mandos políticos."],
+  correcta: "b) No mostrar preferencia política ni sindical en el ejercicio de su cargo.",
+  justificacion: "El principio de neutralidad política forma parte de la imparcialidad exigida."
+},
+{
+  pregunta: "La custodia exterior de centros penitenciarios, según la LO 2/1986, corresponde a:",
+  opciones: ["a) Policía Local.", "b) Guardia Civil.", "c) Policía Nacional.", "d) Policías Autonómicas."],
+  correcta: "c) Policía Nacional.",
+  justificacion: "Esta función es específica de la Policía Nacional, según el artículo 12."
+},
+{
+  pregunta: "¿Qué cuerpo policial puede tener integrantes con condición militar?",
+  opciones: ["a) Policía Nacional.", "b) Guardia Civil.", "c) Policía Local.", "d) Todas las anteriores."],
+  correcta: "b) Guardia Civil.",
+  justificacion: "La Guardia Civil tiene naturaleza y organización militar según el artículo 9."
+},
+{
+  pregunta: "El principio de secreto profesional obliga a los agentes a:",
+  opciones: ["a) No colaborar con ninguna autoridad.", "b) Mantener la confidencialidad de la información obtenida en el ejercicio de su función.", "c) Compartir información solo con mandos militares.", "d) Guardar silencio en interrogatorios judiciales."],
+  correcta: "b) Mantener la confidencialidad de la información obtenida en el ejercicio de su función.",
+  justificacion: "Es uno de los principios básicos del artículo 5."
+},
+{
+  pregunta: "La Ley Orgánica 2/1986 establece que las Policías Autonómicas podrán:",
+  opciones: ["a) Actuar en cualquier territorio del Estado si la emergencia lo requiere.", "b) Colaborar con Fuerzas y Cuerpos de Seguridad del Estado mediante convenios.", "c) Sustituir a la Policía Nacional en situaciones de alerta.", "d) Controlar fronteras sin autorización estatal."],
+  correcta: "b) Colaborar con Fuerzas y Cuerpos de Seguridad del Estado mediante convenios.",
+  justificacion: "Los convenios son el instrumento para articular la colaboración entre niveles."
+},
+{
+  pregunta: "Según el artículo 11, entre las misiones comunes de las Fuerzas y Cuerpos de Seguridad NO se encuentra:",
+  opciones: ["a) El resguardo fiscal del Estado.", "b) La prevención de actos delictivos.", "c) El mantenimiento del orden y la seguridad ciudadana.", "d) La protección de las autoridades."],
+  correcta: "a) El resguardo fiscal del Estado.",
+  justificacion: "La función de resguardo fiscal corresponde a la Guardia Civil, no es una misión común a todos los cuerpos."
+},
+{
+  pregunta: "El ejercicio de funciones de policía judicial corresponde principalmente a:",
+  opciones: ["a) Policía Local.", "b) Policía Nacional y Guardia Civil.", "c) Policía Autonómica exclusivamente.", "d) El Ministerio Fiscal."],
+  correcta: "b) Policía Nacional y Guardia Civil.",
+  justificacion: "Según el artículo 7, ambas fuerzas actúan como Policía Judicial bajo dependencia de jueces y fiscales."
+},
+{
+  pregunta: "El principio de dedicación profesional implica que los agentes deben:",
+  opciones: ["a) Cumplir con un horario estricto sin jornadas extraordinarias.", "b) Estar siempre disponibles para intervenir en caso necesario.", "c) Pedir autorización para cada acción preventiva.", "d) Ajustarse exclusivamente a órdenes administrativas."],
+  correcta: "b) Estar siempre disponibles para intervenir en caso necesario.",
+  justificacion: "La dedicación profesional supone disponibilidad permanente y diligencia en su actuación."
+},
+{
+  pregunta: "El uso de armas de fuego por los agentes de las Fuerzas y Cuerpos de Seguridad debe regirse por el principio de:",
+  opciones: ["a) Diligencia y eficacia.", "b) Jerarquía organizativa.", "c) Última ratio y proporcionalidad.", "d) Secreto profesional."],
+  correcta: "c) Última ratio y proporcionalidad.",
+  justificacion: "El artículo 5 exige proporcionalidad en el uso de medios coercitivos."
+},
+{
+  pregunta: "La vigilancia de costas corresponde específicamente a:",
+  opciones: ["a) Policía Nacional.", "b) Policía Autonómica en colaboración con el gobierno central.", "c) Guardia Civil.", "d) Policía Local."],
+  correcta: "c) Guardia Civil.",
+  justificacion: "La función está atribuida a la Guardia Civil según el artículo 12."
+},
+{
+  pregunta: "El artículo 104.1 de la Constitución Española señala que las Fuerzas y Cuerpos de Seguridad tienen como misión principal:",
+  opciones: ["a) Velar por el cumplimiento de la ley y la seguridad ciudadana.", "b) Garantizar el orden público y proteger las libertades públicas.", "c) Proteger el libre ejercicio de los derechos y libertades y garantizar la seguridad ciudadana.", "d) Controlar el cumplimiento de las decisiones judiciales."],
+  correcta: "c) Proteger el libre ejercicio de los derechos y libertades y garantizar la seguridad ciudadana.",
+  justificacion: "El artículo 104.1 CE establece esta misión de forma expresa."
+},
+{
+  pregunta: "¿Cuál de los siguientes cuerpos de seguridad actúa dentro del marco estatutario de una Comunidad Autónoma?",
+  opciones: ["a) Guardia Civil.", "b) Policía Nacional.", "c) Mossos d'Esquadra.", "d) Policía Local."],
+  correcta: "c) Mossos d'Esquadra.",
+  justificacion: "Los Mossos d'Esquadra son la policía autonómica de Cataluña según su Estatuto."
+},
+{
+  pregunta: "La Policía Autonómica puede ejercer funciones de seguridad ciudadana:",
+  opciones: ["a) Sin limitación territorial, si así lo acuerda el Gobierno.", "b) Solo en el territorio de su Comunidad Autónoma.", "c) Solo en caso de apoyo a la Policía Nacional.", "d) Únicamente bajo mandato judicial."],
+  correcta: "b) Solo en el territorio de su Comunidad Autónoma.",
+  justificacion: "Las Policías Autonómicas actúan exclusivamente dentro de su ámbito territorial."
+},
+{
+  pregunta: "La coordinación entre las Policías Autonómicas y las Fuerzas y Cuerpos de Seguridad del Estado se articula a través de:",
+  opciones: ["a) Convenios de colaboración entre administraciones.", "b) Decretos del Ministerio de Defensa.", "c) Resoluciones del Tribunal Constitucional.", "d) Órdenes del Congreso de los Diputados."],
+  correcta: "a) Convenios de colaboración entre administraciones.",
+  justificacion: "Los convenios articulan la colaboración y coordinación según lo dispuesto en la LO 2/1986."
+},
+{
+  pregunta: "El artículo 53 de la Ley Orgánica 2/1986 se refiere a:",
+  opciones: ["a) Funciones de la Policía Local.", "b) Régimen disciplinario de la Guardia Civil.", "c) Coordinación entre cuerpos estatales.", "d) Policía Judicial en las Comunidades Autónomas."],
+  correcta: "a) Funciones de la Policía Local.",
+  justificacion: "El artículo 53 regula las funciones específicas de las Policías Locales."
+},
+{
+  pregunta: "Una de las funciones de la Policía Local es:",
+  opciones: ["a) Investigación de delitos graves.", "b) Control de extranjería.", "c) Policía administrativa dentro del término municipal.", "d) Vigilancia fiscal del Estado."],
+  correcta: "c) Policía administrativa dentro del término municipal.",
+  justificacion: "Esta es una de las funciones principales recogidas en el artículo 53."
+},
+{
+  pregunta: "Como policía judicial, las Policías Autonómicas actúan:",
+  opciones: ["a) Únicamente si no hay Guardia Civil o Policía Nacional.", "b) En todo caso, bajo dependencia de jueces y fiscales.", "c) Solo con autorización del Congreso de los Diputados.", "d) Previo permiso del Ministerio del Interior."],
+  correcta: "b) En todo caso, bajo dependencia de jueces y fiscales.",
+  justificacion: "Como Policía Judicial, cualquier cuerpo policial actúa bajo dependencia funcional de autoridades judiciales."
+},
+{
+  pregunta: "Según la LO 2/1986, el marco de actuación de la Policía Local incluye:",
+  opciones: ["a) La detención de terroristas a nivel regional.", "b) El control preventivo del tráfico en vías urbanas.", "c) La protección de fronteras exteriores.", "d) Informes fiscales en aduanas."],
+  correcta: "b) El control preventivo del tráfico en vías urbanas.",
+  justificacion: "La Policía Local se encarga de la vigilancia del tráfico dentro de su municipio."
+},
+{
+  pregunta: "Las funciones asignadas a la Policía Autonómica se determinan en:",
+  opciones: ["a) El Reglamento de la Guardia Civil.", "b) La Ley Orgánica 4/2015.", "c) Los Estatutos de Autonomía y la LO 2/1986.", "d) Las Instrucciones del Ministerio del Interior."],
+  correcta: "c) Los Estatutos de Autonomía y la LO 2/1986.",
+  justificacion: "Las funciones de las Policías Autonómicas se establecen en su Estatuto y la legislación nacional."
+},
+{
+  pregunta: "El artículo 149.1.29 de la Constitución reserva al Estado las competencias sobre:",
+  opciones: ["a) La ordenación del territorio.", "b) Seguridad pública y defensa.", "c) La enseñanza de idiomas.", "d) Las elecciones autonómicas."],
+  correcta: "b) Seguridad pública y defensa.",
+  justificacion: "Esta competencia exclusiva del Estado incluye la seguridad pública."
+},
+{
+  pregunta: "¿Cuál de las siguientes NO es una función descrita para la Policía Autonómica en la LO 2/1986?",
+  opciones: ["a) Control de vías urbanas.", "b) Colaboración con la Administración de Justicia.", "c) Velar por el cumplimiento de las disposiciones autonómicas.", "d) Protección de personalidades autonómicas."],
+  correcta: "a) Control de vías urbanas.",
+  justificacion: "Este control corresponde a las Policías Locales, no a la Policía Autonómica."
+},
+{
+  pregunta: "La seguridad pública es competencia:",
+  opciones: ["a) Exclusiva del Estado.", "b) Compartida entre Estado, Comunidades Autónomas y Municipios.", "c) Exclusiva de las Comunidades Autónomas con Estatuto propio.", "d) Delegada a las Corporaciones Locales."],
+  correcta: "a) Exclusiva del Estado.",
+  justificacion: "Según el artículo 149.1.29 CE, la seguridad pública es competencia exclusiva del Estado."
+},
+{
+  pregunta: "El Consejo de Política de Seguridad es un órgano destinado a:",
+  opciones: ["a) Resolver conflictos entre policías locales y autonómicas.", "b) Coordinar la política de seguridad entre el Gobierno y las Comunidades Autónomas.", "c) Establecer sanciones disciplinarias.", "d) Dirigir la actividad de la Policía Nacional."],
+  correcta: "b) Coordinar la política de seguridad entre el Gobierno y las Comunidades Autónomas.",
+  justificacion: "Este Consejo promueve la coordinación en materia de seguridad entre diferentes administraciones."
+},
+{
+  pregunta: "Según el artículo 52 de la LO 2/1986, la agrupación para actuaciones especiales es un cuerpo especial en:",
+  opciones: ["a) La Policía Autonómica.", "b) La Guardia Civil.", "c) La Policía Nacional.", "d) Las Policías Locales."],
+  correcta: "b) La Guardia Civil.",
+  justificacion: "Este artículo menciona la creación de agrupaciones especiales dentro de la Guardia Civil."
+},
+{
+  pregunta: "¿Cuál de estos cuerpos policiales tiene asignada constitucionalmente una función en defensa y seguridad del Estado?",
+  opciones: ["a) Policía Local.", "b) Policía Nacional.", "c) Guardia Civil.", "d) Mossos d'Esquadra."],
+  correcta: "c) Guardia Civil.",
+  justificacion: "Por su naturaleza militar, la Guardia Civil tiene funciones en seguridad y defensa del Estado según CE y LO 2/1986."
+},
+{
+  pregunta: "Una de las funciones específicas de la Policía Nacional es:",
+  opciones: ["a) Exigir el cumplimiento de las ordenanzas municipales.", "b) Supervisar la entrada y salida de extranjeros.", "c) Controlar la caza y pesca."],
+  correcta: "b) Supervisar la entrada y salida de extranjeros.",
+  justificacion: "Es una función específica recogida en el artículo 12 de la LO 2/1986."
+},
+{
+  pregunta: "Las Policías Autonómicas pueden asumir funciones de seguridad pública cuando:",
+  opciones: ["a) Lo autoriza el Tribunal Supremo.", "b) Lo aprueba su Estatuto de Autonomía.", "c) Lo solicita el Ministerio del Interior.", "d) Se deriva de una competencia municipal."],
+  correcta: "b) Lo aprueba su Estatuto de Autonomía.",
+  justificacion: "Las competencias se establecen en el Estatuto autonómico dentro de los límites constitucionales."
+},
+{
+  pregunta: "Las Policías Locales podrán colaborar con las Fuerzas y Cuerpos de Seguridad del Estado en:",
+  opciones: ["a) La vigilancia de costas.", "b) La protección de autoridades autonómicas.", "c) La intervención en seguridad ciudadana cuando sea requerido.", "d) La expedición de pasaportes."],
+  correcta: "c) La intervención en seguridad ciudadana cuando sea requerido.",
+  justificacion: "Esta colaboración está prevista en el artículo 51 de la LO 2/1986."
+},
+{
+  pregunta: "El artículo 54 de la LO 2/1986 establece que los municipios con policía propia deben contar con:",
+  opciones: ["a) Una ordenanza reguladora interna.", "b) Un plan de seguridad coordinado con la policía autonómica.", "c) Un reglamento de organización y funcionamiento.", "d) Un acuerdo del Pleno aprobando su estructura territorial."],
+  correcta: "c) Un reglamento de organización y funcionamiento.",
+  justificacion: "Los cuerpos locales deben buscar coordinación mediante un reglamento propio según la ley."
+},
+{
+  pregunta: "¿Cuál de los siguientes cuerpos tiene competencia en materia de protección civil?",
+  opciones: ["a) Otras unidades de la Guardia Civil.", "b) Policía Local.", "c) Policía Nacional.", "d) Todas las Fuerzas y Cuerpos de Seguridad en su ámbito de actuación."],
+  correcta: "d) Todas las Fuerzas y Cuerpos de Seguridad en su ámbito de actuación.",
+  justificacion: "La protección civil es una función transversal recogida en el artículo 11 como misión común."
+},
+{
+  pregunta: "Según la LO 2/1986, la Policía Nacional tiene como misión específica:",
+  opciones: ["a) La vigilancia del tráfico en zonas urbanas.", "b) La expedición del DNI y pasaportes.", "c) La protección del patrimonio cultural autonómico.", "d) La vigilancia fiscal del Estado."],
+  correcta: "b) La expedición del DNI y pasaportes.",
+  justificacion: "El artículo 12 recoge que esta función corresponde a la Policía Nacional."
+},
+{
+  pregunta: "El artículo 51 de la LO 2/1986 establece que las Policías Locales podrán colaborar con otros cuerpos mediante:",
+  opciones: ["a) Coordinación directa con el Ministerio de Defensa.", "b) Convenios entre corporaciones locales.", "c) Planes de actuación municipal aprobados por las CCAA.", "d) Acuerdos del Tribunal Constitucional."],
+  correcta: "b) Convenios entre corporaciones locales.",
+  justificacion: "El artículo 51 señala que los ayuntamientos pueden concertar convenios de colaboración para mejorar la seguridad."
+},
+{
+  pregunta: "¿Cuál de los siguientes principios forma parte de los principios básicos de actuación de los agentes según el artículo 5?",
+  opciones: ["a) Legalidad, jerarquía e imparcialidad.", "b) Integridad, dignidad y dedicación profesional.", "c) Obediencia, colaboración y secreto profesional.", "d) Unidad, disciplina y lealtad institucional."],
+  correcta: "b) Integridad, dignidad y dedicación profesional.",
+  justificacion: "Estos principios están recogidos, entre otros, se encuentran en el artículo 5."
+},
+{
+  pregunta: "El artículo 9 de la LO 2/1986 establece que la Guardia Civil depende orgánicamente de:",
+  opciones: ["a) El Ministerio de Justicia.", "b) El Ministerio del Interior y el de Defensa.", "c) La Dirección General de la Policía.", "d) La Secretaría de Estado de Seguridad."],
+  correcta: "b) El Ministerio del Interior y el de Defensa.",
+  justificacion: "La Guardia Civil depende de ambos ministerios por su doble naturaleza militar y policial."
+},
+{
+  pregunta: "¿Quién coordina la actuación de todas las Fuerzas y Cuerpos de Seguridad del Estado?",
+  opciones: ["a) El Ministro del Interior.", "b) El Delegado del Gobierno.", "c) El Jefe del Estado.", "d) El Congreso de los Diputados."],
+  correcta: "a) El Ministro del Interior.",
+  justificacion: "El Ministro del Interior es la autoridad superior encargada de la coordinación."
+},
+{
+  pregunta: "Las Policías Autonómicas pueden asumir funciones de orden público en virtud de:",
+  opciones: ["a) Convenio firmado con la Delegación del Gobierno.", "b) Una ley autonómica aprobada por su Parlamento.", "c) El propio Estatuto de Autonomía.", "d) Orden de la Junta Electoral Central."],
+  correcta: "c) El propio Estatuto de Autonomía.",
+  justificacion: "Las competencias de las Policías Autonómicas se fijan en el Estatuto mediante previsión constitucional."
+},
+{
+  pregunta: "Según la LO 2/1986, la dependencia funcional de las Fuerzas y Cuerpos de Seguridad está vinculada principalmente a:",
+  opciones: ["a) Su posición jerárquica dentro del Ministerio.", "b) La autoridad que dirige la misión que están llevando a cabo.", "c) La orden internacional del Tribunal de La Haya.", "d) El mando militar."],
+  correcta: "b) La autoridad que dirige la misión que están llevando a cabo.",
+  justificacion: "La dependencia funcional se determina en función de la actuación específica que se realice."
+},
+{
+  pregunta: "El deber de obediencia de los agentes está limitado por:",
+  opciones: ["a) La falta de medios para actuar.", "b) Las órdenes injustas.", "c) Las órdenes ilegales o contrarias a la Constitución.", "d) La discrecionalidad del mando superior."],
+  correcta: "c) Las órdenes ilegales o contrarias a la Constitución.",
+  justificacion: "El artículo 5 establece la obligación de no obedecer órdenes manifiestamente ilegales."
+},
+{
+  pregunta: "La LO 2/1986 indica que las actuaciones de los agentes deben ser:",
+  opciones: ["a) Documentadas y comunicadas al Juez de Guardia.", "b) Proporcionales y adecuadas al objetivo perseguido.", "c) Limitadas por reglamento interno.", "d) Autorizadas previamente por orden judicial."],
+  correcta: "b) Proporcionales y adecuadas al objetivo perseguido.",
+  justificacion: "La proporcionalidad en la actuación es un principio esencial recogido en el artículo 5."
+},
+{
+  pregunta: "La Policía Local podrá actuar fuera de su término municipal:",
+  opciones: ["a) En ningún caso.", "b) Sólo si lo autoriza el Ministerio del Interior.", "c) En situaciones de emergencia o cuando sea expresamente requerida.", "d) Para apoyar a la Policía Autonómica en las capitales de provincia."],
+  correcta: "c) En situaciones de emergencia o cuando sea expresamente requerida.",
+  justificacion: "El artículo 51 prevé estas situaciones excepcionales para la Policía Local."
+},
+{
+  pregunta: "El principio de dedicación profesional según la LO 2/1986 implica que los agentes:",
+  opciones: ["a) Deben limitarse estrictamente a su horario laboral y funciones asignadas.", "b) Están obligados a intervenir en tareas policiales aunque estén fuera de servicio.", "c) Pueden rechazar intervenciones si no se ajustan al procedimiento.", "d) Deben participar en sesiones formativas fuera de horario laboral."],
+  correcta: "b) Están obligados a intervenir en tareas policiales aunque estén fuera de servicio.",
+  justificacion: "La dedicación profesional implica disponibilidad permanente."
+},
+{
+  pregunta: "La cooperación internacional de las Fuerzas y Cuerpos de Seguridad se encuentra regulada en:",
+  opciones: ["a) El artículo 10 de la LO 2/1986.", "b) El artículo 6 de la Ley de Seguridad Privada.", "c) El convenio Schengen.", "d) El tratado de Ámsterdam."],
+  correcta: "a) El artículo 10 de la LO 2/1986.",
+  justificacion: "El artículo 10 regula la cooperación técnica y operativa internacional."
+},
+{
+  pregunta: "El artículo 104 CE contiene la base constitucional para:",
+  opciones: ["a) La creación de cuerpos de policía privados.", "b) La función de las Fuerzas Armadas en la seguridad interior.", "c) La misión de las Fuerzas y Cuerpos de Seguridad.", "d) La libertad sindical en el ámbito policial."],
+  correcta: "c) La misión de las Fuerzas y Cuerpos de Seguridad.",
+  justificacion: "En el artículo 104 se define su misión principal."
+},
+{
+  pregunta: "En materia de seguridad pública, las Comunidades Autónomas pueden asumir competencias:",
+  opciones: ["a) Exclusivamente si lo aprueba el Senado.", "b) Mediante reforma de la Constitución.", "c) Si su Estatuto de Autonomía lo prevé.", "d) Cuando lo autorice el Jefe del Estado."],
+  correcta: "c) Si su Estatuto de Autonomía lo prevé.",
+  justificacion: "La CE permite gestionar competencias de seguridad pública mediante el Estatuto."
+},
+{
+  pregunta: "El Consejo de Política de Seguridad se crea para:",
+  opciones: ["a) Dirigir las actuaciones del Tribunal Constitucional.", "b) Coordinar la política de seguridad entre Estado y CCAA.", "c) Evaluar los ascensos dentro de la Policía Nacional.", "d) Supervisar la actuación de los Mossos d’Esquadra."],
+  correcta: "b) Coordinar la política de seguridad entre Estado y CCAA.",
+  justificacion: "Este órgano facilita la cooperación interadministrativa en materia de seguridad."
+},
+{
+  pregunta: "La función de custodia exterior de los centros penitenciarios corresponderá normalmente a:",
+  opciones: ["a) Policía Nacional.", "b) Policía Local.", "c) Servicio Secreto.", "d) Policías Autonómicas."],
+  correcta: "a) Policía Nacional.",
+  justificacion: "El artículo 12 atribuye esta función a la Policía Nacional."
+},
+{
+  pregunta: "Las Policías Locales podrán ejercer funciones de Policía Judicial:",
+  opciones: ["a) Sin excepciones y de forma habitual.", "b) Exclusivamente en el marco del Plan Estatal de Seguridad.", "c) Cuando sean requeridas por la autoridad judicial o fiscal.", "d) Si hay un convenio previo con la Policía Nacional."],
+  correcta: "c) Cuando sean requeridas por la autoridad judicial o fiscal.",
+  justificacion: "Esta atribución aparece reflejada en el artículo 7 y el artículo 53."
+},
+{
+  pregunta: "La autoridad superior de la Policía Nacional es:",
+  opciones: ["a) El Jefe del Estado.", "b) El Ministro del Interior.", "c) El Director General de la Policía.", "d) El Consejo de Ministros."],
+  correcta: "b) El Ministro del Interior.",
+  justificacion: "El Ministro del Interior es la máxima autoridad en materia de seguridad pública dentro del poder ejecutivo."
+},
+{
+  pregunta: "La vigilancia de costas es una competencia específica de:",
+  opciones: ["a) La Policía Autonómica.", "b) La Guardia Civil.", "c) La Policía Nacional.", "d) La Policía Local."],
+  correcta: "b) La Guardia Civil.",
+  justificacion: "Esta función específica aparece recogida en el artículo 12 de la LO 2/1986."
+},
+{
+  pregunta: "El artículo 52 establece un tipo especial de unidades de la Guardia Civil denominadas:",
+  opciones: ["a) Antidisturbios territoriales.", "b) Agrupaciones de actuaciones especiales.", "c) Compañías operativas de campo.", "d) Brigadas de investigación especializada."],
+  correcta: "b) Agrupaciones de actuaciones especiales.",
+  justificacion: "El artículo 52 habla de la creación de agrupaciones especiales en la Guardia Civil."
+},
+{
+  pregunta: "La cooperación internacional de los cuerpos policiales españoles se realiza principalmente a través:",
+  opciones: ["a) De las Embajadas españolas.", "b) De la Secretaría de Estado de Seguridad.", "c) De convenios y acuerdos internacionales aprobados por el Gobierno.", "d) Del Tribunal Supremo."],
+  correcta: "c) De convenios y acuerdos internacionales aprobados por el Gobierno.",
+  justificacion: "El artículo 10 de la LO 2/1986 prevé la participación en cooperación internacional mediante acuerdos y convenios."
+},
+{
+  pregunta: "¿Cuál de los siguientes cuerpos policiales NO aparece en la Ley Orgánica 2/1986?",
+  opciones: ["a) Policía Nacional.", "b) Guardia Civil.", "c) Policía Portuaria.", "d) Policía Local."],
+  correcta: "c) Policía Portuaria.",
+  justificacion: "La Policía Portuaria no está incluida en la LO 2/1986, sino que se regula por normativa específica."
+},
+{
+  pregunta: "La coordinación entre el Estado y las comunidades autónomas en materia de seguridad se realiza a través del:",
+  opciones: ["a) Consejo Territorial de Seguridad.", "b) Consejo de Política de Seguridad.", "c) Consejo Superior de Seguridad Nacional.", "d) Consejo Interterritorial de Seguridad Pública."],
+  correcta: "b) Consejo de Política de Seguridad.",
+  justificacion: "Este órgano se crea para coordinar las actuaciones estatales y autonómicas en materia de seguridad."
+},
+{
+  pregunta: "Las Policías Autonómicas podrán ejercer funciones de policía judicial:",
+  opciones: ["a) En cualquier territorio del Estado si lo solicitan por escrito.", "b) Solo dentro de su Comunidad Autónoma y bajo autoridad judicial correspondiente.", "c) Siempre que lo apruebe el Ministerio de Justicia.", "d) Únicamente si se trata de delitos que afecten a la Administración autonómica."],
+  correcta: "b) Solo dentro de su Comunidad Autónoma y bajo autoridad judicial correspondiente.",
+  justificacion: "Las competencias policiales autonómicas están acotadas territorialmente y sujetas a autoridad judicial."
+},
+{
+  pregunta: "El principio de actuación con 'neutralidad e imparcialidad' impide a los agentes:",
+  opciones: ["a) Mostrar simpatía política mientras están de servicio o en uniforme.", "b) Declarar en medios de comunicación sobre un caso en curso.", "c) Mantener contactos sociales con miembros de partidos políticos.", "d) Referirse a su superior jerárquico durante el servicio."],
+  correcta: "a) Mostrar simpatía política mientras están de servicio o en uniforme.",
+  justificacion: "El artículo 5 establece este principio para asegurar imparcialidad política."
+},
+{
+  pregunta: "Según la LO 2/1986, la Policía Local podrá ejercer funciones de seguridad ciudadana:",
+  opciones: ["a) Solo en ausencia de la Policía Nacional o Guardia Civil.", "b) En cualquier caso y circunstancias dentro del municipio.", "c) Solo si el municipio lo declara mediante ordenanza.", "d) En situaciones de emergencia o si se requiere colaboración especial."],
+  correcta: "d) En situaciones de emergencia o si se requiere colaboración especial.",
+  justificacion: "La LO prevé su intervención en estos casos además de su función primaria administrativa."
+},
+{
+  pregunta: "El control de armas, explosivos y artículos reglamentados corresponde a:",
+  opciones: ["a) Policía Nacional.", "b) Guardia Civil.", "c) Policías Autonómicas con autorización estatal.", "d) Policía Local si lo aprueba el Pleno Municipal."],
+  correcta: "b) Guardia Civil.",
+  justificacion: "Es una de las funciones específicas asignadas exclusivamente a la Guardia Civil según el artículo 12."
+},
+{
+  pregunta: "El artículo 55 de la LO 2/1986 es relevante para:",
+  opciones: ["a) La organización de la Policía Local.", "b) La estructura de la Policía Autonómica.", "c) La protección administrativa del personal policial.", "d) Las condiciones de acceso a los cuerpos policiales estatales."],
+  correcta: "a) La organización de la Policía Local.",
+  justificacion: "El artículo 55 regula aspectos organizativos relativos a los cuerpos de Policía Local."
+},
+{
+  pregunta: "Las competencias públicas en materia de seguridad ciudadana pueden ser asumidas por las Comunidades Autónomas:",
+  opciones: ["a) Si existe una ley ordinaria que lo autorice.", "b) Si lo prevé expresamente su Estatuto de Autonomía.", "c) Si supera el trámite de referéndum regional.", "d) Si el Consejo de Seguridad Nacional lo aprueba."],
+  correcta: "b) Si lo prevé expresamente su Estatuto de Autonomía.",
+  justificacion: "La CE permite a las CCAA asumir competencias de seguridad pública a través de sus Estatutos."
+},
+{
+  pregunta: "¿Qué artículo de la Constitución Española regula las Fuerzas y Cuerpos de Seguridad?",
+  opciones: ["a) Artículo 104.", "b) Artículo 116.", "c) Artículo 149.", "d) Artículo 78."],
+  correcta: "a) Artículo 104.",
+  justificacion: "El artículo 104 CE establece que las Fuerzas y Cuerpos de Seguridad deben proteger derechos fundamentales y garantizar seguridad ciudadana."
+},
+{
+  pregunta: "Las unidades de Policía Judicial dependen funcionalmente de:",
+  opciones: ["a) El Ministerio del Interior.", "b) Los jueces, tribunales y fiscales.", "c) El Ministerio de Justicia.", "d) El Tribunal Superior autonómico."],
+  correcta: "b) Los jueces, tribunales y fiscales.",
+  justificacion: "Las unidades de Policía Judicial actúan bajo dependencia funcional de autoridades judiciales."
+},
+{
+  pregunta: "¿Qué cuerpo policial tiene asignada la vigilancia de edificios e instalaciones públicas del Estado?",
+  opciones: ["a) Guardia Civil.", "b) Policía Local.", "c) Policía Nacional.", "d) Policía Autonómica."],
+  correcta: "c) Policía Nacional.",
+  justificacion: "Esta competencia está atribuida a la Policía Nacional según el artículo 12."
+},
+{
+  pregunta: "Un municipio con cuerpo de Policía Local está obligado a disponer de:",
+  opciones: ["a) Policía de barrio especializada.", "b) Reglamento de funcionamiento interno.", "c) Unidad Local de Investigación Criminal propia.", "d) Refuerzo militar del Cuerpo de Ejército más cercano."],
+  correcta: "b) Reglamento de funcionamiento interno.",
+  justificacion: "Cada cuerpo de Policía Local debe contar con un reglamento interno según el artículo 53 y la normativa aplicable."
+},
+{
+  pregunta: "Una de las funciones comunes de todas las Fuerzas y Cuerpos de Seguridad es:",
+  opciones: ["a) Prevenir la comisión de delitos.", "b) Proteger carreteras y autopistas.", "c) Expedición de pasaportes al ciudadano.", "d) Intervención en conflictos judiciales."],
+  correcta: "a) Prevenir la comisión de delitos.",
+  justificacion: "El artículo 11 recoge esta como una de las misiones comunes de todos los cuerpos."
+},
+{
+  pregunta: "El principio de secreto profesional regulado en la LO 2/1986 obliga a los agentes a:",
+  opciones: ["a) No declarar ante ningún juez.", "b) No difundir información conocida por razón del cargo, salvo en los casos permitidos por ley.", "c) Denunciar siempre cualquier infracción a la prensa.", "d) Guardar silencio en los juicios."],
+  correcta: "b) No difundir información conocida por razón del cargo, salvo en los casos permitidos por ley.",
+  justificacion: "Este principio obliga a proteger la confidencialidad de la información que conocen por su cargo."
+},
+{
+  pregunta: "La Guardia Civil puede actuar como Policía Judicial:",
+  opciones: ["a) Bajo dependencia del Ministerio del Interior.", "b) Únicamente para delitos militares.", "c) Bajo autoridad de jueces y fiscales.", "d) Siempre que lo solicite el alcalde."],
+  correcta: "c) Bajo autoridad de jueces y fiscales.",
+  justificacion: "Cuando actúan como Policía Judicial, la Guardia Civil se somete a los tribunales."
+},
+{
+  pregunta: "La LO 2/1986 establece que el modelo policial español se organiza según:",
+  opciones: ["a) Un único cuerpo policial accesible desde cualquier administración.", "b) Un sistema descentralizado de cuerpos policiales con coordinación estatal.", "c) Un sistema militar de control bajo el mando del ejército.", "d) Un cuerpo único dependiente directamente del Jefe del Estado."],
+  correcta: "b) Un sistema descentralizado de cuerpos policiales con coordinación estatal.",
+  justificacion: "El modelo español es multi-nivel: estatal, autonómico y local, bajo coordinación estatal."
+},
+{
+  pregunta: "Las actuaciones de los agentes deberán regirse, entre otros, por el principio de:",
+  opciones: ["a) Imparcialidad y neutralidad política.", "b) Influencia social progresiva.", "c) Consultas vinculantes al sindicato policial.", "d) Autonomía en las decisiones operativas."],
+  correcta: "a) Imparcialidad y neutralidad política.",
+  justificacion: "Este principio es explícito en el artículo 5 para evitar influencias ideológicas."
+},
+{
+  pregunta: "Una Policía Autonómica podrá asumir funciones de tráfico:",
+  opciones: ["a) Solo en zonas rurales.", "b) Si está prevista en su Estatuto de Autonomía y mediante transferencia del Estado.", "c) Automáticamente al constituirse.", "d) Con autorización judicial."],
+  correcta: "b) Si está prevista en su Estatuto de Autonomía y mediante transferencia del Estado.",
+  justificacion: "La competencia en tráfico requiere previsión estatutaria y transferencia efectiva."
+},
+{
+  pregunta: "Los principios básicos de actuación recogidos en el artículo 5 de la LO 2/1986 incluyen:",
+  opciones: ["a) Respeto a la legalidad, neutralidad política, y jerarquía.", "b) Dedicación profesional, obediencia e integridad personal.", "c) Integridad, neutralidad política, y secreto profesional.", "d) Imparcialidad, obediencia a superiores y respeto a la justicia militar."],
+  correcta: "c) Integridad, neutralidad política, y secreto profesional.",
+  justificacion: "Estos principios están específicamente incluidos en el artículo 5 de la LO 2/1986."
+},
+{
+  pregunta: "Las Fuerzas y Cuerpos de Seguridad del Estado están formadas por:",
+  opciones: ["a) La Policía Nacional y la Guardia Civil.", "b) Policía Local y Policía Autonómica.", "c) La Guardia Civil y los Mossos d'Esquadra.", "d) Las Fuerzas Armadas y la Guardia Civil."],
+  correcta: "a) La Policía Nacional y la Guardia Civil.",
+  justificacion: "Estas son las Fuerzas y Cuerpos de Seguridad del Estado según la LO 2/1986."
+},
+{
+  pregunta: "El artículo 11 de la LO 2/1986 establece como misión común de todas las Fuerzas y Cuerpos de Seguridad:",
+  opciones: ["a) Vigilar el cumplimiento de sentencias judiciales.", "b) Proteger el libre ejercicio de derechos y libertades.", "c) Expulsar a extranjeros sin documentación.", "d) Elaborar estadísticas de delincuencia."],
+  correcta: "b) Proteger el libre ejercicio de derechos y libertades.",
+  justificacion: "Es una misión común recogida en el artículo 11 de la Ley."
+},
+{
+  pregunta: "La dependencia funcional de los cuerpos policiales en materia judicial corresponde a:",
+  opciones: ["a) Los jueces, tribunales y fiscales.", "b) El Ministro de Justicia.", "c) Las Delegaciones del Gobierno.", "d) El Presidente del Tribunal Supremo."],
+  correcta: "a) Los jueces, tribunales y fiscales.",
+  justificacion: "Como Policía Judicial, actúan bajo dependencia de jueces y fiscales."
+},
+{
+  pregunta: "La seguridad ciudadana es competencia exclusiva del Estado según el artículo:",
+  opciones: ["a) 104 CE.", "b) 9.2 CE.", "c) 149.1.29 CE.", "d) 135.3 CE."],
+  correcta: "c) 149.1.29 CE.",
+  justificacion: "Este artículo reserva al Estado la competencia exclusiva en materia de seguridad pública."
+},
+{
+  pregunta: "Entre las funciones específicas de la Guardia Civil se encuentra:",
+  opciones: ["a) Expedir documentos de identidad.", "b) El resguardo fiscal del Estado.", "c) La custodia de fronteras marítimas con terceros países.", "d) La vigilancia de edificios públicos estatales."],
+  correcta: "b) El resguardo fiscal del Estado.",
+  justificacion: "El artículo 12 de la LO 2/1986 asigna esta función a la Guardia Civil."
+},
+{
+  pregunta: "La Policía Local se organiza y estructura de acuerdo con:",
+  opciones: ["a) La Constitución Española.", "b) La Ley Orgánica 2/1986 y las leyes autonómicas.", "c) Las directrices del Ministerio del Interior.", "d) La Ley Orgánica de Estabilidad Presupuestaria."],
+  correcta: "b) La Ley Orgánica 2/1986 y las leyes autonómicas.",
+  justificacion: "Es competencia del municipio, pero su estructura se regula tanto por la LO 2/1986 como por la normativa autonómica."
+},
+{
+  pregunta: "Las Policías Autonómicas podrán ejercer funciones de vigilancia del orden público si:",
+  opciones: ["a) Lo permite el Ministerio de Defensa.", "b) Lo establece una ordenanza municipal.", "c) Está previsto en su Estatuto y mediante convenio con el Estado.", "d) Interviene la Interpol en un caso internacional."],
+  correcta: "c) Está previsto en su Estatuto y mediante convenio con el Estado.",
+  justificacion: "La CE establece el marco y la LO 2/1986 lo desarrolla, siempre con base estatutaria."
+},
+{
+  pregunta: "El principio de proporcionalidad en la actuación de los cuerpos policiales implica que:",
+  opciones: ["a) La actuación policial debe estar en consonancia con las circunstancias del caso.", "b) Siempre deben utilizarse armas no letales.", "c) Nunca se puede hacer uso de la fuerza.", "d) Se debe detener a todos los implicados sin excepción."],
+  correcta: "a) La actuación policial debe estar en consonancia con las circunstancias del caso.",
+  justificacion: "El artículo 5 recoge la proporcionalidad como principio básico de actuación."
+},
+{
+  pregunta: "El personal de la Guardia Civil es:",
+  opciones: ["a) Personal civil con estatus especial.", "b) Funcionarios con estatus militar.", "c) Personal contratado temporalmente según necesidad.", "d) Voluntarios en régimen de colaboración."],
+  correcta: "b) Funcionarios con estatus militar.",
+  justificacion: "El artículo 9 describe a la Guardia Civil como un instituto armado de naturaleza militar."
+},
+{
+  pregunta: "La coordinación entre Policía Nacional y Guardia Civil en materia de seguridad ciudadana está regulada por:",
+  opciones: ["a) La Ley de Coordinación Policial del Estado.", "b) La LO 2/1986 y las órdenes del Ministerio del Interior.", "c) El Código Penal Militar.", "d) El Estatuto de Autonomía de cada región."],
+  correcta: "b) La LO 2/1986 y las órdenes del Ministerio del Interior.",
+  justificacion: "La coordinación se establece dentro del marco de esta Ley y las órdenes del órgano competente."
+},
+{
+  pregunta: "El artículo 55 de la LO 2/1986 se refiere al régimen de:",
+  opciones: ["a) Policía Judicial.", "b) Reglamento interno de la Policía Local.", "c) Delitos cometidos por funcionarios policiales.", "d) Formación en escuelas policiales."],
+  correcta: "b) Reglamento interno de la Policía Local.",
+  justificacion: "El artículo 55 trata sobre la organización interna de las Policías Locales."
+},
+{
+  pregunta: "Según la LO 2/1986, las Policías Locales tienen la obligación de:",
+  opciones: ["a) Informar a la Policía Nacional sobre cada actuación.", "b) Aplicar las leyes autonómicas de forma exclusiva.", "c) Proteger a las autoridades locales en el ejercicio de sus funciones.", "d) Hacer cumplir las instrucciones del Ejército."],
+  correcta: "c) Proteger a las autoridades locales en el ejercicio de sus funciones.",
+  justificacion: "Esta es una de las funciones específicas recogidas en el artículo 53."
+},
+{
+  pregunta: "En caso de colaboración internacional, los cuerpos policiales españoles actúan:",
+  opciones: ["a) Bajo el mando del Consejo de Europa.", "b) A través de la Dirección General de Cooperación Internacional.", "c) En coordinación con Interpol o Europol, siempre previa autorización del Estado.", "d) Solo si el jefe del cuerpo así lo autoriza."],
+  correcta: "c) En coordinación con Interpol o Europol, siempre previa autorización del Estado.",
+  justificacion: "La cooperación internacional debe seguir el marco estatal y los instrumentos internacionales."
+},
+{
+  pregunta: "La Policía Autonómica tiene competencias exclusivas en:",
+  opciones: ["a) La protección de altas personalidades del Estado.", "b) La vigilancia integral de edificios públicos estatales.", "c) La aplicación de la normativa autonómica.", "d) La ejecución judicial en el ámbito militar."],
+  correcta: "c) La aplicación de la normativa autonómica.",
+  justificacion: "La Policía Autonómica vela por el cumplimiento de las normas propias de su Comunidad."
+},
+{
+  pregunta: "El principio de jerarquía en los cuerpos policiales significa que:",
+  opciones: ["a) Se deben obedecer las órdenes sin excepción.", "b) La autoridad del superior debe respetar las leyes y principios básicos de actuación.", "c) Las decisiones políticas pesan más que la legalidad.", "d) El mando policial está supeditado únicamente al Jefe de Estado."],
+  correcta: "b) La autoridad del superior debe respetar las leyes y principios básicos de actuación.",
+  justificacion: "El principio de jerarquía no es absoluto y está subordinado al respeto del ordenamiento jurídico."
+},
+{
+  pregunta: "La formación de los miembros de las Fuerzas y Cuerpos de Seguridad está orientada a:",
+  opciones: ["a) Cumplir estadísticas anuales.", "b) Conocer únicamente técnicas operativas.", "c) Adquirir conocimientos jurídicos, técnicos y profesionales.", "d) Preparar oposiciones internas exclusivamente."],
+  correcta: "c) Adquirir conocimientos jurídicos, técnicos y profesionales.",
+  justificacion: "La formación se orienta a la profesionalización, como señala el artículo 6 de la LO 2/1986."
+},
+{
+  pregunta: "Las Policías Locales actuarán como Policía Judicial:",
+  opciones: ["a) Siempre que la Guardia Civil lo permita.", "b) Solo si se les encomienda por los jueces o fiscales.", "c) En el ámbito autonómico exclusivamente.", "d) Cuando los casos afectan a menores."],
+  correcta: "b) Solo si se les encomienda por los jueces o fiscales.",
+  justificacion: "Lo establecen el artículo 7 y artículo 53 de la LO 2/1986."
+},
+{
+  pregunta: "La naturaleza militar de la Guardia Civil implica que:",
+  opciones: ["a) Está sometida a disciplina militar y puede actuar en conflictos armados.", "b) Solo puede actuar dentro del territorio español.", "c) No puede cumplir funciones de seguridad ciudadana.", "d) Su personal debe pertenecer al Ejército."],
+  correcta: "a) Está sometida a disciplina militar y puede actuar en conflictos armados.",
+  justificacion: "Como instituto armado de naturaleza militar, tiene competencias en defensa y seguridad."
+},
+{
+  pregunta: "La Ley Orgánica 2/1986 se estructura en:",
+  opciones: ["a) Un Título Preliminar, dos títulos y disposiciones finales.", "b) Capítulos temáticos sin títulos ni subdivisiones.", "c) Un único artículo regulador con anexos técnicos.", "d) Títulos independientes para cada cuerpo policial."],
+  correcta: "a) Un Título Preliminar, dos títulos y disposiciones finales.",
+  justificacion: "La estructura de la Ley es sistemática, incluyendo estos elementos normativos."
+},
+{
+  pregunta: "Según la LO 2/1986, los miembros de la Policía Nacional se consideran:",
+  opciones: ["a) Personal estatutario con naturaleza militar.", "b) Funcionarios de carrera de carácter civil.", "c) Funcionarios libres designados por el Ministerio del Interior.", "d) Personal eventual dependiente del Gobierno."],
+  correcta: "b) Funcionarios de carrera de carácter civil.",
+  justificacion: "El artículo 8 establece que los miembros del Cuerpo Nacional de Policía tienen naturaleza civil."
+},
+{
+  pregunta: "El artículo 12 de la LO 2/1986 indica que una función exclusiva de la Policía Nacional es:",
+  opciones: ["a) La investigación del fraude fiscal.", "b) La vigilancia del litoral.", "c) El control de entrada y salida de españoles y extranjeros.", "d) La protección militar exterior."],
+  correcta: "c) El control de entrada y salida de españoles y extranjeros.",
+  justificacion: "Esta es una de las funciones específicas de la Policía Nacional."
+},
+{
+  pregunta: "El Ministerio del Interior coordina a las Fuerzas y Cuerpos de Seguridad:",
+  opciones: ["a) Solo a nivel estatal.", "b) También a nivel autonómico cuando se lo solicite la Comunidad Autónoma.", "c) Solo en situaciones de crisis.", "d) Por mandato judicial exclusivamente."],
+  correcta: "b) También a nivel autonómico cuando se lo solicite la Comunidad Autónoma.",
+  justificacion: "El Ministerio del Interior tiene capacidad de coordinación en distintos niveles en virtud de convenios y cooperación."
+},
+{
+  pregunta: "Las Policías Locales pueden colaborar con la Policía Nacional y la Guardia Civil:",
+  opciones: ["a) Únicamente en funciones de protección civil.", "b) Siempre y cuando exista autorización expresa del Ministerio de Defensa.", "c) En situaciones de emergencia y bajo convenio o requerimiento.", "d) Solamente bajo órdenes del Presidente de la Comunidad Autónoma."],
+  correcta: "c) En situaciones de emergencia y bajo convenio o requerimiento.",
+  justificacion: "Según el artículo 51, la colaboración se establece mediante convenios o requerimientos para actuaciones específicas."
+},
+{
+  pregunta: "El Consejo de Política de Seguridad tiene como finalidad:",
+  opciones: ["a) Reunir a los presidentes autonómicos que deseen crear cuerpos policiales propios.", "b) Coordinar a las Fuerzas Armadas con los cuerpos policiales en defensa nacional.", "c) Facilitar la coordinación del Gobierno con las Comunidades Autónomas en materia de seguridad.", "d) Supervisar las actuaciones del Tribunal Constitucional."],
+  correcta: "c) Facilitar la coordinación del Gobierno con las Comunidades Autónomas en materia de seguridad.",
+  justificacion: "Este órgano está destinado a mejorar la cooperación entre niveles administrativos."
+},
+{
+  pregunta: "La vigilancia de las costas corresponde a:",
+  opciones: ["a) Policía Nacional.", "b) Policía Local y Policía Autonómica.", "c) Guardia Civil.", "d) Cuerpo Superior de Policía y agencia Tráfico."],
+  correcta: "c) Guardia Civil.",
+  justificacion: "El artículo 12 establece esta función específica para la Guardia Civil."
+},
+{
+  pregunta: "El artículo 104 de la Constitución Española señala que las Fuerzas y Cuerpos de Seguridad deberán:",
+  opciones: ["a) Defender la soberanía ante ataques externos.", "b) Garantizar el libre ejercicio de los derechos y libertades y proteger la seguridad ciudadana.", "c) Establecer orden público y militar en tiempos de crisis.", "d) Impedir la entrada de personas sin autorización del Tribunal Constitucional."],
+  correcta: "b) Garantizar el libre ejercicio de los derechos y libertades y proteger la seguridad ciudadana.",
+  justificacion: "El artículo 104 CE formula esta misión de forma expresa."
+},
+{
+  pregunta: "El artículo 7 de la LO 2/1986 se refiere a:",
+  opciones: ["a) La colaboración entre Guardia Civil y Ejército.", "b) La función de policía judicial de los cuerpos policiales.", "c) La coordinación entre cuerpos policiales y empresas de seguridad privada.", "d) El régimen disciplinario de la policía autonómica."],
+  correcta: "b) La función de policía judicial de los cuerpos policiales.",
+  justificacion: "Este artículo define la actuación como Policía Judicial."
+},
+{
+  pregunta: "El personal de Policía Local actúa como autoridad en el ejercicio de sus funciones:",
+  opciones: ["a) Solo si está acompañado de un mando superior.", "b) Solo en el ámbito rural de su municipio.", "c) Únicamente en presencia de Guardia Civil.", "d) Cuando actúa conforme a las competencias legalmente asignadas."],
+  correcta: "d) Cuando actúa conforme a las competencias legalmente asignadas.",
+  justificacion: "El artículo 53 y las leyes autonómicas establecen su condición de autoridad en el marco municipal."
+},
+{
+  pregunta: "¿Cuál de los siguientes cuerpos se considera instituto armado de naturaleza militar?",
+  opciones: ["a) Guardia Civil.", "b) Policía Nacional.", "c) Policía Foral de Navarra.", "d) Ertzaintza."],
+  correcta: "a) Guardia Civil.",
+  justificacion: "El artículo 9 dispone que la Guardia Civil es un instituto armado de naturaleza militar."
+},
+{
+  pregunta: "Las Fuerzas y Cuerpos de Seguridad del Estado actuarán bajo dependencia:",
+  opciones: ["a) Exclusiva del Secretario de Estado de Seguridad.", "b) Funcional del Poder Judicial en funciones de Policía Judicial.", "c) Orgánico-territorial de los ayuntamientos.", "d) De los capitanes generales en tiempos de paz."],
+  correcta: "b) Funcional del Poder Judicial en funciones de Policía Judicial.",
+  justificacion: "El artículo 7 define la dependencia funcional ante jueces y fiscales."
+},
+{
+  pregunta: "Las Comunidades Autónomas podrán crear cuerpos de policía propios cuando:",
+  opciones: ["a) Cuente con la autorización del Tribunal Constitucional.", "b) Sus Estatutos de Autonomía lo recojan y el Estado lo transfiera.", "c) Lo decida por mayoría simple el Congreso de los Diputados.", "d) Estén integrados sus funcionarios en el Cuerpo Nacional de Policía."],
+  correcta: "b) Sus Estatutos de Autonomía lo recojan y el Estado lo transfiera.",
+  justificacion: "La CE permite a las CCAA constituir policías propias conforme al Estatuto y las leyes de transferencia."
+},
+{
+  pregunta: "La colaboración entre la Policía Autonómica y los cuerpos estatales se articula mediante:",
+  opciones: ["a) Iniciativas parlamentarias conjuntas.", "b) Delegaciones de funciones entre alcaldías y delegados del Gobierno.", "c) Convenios de colaboración entre administraciones.", "d) Resoluciones del Consejo General del Poder Judicial."],
+  correcta: "c) Convenios de colaboración entre administraciones.",
+  justificacion: "Los convenios permiten coordinar competencias de acuerdo con la LO 2/1986."
+},
+{
+  pregunta: "El resguardo fiscal del Estado es función de:",
+  opciones: ["a) Policía Nacional.", "b) Guardia Civil.", "c) Policía Local.", "d) Ertzaintza."],
+  correcta: "b) Guardia Civil.",
+  justificacion: "Esta función está atribuida a la Guardia Civil según el artículo 12."
+},
+{
+  pregunta: "Las funciones comunes de las Fuerzas y Cuerpos de Seguridad del Estado incluyen:",
+  opciones: ["a) La vigilancia fiscal del territorio.", "b) La protección de personalidades nacionales y extranjeras.", "c) La intervención en materia de tráfico en carreteras locales.", "d) La lucha contra incendios forestales."],
+  correcta: "b) La protección de personalidades nacionales y extranjeras.",
+  justificacion: "El artículo 11 recoge esta misión común a nivel estatal."
+},
+{
+  pregunta: "El régimen disciplinario de los miembros de las Fuerzas y Cuerpos de Seguridad se establece mediante:",
+  opciones: ["a) Reglamento interno aprobado por cada cuerpo.", "b) Ley Orgánica.", "c) Instrucción del Ministro del Interior.", "d) Resoluciones vinculantes del Tribunal Constitucional."],
+  correcta: "b) Ley Orgánica.",
+  justificacion: "El artículo 6 prevé que tanto el régimen estatutario como el disciplinario se establezcan por Ley Orgánica."
+},
+{
+  pregunta: "Dentro del marco de cooperación internacional, los cuerpos policiales españoles pueden participar en:",
+  opciones: ["a) Misiones de paz bajo mandato de la OTAN.", "b) Operaciones coordinadas con INTERPOL y EUROPOL.", "c) Campañas de control electoral en otros países.", "d) Intervenciones militares en el extranjero bajo autorización del Rey."],
+  correcta: "b) Operaciones coordinadas con INTERPOL y EUROPOL.",
+  justificacion: "La cooperación internacional policial se articula mediante acuerdos internacionales reconocidos por el Estado."
+},
+{
+  pregunta: "La Policía Local puede absolver responsabilidades penales en el ámbito municipal:",
+  opciones: ["a) Siempre que actúe en nombre de la Policía Nacional.", "b) Cuando actúa como autoridad en el ámbito de sus competencias.", "c) Por orden del alcalde.", "d) Cuando hay ausencia de Policía Autonómica en la región."],
+  correcta: "b) Cuando actúa como autoridad en el ámbito de sus competencias.",
+  justificacion: "Actúan como autoridad bajo la Ley y normativa autonómica en el término municipal."
+},
+{
+  pregunta: "La LO 2/1986 establece que la Policía Nacional y Guardia Civil dependen orgánicamente de:",
+  opciones: ["a) El Ministerio del Interior.", "b) La Presidencia del Gobierno.", "c) El Ministerio de Justicia.", "d) El Ministerio de Defensa exclusivamente."],
+  correcta: "a) El Ministerio del Interior.",
+  justificacion: "Ambos cuerpos dependen del Ministerio del Interior, aunque la Guardia Civil tiene también dependencia del Ministerio de Defensa."
+},
+{
+  pregunta: "El artículo 12 establece las funciones específicas de:",
+  opciones: ["a) Las Policías Locales.", "b) Las Policías Autonómicas.", "c) La Policía Nacional y la Guardia Civil.", "d) El personal civil del Ministerio del Interior."],
+  correcta: "c) La Policía Nacional y la Guardia Civil.",
+  justificacion: "Este artículo detalla las funciones específicas asignadas a cada cuerpo estatal."
+},
+{
+  pregunta: "El principio de integridad en el artículo 5 de la LO 2/1986 implica que los agentes deben:",
+  opciones: ["a) Trocar información con informadores externos cuando sea útil.", "b) Mantener una conducta honesta y ejemplar en el desempeño de su función.", "c) Adaptar su conducta a los objetivos políticos de cada gobierno.", "d) Permitir que los medios de comunicación supervisen sus operaciones."],
+  correcta: "b) Mantener una conducta honesta y ejemplar en el desempeño de su función.",
+  justificacion: "La integridad es un principio básico para garantizar la confianza pública."
+},
+{
+  pregunta: "El artículo 104 de la Constitución Española atribuye al Gobierno la dirección de:",
+  opciones: ["a) Los cuerpos de seguridad privados.", "b) Las Fuerzas y Cuerpos de Seguridad.", "c) La seguridad militar internacional.", "d) El ejército en tiempos de paz."],
+  correcta: "b) Las Fuerzas y Cuerpos de Seguridad.",
+  justificacion: "El Gobierno dirige la actuación de las FCS según el marco constitucional."
+},
+{
+  pregunta: "La función de vigilancia e inspección de locales de espectáculos públicos corresponde principalmente a:",
+  opciones: ["a) Policía Nacional.", "b) Policía Local.", "c) Guardia Civil.", "d) Policía Autonómica."],
+  correcta: "b) Policía Local.",
+  justificacion: "Es una de las funciones propias del ámbito municipal según el artículo 53."
+},
+{
+  pregunta: "La coordinación en materia de seguridad entre el Estado y las Comunidades Autónomas se articula a través del:",
+  opciones: ["a) Consejo de Ministros.", "b) Consejo de Política de Seguridad.", "c) Tribunal Constitucional.", "d) Ministerio de Justicia."],
+  correcta: "b) Consejo de Política de Seguridad.",
+  justificacion: "Este órgano facilita la cooperación multilateral y la planificación conjunta."
+},
+{
+  pregunta: "La colaboración entre cuerpos policiales de distintos ámbitos territoriales se realiza mediante:",
+  opciones: ["a) Delegación de poderes constitucionales.", "b) Convenios y acuerdos operativos.", "c) Órdenes del Ministerio de Asuntos Exteriores.", "d) Directivas del Parlamento Europeo."],
+  correcta: "b) Convenios y acuerdos operativos.",
+  justificacion: "Los convenios son el instrumento clave para canalizar la colaboración operativa."
+},
+{
+  pregunta: "En lo referente a la dependencia orgánica de la Guardia Civil, ésta se divide entre:",
+  opciones: ["a) Ministerio del Interior y Ministerio de Defensa.", "b) Ministerio de Defensa y Presidencia del Gobierno.", "c) Ministerio del Interior y entidades autonómicas.", "d) Tribunal Constitucional y Ministerio de Justicia."],
+  correcta: "a) Ministerio del Interior y Ministerio de Defensa.",
+  justificacion: "La naturaleza militar de la Guardia Civil le otorga una doble dependencia."
+},
+{
+  pregunta: "Los miembros de la Policía Nacional deberán ajustar su actuación a los principios de:",
+  opciones: ["a) Legalidad, imparcialidad, secreto profesional y dedicación profesional.", "b) Jerarquía, obediencia ciega, y discrecionalidad.", "c) Exclusividad operativa y autonomía funcional.", "d) Desobediencia en caso de conflicto institucional."],
+  correcta: "a) Legalidad, imparcialidad, secreto profesional y dedicación profesional.",
+  justificacion: "Estos principios se recogen en el artículo 5 de la LO 2/1986."
+},
+{
+  pregunta: "El artículo 53 de la LO 2/1986 establece que la Policía Local:",
+  opciones: ["a) Solo vigila los delitos graves.", "b) Tiene competencias específicas de colaboración en materia de seguridad ciudadana.", "c) Actúa sin ningún tipo de limitación jurisdiccional.", "d) Solo realiza funciones administrativas."],
+  correcta: "b) Tiene competencias específicas de colaboración en materia de seguridad ciudadana.",
+  justificacion: "La Policía Local también puede colaborar en tareas de seguridad ciudadana."
+},
+{
+  pregunta: "Una de las siguientes funciones corresponde en exclusiva a la Guardia Civil:",
+  opciones: ["a) Expedición de DNI.", "b) Vigilancia del resguardo fiscal del Estado.", "c) Protección de personalidades autonómicas.", "d) Control de documentación de vehículos."],
+  correcta: "b) Vigilancia del resguardo fiscal del Estado.",
+  justificacion: "Es una función específica según el artículo 12 de la LO 2/1986."
+},
+{
+  pregunta: "El uso de armas por los miembros de las Fuerzas y Cuerpos de Seguridad está regulado por el principio de:",
+  opciones: ["a) Inmediatez y contundencia.", "b) Disuasión y amenaza.", "c) Proporcionalidad y mínima intervención.", "d) Mando y control de territorio."],
+  correcta: "c) Proporcionalidad y mínima intervención.",
+  justificacion: "El principio básico es que la fuerza se emplee con proporcionalidad según el artículo 5."
+},
+{
+  pregunta: "La Ley Orgánica 2/1986 regula la estructura y funciones de:",
+  opciones: ["a) Todas las Administraciones Públicas en el ámbito de la seguridad.", "b) Las Fuerzas y Cuerpos de Seguridad del Estado, comunidades y municipios.", "c) Únicamente la Policía Nacional.", "d) Las Fuerzas Armadas en tiempo de paz."],
+  correcta: "b) Las Fuerzas y Cuerpos de Seguridad del Estado, comunidades y municipios.",
+  justificacion: "La LO 2/1986 abarca los cuerpos policiales en todos los niveles administrativos."
+},
+{
+  pregunta: "La función de Policía Judicial la ejercen fundamentalmente:",
+  opciones: ["a) Policía Nacional y Guardia Civil bajo dependencia judicial.", "b) Policía Local en colaboración con el Ministerio Fiscal.", "c) Jueces y magistrados auxiliados por Policía Autonómica.", "d) Autoridades municipales dentro de su término."],
+  correcta: "a) Policía Nacional y Guardia Civil bajo dependencia judicial.",
+  justificacion: "El artículo 7 define esta función y su dependencia funcional."
+},
+{
+  pregunta: "Las Fuerzas y Cuerpos de Seguridad deberán actuar en todo momento con:",
+  opciones: ["a) Excesiva cautela para evitar daños.", "b) Imparcialidad absoluta y sometimiento a la ley.", "c) Discrecionalidad operativa en función del caso concreto.", "d) Dirección militar y jerárquica exclusiva."],
+  correcta: "b) Imparcialidad absoluta y sometimiento a la ley.",
+  justificacion: "La imparcialidad es un principio explícito del artículo 5."
+},
+{
+  pregunta: "La Policía Local podrá ejercer como Policía Judicial:",
+  opciones: ["a) En cualquier caso y sin control externo.", "b) Únicamente si es solicitada por la autoridad judicial o fiscal.", "c) En ausencia de Policía Autonómica.", "d) Si el delito se comete cerca del Ayuntamiento."],
+  correcta: "b) Únicamente si es solicitada por la autoridad judicial o fiscal.",
+  justificacion: "Este límite está recogido en el artículo 7 y el artículo 53 de la LO 2/1986."
+},
+{
+  pregunta: "La dirección superior de todas las Fuerzas y Cuerpos de Seguridad corresponde a:",
+  opciones: ["a) El Jefe del Estado.", "b) El Gobierno.", "c) El Congreso de los Diputados.", "d) El Tribunal Constitucional."],
+  correcta: "b) El Gobierno.",
+  justificacion: "Según el artículo 104 CE y la LO 2/1986, el Gobierno dirige las FCS."
+},
+{
+  pregunta: "El análisis y tratamiento de información de interés policial corresponde a:",
+  opciones: ["a) Policía Nacional.", "b) Guardia Civil.", "c) Ambas fuerzas estatales de forma coordinada.", "d) Comunidad Autónoma mediante decreto."],
+  correcta: "c) Ambas fuerzas estatales de forma coordinada.",
+  justificacion: "Esta es una función compartida entre Guardia Civil y Policía Nacional dentro del artículo 12."
+},
+{
+  pregunta: "Las Policías Autonómicas actúan dentro del marco establecido por:",
+  opciones: ["a) La Constitución y su Estatuto de Autonomía.", "b) Las directrices operativas de la OTAN.", "c) Un reglamento estatal firmado por el Rey.", "d) Los acuerdos de seguridad privada."],
+  correcta: "a) La Constitución y su Estatuto de Autonomía.",
+  justificacion: "La base competencial se encuentra en la CE y cada Estatuto autonómico."
+},
+{
+  pregunta: "La LO 2/1986 señala que la actuación policial debe ser:",
+  opciones: ["a) Exclusivamente sancionadora.", "b) Responsable y proporcionada al objetivo que se persiga.", "c) Política en situaciones extraordinarias.", "d) De carácter discrecional sin necesidad de supervisión."],
+  correcta: "b) Responsable y proporcionada al objetivo que se persiga.",
+  justificacion: "Este principio básico está recogido en el artículo 5."
+},
+{
+  pregunta: "Los miembros de la Guardia Civil se caracterizan, además de por su condición militar, por:",
+  opciones: ["a) Tener funciones exclusivamente rurales.", "b) Integrar el Cuerpo Nacional de Policía en situaciones de alerta.", "c) Depender de forma orgánica y funcional del Ministerio de Defensa.", "d) Actuar en misiones de orden público y seguridad tanto en zonas rurales como urbanas."],
+  correcta: "d) Actuar en misiones de orden público y seguridad tanto en zonas rurales como urbanas.",
+  justificacion: "La Guardia Civil actúa en todo tipo de ámbitos según sus competencias asignadas."
+},
+{
+  pregunta: "Las Fuerzas y Cuerpos de Seguridad prestarán auxilio a:",
+  opciones: ["a) Empresas privadas de seguridad privada.", "b) La Administración de Justicia, mediante actuaciones policiales específicas.", "c) Comunidades de vecinos en casos de urgencia.", "d) El Tribunal Constitucional, para dirigir investigaciones penales."],
+  correcta: "b) La Administración de Justicia, mediante actuaciones policiales específicas.",
+  justificacion: "La colaboración con la Administración de Justicia se realiza, por ejemplo, a través de las unidades de Policía Judicial."
+},
+{
+  pregunta: "El principio de 'secreto profesional' recogido en la LO 2/1986 implica que los agentes:",
+  opciones: ["a) Pueden revelar información confidencial a sus superiores bajo cualquier circunstancia.", "b) No podrán hacer uso de la información obtenida en el ejercicio de su función, salvo en los casos previstos en la ley.", "c) Están obligados a informar públicamente sobre cada intervención policial.", "d) Solo pueden guardar información relacionada con delitos graves."],
+  correcta: "b) No podrán hacer uso de la información obtenida en el ejercicio de su función, salvo en los casos previstos en la ley.",
+  justificacion: "El secreto profesional es un principio básico de actuación recogido en el artículo 5."
+},
+{
+  pregunta: "Las actuaciones policiales deberán ajustarse en todo momento a:",
+  opciones: ["a) Las disposiciones constitucionales y legales.", "b) Las indicaciones de los mandos intermedios.", "c) La política del partido de Gobierno.", "d) Los principios operativos del Derecho Internacional Humanitario."],
+  correcta: "a) Las disposiciones constitucionales y legales.",
+  justificacion: "El principio de legalidad obliga a la actuación siempre conforme al ordenamiento jurídico."
+},
+{
+  pregunta: "La dependencia funcional de la Policía Judicial implica que:",
+  opciones: ["a) Está sometida a las instrucciones del Ministro de Justicia.", "b) Sus actuaciones están bajo la dirección de jueces, tribunales o el Ministerio Fiscal.", "c) Solo puede actuar en casos de crimen organizado.", "d) Depende exclusivamente del Secretario de Estado de Seguridad."],
+  correcta: "b) Sus actuaciones están bajo la dirección de jueces, tribunales o el Ministerio Fiscal.",
+  justificacion: "El artículo 7 de la LO 2/1986 establece esta dependencia funcional."
+},
+{
+  pregunta: "La actuación de los agentes de las Fuerzas y Cuerpos de Seguridad deberá estar guiada por:",
+  opciones: ["a) El uso continuo de la fuerza.", "b) La proporcionalidad y necesidad en su intervención.", "c) La lealtad exclusiva a sus mandos superiores.", "d) La búsqueda del cumplimiento de objetivos políticos."],
+  correcta: "b) La proporcionalidad y necesidad en su intervención.",
+  justificacion: "La proporcionalidad es un principio básico del artículo 5."
+},
+{
+  pregunta: "Uno de los requisitos para la creación de un cuerpo de Policía Autonómica es que:",
+  opciones: ["a) Sea aprobado por las Cortes Generales por mayoría absoluta.", "b) Esté previsto en el Estatuto de Autonomía de la Comunidad.", "c) Exista una necesidad probada de seguridad regional.", "d) Haya sido solicitado por la Delegación del Gobierno."],
+  correcta: "b) Esté previsto en el Estatuto de Autonomía de la Comunidad.",
+  justificacion: "Según la Constitución, la base estatutaria es necesaria para transferir competencias en seguridad."
+},
+{
+  pregunta: "La actuación de la Policía Local puede exceder los límites del municipio cuando:",
+  opciones: ["a) Se trate de un delito de competencia estatal.", "b) Así lo solicite otro Ayuntamiento o autoridad competente.", "c) Actúe como policía judicial bajo orden judicial o fiscal.", "d) Sea designada como cuerpo de apoyo al Ejército."],
+  correcta: "c) Actúe como policía judicial bajo orden judicial o fiscal.",
+  justificacion: "El artículo 53 y el 7 de la LO 2/1986 prevén esta actuación excepcional."
+},
+{
+  pregunta: "Las funciones de prevención y vigilancia del tráfico urbano corresponden a:",
+  opciones: ["a) Guardia Civil de Tráfico.", "b) Mossos d'Esquadra.", "c) Policía Local.", "d) Policía Nacional."],
+  correcta: "c) Policía Local.",
+  justificacion: "Es una competencia básica de las Policías Locales según el artículo 53."
+},
+{
+  pregunta: "El régimen estatutario del personal de los cuerpos policiales se regula mediante:",
+  opciones: ["a) Decreto de las Cortes Generales.", "b) Ley Orgánica, según lo dispone la LO 2/1986.", "c) Orden del Ministro del Interior.", "d) Mandato constitucional directo sin desarrollo legal."],
+  correcta: "b) Ley Orgánica, según lo dispone la LO 2/1986.",
+  justificacion: "El artículo 6 establece que tanto el régimen estatutario como el disciplinario requieren Ley Orgánica."
+},
+{
+  pregunta: "Los policías autonómicos actúan principalmente bajo:",
+  opciones: ["a) Dependencia del Ministerio de Interior.", "b) Las directrices del Presidente del Gobierno.", "c) Órdenes de la autoridad judicial en su Comunidad Autónoma.", "d) El mando de sus organismos autonómicos competentes."],
+  correcta: "d) El mando de sus organismos autonómicos competentes.",
+  justificacion: "La Policía Autonómica depende orgánicamente de los órganos de gobierno autonómicos."
+},
+{
+  pregunta: "El Ministerio del Interior tiene competencias en materia de:",
+  opciones: ["a) Dirección militar de operaciones exteriores.", "b) Coordinación operativa de las Fuerzas y Cuerpos de Seguridad.", "c) Supervisión de los Estatutos de los funcionarios autonómicos.", "d) Gestión económica del sistema penitenciario."],
+  correcta: "b) Coordinación operativa de las Fuerzas y Cuerpos de Seguridad.",
+  justificacion: "Es su competencia principal en materia de seguridad nacional."
+},
+{
+  pregunta: "Las Fuerzas y Cuerpos de Seguridad deben actuar conforme al principio de imparcialidad, lo cual implica que:",
+  opciones: ["a) No pueden tener preferencia política ni sindical.", "b) Deben declarar su ideología a sus superiores.", "c) Pueden mostrar apoyo a partidos ideológicos si están fuera de servicio.", "d) Están obligados a votar en elecciones."],
+  correcta: "a) No pueden tener preferencia política ni sindical.",
+  justificacion: "La LO 2/1986 exige neutralidad política total en el ejercicio de funciones."
+},
+{
+  pregunta: "La cooperación con policías extranjeras se realiza:",
+  opciones: ["a) Bajo la dirección de organismos internacionales y previa autorización estatal.", "b) Siempre que los policías estén en periodo de formación.", "c) A través de acuerdos entre cuerpos policiales privados.", "d) Sin necesidad de autorización legislativa."],
+  correcta: "a) Bajo la dirección de organismos internacionales y previa autorización estatal.",
+  justificacion: "La cooperación internacional está prevista en el artículo 10 y debe estar regulada por acuerdos estatales."
+},
+{
+  pregunta: "Según la LO 2/1986, la dirección superior de la Policía Nacional corresponde a:",
+  opciones: ["a) El Presidente del Gobierno.", "b) El Ministro del Interior y el Director General de la Policía.", "c) El Consejo General del Poder Judicial.", "d) El Tribunal de Cuentas."],
+  correcta: "b) El Ministro del Interior y el Director General de la Policía.",
+  justificacion: "El Ministro del Interior es la autoridad superior y delega la dirección operativa en el Director General."
+},
+{
+  pregunta: "El régimen disciplinario de los funcionarios de la Policía Nacional se regula por:",
+  opciones: ["a) Ley Orgánica específica.", "b) Reglamento interno del cuerpo.", "c) Jurisprudencia del Tribunal Supremo.", "d) El Reglamento de Fuerzas Armadas."],
+  correcta: "a) Ley Orgánica específica.",
+  justificacion: "El artículo 6 de la LO 2/1986 exige Ley Orgánica para regular el régimen disciplinario."
+},
+{
+  pregunta: "El artículo 11 de la LO 2/1986 señala como una misión común de todas las Fuerzas y Cuerpos de Seguridad:",
+  opciones: ["a) Ejecutar órdenes judiciales sin confirmación.", "b) Perseguir y detener a los delincuentes y ponerlos a disposición judicial.", "c) Militarizar la sociedad en tiempos de paz.", "d) Supervisar elecciones autonómicas."],
+  correcta: "b) Perseguir y detener a los delincuentes y ponerlos a disposición judicial.",
+  justificacion: "La persecución de delitos y la gestión de detenidos es misión común según el artículo 11."
+},
+{
+  pregunta: "Una de las funciones específicas de la Policía Local es:",
+  opciones: ["a) Vigilar y proteger edificios públicos de titularidad estatal.", "b) Instruir atestados por accidentes de tráfico dentro del casco urbano.", "c) Expedir pasaportes y permisos de residencia.", "d) Controlar la inmigración irregular."],
+  correcta: "b) Instruir atestados por accidentes de tráfico dentro del casco urbano.",
+  justificacion: "Esta función se incluye en el artículo 53 de la LO 2/1986."
+},
+{
+  pregunta: "La vigilancia de puertos e instalaciones marítimas es competencia de:",
+  opciones: ["a) Policía Nacional.", "b) Guardia Civil.", "c) Policía Portuaria regulada por la Comunidad Autónoma.", "d) Ejército del Aire en misiones de defensa."],
+  correcta: "b) Guardia Civil.",
+  justificacion: "Esta función está recogida dentro de las funciones específicas del cuerpo, vinculada al resguardo fiscal y control externo."
+},
+{
+  pregunta: "La formación profesional de los miembros de las Fuerzas y Cuerpos de Seguridad incluirá:",
+  opciones: ["a) Solo aspectos militares en el caso de la Guardia Civil.", "b) Conocimientos técnicos, jurídicos y de actuación policial.", "c) Materias exclusivamente de defensa militar.", "d) Estudios superiores en derecho constitucional."],
+  correcta: "b) Conocimientos técnicos, jurídicos y de actuación policial.",
+  justificacion: "La formación debe capacitar integralmente para el ejercicio de sus funciones."
+},
+{
+  pregunta: "Los miembros de la Policía Autonómica actúan como policía judicial:",
+  opciones: ["a) Siempre que el caso tenga repercusión política.", "b) Solo si lo solicitan los tribunales competentes.", "c) En colaboración con el Cuerpo Nacional de Policía bajo dependencia de Defensa.", "d) Si el delito afecta a intereses autonómicos."],
+  correcta: "b) Solo si lo solicitan los tribunales competentes.",
+  justificacion: "La función de Policía Judicial solo opera bajo requerimiento judicial o fiscal."
+},
+{
+  pregunta: "La LO 2/1986 establece que la actuación como policía administrativa de las Fuerzas y Cuerpos de Seguridad consiste en:",
+  opciones: ["a) Gestionar expedientes internos exclusivamente.", "b) Asegurar el cumplimiento de las normas y disposiciones administrativas.", "c) Controlar exclusivamente el tránsito de mercancias.", "d) Realizar campañas de concienciación ciudadana."],
+  correcta: "b) Asegurar el cumplimiento de las normas y disposiciones administrativas.",
+  justificacion: "Es una de las misiones comunes del artículo 11."
+},
+{
+  pregunta: "Según la LO 2/1986, las Fuerzas y Cuerpos de Seguridad del Estado están obligadas a prestar auxilio:",
+  opciones: ["a) Solo a los cuerpos policiales autonómicos.", "b) A jueces, tribunales y al Ministerio Fiscal.", "c) Únicamente en expedientes administrativos.", "d) A los medios de comunicación en caso de peligro."],
+  correcta: "b) A jueces, tribunales y al Ministerio Fiscal.",
+  justificacion: "El auxilio a la justicia es una obligación recogida en el artículo 11 de la LO 2/1986."
+},
+{
+  pregunta: "Una de las funciones comunes de las Fuerzas y Cuerpos de Seguridad es:",
+  opciones: ["a) Colaborar con las Fuerzas Armadas en campañas institucionales.", "b) Vigilar y custodiar establecimientos penitenciarios.", "c) Garantizar la conservación del orden público.", "d) Controlar la gestión de los ayuntamientos locales."],
+  correcta: "c) Garantizar la conservación del orden público.",
+  justificacion: "La vigilancia del orden público es una misión común según el artículo 11 de la LO 2/1986."
+},
+{
+  pregunta: "Una de las siguientes funciones corresponde específicamente a la Policía Nacional:",
+  opciones: ["a) Vigilar el tráfico en vías urbanas.", "b) Expedir pasaportes y documentos de identidad.", "c) Proteger el resguardo fiscal del Estado.", "d) Controlar la caza y pesca en el medio rural."],
+  correcta: "b) Expedir pasaportes y documentos de identidad.",
+  justificacion: "El artículo 12 establece esta función específica de la Policía Nacional."
+},
+{
+  pregunta: "¿Cuál es una de las características esenciales del modelo policial español según la LO 2/1986?",
+  opciones: ["a) La organización centralizada bajo el Presidente del Gobierno.", "b) La existencia de distintos cuerpos con coexistencia autonómica y coordinación estatal.", "c) La actuación dirigida únicamente a casos de seguridad nacional.", "d) La supresión de la Policía Local en municipios de menos de 20.000 habitantes."],
+  correcta: "b) La existencia de distintos cuerpos con coexistencia autonómica y coordinación estatal.",
+  justificacion: "El modelo es descentralizado, con diferentes niveles organizados bajo coordinación estatal."
+},
+{
+  pregunta: "La Guarda Civil actuará también en el mar y aguas jurisdiccionales en materia de:",
+  opciones: ["a) Control del tráfico marítimo deportivo.", "b) Investigación económica de empresas navieras.", "c) Represión del contrabando y protección del tráfico marítimo.", "d) Supervisión de toda actividad portuaria a nivel autonómico."],
+  correcta: "c) Represión del contrabando y protección del tráfico marítimo.",
+  justificacion: "El resguardo fiscal incluye actuaciones en el mar conforme al artículo 12."
+},
+{
+  pregunta: "¿Qué artículo de la LO 2/1986 establece la necesidad de formación integral para los miembros de las FCS?",
+  opciones: ["a) Artículo 3.", "b) Artículo 5.", "c) Artículo 6.", "d) Artículo 9."],
+  correcta: "c) Artículo 6.",
+  justificacion: "El artículo 6 menciona la formación como elemento esencial para garantizar la calidad del servicio."
+},
+{
+  pregunta: "La Policía Local actuará siempre bajo los principios de:",
+  opciones: ["a) Autonomía y discrecionalidad operativa.", "b) Coordinación estricta con la Comunidad Autónoma.", "c) Imparcialidad, legalidad y proporcionalidad.", "d) Neutralidad únicamente en aspectos políticos."],
+  correcta: "c) Imparcialidad, legalidad y proporcionalidad.",
+  justificacion: "También deben cumplir los principios básicos de actuación recogidos en el artículo 5."
+},
+{
+  pregunta: "Una de las funciones de la Policía Autonómica es:",
+  opciones: ["a) Vigilar los espacios aéreos no controlados.", "b) Asegurar el cumplimiento de las normas autonómicas dentro de su territorio.", "c) Ejecutar penas impuestas por tribunales internacionales.", "d) Gestionar la formación de jueces y fiscales autonómicos."],
+  correcta: "b) Asegurar el cumplimiento de las normas autonómicas dentro de su territorio.",
+  justificacion: "Corresponde a la competencia autonómica y es su función principal."
+},
+{
+  pregunta: "La neutralidad política exigida a los miembros de los cuerpos policiales significa que:",
+  opciones: ["a) Pueden expresar opiniones políticas solo en presencia de sus superiores.", "b) No deben actuar según motivaciones políticas mientras estén de servicio.", "c) Deben apoyar públicamente al Gobierno en funciones.", "d) Son libres de participar en manifestaciones durante su tiempo de servicio."],
+  correcta: "b) No deben actuar según motivaciones políticas mientras estén de servicio.",
+  justificacion: "El artículo 5 establece la neutralidad política en el ejercicio de sus funciones."
+},
+{
+  pregunta: "El auxilio en materia de protección civil por parte de las Fuerzas y Cuerpos de Seguridad:",
+  opciones: ["a) Solo se realiza en situaciones declaradas de estado de alarma.", "b) Es obligatorio como parte de las misiones comunes del artículo 11.", "c) Queda limitado a los cuerpos autonómicos en casos de catástrofe.", "d) Depende de la aprobación del Consejo de Ministros cada vez que se solicita."],
+  correcta: "b) Es obligatorio como parte de las misiones comunes del artículo 11.",
+  justificacion: "El auxilio en catástrofes es una de las funciones básicas de los cuerpos policiales."
+},
+{
+  pregunta: "La estructura de mando de la Policía Nacional está definida por:",
+  opciones: ["a) El Ministerio del Interior y el Director General de la Policía.", "b) El Ministerio de Defensa exclusivamente.", "c) El Consejo General del Poder Judicial.", "d) Cada Ayuntamiento en su municipio."],
+  correcta: "a) El Ministerio del Interior y el Director General de la Policía.",
+  justificacion: "La LO 2/1986 establece que el Ministro del Interior ejerce la dirección superior."
+},
+{
+  pregunta: "La Guardia Civil se regula también por normativa propia debido a su naturaleza:",
+  opciones: ["a) Militar y de seguridad pública.", "b) Exclusivamente civil.", "c) Federal según el modelo autonómico.", "d) Privada en ciertos aspectos administrativos."],
+  correcta: "a) Militar y de seguridad pública.",
+  justificacion: "Al ser instituto armado de naturaleza militar, tiene normas específicas propias además de la LO 2/1986."
+},
+{
+  pregunta: "Entre las funciones específicas de la Policía Nacional se encuentra:",
+  opciones: ["a) El control de fronteras y pasaportes.", "b) La intervención en la lucha armada en conflictos exteriores.", "c) El control de armas y explosivos.", "d) La inspección de establecimientos penitenciarios autonómicos."],
+  correcta: "a) El control de fronteras y pasaportes.",
+  justificacion: "Esta función se recoge en el artículo 12 como función específica del Cuerpo Nacional de Policía."
+},
+{
+  pregunta: "Las unidades de Policía Judicial están formadas por:",
+  opciones: ["a) Personal de la Guardia Civil exclusivamente.", "b) Funcionarios policiales cuya actuación está sometida a la autoridad judicial.", "c) Funcionarios municipales y autonómicos en colaboración con el jefe de policía.", "d) Personal administrativo especializado en derecho procesal."],
+  correcta: "b) Funcionarios policiales cuya actuación está sometida a la autoridad judicial.",
+  justificacion: "La Policía Judicial está compuesta por miembros de las FCS cuando actúan bajo mando judicial."
+},
+{
+  pregunta: "La aplicación del principio de proporcionalidad en la actuación policial se refiere a:",
+  opciones: ["a) Reducir siempre al mínimo el impacto mediático de la actuación.", "b) Hacer uso racional de los medios necesarios según la situación.", "c) Aplicar la fuerza solo en casos de delitos graves.", "d) Maximizar la actuación en función del número de agentes disponibles."],
+  correcta: "b) Hacer uso racional de los medios necesarios según la situación.",
+  justificacion: "La proporcionalidad exige adecuación entre los medios utilizados y el objetivo perseguido."
+},
+{
+  pregunta: "El Consejo de Política de Seguridad establece decisiones en materia de coordinación entre:",
+  opciones: ["a) Comunidad Autónoma y ayuntamientos.", "b) Fuerzas Armadas y cuerpos policiales privados.", "c) Estado y Comunidades Autónomas.", "d) Tribunal Supremo y Poder Judicial autonómico."],
+  correcta: "c) Estado y Comunidades Autónomas.",
+  justificacion: "Su misión principal es garantizar la coordinación en materia de seguridad pública."
+},
+{
+  pregunta: "En el marco constitucional, el artículo 149.1.29 CE reserva al Estado:",
+  opciones: ["a) La competencia exclusiva en materia de seguridad pública.", "b) La delegación exclusiva de competencias autonómicas.", "c) La gestión administrativa de las policías locales.", "d) La creación automática de cuerpos autonómicos."],
+  correcta: "a) La competencia exclusiva en materia de seguridad pública.",
+  justificacion: "La CE establece esta reserva estatal como competencia exclusiva."
+},
+{
+  pregunta: "Una de las funciones específicas de la Guardia Civil es:",
+  opciones: ["a) La policía en el tráfico urbano.", "b) El resguardo fiscal del Estado y la represión del contrabando.", "c) La expedición de pasaportes.", "d) Control de emisiones radioeléctricas autonómicas."],
+  correcta: "b) El resguardo fiscal del Estado y la represión del contrabando.",
+  justificacion: "Esta función se recoge claramente en el artículo 12."
+},
+{
+  pregunta: "La Policía Nacional tiene asignada la vigilancia de:",
+  opciones: ["a) Centros penitenciarios locales.", "b) Edificios públicos del Estado.", "c) Instituciones autonómicas con representación oficial.", "d) Áreas forestales de titularidad estatal."],
+  correcta: "b) Edificios públicos del Estado.",
+  justificacion: "Esta competencia aparece como específica del Cuerpo Nacional en la LO 2/1986."
+},
+{
+  pregunta: "Las actuaciones de la Policía Autonómica en materia de tráfico dependen de:",
+  opciones: ["a) Una ley orgánica estatal.", "b) La transferencia efectiva y estatutaria de estas competencias.", "c) Un convenio firmado entre el Rey y el Presidente autonómico.", "d) La aprobación del Consejo General del Poder Judicial."],
+  correcta: "b) La transferencia efectiva y estatutaria de estas competencias.",
+  justificacion: "Las CCAA pueden asumir esta competencia solo si está prevista estatutariamente y se ha firmado la transferencia con el Estado."
+},
+{
+  pregunta: "El principio de jerarquía, según el artículo 5 de la LO 2/1986, implica que los agentes:",
+  opciones: ["a) Deben obedecer las órdenes recibidas de superiores sin excepciones.", "b) Pueden obedecer órdenes siempre que no contradigan la ley.", "c) Solo obedecerán órdenes si consideran que son moralmente aceptables.", "d) Están obligados a cuestionar cualquier orden por escrito antes de cumplirla."],
+  correcta: "b) Pueden obedecer órdenes siempre que no contradigan la ley.",
+  justificacion: "El principio de jerarquía tiene como límite el respeto al ordenamiento jurídico."
+},
+{
+  pregunta: "En el ejercicio de sus funciones de policía judicial, la Guardia Civil actúa:",
+  opciones: ["a) Como auxiliar del tribunal más próximo.", "b) Bajo las directrices operativas del Ministerio de Defensa.", "c) Bajo dependencia funcional del Poder Judicial o Ministerio Fiscal.", "d) Bajo el mando directo del alcalde del municipio donde interviene."],
+  correcta: "c) Bajo dependencia funcional del Poder Judicial o Ministerio Fiscal.",
+  justificacion: "Esta dependencia funcional está prevista en el artículo 7 de la Ley."
+},
+{
+  pregunta: "En caso de conflicto entre una orden de un superior y la ley, los agentes deberán:",
+  opciones: ["a) Cumplir la orden y comunicarlo posteriormente.", "b) Consultar a su sindicato antes de actuar.", "c) Adoptar la decisión más favorable al superior jerárquico.", "d) Actuar conforme al ordenamiento jurídico, ignorando la orden."],
+  correcta: "d) Actuar conforme al ordenamiento jurídico, ignorando la orden.",
+  justificacion: "El artículo 5 establece que la obediencia jerárquica no puede oponerse al principio de legalidad."
+},
+{
+  pregunta: "Una de las actuaciones posibles de los cuerpos policiales en cooperación internacional es:",
+  opciones: ["a) Participar en misiones diplomáticas permanentes.", "b) Colaborar en operativos contra el terrorismo mediante INTERPOL o EUROPOL.", "c) Supervisar el cumplimiento de tratados comerciales internacionales.", "d) Integrarse en misiones de combate a petición del Consejo de Seguridad de la ONU."],
+  correcta: "b) Colaborar en operativos contra el terrorismo mediante INTERPOL o EUROPOL.",
+  justificacion: "La cooperación internacional policial está prevista en el artículo 10 de la LO 2/1986."
+},
+{
+  pregunta: "La objeción de conciencia de los miembros de las Fuerzas y Cuerpos de Seguridad:",
+  opciones: ["a) Está permitida en circunstancias excepcionales.", "b) No está prevista, ya que podrían comprometer la seguridad pública.", "c) Depende exclusivamente de la legislación autonómica.", "d) Está regulada mediante Código Deontológico internacional."],
+  correcta: "b) No está prevista, ya que podrían comprometer la seguridad pública.",
+  justificacion: "La LO exige cumplimiento estricto de los principios de actuación."
+},
+{
+  pregunta: "La vigilancia y protección de edificios e instalaciones oficiales del Estado corresponde a:",
+  opciones: ["a) Policía Nacional.", "b) Policía Local.", "c) Policía Autonómica.", "d) Fuerzas Armadas."],
+  correcta: "a) Policía Nacional.",
+  justificacion: "Es una de sus funciones específicas establecidas en el artículo 12."
+},
+{
+  pregunta: "La Ley Orgánica 2/1986 se aplica a:",
+  opciones: ["a) Todos los cuerpos de seguridad del Estado, autonómicos y locales.", "b) Únicamente a las Fuerzas Armadas en misiones de paz.", "c) Los funcionarios judiciales en materia de seguridad.", "d) Cuerpos de seguridad privados que colaboran con el Estado."],
+  correcta: "a) Todos los cuerpos de seguridad del Estado, autonómicos y locales.",
+  justificacion: "La LO 2/1986 estructura el modelo policial a todos los niveles de la administración pública."
+},
+{
+  pregunta: "La actuación policial debe estar siempre presidida por el principio de:",
+  opciones: ["a) Unidad de acción.", "b) Eficacia independientemente de los medios.", "c) Sometimiento pleno a la ley y al derecho.", "d) Disuasión extrema ante cualquier desobediencia."],
+  correcta: "c) Sometimiento pleno a la ley y al derecho.",
+  justificacion: "El artículo 5 recoge este principio fundamental en toda actuación de los agentes."
+},
+{
+  pregunta: "El artículo 5 de la LO 2/1986 establece como principio básico de actuación:",
+  opciones: ["a) Neutralidad ideológica y política.", "b) Adhesión al partido del Gobierno.", "c) Lealtad absoluta al mando militar general.", "d) Ejercicio discrecional del uso de la fuerza."],
+  correcta: "a) Neutralidad ideológica y política.",
+  justificacion: "La actuación debe ser imparcial y no estar influenciada políticamente."
+},
+{
+  pregunta: "La Guardia Civil puede actuar en funciones de resguardo fiscal cuando:",
+  opciones: ["a) La Policía Autonómica lo haya solicitado.", "b) El Estado lo autorice en zonas fronterizas y marítimas.", "c) Lo ordene el Ministerio de Hacienda en todos los casos.", "d) Exista un acuerdo con policía extranjera."],
+  correcta: "b) El Estado lo autorice en zonas fronterizas y marítimas.",
+  justificacion: "El resguardo fiscal es una función propia en ámbitos aduaneros."
+},
+{
+  pregunta: "La coordinación y supervisión de las actuaciones de seguridad pública entre el Estado y las Comunidades Autónomas se articula mediante:",
+  opciones: ["a) El Consejo Interterritorial de Seguridad Pública.", "b) El Consejo de Política de Seguridad.", "c) Los Acuerdos de Seguridad del Consejo General del Poder Judicial.", "d) Las comisiones mixtas del Consejo de Ministros."],
+  correcta: "b) El Consejo de Política de Seguridad.",
+  justificacion: "Éste órgano se establece para coordinación entre el gobierno y las CCAA."
+},
+{
+  pregunta: "Una actuación policial que busque garantizar la seguridad de una manifestación pública debe atender necesariamente el principio de:",
+  opciones: ["a) Legalidad y proporcionalidad.", "b) Aplicación del criterio de seguridad máxima.", "c) Desalojo inmediato preventivo.", "d) Asegurar la mayor presencia mediática posible."],
+  correcta: "a) Legalidad y proporcionalidad.",
+  justificacion: "Cualquier actuación debe ser conforme a ley y proporcional a la situación."
+},
+{
+  pregunta: "Las policías autonómicas pueden asumir funciones de policía judicial:",
+  opciones: ["a) Siempre que el caso esté relacionado con la Comunidad Autónoma.", "b) De forma exclusiva cuando se lo permita el Estatuto de Autonomía y lo requieran jueces o fiscales.", "c) Si el delito afecta a cualquier institución local.", "d) Automáticamente al constituirse el cuerpo autonómico."],
+  correcta: "b) De forma exclusiva cuando se lo permita el Estatuto de Autonomía y lo requieran jueces o fiscales.",
+  justificacion: "La actuación judicial la define la ley y el Estatuto."
+},
+{
+  pregunta: "La Policía Local actúa prioritariamente en:",
+  opciones: ["a) La investigación de delitos graves en el ámbito autonómico.", "b) El control del tráfico urbano y la protección de autoridades locales.", "c) La vigilancia de fronteras en municipios costeros.", "d) La represión del contrabando."],
+  correcta: "b) El control del tráfico urbano y la protección de autoridades locales.",
+  justificacion: "Es una de sus competencias específicas según el artículo 53."
+},
+{
+  pregunta: "Las Fuerzas y Cuerpos de Seguridad están obligadas a auxiliar a la justicia:",
+  opciones: ["a) Cuando así lo determine el Gobierno.", "b) En el marco de sus funciones específicas según requieran jueces o fiscales.", "c) Únicamente en delitos de terrorismo.", "d) Bajo orden exclusiva del Tribunal Supremo."],
+  correcta: "b) En el marco de sus funciones específicas según requieran jueces o fiscales.",
+  justificacion: "El artículo 7 determina la dependencia funcional en estas actuaciones."
+},
+{
+  pregunta: "La pertenencia a un sindicato policial en España:",
+  opciones: ["a) Está prohibida por la Ley a todos los miembros de las FCS.", "b) Está permitida, respetando los principios de neutralidad e imparcialidad.", "c) Depende del criterio del mando directo.", "d) Es obligatoria para todos los agentes estatales."],
+  correcta: "b) Está permitida, respetando los principios de neutralidad e imparcialidad.",
+  justificacion: "La Constitución y la LO 2/1986 permiten la sindicalización con estos límites."
+},
+{
+  pregunta: "El empleo de la fuerza por parte de los agentes deberá justificarse en:",
+  opciones: ["a) La necesidad del servicio y el tipo de delito investigado.", "b) La decisión del mando inmediato sin excepción.", "c) La proporcionalidad respecto al objetivo legítimo perseguido.", "d) La peligrosidad potencial del sospechoso siempre que así lo considere el agente."],
+  correcta: "c) La proporcionalidad respecto al objetivo legítimo perseguido.",
+  justificacion: "El uso de la fuerza debe ser proporcional y fundamentado en la necesidad."
+},
+{
+  pregunta: "Las actuaciones policiales en colaboración con cuerpos extranjeros se regulan mediante:",
+  opciones: ["a) Normas de cada Cuerpo policial.", "b) Tratados internacionales o convenios aprobados por el Estado.", "c) Directrices de Europol sin autorización del Estado.", "d) Decisiones del Intepol en contextos extraordinarios."],
+  correcta: "b) Tratados internacionales o convenios aprobados por el Estado.",
+  justificacion: "La cooperación internacional debe estar respaldada por instrumentos jurídicos válidos según el artículo 10."
+},
+{
+  pregunta: "Para la creación de cuerpos de Policía Autonómica se requiere:",
+  opciones: ["a) Un acuerdo municipal vinculante.", "b) Que la Comunidad Autónoma lo prevea en su Estatuto de Autonomía.", "c) Que lo solicite el Ministerio de Defensa.", "d) Que haya una ley ordinaria aprobada por el Congreso únicamente."],
+  correcta: "b) Que la Comunidad Autónoma lo prevea en su Estatuto de Autonomía.",
+  justificacion: "La Constitución establece que los cuerpos autonómicos deben estar previstos en los Estatutos y ser objeto de transferencia estatal."
+},
+{
+  pregunta: "La vigilancia de edificios de titularidad local corresponde a:",
+  opciones: ["a) Guardia Civil.", "b) Policía Local.", "c) Policía Nacional en todos los casos.", "d) Ejército en colaboración con la Delegación del Gobierno."],
+  correcta: "b) Policía Local.",
+  justificacion: "Es una competencia propia asociada a su jurisdicción municipal."
+},
+{
+  pregunta: "La disciplina policial y el régimen sancionador para los cuerpos de seguridad se regula obligatoriamente por:",
+  opciones: ["a) Ley Orgánica.", "b) Orden ministerial específica.", "c) El Estatuto de los trabajadores públicos.", "d) Reglamento interno de cada cuerpo."],
+  correcta: "a) Ley Orgánica.",
+  justificacion: "Así lo exige el artículo 6 de la LO 2/1986 para el régimen estatutario y disciplinario."
+},
+{
+  pregunta: "La Guardia Civil y la Policía Nacional comparten competencias de:",
+  opciones: ["a) Vigilancia del tráfico marítimo deportivo.", "b) Protección del libre ejercicio de derechos y libertades.", "c) Exclusiva custodia de presos penales.", "d) Instrucción de recursos administrativos."],
+  correcta: "b) Protección del libre ejercicio de derechos y libertades.",
+  justificacion: "Esta misión común está recogida en el artículo 11."
+},
+{
+  pregunta: "Las actuaciones policiales deben estar subordinadas a la Constitución y a:",
+  opciones: ["a) El Código Militar Europeo.", "b) La Ley y el Derecho.",
+  "c) La autoridad del mando directo exclusivamente.", "d) Las órdenes secretas del Consejo de Seguridad."],
+  correcta: "b) La Ley y el Derecho.",
+  justificacion: "El artículo 5 establece que la actuación está subordinada al ordenamiento jurídico."
+},
+{
+  pregunta: "Las policías autonómicas podrán actuar en materia de tráfico cuando:",
+  opciones: ["a) Lo requiera el Ministerio de Transportes.", "b) El Estado haya transferido esta competencia mediante convenio y que esté prevista en el Estatuto.", "c) El ayuntamiento así lo solicite formalmente.", "d) No exista Guardia Civil en la región."],
+  correcta: "b) El Estado haya transferido esta competencia mediante convenio y que esté prevista en el Estatuto.",
+  justificacion: "La competencia en tráfico es transferible conforme a CE y Estatuto."
+},
+{
+  pregunta: "Los miembros de las Fuerzas y Cuerpos de Seguridad deberán siempre actuar con especial consideración hacia:",
+  opciones: ["a) Los intereses políticos de cada administración pública.", "b) Los derechos fundamentales y libertades públicas.", "c) La protección de los agentes civiles de seguridad privada.", "d) Las decisiones políticas municipales."],
+  correcta: "b) Los derechos fundamentales y libertades públicas.",
+  justificacion: "La protección de estos derechos es objetivo prioritario de su actuación según el artículo 11."
+},
+{
+  pregunta: "El artículo 10 de la LO 2/1986 establece la facultad de cooperación internacional para:",
+  opciones: ["a) Todos los cuerpos, incluida la policía privada.",
+  "b) Los cuerpos policiales estatales exclusivamente.",
+  "c) Solo para las Policías Autonómicas con acuerdo de la UE.",
+  "d) Únicamente en casos de terrorismo internacional."],
+  correcta: "b) Los cuerpos policiales estatales exclusivamente.",
+  justificacion: "Solo la Policía Nacional y la Guardia Civil pueden cooperar internacionalmente bajo el marco del artículo 10."
+},
+{
+  pregunta: "La actuación policial deberá siempre tender a:",
+  opciones: ["a) La búsqueda de eficacia, sin importar los medios usados.",
+  "b) La garante absoluta de la seguridad pública por encima de la ley.",
+  "c) La protección del interés general con respeto a los derechos individuales.",
+  "d) La apertura obligada de procedimientos judiciales en cualquier intervención."],
+  correcta: "c) La protección del interés general con respeto a los derechos individuales.",
+  justificacion: "Es uno de los principios básicos del artículo 5."
+},
+];
+
+let totalPreguntasRenderizadas = 0;
+
+function barajar(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+}
+
+function setProgress(current, total) {
+  const bar = document.getElementById('progressBar');
+  const pct = total > 0 ? Math.round((current / total) * 100) : 0;
+  bar.style.width = pct + '%';
+  bar.title = pct + '%';
+}
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+// Carga el test con preguntas y respuestas aleatorias
+function cargarTest() {
+  const numPreguntas = parseInt(document.getElementById('numPreguntas').value);
+  const testForm = document.getElementById('testForm');
+  const progressBar = document.getElementById('progressBar');
+  const testResult = document.getElementById('testResult');
+
+  testForm.innerHTML = '';
+  testResult.innerHTML = '';
+  progressBar.style.width = '0%';
+
+  if (!preguntasBanco || preguntasBanco.length === 0) {
+    testForm.innerHTML = '<p style="color:red;font-weight:bold;">⚠️ No hay preguntas en el banco.</p>';
+    return;
+  }
+
+  const letras = ['a)', 'b)', 'c)', 'd)', 'e)', 'f)']; // por si hay más de 4 opciones
+  const preguntasSeleccionadas = shuffle([...preguntasBanco]).slice(0, numPreguntas);
+
+  preguntasSeleccionadas.forEach((preguntaObj, index) => {
+    // Mezclamos las opciones (pero vamos a limpiar su prefijo "a) " si lo llevan)
+    const opcionesMezcladas = shuffle([...preguntaObj.opciones]);
+
+    // Convertimos cada opción en un objeto { texto, esCorrecta }
+    const opcionesObj = opcionesMezcladas.map(opcion => {
+      // Limpiar prefijos como "a) ", "b) " si existen
+      const textoLimpio = opcion.replace(/^[A-Za-z]\)\s*/, '').trim();
+      const esCorrecta = opcion === preguntaObj.correcta || textoLimpio === preguntaObj.correcta.replace(/^[A-Za-z]\)\s*/, '').trim();
+      return { texto: textoLimpio, esCorrecta };
+    });
+
+    // Renderizamos las opciones asignando letras según la posición (letras fijas)
+    const opcionesHTML = opcionesObj.map((opt, optIndex) => {
+      const marcaCorrecta = opt.esCorrecta ? 'true' : 'false';
+      const letra = letras[optIndex] || `${optIndex + 1})`; // fallback si hay >6 opciones
+      // No incluimos la letra dentro del texto de la opción; la mostramos separada
+      return `
+        <label class="option">
+          <input type="radio" name="pregunta${index}" value="${opt.texto.replace(/"/g, '&quot;')}" data-correct="${marcaCorrecta}">
+          <span style="font-weight:700; margin-right:10px; color:var(--muted)">${letra}</span>
+          ${opt.texto}
+        </label>
+      `;
+    }).join('');
+
+    const preguntaHTML = `
+      <div class="question">
+        <div class="q-head">
+          <span class="q-num">${index + 1}.</span>
+          <p class="q-text">${preguntaObj.pregunta}</p>
+        </div>
+        <div class="options">
+          ${opcionesHTML}
+        </div>
+        <div class="justification muted" style="display:none;">
+          <span class="correct">✔ ${preguntaObj.correcta.replace(/^[A-Za-z]\)\s*/, '')}</span><br>
+          ${preguntaObj.justificacion}
+        </div>
+      </div>
+    `;
+    testForm.insertAdjacentHTML('beforeend', preguntaHTML);
+  });
+
+  // Añadir botón corregir (evitar duplicados)
+  const botonCorregirExistente = Array.from(testForm.getElementsByTagName('button')).find(b => b.textContent === 'Corregir');
+  if (!botonCorregirExistente) {
+    const botonCorregir = document.createElement('button');
+    botonCorregir.type = 'button';
+    botonCorregir.className = 'btn success';
+    botonCorregir.textContent = 'Corregir';
+    botonCorregir.onclick = () => corregirTest();
+    testForm.appendChild(botonCorregir);
+  }
+}
+
+
+function corregirTest() {
+  const preguntas = document.querySelectorAll('.question');
+  let aciertos = 0;
+
+  preguntas.forEach((pregunta) => {
+    const radios = pregunta.querySelectorAll('input[type="radio"]');
+    const labels = pregunta.querySelectorAll('.option');
+    const justificacion = pregunta.querySelector('.justification');
+    let seleccionCorrecta = false;
+
+    // Limpiar clases anteriores
+    labels.forEach(l => {
+      l.classList.remove('correct-option', 'wrong-option');
+      const checkmark = l.querySelector('.checkmark');
+      if (checkmark) checkmark.remove();
+    });
+
+    radios.forEach(radio => {
+      const label = radio.closest('.option');
+      if (radio.checked && radio.dataset.correct === 'true') {
+        seleccionCorrecta = true;
+      }
+    });
+
+    radios.forEach(radio => {
+      const label = radio.closest('.option');
+
+      if (radio.dataset.correct === 'true') {
+        // Mostrar check verde en la opción correcta
+        label.classList.add('correct-option');
+        label.insertAdjacentHTML('afterbegin', `<span class="checkmark" style="color:#059669;font-weight:700;">✔</span>`);
+      }
+
+      if (radio.checked && radio.dataset.correct !== 'true') {
+        // Mostrar X roja en la opción elegida incorrecta
+        label.classList.add('wrong-option');
+        label.insertAdjacentHTML('afterbegin', `<span class="checkmark" style="color:#dc2626;font-weight:700;">✘</span>`);
+      }
+    });
+
+    // Mostrar la justificación al final
+    if (justificacion) {
+      justificacion.style.display = 'block';
+      justificacion.innerHTML = `
+        ${seleccionCorrecta 
+          ? `<span class="correct">✔ ${pregunta.querySelector('input[data-correct="true"]').value}</span><br>` 
+          : `<span class="incorrect">✘ ${pregunta.querySelector('input[data-correct="true"]').value}</span><br>`
+        }
+        ${pregunta.querySelector('.justification').textContent || ''}
+      `;
+    }
+
+    if (seleccionCorrecta) aciertos++;
+  });
+
+  // Mostrar resultado final
+  const total = preguntas.length;
+  const porcentaje = Math.round((aciertos / total) * 100);
+  const testResult = document.getElementById('testResult');
+  testResult.innerHTML = `
+    <div class="result-card">
+      <p class="score">Has acertado ${aciertos} de ${total} preguntas (${porcentaje}%).</p>
+      <p class="muted">${porcentaje >= 70 ? "✅ ¡Buen trabajo!" : "❌ Puedes mejorar."}</p>
+    </div>
+  `;
+  document.getElementById('progressBar').style.width = '100%';
+}
+
+
+function reiniciarTest() {
+  document.getElementById('testForm').innerHTML = '';
+  document.getElementById('testResult').innerHTML = '';
+  setProgress(0, 0);
+}
+  // ==========================
+// 🔹 TEMPORIZADOR CONFIGURABLE
+// ==========================
+
+// Variables del temporizador
+let tiempoTotal = 0;
+let tiempoRestante = 0;
+let temporizadorInterval;
+
+// Crear selector de tiempo en el panel de controles
+const selectTiempo = document.createElement('select');
+selectTiempo.id = 'tiempoSeleccionado';
+selectTiempo.innerHTML = `
+  <option value="0">Sin límite</option>
+  <option value="5">5 minutos</option>
+  <option value="10" selected>10 minutos</option>
+  <option value="15">15 minutos</option>
+  <option value="20">20 minutos</option>
+  <option value="30">30 minutos</option>
+  <option value="40">40 minutos</option>
+  <option value="50">50 minutos</option>
+  <option value="60">60 minutos</option>
+`;
+const labelTiempo = document.createElement('label');
+labelTiempo.htmlFor = 'tiempoSeleccionado';
+labelTiempo.textContent = 'Tiempo límite:';
+const controlsDiv = document.querySelector('.controls');
+controlsDiv.insertBefore(labelTiempo, controlsDiv.children[2]);
+controlsDiv.insertBefore(selectTiempo, controlsDiv.children[3]);
+
+// Crear elemento visual del temporizador
+const temporizadorDiv = document.createElement('div');
+temporizadorDiv.id = 'temporizador';
+temporizadorDiv.style.textAlign = 'center';
+temporizadorDiv.style.fontSize = '18px';
+temporizadorDiv.style.fontWeight = '700';
+temporizadorDiv.style.color = '#2563eb';
+temporizadorDiv.style.marginTop = '12px';
+controlsDiv.appendChild(temporizadorDiv);
+
+// Mostrar tiempo en formato mm:ss
+function mostrarTiempo() {
+  let min = Math.floor(tiempoRestante / 60);
+  let seg = tiempoRestante % 60;
+  temporizadorDiv.textContent = `⏳ Tiempo restante: ${min}:${seg.toString().padStart(2, '0')}`;
+}
+
+// Iniciar temporizador
+function iniciarTemporizador() {
+  const minutosSeleccionados = parseInt(document.getElementById('tiempoSeleccionado').value);
+  if (minutosSeleccionados === 0) {
+    temporizadorDiv.textContent = '⏳ Sin límite de tiempo';
+    return;
+  }
+
+  tiempoTotal = minutosSeleccionados * 60;
+  tiempoRestante = tiempoTotal;
+  mostrarTiempo();
+
+  temporizadorInterval = setInterval(() => {
+    tiempoRestante--;
+    mostrarTiempo();
+    if (tiempoRestante <= 0) {
+      clearInterval(temporizadorInterval);
+      temporizadorDiv.textContent = '⏰ ¡Tiempo agotado!';
+      finalizarTestPorTiempo();
+    }
+  }, 1000);
+}
+
+// Detener temporizador
+function detenerTemporizador() {
+  clearInterval(temporizadorInterval);
+}
+
+// Modificar función cargarTest para que inicie el temporizador
+const originalCargarTest = cargarTest;
+cargarTest = function() {
+  originalCargarTest();
+  detenerTemporizador(); // Por si se reinicia
+  iniciarTemporizador();
+};
+
+// Al finalizar el test manualmente (botón Enviar)
+const originalEvaluarTest = evaluarTest;
+evaluarTest = function() {
+  detenerTemporizador(); // Detiene el contador al pulsar Enviar
+  originalEvaluarTest();
+};
+
+// Cuando el tiempo se agota automáticamente
+function finalizarTestPorTiempo() {
+  // Evita ejecuciones dobles
+  if (window.__finalizadoPorTiempo__) return;
+  window.__finalizadoPorTiempo__ = true;
+
+  detenerTemporizador();
+  if (temporizadorDiv) temporizadorDiv.textContent = '⏰ ¡Tiempo agotado! Pulsa "Enviar" para corregir.';
+
+  // 🔒 Bloquear todas las respuestas
+  document.querySelectorAll('input[type="radio"]').forEach(r => {
+    r.disabled = true;
+    const opt = r.closest('.option');
+    if (opt) {
+      opt.style.opacity = '0.6';
+      opt.style.pointerEvents = 'none';
+    }
+  });
+
+  // ✅ Dejar el botón "Enviar" activo y hacerlo destacar en verde
+  const btnEnviar = document.querySelector('button.btn.success, button[type="submit"]');
+  if (btnEnviar) {
+    btnEnviar.disabled = false;
+    btnEnviar.style.opacity = '1';
+    btnEnviar.style.cursor = 'pointer';
+
+    // 💚 Efecto parpadeo verde suave
+    btnEnviar.style.animation = 'blinkGreen 1.2s infinite';
+    btnEnviar.style.transition = 'background-color 0.3s ease';
+    btnEnviar.style.backgroundColor = '#22c55e'; // verde suave (Tailwind: green-500)
+    btnEnviar.style.color = 'white';
+
+    // Inyectar animación CSS si no existe
+    if (!document.getElementById('blinkGreen-style')) {
+      const style = document.createElement('style');
+      style.id = 'blinkGreen-style';
+      style.textContent = `
+        @keyframes blinkGreen {
+          0%, 100% { background-color: #22c55e; }
+          50% { background-color: #86efac; } /* verde claro (green-300) */
+        }
+      `;
+      document.head.appendChild(style);
+    }
+  }
+
+  // 🔄 Mantener botón "Reiniciar" activo
+  const btnReiniciar = document.querySelector('button.btn.secondary');
+  if (btnReiniciar) {
+    btnReiniciar.disabled = false;
+  }
+}
+</script>
+</body>
+</html>
