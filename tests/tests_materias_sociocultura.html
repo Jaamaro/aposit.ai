@@ -1,0 +1,3526 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test de Materias de Socio-Cultura</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --card: #ffffff;
+      --text: #111827;
+      --muted: #6b7280;
+      --primary: #2563eb;
+      --primary-dark: #1e40af;
+      --success: #059669;
+      --danger: #dc2626;
+      --ring: rgba(37, 99, 235, 0.25);
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: 'Roboto', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      padding: 24px;
+    }
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+    header.hero {
+      text-align: center;
+      margin-bottom: 16px;
+    }
+    .title {
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--primary-dark);
+      margin: 0 0 8px;
+    }
+    .subtitle {
+      color: var(--muted);
+      margin: 0;
+    }
+    .controls {
+      background: var(--card);
+      border-radius: 14px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.06);
+      padding: 16px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      justify-content: center;
+      position: sticky;
+      top: 12px;
+      z-index: 5;
+    }
+    .controls label { font-weight: 500; }
+    select {
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid #e5e7eb;
+      background: #fff;
+      outline: none;
+      transition: box-shadow .2s, border-color .2s;
+    }
+    select:focus { border-color: var(--primary); box-shadow: 0 0 0 4px var(--ring); }
+
+    .btn {
+      cursor: pointer;
+      border: none;
+      border-radius: 10px;
+      padding: 12px 18px;
+      font-weight: 700;
+      transition: transform .15s, background .2s, box-shadow .2s;
+      color: #fff;
+      background: var(--primary);
+      box-shadow: 0 6px 14px rgba(37,99,235,.2);
+    }
+    .btn:hover { transform: translateY(-1px); background: var(--primary-dark); }
+    .btn.secondary { background: #6b7280; }
+    .btn.secondary:hover { background: #374151; }
+    .btn.success { background: var(--success); }
+    .btn.success:hover { background: #047857; }
+    .btn.danger { background: var(--danger); }
+    .btn.danger:hover { background: #b91c1c; }
+
+    .progress {
+      width: 100%;
+      height: 10px;
+      background: #e5e7eb;
+      border-radius: 999px;
+      overflow: hidden;
+      margin-top: 8px;
+    }
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--primary), #60a5fa);
+      transition: width .3s ease;
+    }
+
+    .question {
+      margin: 14px 0;
+      padding: 18px;
+      background: var(--card);
+      border-radius: 14px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.06);
+    }
+    .q-head {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+    }
+    .q-num {
+      font-weight: 800;
+      color: var(--primary-dark);
+    }
+    .q-text { margin: 0; }
+
+    .options { margin-top: 10px; display: grid; gap: 8px; }
+    .option {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid #e5e7eb;
+      background: #fff;
+      transition: background .15s, border-color .15s, box-shadow .15s;
+      cursor: pointer;
+    }
+    .option input { transform: scale(1.2); }
+    .option:hover { background: #f9fafb; border-color: #d1d5db; }
+    .option.is-selected { box-shadow: 0 0 0 4px var(--ring); border-color: var(--primary); }
+
+    .justification {
+      margin-top: 10px; color: var(--muted);
+    }
+    .correct { color: var(--success); font-weight: 700; }
+    .incorrect { color: var(--danger); font-weight: 700; }
+
+    .option.correct-option {
+      border-color: rgba(5,150,105,.4);
+      background: #ecfdf5;
+    }
+    .option.wrong-option {
+      border-color: rgba(220,38,38,.4);
+      background: #fef2f2;
+    }
+
+    .result-card {
+      margin: 18px 0;
+      padding: 16px;
+      background: var(--card);
+      border-radius: 14px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.06);
+      text-align: center;
+    }
+    .score {
+      font-size: 22px;
+      font-weight: 800;
+      margin: 8px 0;
+    }
+    .muted { color: var(--muted); }
+    footer { text-align: center; margin-top: 24px; color: var(--muted); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="hero">
+      <h1 class="title">Test de Materias de Socio-Cultura</h1>
+      <p class="subtitle">Selecciona cuántas preguntas quieres y pulsa <strong>Comenzar</strong>.</p>
+    </header>
+
+    <div class="controls">
+      <label for="numPreguntas">Número de preguntas:</label>
+      <select id="numPreguntas">
+        <option value="10">10</option>
+        <option value="20">20</option>
+        <option value="30">30</option>
+        <option value="40">40</option>
+        <option value="50" selected>50</option>
+      </select>
+      <button class="btn" type="button" onclick="cargarTest()">Comenzar</button>
+      <button class="btn secondary" type="button" onclick="reiniciarTest()">Reiniciar</button>
+      <div class="progress" style="flex-basis: 100%;">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+    </div>
+
+    <form id="testForm"></form>
+
+    <div id="testResult"></div>
+    <footer>© Test de práctica — Materias de Socio-Cultura</footer>
+  </div>
+
+<script>
+const preguntasBanco = [
+{
+  pregunta: "Según la Ley 17/2015, de 9 de julio, el Sistema Nacional de Protección Civil tiene como finalidad:",
+  opciones: [
+    "a) Garantizar un sistema de seguros privados en caso de siniestro.",
+    "b) Asegurar una respuesta adecuada ante situaciones de riesgo colectivo, calamidad pública o catástrofe.",
+    "c) Garantizar el orden público en situaciones de emergencia.",
+    "d) Controlar el estado de la infraestructura crítica."
+  ],
+  correcta: "b) Asegurar una respuesta adecuada ante situaciones de riesgo colectivo, calamidad pública o catástrofe.",
+  justificacion: "El artículo 1 de la Ley 17/2015 define el objeto del Sistema Nacional de Protección Civil."
+},
+{
+  pregunta: "¿Cuál de los siguientes es un criterio determinante de la competencia estatal según la Ley de Protección Civil?",
+  opciones: [
+    "a) Que se trate de una emergencia local sin impacto autonómico.",
+    "b) Que afecte exclusivamente al patrimonio cultural.",
+    "c) El alcance supra autonómico de la emergencia.",
+    "d) El bajo impacto social de la situación."
+  ],
+  correcta: "c) El alcance supra autonómico de la emergencia.",
+  justificacion: "La competencia estatal se activa cuando la emergencia supera el ámbito de una sola comunidad autónoma."
+},
+{
+  pregunta: "El artículo 2 de la Ley 17/2015 define 'vulnerabilidad' como:",
+  opciones: [
+    "a) La probabilidad de que ocurra un peligro.",
+    "b) Una característica de personas o bienes que los hace susceptibles frente a un peligro.",
+    "c) La inminencia de un peligro para la población.",
+    "d) El efecto producido tras un evento catastrófico."
+  ],
+  correcta: "b) Una característica de personas o bienes que los hace susceptibles frente a un peligro.",
+  justificacion: "Vulnerabilidad es definida en el artículo 2 como característica susceptible de riesgo."
+},
+{
+  pregunta: "El artículo 3 de la Ley 17/2015 establece que el Sistema Nacional de Protección Civil integra:",
+  opciones: [
+    "a) Únicamente las actuaciones de la Administración General del Estado.",
+    "b) Todas las actuaciones en materia de seguridad pública.",
+    "c) La actividad de protección civil de todas las Administraciones Públicas.",
+    "d) Los cuerpos de bomberos autonómicos exclusivamente."
+  ],
+  correcta: "c) La actividad de protección civil de todas las Administraciones Públicas.",
+  justificacion: "El sistema integra todas las acciones de protección civil a nivel estatal, autonómico y local."
+},
+{
+  pregunta: "El derecho a la protección en caso de catástrofe, recogido en el artículo 5, implica:",
+  opciones: [
+    "a) El derecho a ser evacuado solo si lo permite la autoridad local.",
+    "b) La obligación de recibir una respuesta adecuada por los poderes públicos.",
+    "c) El derecho a compensaciones económicas garantizadas por la ley.",
+    "d) Un derecho restringido únicamente a grandes catástrofes naturales."
+  ],
+  correcta: "b) La obligación de recibir una respuesta adecuada por los poderes públicos.",
+  justificacion: "La ley garantiza la asistencia y respuesta en situaciones de emergencia."
+},
+{
+  pregunta: "El artículo 7 bis de la Ley 17/2015 establece como deber de los ciudadanos:",
+  opciones: [
+    "a) Participar voluntariamente en los operativos de rescate.",
+    "b) Colaborar con las autoridades y no entorpecer las actuaciones de emergencia.",
+    "c) Presentar denuncias por riesgo colectivo.",
+    "d) Contratar un seguro ante riesgos catastróficos."
+  ],
+  correcta: "b) Colaborar con las autoridades y no entorpecer las actuaciones de emergencia.",
+  justificacion: "El deber de colaboración está expresamente recogido como obligación ciudadana."
+},
+{
+  pregunta: "El artículo 7 ter de la Ley 17/2015 introduce el deber de:",
+  opciones: [
+    "a) Evacuación obligatoria en cualquier emergencia.",
+    "b) Autoprotección para las personas y entidades privadas.",
+    "c) Donación de bienes privados a las autoridades de emergencia.",
+    "d) Aislamiento de núcleos urbanos en caso de catástrofe."
+  ],
+  correcta: "b) Autoprotección para las personas y entidades privadas.",
+  justificacion: "La ley recoge la necesidad de actuar de forma preventiva y de autoprotección ante riesgos."
+},
+{
+  pregunta: "El Centro Nacional de Seguimiento y Coordinación de Emergencias de Protección Civil, según el artículo 18:",
+  opciones: [
+    "a) Coordina exclusivamente emergencias internacionales.",
+    "b) Es un órgano dependiente de las Fuerzas Armadas.",
+    "c) Coordina la información y la respuesta de emergencias a nivel estatal.",
+    "d) Actúa únicamente en caso de atentados terroristas."
+  ],
+  correcta: "c) Coordina la información y la respuesta de emergencias a nivel estatal.",
+  justificacion: "El CNSCE actúa como órgano técnico de coordinación dependiente del Ministerio del Interior."
+},
+{
+  pregunta: "La 'Norma Básica de Protección Civil' se recoge en el artículo:",
+  opciones: [
+    "a) 12",
+    "b) 13",
+    "c) 15",
+    "d) 17"
+  ],
+  correcta: "b) 13",
+  justificacion: "El artículo 13 establece la Norma Básica de Protección Civil."
+},
+{
+  pregunta: "Según el artículo 1, la protección civil tiene carácter:",
+  opciones: [
+    "a) Militar.",
+    "b) Público y obligatorio.",
+    "c) Privado aunque coordinado.",
+    "d) Individual y voluntario."
+  ],
+  correcta: "b) Público y obligatorio.",
+  justificacion: "La protección civil es definida como un servicio público para proteger personas y bienes."
+},
+{
+  pregunta: "Los planes de protección civil pueden ser:",
+  opciones: [
+    "a) Exclusivamente autonómicos.",
+    "b) Solo estatales, ya que afectan a todo el territorio.",
+    "c) Estatales, autonómicos o locales.",
+    "d) Privados, siempre que cuenten con autorización judicial."
+  ],
+  correcta: "c) Estatales, autonómicos o locales.",
+  justificacion: "La planificación de la protección civil se realiza a todos los niveles según la estructura competencial."
+},
+{
+  pregunta: "Según la Ley 17/2015, el voluntariado en protección civil se regula en el artículo:",
+  opciones: [
+    "a) 7 ter",
+    "b) 6 bis",
+    "c) 7 quáter",
+    "d) 5 bis"
+  ],
+  correcta: "c) 7 quáter",
+  justificacion: "El artículo 7 quáter se refiere específicamente al voluntariado en este ámbito."
+},
+{
+  pregunta: "¿Cuál de los siguientes NO es un derecho recogido en el Título I de la Ley 17/2015?",
+  opciones: [
+    "a) Derecho a la información.",
+    "b) Derecho a la participación.",
+    "c) Derecho a elegir la forma de actuación operativa.",
+    "d) Derecho a la protección en caso de catástrofe."
+  ],
+  correcta: "c) Derecho a elegir la forma de actuación operativa.",
+  justificacion: "El derecho a la participación, información y protección sí están recogidos en el Título I."
+},
+{
+  pregunta: "En la fase de recuperación según el artículo 20, se incluye:",
+  opciones: [
+    "a) La evacuación y primeros auxilios.",
+    "b) La reconstrucción de infraestructuras y compensación de daños.",
+    "c) El simulacro de posibles escenarios de riesgo.",
+    "d) El diseño de planes preventivos."
+  ],
+  correcta: "b) La reconstrucción de infraestructuras y compensación de daños.",
+  justificacion: "La fase de recuperación implica restaurar la normalidad y gestionar daños tras la emergencia."
+},
+{
+  pregunta: "Los daños personales en el marco de la Ley de Protección Civil se contemplan en:",
+  opciones: [
+    "a) Artículo 17.",
+    "b) Artículo 26.",
+    "c) Artículo 22.",
+    "d) Artículo 15."
+  ],
+  correcta: "c) Artículo 22.",
+  justificacion: "El artículo 22 se refiere a los daños personales sufridos debido a la emergencia."
+},
+{
+  pregunta: "Según el artículo 28, una emergencia de interés nacional es declarada por:",
+  opciones: [
+    "a) El Ministro de Defensa.",
+    "b) El Presidente del Gobierno.",
+    "c) El Consejo Nacional de Protección Civil.",
+    "d) El Consejo de Ministros."
+  ],
+  correcta: "d) El Consejo de Ministros.",
+  justificacion: "El artículo 29 establece que la declaración corresponde al Consejo de Ministros."
+},
+{
+  pregunta: "El artículo 41 de la Ley 17/2015 hace referencia a:",
+  opciones: [
+    "a) La cooperación internacional.",
+    "b) La contribución al Mecanismo de Protección Civil de la Unión Europea.",
+    "c) El papel de las Fuerzas Armadas.",
+    "d) La creación del Consejo Nacional de Protección Civil."
+  ],
+  correcta: "b) La contribución al Mecanismo de Protección Civil de la Unión Europea.",
+  justificacion: "El artículo regula dicha contribución como parte de la protección civil internacional."
+},
+{
+  pregunta: "Una catástrofe se define en la Ley 17/2015 como:",
+  opciones: [
+    "a) Una emergencia que supera los medios ordinarios de una comunidad.",
+    "b) Una situación provocada exclusivamente por acción humana.",
+    "c) Un evento menor de alerta que requiere coordinación básica.",
+    "d) Un estado de alarma de carácter autonómico."
+  ],
+  correcta: "a) Una emergencia que supera los medios ordinarios de una comunidad.",
+  justificacion: "La catástrofe implica un evento con consecuencias que desbordan la capacidad local."
+},
+{
+  pregunta: "Los servicios esenciales en protección civil incluyen:",
+  opciones: [
+    "a) Servicios públicos como prensa y medios audiovisuales.",
+    "b) Funciones necesarias para preservar la seguridad, salud y bienestar social.",
+    "c) Únicamente los servicios prestados por fuerzas de seguridad.",
+    "d) Los servicios vinculados al ejercicio privado de la economía."
+  ],
+  correcta: "b) Funciones necesarias para preservar la seguridad, salud y bienestar social.",
+  justificacion: "El artículo 2 define los servicios esenciales como tales."
+},
+{
+  pregunta: "El artículo 33 de la Ley 17/2015 establece que el Gobierno:",
+  opciones: [
+    "a) Dirige la planificación operativa de todo tipo de emergencias locales.",
+    "b) Tiene competencias exclusivas en las emergencias de ámbito internacional.",
+    "c) Aprueba la Norma Básica de Protección Civil y declara emergencias nacionales.",
+    "d) Es responsable de gestionar planes de evacuación masiva a nivel local."
+  ],
+  correcta: "c) Aprueba la Norma Básica de Protección Civil y declara emergencias nacionales.",
+  justificacion: "Las competencias del Gobierno están claramente delimitadas en el artículo 33."
+},
+{
+  pregunta: "Según la Ley 17/2015, ¿qué órgano asegura la participación de las comunidades autónomas en la planificación estatal de protección civil?",
+  opciones: [
+    "a) El Consejo Nacional de Protección Civil.",
+    "b) La Comisión Interministerial de Crisis.",
+    "c) El Gabinete de Coordinación y Estudios.",
+    "d) La Conferencia Sectorial de Protección Civil."
+  ],
+  correcta: "a) El Consejo Nacional de Protección Civil.",
+  justificacion: "Este órgano está contemplado en el artículo 45 como instrumento de cooperación y coordinación."
+},
+{
+  pregunta: "La elaboración de los planes territoriales de protección civil corresponde a:",
+  opciones: [
+    "a) El Ministerio del Interior.",
+    "b) Las comunidades autónomas y entidades locales.",
+    "c) El Consejo de Ministros.",
+    "d) La Dirección General de Protección Civil y Emergencias."
+  ],
+  correcta: "b) Las comunidades autónomas y entidades locales.",
+  justificacion: "Las comunidades y ayuntamientos tienen competencias para elaborar planes territoriales según el artículo 15."
+},
+{
+  pregunta: "El Sistema Nacional de Protección Civil actúa con carácter general según los principios de:",
+  opciones: [
+    "a) Inmediatez, normalidad y descentralización.",
+    "b) Coordinación, eficiencia y responsabilidad compartida.",
+    "c) Imparcialidad y autonomía operativa absoluta.",
+    "d) Independencia, reserva y voluntariedad ciudadana."
+  ],
+  correcta: "b) Coordinación, eficiencia y responsabilidad compartida.",
+  justificacion: "Estos principios se recogen en el artículo 4 como eje de actuación del Sistema."
+},
+{
+  pregunta: "El artículo 11 de la Ley 17/2015 establece que los planes de protección civil deben contener:",
+  opciones: [
+    "a) Únicamente el protocolo de actuación técnica.",
+    "b) El análisis de riesgos, medios disponibles y procedimientos.",
+    "c) Una evaluación económica y de impacto urbanístico.",
+    "d) Una estimación de las responsabilidades civiles individuales."
+  ],
+  correcta: "b) El análisis de riesgos, medios disponibles y procedimientos.",
+  justificacion: "Los contenidos básicos de los planes se recogen en dicho artículo."
+},
+{
+  pregunta: "Una 'emergencia de interés autonómico' será declarada por:",
+  opciones: [
+    "a) El presidente del Gobierno.",
+    "b) El Parlamento autonómico.",
+    "c) La autoridad competente de la Comunidad Autónoma.",
+    "d) El Ministerio del Interior."
+  ],
+  correcta: "c) La autoridad competente de la Comunidad Autónoma.",
+  justificacion: "La competencia autonómica se activa cuando la emergencia afecta exclusivamente a la comunidad."
+},
+{
+  pregunta: "El artículo 29 de la Ley 17/2015 se refiere a:",
+  opciones: [
+    "a) La declaración de emergencia de interés nacional.",
+    "b) La ordenación jurídica del voluntariado en protección civil.",
+    "c) El régimen sancionador en materia de autoprotección.",
+    "d) El papel de las Fuerzas Armadas en situaciones de grave riesgo."
+  ],
+  correcta: "a) La declaración de emergencia de interés nacional.",
+  justificacion: "En el artículo 29 se regulan los procedimientos para declarar una emergencia de interés nacional."
+},
+{
+  pregunta: "Según la Ley 17/2015, el deber de autoprotección implica que:",
+  opciones: [
+    "a) Los ciudadanos deben contar con seguros obligatorios ante riesgos.",
+    "b) Las personas y entidades deben adoptar medidas preventivas frente a peligros identificados.",
+    "c) La Administración asume toda responsabilidad ante cualquier emergencia.",
+    "d) Debe existir una instrucción previa de la autoridad para actuar."
+  ],
+  correcta: "b) Las personas y entidades deben adoptar medidas preventivas frente a peligros identificados.",
+  justificacion: "El artículo 7 ter recoge este deber como parte de la responsabilidad ciudadana y empresarial."
+},
+{
+  pregunta: "La Ley 17/2015 establece que los ciudadanos tienen derecho a:",
+  opciones: [
+    "a) Ser informados sobre los riesgos y las medidas de autoprotección.",
+    "b) Exigir una indemnización automática en caso de catástrofe.",
+    "c) Tomar el control operativo en su municipio durante una emergencia.",
+    "d) Acceder a todos los planes operativos de la Administración."
+  ],
+  correcta: "a) Ser informados sobre los riesgos y las medidas de autoprotección.",
+  justificacion: "El derecho a la información es fundamental según el artículo 5."
+},
+{
+  pregunta: "El Sistema Nacional de Protección Civil incluye entre sus funciones:",
+  opciones: [
+    "a) El establecimiento de seguros obligatorios contra desastres.",
+    "b) La planificación preventiva y la coordinación operativa durante emergencias.",
+    "c) El control inquisitivo sobre la actuación de la policía ante catástrofes.",
+    "d) La intervención jurídica en casos de desastre medioambiental."
+  ],
+  correcta: "b) La planificación preventiva y la coordinación operativa durante emergencias.",
+  justificacion: "Su función principal es garantizar una respuesta organizada y eficaz."
+},
+{
+  pregunta: "La coordinación operativa durante una emergencia nacional corresponde a:",
+  opciones: [
+    "a) El Delegado del Gobierno en la Comunidad Autónoma afectada.",
+    "b) El Consejo Nacional de Protección Civil.",
+    "c) El Ministro del Interior o persona en quien delegue.",
+    "d) La Comisión Europea a través de Mecanismo Europeo de Protección Civil."
+  ],
+  correcta: "c) El Ministro del Interior o persona en quien delegue.",
+  justificacion: "En situaciones de interés nacional, la dirección corresponde al Ministerio del Interior."
+},
+{
+  pregunta: "El Mecanismo Europeo de Protección Civil permite:",
+  opciones: [
+    "a) Compartir recursos y apoyo entre Estados miembros ante emergencias graves.",
+    "b) Coordinar operativos militares internacionales en tiempos de paz.",
+    "c) Evitar la responsabilidad interna de los Estados en emergencias.",
+    "d) Solicitar ayuda automática a organismos privados europeos."
+  ],
+  correcta: "a) Compartir recursos y apoyo entre Estados miembros ante emergencias graves.",
+  justificacion: "Este mecanismo europeo busca coordinación en la gestión de grandes emergencias."
+},
+{
+  pregunta: "¿Cuál de los siguientes elementos forma parte del contenido básico de la Norma Básica de Protección Civil?",
+  opciones: [
+    "a) Análisis económico de infraestructuras.",
+    "b) Directrices técnicas para elaborar planes de emergencia.",
+    "c) Cláusulas de responsabilidad penal de autoridades.",
+    "d) Programas de entrenamiento militar para situaciones de alerta."
+  ],
+  correcta: "b) Directrices técnicas para elaborar planes de emergencia.",
+  justificacion: "La Norma Básica define criterios mínimos para los planes de protección civil."
+},
+{
+  pregunta: "La función de información en protección civil tiene como objetivo esencial:",
+  opciones: [
+    "a) Comunicar al ciudadano su obligación de evacuar inmediatamente.",
+    "b) Dar a conocer los planes de actuación y los riesgos potenciales.",
+    "c) Prevenir el acceso de los medios de comunicación a zonas de emergencia.",
+    "d) Proteger el secreto de las operaciones entre Fuerzas y Cuerpos de Seguridad."
+  ],
+  correcta: "b) Dar a conocer los planes de actuación y los riesgos potenciales.",
+  justificacion: "El derecho a la información es un pilar para la correcta actuación pública y ciudadana."
+},
+{
+  pregunta: "Los simulacros de emergencia deben estar incluidos en:",
+  opciones: [
+    "a) Los planes operativos estatales exclusivamente.",
+    "b) La fase final de la planificación preventiva.",
+    "c) Los ejercicios públicos de concienciación electoral.",
+    "d) Los programas de las Fuerzas Armadas."
+  ],
+  correcta: "b) La fase final de la planificación preventiva.",
+  justificacion: "Los simulacros forman parte de las medidas de preparación y prevención de riesgos."
+},
+{
+  pregunta: "La responsabilidad civil derivada de actuaciones en protección civil corresponde a:",
+  opciones: [
+    "a) El Ministerio de Defensa, si se afectan bienes privados.",
+    "b) Las Administraciones Públicas en función de la competencia y actuación.",
+    "c) Los miembros del voluntariado de manera individual.",
+    "d) El Tribunal Constitucional en última instancia."
+  ],
+  correcta: "b) Las Administraciones Públicas en función de la competencia y actuación.",
+  justificacion: "La responsabilidad civil depende del ámbito de actuación de cada administración."
+},
+{
+  pregunta: "Una emergencia se considera de nivel 2 cuando:",
+  opciones: [
+    "a) No supera el ámbito local o provincial.",
+    "b) Se requiere la movilización de recursos estatales por incapacidad autonómica.",
+    "c) Ha sido declarada como caso de interés internacional.",
+    "d) Implica la participación de fuerzas militares en primera instancia."
+  ],
+  correcta: "b) Se requiere la movilización de recursos estatales por incapacidad autonómica.",
+  justificacion: "El nivel 2 implica que la emergencia no puede ser gestionada por la comunidad autónoma."
+},
+{
+  pregunta: "La Ley 17/2015 considera como servicio esencial:",
+  opciones: [
+    "a) El mantenimiento de la red ferroviaria.",
+    "b) Los servicios sanitarios y de primeros auxilios.",
+    "c) La administración electrónica de cargas fiscales.",
+    "d) La apertura de centros de enseñanza tras la catástrofe."
+  ],
+  correcta: "b) Los servicios sanitarios y de primeros auxilios.",
+  justificacion: "Los servicios esenciales se vinculan a la seguridad, salud y bienestar social."
+},
+{
+  pregunta: "El artículo 26 regula los daños materiales como consecuencia de:",
+  opciones: [
+    "a) Actos administrativos negligentes.",
+    "b) Medidas preventivas de salud pública.",
+    "c) Actuaciones en protección civil.",
+    "d) Siniestros de propiedad privada exclusivamente."
+  ],
+  correcta: "c) Actuaciones en protección civil.",
+  justificacion: "El artículo 26 se refiere a los daños materiales sufridos por actuaciones de protección civil."
+},
+{
+  pregunta: "El artículo 24 establece el sistema de indemnizaciones en protección civil:",
+  opciones: [
+    "a) A través de compañías privadas.",
+    "b) A través de la Administración competente y según normativa vigente.",
+    "c) Mediante acuerdo judicial con la entidad aseguradora.",
+    "d) Por resolución del Tribunal Supremo en última instancia."
+  ],
+  correcta: "b) A través de la Administración competente y según normativa vigente.",
+  justificacion: "El sistema indemnizatorio está regulado en el marco administrativo correspondiente."
+},
+{
+  pregunta: "En una situación de emergencia declarada de nivel 3, la dirección operativa recae en:",
+  opciones: [
+    "a) El presidente de la comunidad autónoma afectada.",
+    "b) El Delegado del Gobierno en la comunidad autónoma.",
+    "c) El Ministro del Interior o una autoridad designada.",
+    "d) El Consejo Nacional de Seguridad."
+  ],
+  correcta: "c) El Ministro del Interior o una autoridad designada.",
+  justificacion: "Nivel 3 implica emergencia nacional con dirección estatal."
+},
+  {
+  pregunta: "El objetivo principal de la Ley 42/2007, de Patrimonio Natural y Biodiversidad es:",
+  opciones: [
+    "a) Promover el desarrollo tecnológico de la biotecnología aplicada.",
+    "b) Garantizar la conservación, uso sostenible y restauración del patrimonio natural.",
+    "c) Regular la exportación de especies protegidas.",
+    "d) Promover exclusivamente el patrimonio natural urbano."
+  ],
+  correcta: "b) Garantizar la conservación, uso sostenible y restauración del patrimonio natural.",
+  justificacion: "El artículo 1 establece los objetivos fundamentales de la ley."
+},
+{
+  pregunta: "Según el artículo 3 de la Ley 42/2007, el patrimonio natural incluye:",
+  opciones: [
+    "a) Únicamente elementos geológicos de especial valor.",
+    "b) Un conjunto de bienes y recursos naturales de interés ambiental, científico o cultural.",
+    "c) Únicamente especies vegetales y hábitats protegidos.",
+    "d) El patrimonio cultural y los bienes inmuebles."
+  ],
+  correcta: "b) Un conjunto de bienes y recursos naturales de interés ambiental, científico o cultural.",
+  justificacion: "La definición abarca todos los elementos naturales de valor."
+},
+{
+  pregunta: "El artículo 2 define 'biodiversidad' como:",
+  opciones: [
+    "a) La variedad de ecosistemas presentes en áreas protegidas.",
+    "b) La variabilidad de organismos vivos de cualquier fuente y los complejos ecológicos de los que forman parte.",
+    "c) La diversidad de especies protegidas por normativa internacional.",
+    "d) Únicamente la variedad genética existente entre plantas."
+  ],
+  correcta: "b) La variabilidad de organismos vivos de cualquier fuente y los complejos ecológicos de los que forman parte.",
+  justificacion: "La definición es literal del artículo 2 de la ley."
+},
+{
+  pregunta: "Uno de los instrumentos básicos de la planificación para la conservación de la biodiversidad es:",
+  opciones: [
+    "a) El plan de ordenación territorial urbano.",
+    "b) El Inventario Español del Patrimonio Natural y la Biodiversidad.",
+    "c) El Plan de desarrollo rural sostenible.",
+    "d) El Registro de Recursos Genéticos Autonómico."
+  ],
+  correcta: "b) El Inventario Español del Patrimonio Natural y la Biodiversidad.",
+  justificacion: "Artículo 9 establece este inventario como herramienta clave."
+},
+{
+  pregunta: "¿Cuál de los siguientes es un tipo de espacio natural protegido según la Ley 42/2007?",
+  opciones: [
+    "a) Zonas exclusivamente industriales con valor histórico.",
+    "b) Zonas especiales de conservación (ZEC).",
+    "c) Áreas forestales en producción intensiva.",
+    "d) Áreas agrarias de consolidación rural."
+  ],
+  correcta: "b) Zonas especiales de conservación (ZEC).",
+  justificacion: "Las ZEC forman parte de la Red Natura 2000 según el artículo 42."
+},
+{
+  pregunta: "La Red Natura 2000 está compuesta por:",
+  opciones: [
+    "a) Parques nacionales únicamente.",
+    "b) Zonas Especiales de Conservación y Zonas de Especial Protección para las Aves.",
+    "c) Reservas marinas y zonas de producción pesquera.",
+    "d) Áreas culturales de especial conservación ambiental."
+  ],
+  correcta: "b) Zonas Especiales de Conservación y Zonas de Especial Protección para las Aves.",
+  justificacion: "La red está regulada en los artículos 42 y 43 de la ley."
+},
+{
+  pregunta: "Según el artículo 54, la gestión de los espacios protegidos de la Red Natura 2000 corresponde a:",
+  opciones: [
+    "a) El Ministerio de Defensa.",
+    "b) Las comunidades autónomas y la Administración General del Estado, según el ámbito territorial.",
+    "c) El Consejo de Ministros exclusivamente.",
+    "d) Organizaciones no gubernamentales con autorización."
+  ],
+  correcta: "b) Las comunidades autónomas y la Administración General del Estado, según el ámbito territorial.",
+  justificacion: "La gestión se reparte según el ámbito de cada espacio protegido."
+},
+{
+  pregunta: "El Catálogo Español de Especies Amenazadas se regula en:",
+  opciones: [
+    "a) El capítulo IV de la Ley 42/2007.",
+    "b) El artículo 56 de la Ley 42/2007.",
+    "c) El Reglamento de Especies en Peligro de Extinción de 1989.",
+    "d) Solamente por los convenios internacionales."
+  ],
+  correcta: "b) El artículo 56 de la Ley 42/2007.",
+  justificacion: "Este artículo define criterios y categorías de protección."
+},
+{
+  pregunta: "Las especies catalogadas como 'en peligro de extinción' requieren:",
+  opciones: [
+    "a) Una gestión obligatoria por el Ministerio de Agricultura.",
+    "b) Un plan de recuperación específico.",
+    "c) Una declaración de parque nacional.",
+    "d) Su erradicación en áreas protegidas."
+  ],
+  correcta: "b) Un plan de recuperación específico.",
+  justificacion: "El artículo 56 establece la obligación de planes de recuperación o conservación."
+},
+{
+  pregunta: "El 'uso sostenible' según la Ley 42/2007 se refiere a:",
+  opciones: [
+    "a) El aprovechamiento intensivo de recursos naturales en áreas protegidas.",
+    "b) La utilización compatible de los recursos naturales sin comprometer su disponibilidad futura.",
+    "c) La explotación económica sin ninguna limitación ambiental.",
+    "d) La explotación de recursos únicamente renovables."
+  ],
+  correcta: "b) La utilización compatible de los recursos naturales sin comprometer su disponibilidad futura.",
+  justificacion: "La definición de uso sostenible está en el artículo 3."
+},
+{
+  pregunta: "Los Parques Nacionales se declaran según lo establecido en:",
+  opciones: [
+    "a) El artículo 45 de la Ley del Patrimonio Natural.",
+    "b) El artículo 50 de la Ley 42/2007 y normativa específica.",
+    "c) El Reglamento Europeo de Parques de 2010.",
+    "d) La competencia exclusiva de cada Comunidad Autónoma."
+  ],
+  correcta: "b) El artículo 50 de la Ley 42/2007 y normativa específica.",
+  justificacion: "Se define su régimen básico y su declaración según normativa superior."
+},
+{
+  pregunta: "Entre las administraciones competentes para la conservación del patrimonio natural figuran:",
+  opciones: [
+    "a) Exclusivamente el Estado central.",
+    "b) El Estado, comunidades autónomas y entidades locales.",
+    "c) La Unión Europea de manera directa.",
+    "d) Únicamente las diputaciones provinciales."
+  ],
+  correcta: "b) El Estado, comunidades autónomas y entidades locales.",
+  justificacion: "La competencia es compartida según lo establecido en el artículo 5."
+},
+{
+  pregunta: "El artículo 56 de la Ley 42/2007 establece los siguientes niveles de protección:",
+  opciones: [
+    "a) En peligro de extinción y vulnerable.",
+    "b) Extinta, vertebrada y rural.",
+    "c) Protegida, común y controlada.",
+    "d) Exclusión de especie no autóctona."
+  ],
+  correcta: "a) En peligro de extinción y vulnerable.",
+  justificacion: "Son las dos categorías principales de protección en el Catálogo."
+},
+{
+  pregunta: "Un hábitat natural es definido por la Ley 42/2007 como:",
+  opciones: [
+    "a) Lugar donde habitan especies protegidas exclusivamente.",
+    "b) Área terrestre o acuática con condiciones que permiten la vida de especies silvestres.",
+    "c) Zona destinada a recuperación ecológica con supervisión humana.",
+    "d) Zona urbanizable con elementos de valor ambiental."
+  ],
+  correcta: "b) Área terrestre o acuática con condiciones que permiten la vida de especies silvestres.",
+  justificacion: "La definición está recogida en el artículo 3 del texto legal."
+},
+{
+  pregunta: "La Red de Parques Nacionales forma parte de:",
+  opciones: [
+    "a) La Red Natura 2000 exclusivamente.",
+    "b) El Inventario Español del Patrimonio Natural y la Biodiversidad.",
+    "c) El catálogo de espacios municipales protegidos.",
+    "d) El sistema de bienes patrimoniales culturales."
+  ],
+  correcta: "b) El Inventario Español del Patrimonio Natural y la Biodiversidad.",
+  justificacion: "Los parques nacionales están incluidos en dicho inventario."
+},
+{
+  pregunta: "La competencia en materia de gestión de especies migratorias corresponde principalmente a:",
+  opciones: [
+    "a) El Tribunal Europeo de Justicia.",
+    "b) El Estado a través de normativa básica y convenios internacionales.",
+    "c) Las corporaciones locales mediante ordenanzas.",
+    "d) Organizaciones no gubernamentales."
+  ],
+  correcta: "b) El Estado a través de normativa básica y convenios internacionales.",
+  justificacion: "Estas especies requieren actuación estatal coordinada a nivel internacional."
+},
+{
+  pregunta: "El artículo 59 establece que, con carácter preventivo, la introducción de especies alóctonas:",
+  opciones: [
+    "a) Está prohibida de forma absoluta por España.",
+    "b) Debe contar con evaluación de impacto y autorización competente.",
+    "c) Solo requiere notificación a la autoridad autonómica.",
+    "d) Es una competencia exclusiva de la Unión Europea."
+  ],
+  correcta: "b) Debe contar con evaluación de impacto y autorización competente.",
+  justificacion: "La introducción de especies no autóctonas está regulada para evitar daños a la biodiversidad."
+},
+{
+  pregunta: "La Estrategia de conservación y uso sostenible de la biodiversidad es elaborada por:",
+  opciones: [
+    "a) La Dirección General de Protección Civil.",
+    "b) El Ministerio para la Transición Ecológica.",
+    "c) El Consejo de Ministros de manera unánime.",
+    "d) El Parlamento Europeo mediante directiva."
+  ],
+  correcta: "b) El Ministerio para la Transición Ecológica.",
+  justificacion: "Este ministerio es competente en materia de medio ambiente, incluido patrimonio natural."
+},
+{
+  pregunta: "La realización de actividades en áreas protegidas requiere:",
+  opciones: [
+    "a) Autorización del Ministerio del Interior.",
+    "b) Informe previo de la comunidad autónoma competente.",
+    "c) Notificación únicamente si se afectan especies marinas.",
+    "d) Declaración pública de intenciones."
+  ],
+  correcta: "b) Informe previo de la comunidad autónoma competente.",
+  justificacion: "Las CCAA gestionan los espacios protegidos dentro de su territorio."
+},
+{
+  pregunta: "La protección de la biodiversidad marina está regulada en la Ley 42/2007 en:",
+  opciones: [
+    "a) El artículo 52.",
+    "b) El artículo 9 bis.",
+    "c) El artículo 49.",
+    "d) El artículo 53."
+  ],
+  correcta: "a) El artículo 52.",
+  justificacion: "Este artículo se refiere a la protección del medio marino y su biodiversidad."
+},
+  {
+  pregunta: "Según el artículo 45 de la Constitución Española, la conservación del medio ambiente es:",
+  opciones: [
+    "a) Un derecho fundamental protegido con amparo.",
+    "b) Un principio rector que vincula a los poderes públicos.",
+    "c) Una obligación exclusiva de las comunidades autónomas.",
+    "d) Una competencia exclusiva del Estado en todo caso."
+  ],
+  correcta: "b) Un principio rector que vincula a los poderes públicos.",
+  justificacion: "El artículo 45 CE establece la obligación de preservar el medio ambiente."
+},
+{
+  pregunta: "La Ley 42/2007 contempla la Estrategia Estatal de Infraestructura Verde con el objetivo de:",
+  opciones: [
+    "a) Establecer zonas urbanizables sostenibles.",
+    "b) Crear redes ecológicas que conecten espacios naturales y preserven la biodiversidad.",
+    "c) Fomentar el desarrollo agrícola intensivo.",
+    "d) Integrar los recursos naturales en el sistema financiero nacional."
+  ],
+  correcta: "b) Crear redes ecológicas que conecten espacios naturales y preserven la biodiversidad.",
+  justificacion: "La infraestructura verde persigue conectar ecosistemas naturales y mejorar su resiliencia."
+},
+{
+  pregunta: "El artículo 40 de la Ley 42/2007 regula:",
+  opciones: [
+    "a) La conservación de la biodiversidad marina.",
+    "b) La Red Natura 2000.",
+    "c) Los planes de recuperación de especies en peligro.",
+    "d) Las estrategias de uso sostenible del patrimonio natural."
+  ],
+  correcta: "b) La Red Natura 2000.",
+  justificacion: "El artículo 40 desarrolla el marco de dicha red ecológica europea."
+},
+{
+  pregunta: "¿Cuál es la categoría de protección más alta según la Ley 42/2007?",
+  opciones: [
+    "a) Monumento natural.",
+    "b) Reserva de la biosfera.",
+    "c) Zona Especial de Conservación.",
+    "d) Parque Nacional."
+  ],
+  correcta: "d) Parque Nacional.",
+  justificacion: "Los parques nacionales son espacios naturales de máxima protección declarados por ley."
+},
+{
+  pregunta: "Las Reservas de la Biosfera son designadas por:",
+  opciones: [
+    "a) Naciones Unidas mediante la UNESCO.",
+    "b) El Parlamento Español.",
+    "c) Las Comunidades Autónomas.",
+    "d) La Comisión Europea."
+  ],
+  correcta: "a) Naciones Unidas mediante la UNESCO.",
+  justificacion: "Las Reservas de la Biosfera forman parte del programa MaB de la UNESCO."
+},
+{
+  pregunta: "Según el artículo 56, una especie catalogada como 'vulnerable':",
+  opciones: [
+    "a) Está en un grado de riesgo inmediato de extinción.",
+    "b) No requiere ninguna medida de protección.",
+    "c) Debe someterse a un plan de conservación para evitar que pase a estar en peligro de extinción.",
+    "d) Puede ser objeto de caza controlada si lo autorizan entidades locales."
+  ],
+  correcta: "c) Debe someterse a un plan de conservación para evitar que pase a estar en peligro de extinción.",
+  justificacion: "Es la categoría inferior a 'en peligro de extinción', pero requiere protección activa."
+},
+{
+  pregunta: "La intervención en actividades que puedan afectar a especies protegidas requiere:",
+  opciones: [
+    "a) Declaración de impacto ambiental y autorización administrativa previa.",
+    "b) Únicamente notificación a la comunidad autónoma.",
+    "c) Aprobación del Ministerio de Defensa.",
+    "d) Autorización emitida por las Fuerzas y Cuerpos de Seguridad."
+  ],
+  correcta: "a) Declaración de impacto ambiental y autorización administrativa previa.",
+  justificacion: "Las actividades que afecten a especies protegidas deben someterse a aprobación previa por el impacto potencial."
+},
+{
+  pregunta: "El Registro de Huellas Genéticas de Especies Silvestres:",
+  opciones: [
+    "a) Es un instrumento de protección creado por la Ley 42/2007 para la identificación genética.",
+    "b) Es un registro de marcaje para uso veterinario exclusivamente.",
+    "c) Se utiliza exclusivamente por el Ministerio del Interior en investigaciones criminales.",
+    "d) No se menciona en la Ley 42/2007."
+  ],
+  correcta: "a) Es un instrumento de protección creado por la Ley 42/2007 para la identificación genética.",
+  justificacion: "Está incluido como herramienta para la conservación de la biodiversidad."
+},
+{
+  pregunta: "Las Zonas de Especial Protección para las Aves (ZEPA) se incluyen en:",
+  opciones: [
+    "a) El Catálogo Nacional de Especies Protegidas.",
+    "b) La Red Natura 2000.",
+    "c) La Estrategia Estatal para la Infraestructura Verde.",
+    "d) El Convenio de Barcelona."
+  ],
+  correcta: "b) La Red Natura 2000.",
+  justificacion: "Las ZEPA forman parte de la red ecológica europea para la protección de la avifauna."
+},
+{
+  pregunta: "Según el artículo 3 de la Ley 42/2007, el paisaje se define como:",
+  opciones: [
+    "a) Una configuración visual dominada por elementos geológicos.",
+    "b) La parte del territorio tal y como la percibe la población.",
+    "c) El resultado de la intervención humana en el medio natural exclusivamente.",
+    "d) Áreas protegidas por su valor urbano."
+  ],
+  correcta: "b) La parte del territorio tal y como la percibe la población.",
+  justificacion: "La definición de paisaje se ajusta a esa percepción."
+},
+{
+  pregunta: "El órgano estatal encargado de coordinar la conservación del patrimonio natural es:",
+  opciones: [
+    "a) El Consejo Nacional de Protección Civil.",
+    "b) La Comisión Estatal de Patrimonio Natural y de la Biodiversidad.",
+    "c) El Consejo Asesor de Medio Ambiente.",
+    "d) La Comisión Europea."
+  ],
+  correcta: "b) La Comisión Estatal de Patrimonio Natural y de la Biodiversidad.",
+  justificacion: "Así se establece en el título V de la Ley 42/2007."
+},
+{
+  pregunta: "La Ley 42/2007 incluye entre sus principios rectores:",
+  opciones: [
+    "a) La explotación intensiva de recursos naturales como recurso económico.",
+    "b) El acceso universal al uso de reservas naturales sin coste.",
+    "c) El desarrollo sostenible y la responsabilidad de conservar los recursos naturales.",
+    "d) La eliminación del concepto de propiedad privada sobre los recursos naturales."
+  ],
+  correcta: "c) El desarrollo sostenible y la responsabilidad de conservar los recursos naturales.",
+  justificacion: "Esto está recogido en el artículo 2 y refleja los principios de conservación."
+},
+{
+  pregunta: "Las sanciones administrativas por infracciones en materia de patrimonio natural se regulan en:",
+  opciones: [
+    "a) El artículo 79 de la Ley 42/2007.",
+    "b) El artículo 81 de la Constitución.",
+    "c) El artículo 45 de la Ley 17/2015.",
+    "d) El artículo 56 de la Ley 27/2010."
+  ],
+  correcta: "a) El artículo 79 de la Ley 42/2007.",
+  justificacion: "El régimen sancionador se recoge en ese artículo."
+},
+{
+  pregunta: "El Convenio sobre la Diversidad Biológica (CDB), en relación con la Ley 42/2007, es:",
+  opciones: [
+    "a) Un acuerdo bilateral entre España y la Unión Europea.",
+    "b) Un tratado internacional ratificado por España que inspira los objetivos de la ley.",
+    "c) Un documento interno del Ministerio de Transición Ecológica.",
+    "d) Un protocolo específico sobre especies exóticas."
+  ],
+  correcta: "b) Un tratado internacional ratificado por España que inspira los objetivos de la ley.",
+  justificacion: "El CDB influye directamente en la Ley de Patrimonio Natural y Biodiversidad."
+},
+{
+  pregunta: "Una especie exótica invasora, según la Ley 42/2007, es aquella que:",
+  opciones: [
+    "a) Solo se encuentra en áreas urbanas.",
+    "b) Proviene del territorio nacional y se ha expandido espontáneamente.",
+    "c) Ha sido introducida y su expansión supone una amenaza ambiental o económica.",
+    "d) Solo afecta a otras especies vegetales."
+  ],
+  correcta: "c) Ha sido introducida y su expansión supone una amenaza ambiental o económica.",
+  justificacion: "El artículo 3 define las especies exóticas invasoras y el control de su impacto."
+},
+{
+  pregunta: "El artículo 8 de la Ley 42/2007 crea el:",
+  opciones: [
+    "a) Registro de Entidades Ambientales.",
+    "b) Inventario Español del Patrimonio Natural y la Biodiversidad.",
+    "c) Observatorio Nacional del Cambio Climático.",
+    "d) Catálogo de Espacios Forestales Autonómicos."
+  ],
+  correcta: "b) Inventario Español del Patrimonio Natural y la Biodiversidad.",
+  justificacion: "Este Inventario es un instrumento técnico básico para el seguimiento del patrimonio natural."
+},
+{
+  pregunta: "La inclusión de una especie en el Listado de Especies Silvestres en Régimen de Protección Especial implica:",
+  opciones: [
+    "a) Su protección contra cualquier tipo de utilización comercial.",
+    "b) La obligación de elaborar un programa de recuperación de sus poblaciones.",
+    "c) La aplicación automática del régimen sancionador penal.",
+    "d) Un seguimiento especial sin necesidad de plan de conservación."
+  ],
+  correcta: "d) Un seguimiento especial sin necesidad de plan de conservación.",
+  justificacion: "El listado implica protección, pero no necesariamente plan de recuperación salvo si está catalogada."
+},
+{
+  pregunta: "Las ayudas para la conservación de la biodiversidad pueden financiar:",
+  opciones: [
+    "a) Actividades estrictamente agrícolas.",
+    "b) Proyectos de restauración ecológica de espacios degradados.",
+    "c) El desarrollo de urbanizaciones sostenibles.",
+    "d) Campos de golf con consumo reducido de agua."
+  ],
+  correcta: "b) Proyectos de restauración ecológica de espacios degradados.",
+  justificacion: "La Ley 42/2007 contempla mecanismos de apoyo para la conservación de hábitats y especies."
+},
+{
+  pregunta: "El artículo 62 prohíbe:",
+  opciones: [
+    "a) El comercio internacional de especies vegetales cultivadas.",
+    "b) La comercialización, transporte o intercambio de especies exóticas invasoras.",
+    "c) La caza de especies catalogadas como vulnerables.",
+    "d) El uso de pesticidas en áreas naturales protegidas."
+  ],
+  correcta: "b) La comercialización, transporte o intercambio de especies exóticas invasoras.",
+  justificacion: "Esta prohibición está orientada a controlar su expansión y sus efectos."
+},
+{
+  pregunta: "La gestión de los Parques Nacionales en España está regulada por:",
+  opciones: [
+    "a) La Ley de Montes de 2003.",
+    "b) La Ley 42/2007 y la Ley 30/2014.",
+    "c) El Real Decreto Legislativo 5/2011.",
+    "d) Un acuerdo exclusivo entre el Estado y la Unión Europea."
+  ],
+  correcta: "b) La Ley 42/2007 y la Ley 30/2014.",
+  justificacion: "La Ley 30/2014 desarrolla específicamente el régimen jurídico de los Parques Nacionales."
+},
+{
+  pregunta: "¿Cuál de las siguientes especies está obligatoriamente protegida según la Ley 42/2007?",
+  opciones: [
+    "a) Especies autóctonas sin riesgo aparente.",
+    "b) Especies incluidas en el Catálogo Español de Especies Amenazadas.",
+    "c) Cualquier animal incluido en el Convenio de Washington.",
+    "d) Especies migratorias comunes en Europa."
+  ],
+  correcta: "b) Especies incluidas en el Catálogo Español de Especies Amenazadas.",
+  justificacion: "El Catálogo establece los niveles de protección de especies que están en peligro o son vulnerables."
+},
+{
+  pregunta: "Uno de los objetivos del artículo 2 de la Ley 42/2007 es garantizar la conservación:",
+  opciones: [
+    "a) De ecosistemas y hábitats exclusivamente acuáticos.",
+    "b) De muestras de museos y centros científicos.",
+    "c) De la biodiversidad y la geodiversidad.",
+    "d) De especies animales destinados al consumo."
+  ],
+  correcta: "c) De la biodiversidad y la geodiversidad.",
+  justificacion: "La ley abarca ambos conceptos para proteger el patrimonio natural."
+},
+{
+  pregunta: "El artículo 26 de la Ley 17/2015 sobre Protección Civil regula:",
+  opciones: [
+    "a) La responsabilidad penal de los agentes de emergencias.",
+    "b) La indemnización por daños materiales derivados de actuaciones de emergencia.",
+    "c) La creación del Fondo Nacional de Protección Civil.",
+    "d) La prevención de riesgos laborales en protección civil."
+  ],
+  correcta: "b) La indemnización por daños materiales derivados de actuaciones de emergencia.",
+  justificacion: "El artículo trata de los daños que pueden derivarse de medidas de protección civil."
+},
+{
+  pregunta: "El Principio de Precaución aplicado en Biodiversidad implica que:",
+  opciones: [
+    "a) No se debe actuar mientras no se disponga de certeza científica absoluta.",
+    "b) Se deben tomar medidas para evitar daños graves incluso si existe incertidumbre científica.",
+    "c) Solo se aplica en materia de salud pública.",
+    "d) Es decisión exclusiva de instituciones científicas internacionales."
+  ],
+  correcta: "b) Se deben tomar medidas para evitar daños graves incluso si existe incertidumbre científica.",
+  justificacion: "Este principio se aplica para prevención de daños a la biodiversidad."
+},
+{
+  pregunta: "La Ley 17/2015 establece que la declaración de una 'emergencia de interés nacional' se realiza cuando:",
+  opciones: [
+    "a) Los medios autonómicos y locales son suficientes para la gestión.",
+    "b) La situación excede la capacidad de respuesta autonómica y afecta significativamente a varias regiones.",
+    "c) El Ministerio de Defensa así lo solicita.",
+    "d) Existe riesgo económico elevado para el Estado."
+  ],
+  correcta: "b) La situación excede la capacidad de respuesta autonómica y afecta significativamente a varias regiones.",
+  justificacion: "Esto activa la coordinación nacional bajo autoridad ministerial."
+},
+{
+  pregunta: "Según la Ley 42/2007, la protección de los hábitats se basa en:",
+  opciones: [
+    "a) La declaración de hábitats industriales urbanos.",
+    "b) El mantenimiento de condiciones que favorezcan la vida de especies silvestres.",
+    "c) La obligatoriedad de construir áreas de descanso humano.",
+    "d) La zonificación forzada sin estudios previos."
+  ],
+  correcta: "b) El mantenimiento de condiciones que favorezcan la vida de especies silvestres.",
+  justificacion: "La conservación de hábitats favorece la biodiversidad."
+},
+{
+  pregunta: "Las infracciones muy graves en materia de biodiversidad, según el artículo 80, pueden ser sancionadas con:",
+  opciones: [
+    "a) Multas de hasta 2 millones de euros.",
+    "b) Multas de hasta 300.000 euros.",
+    "c) Advertencias escritas y formación obligatoria.",
+    "d) Exclusión de ciertos derechos ciudadanos temporales."
+  ],
+  correcta: "a) Multas de hasta 2 millones de euros.",
+  justificacion: "El régimen sancionador especifica estas cuantías para infracciones muy graves."
+},
+{
+  pregunta: "El artículo 3 de la Ley 17/2015 define 'emergencia' como:",
+  opciones: [
+    "a) Cualquier situación de alteración de la normalidad, independientemente de su alcance.",
+    "b) Situación que requiere una respuesta rápida ante graves daños o amenazas.",
+    "c) Evento de bloqueo social generado por decisiones políticas.",
+    "d) La activación de unidades militares para garantizar el orden."
+  ],
+  correcta: "b) Situación que requiere una respuesta rápida ante graves daños o amenazas.",
+  justificacion: "El concepto se refiere a situaciones que requieren acción inmediata."
+},
+{
+  pregunta: "¿Cuál de los siguientes es un riesgo natural recogido en los planes de protección civil?",
+  opciones: [
+    "a) Delitos informáticos.",
+    "b) Inundaciones.",
+    "c) Crisis financieras.",
+    "d) Conflictos lingüísticos."
+  ],
+  correcta: "b) Inundaciones.",
+  justificacion: "Las inundaciones son uno de los riesgos naturales contemplados en la planificación."
+},
+{
+  pregunta: "La Ley 42/2007 establece que las especies alóctonas invasoras deben:",
+  opciones: [
+    "a) Integrarse en los ecosistemas si hay beneficio económico.",
+    "b) Ser erradicadas o controladas por su efecto negativo.",
+    "c) Ser protegidas siempre que se adapten al entorno.",
+    "d) Recibir la misma protección que las autóctonas."
+  ],
+  correcta: "b) Ser erradicadas o controladas por su efecto negativo.",
+  justificacion: "Su presencia daña ecosistemas y especies autóctonas."
+},
+{
+  pregunta: "Las actividades científicas en espacios naturales protegidos requieren:",
+  opciones: [
+    "a) Autorización previa o evaluación ambiental.",
+    "b) Un acuerdo del Ministerio de Cultura.",
+    "c) Solo aviso a la autoridad local 48 horas antes.",
+    "d) Supervisión militar."
+  ],
+  correcta: "a) Autorización previa o evaluación ambiental.",
+  justificacion: "La ley exige evaluación y autorización para actividades con posible impacto ambiental."
+},
+{
+  pregunta: "Los incendios forestales se consideran en la Ley de Protección Civil como:",
+  opciones: [
+    "a) Riesgos inexistentes en zonas periféricas.",
+    "b) Emergencias de origen natural exclusivamente.",
+    "c) Riesgos que pueden generar situaciones de emergencia grave y requieren planificación.",
+    "d) Situaciones que delegan la gestión exclusivamente a los ayuntamientos."
+  ],
+  correcta: "c) Riesgos que pueden generar situaciones de emergencia grave y requieren planificación.",
+  justificacion: "Los incendios son un riesgo contemplado en los planes de emergencia."
+},
+{
+  pregunta: "El Catálogo Nacional de Especies Amenazadas fue sustituido por:",
+  opciones: [
+    "a) El Inventario Estatal de Flora y Fauna en Riesgo.",
+    "b) El Catálogo Español de Especies Amenazadas.",
+    "c) El Archivo Nacional de Especies en Regeneración.",
+    "d) El Registro Español de Hábitats Protegidos."
+  ],
+  correcta: "b) El Catálogo Español de Especies Amenazadas.",
+  justificacion: "El catálogo lo recoge la Ley 42/2007 como instrumento de protección oficial."
+},
+{
+  pregunta: "Las especies incluidas en el Listado de Especies Silvestres en Régimen de Protección Especial:",
+  opciones: [
+    "a) Están siempre catalogadas como en peligro.",
+    "b) Forman parte de un régimen de protección general sin necesidad de plan de conservación específico.",
+    "c) Tienen un nivel de protección inferior al de especies vulnerables.",
+    "d) Han sido erradicadas en hábitats protegidos."
+  ],
+  correcta: "b) Forman parte de un régimen de protección general sin necesidad de plan de conservación específico.",
+  justificacion: "La ley distingue entre listado de régimen especial y catálogo de especies en riesgo."
+},
+{
+  pregunta: "El artículo 31 de la Ley 17/2015 obliga a las administraciones públicas a:",
+  opciones: [
+    "a) Disponer de unidades móviles permanentes en todas las localidades.",
+    "b) Adoptar medidas para reducir los riesgos de desastres y aumentar la resiliencia.",
+    "c) Permitir la actuación directa de ciudadanos en emergencias.",
+    "d) Automatizar la evacuación en caso de terremoto."
+  ],
+  correcta: "b) Adoptar medidas para reducir los riesgos de desastres y aumentar la resiliencia.",
+  justificacion: "La reducción del riesgo de desastre es una obligación fundamental."
+},
+{
+  pregunta: "Las infracciones administrativas leves en materia de protección civil incluyen:",
+  opciones: [
+    "a) No participar en simulacros cuando sea obligatorio.",
+    "b) Obstruir la labor de rescate en una emergencia.",
+    "c) Incumplir medidas de autoprotección sin consecuencia grave.",
+    "d) Falsear datos de riesgo en informes oficiales."
+  ],
+  correcta: "c) Incumplir medidas de autoprotección sin consecuencia grave.",
+  justificacion: "Las infracciones leves están relacionadas con el incumplimiento sin repercusión inmediata."
+},
+{
+  pregunta: "La Ley 42/2007, en su artículo 40, identifica como elementos de la Red Natura 2000:",
+  opciones: [
+    "a) ZEPA y LIC.",
+    "b) ZEC y ZEPA.",
+    "c) LIC y ZEPIM.",
+    "d) ZEC y ZEPIM."
+  ],
+  correcta: "b) ZEC y ZEPA.",
+  justificacion: "Las Zonas Especiales de Conservación y Zonas de Especial Protección para las Aves forman la Red Natura 2000."
+},
+{
+  pregunta: "La declaración de Parque Nacional requiere:",
+  opciones: [
+    "a) Ley aprobada por las Cortes Generales.",
+    "b) Decreto del Consejo de Ministros.",
+    "c) Acuerdo entre varias Comunidades Autónomas.",
+    "d) Resolución del Ministerio de Transición Ecológica."
+  ],
+  correcta: "a) Ley aprobada por las Cortes Generales.",
+  justificacion: "Los Parques Nacionales requieren aprobación legislativa."
+},
+{
+  pregunta: "Según la Ley 17/2015, ¿cuál de los siguientes es un objetivo estratégico del Sistema Nacional de Protección Civil?",
+  opciones: [
+    "a) Aumentar la inversión privada en infraestructuras de ocio",
+    "b) Prever y mitigar los riesgos cuando sea posible",
+    "c) Facilitar la libre intimidación de emergencias",
+    "d) Reducir el gasto público destinado a recursos humanos"
+  ],
+  correcta: "b) Prever y mitigar los riesgos cuando sea posible",
+  justificacion: "El artículo 4 establece como objetivo estratégico la prevención y mitigación de riesgos."
+},
+{
+  pregunta: "La Ley 17/2015 define 'riesgo colectivo' como:",
+  opciones: [
+    "a) Cualquier situación que afecte la economía de varias empresas",
+    "b) Un evento que puede afectar simultáneamente a varias personas o bienes",
+    "c) Una circunstancia que altera el orden público durante eventos deportivos",
+    "d) Alteraciones del orden internacional por conflictos bélicos"
+  ],
+  correcta: "b) Un evento que puede afectar simultáneamente a varias personas o bienes",
+  justificacion: "Esta definición se encuentra en el artículo 2 de la Ley 17/2015."
+},
+{
+  pregunta: "El artículo 12 de la Ley 42/2007 establece como uno de sus fines:",
+  opciones: [
+    "a) Favorecer el crecimiento urbanístico sostenible",
+    "b) Garantizar el derecho al acceso a la naturaleza y sus servicios",
+    "c) Regular el control fiscal de recursos naturales",
+    "d) Crear más infraestructuras en áreas protegidas"
+  ],
+  correcta: "b) Garantizar el derecho al acceso a la naturaleza y sus servicios",
+  justificacion: "El artículo 12 recoge la importancia del acceso público responsable al medio natural."
+},
+{
+  pregunta: "¿Qué figura jurídica protege ecosistemas marinos especialmente valiosos?",
+  opciones: [
+    "a) Zona de Especial Protección Integral Marina (ZEPIM)",
+    "b) Zona de Especial Protección para la Pesca (ZEPP)",
+    "c) Lugar de Importancia Comunitaria Marina (LIC-M)",
+    "d) Red Pan-Europea de Ecosistemas Marinos (RPM)"
+  ],
+  correcta: "a) Zona de Especial Protección Integral Marina (ZEPIM)",
+  justificacion: "Esta figura está reconocida en la Ley 42/2007 como herramienta de protección marina."
+},
+{
+  pregunta: "El artículo 34 de la Ley 17/2015 establece la obligación de disponer de:",
+  opciones: [
+    "a) Planes de seguridad pública en grandes eventos sociales",
+    "b) Planes Especiales de Protección Civil ante riesgos concretos",
+    "c) Protocolos militares de intervención en catástrofes",
+    "d) Seguros obligatorios para toda la población"
+  ],
+  correcta: "b) Planes Especiales de Protección Civil ante riesgos concretos",
+  justificacion: "Dichos planes están dirigidos a situaciones específicas como inundaciones, incendios, etc."
+},
+{
+  pregunta: "Las ZEC (Zonas Especiales de Conservación) se declaran a partir de:",
+  opciones: [
+    "a) La Red de Parques Nacionales",
+    "b) Los LIC (Lugares de Importancia Comunitaria)",
+    "c) Reservas de la Biosfera",
+    "d) Catálogos autonómicos forestales"
+  ],
+  correcta: "b) Los LIC (Lugares de Importancia Comunitaria)",
+  justificacion: "Las ZEC derivan de los LIC, una vez aprobadas las medidas de conservación."
+},
+{
+  pregunta: "Según la Ley 17/2015, el deber de informar a la población sobre riesgos corresponde a:",
+  opciones: [
+    "a) Exclusivamente a los alcaldes en su municipio",
+    "b) Los organismos competentes en función de la gravedad del riesgo",
+    "c) Los cuerpos de voluntarios según su disponibilidad",
+    "d) La Dirección General de Tráfico en zonas rurales"
+  ],
+  correcta: "b) Los organismos competentes en función de la gravedad del riesgo",
+  justificacion: "El principio de información está recogido como derecho y obligación en la Ley de Protección Civil."
+},
+{
+  pregunta: "El artículo 58 de la Ley 42/2007 aborda específicamente:",
+  opciones: [
+    "a) El uso sostenible de los recursos marinos comerciales",
+    "b) La recuperación de especies catalogadas como en peligro de extinción",
+    "c) El control pesquero en zonas costeras protegidas",
+    "d) La regulación de la caza en Zonas de Especial Protección"
+  ],
+  correcta: "b) La recuperación de especies catalogadas como en peligro de extinción",
+  justificacion: "Este artículo establece los criterios de actuación para la recuperación de especies en riesgo."
+},
+{
+  pregunta: "Los planes territoriales de protección civil son desarrollados por:",
+  opciones: [
+    "a) El Ministerio del Interior exclusivamente",
+    "b) Las Comunidades Autónomas y entidades locales",
+    "c) La Junta de Coordinación Europea",
+    "d) El Ejército del Aire cuando sea necesario"
+  ],
+  correcta: "b) Las Comunidades Autónomas y entidades locales",
+  justificacion: "Los planes territoriales se diseñan a nivel autonómico y local para cada territorio."
+},
+{
+  pregunta: "La Ley 42/2007 contempla los 'georrecursos' como parte de:",
+  opciones: [
+    "a) Las especies exóticas a controlar",
+    "b) El patrimonio geológico integrado en el patrimonio natural",
+    "c) La red de reservas geotérmicas protegidas",
+    "d) La infraestructura verde urbana"
+  ],
+  correcta: "b) El patrimonio geológico integrado en el patrimonio natural",
+  justificacion: "El patrimonio natural no solo incluye flora y fauna, sino también geodiversidad."
+},
+{
+  pregunta: "Según la Ley 42/2007, estarán obligados a solicitar autorización administrativa:",
+  opciones: [
+    "a) Aquellos que deseen recolectar materiales científicos en parques naturales",
+    "b) Los fotógrafos aficionados en zonas naturales",
+    "c) Las entidades bancarias que operen cerca de espacios protegidos",
+    "d) Los profesionales sanitarios que ejerzan en entornos rurales"
+  ],
+  correcta: "a) Aquellos que deseen recolectar materiales científicos en parques naturales",
+  justificacion: "La actividad científica con potencial impacto requiere permisos específicos."
+},
+{
+  pregunta: "El Registro de Huellas Genéticas se emplea para:",
+  opciones: [
+    "a) Controlar las poblaciones humanas en zonas protegidas",
+    "b) Gestionar la identificación genética de especies silvestres",
+    "c) Determinar el origen exacto de productos agrícolas",
+    "d) Registrar la genética de especies cultivadas en viveros"
+  ],
+  correcta: "b) Gestionar la identificación genética de especies silvestres",
+  justificacion: "Herramienta de protección y control incluida en el artículo 60 de la Ley 42/2007."
+},
+{
+  pregunta: "El artículo 4 de la Ley 17/2015 establece como principio básico:",
+  opciones: [
+    "a) La actuación pública basada en el interés privado",
+    "b) La protección eficaz frente a riesgos colectivos",
+    "c) La financiación externa ante emergencias internas",
+    "d) La exención de responsabilidad de autoridades locales"
+  ],
+  correcta: "b) La protección eficaz frente a riesgos colectivos",
+  justificacion: "El principio de protección eficaz es central en el sistema de protección civil."
+},
+{
+  pregunta: "La Ley 42/2007 establece la obligación de evaluar el impacto ambiental de:",
+  opciones: [
+    "a) Proyectos que afectan a especies del listado de protección especial",
+    "b) Únicamente proyectos estatales de infraestructura",
+    "c) Actividades industriales situadas fuera de áreas protegidas",
+    "d) Solo proyectos aprobados por el Gobierno de España"
+  ],
+  correcta: "a) Proyectos que afectan a especies del listado de protección especial",
+  justificacion: "El artículo 45 obliga a cumplir la normativa ambiental en todos los proyectos que afecten especies protegidas."
+},
+{
+  pregunta: "La responsabilidad civil por daños al patrimonio natural en España recae en:",
+  opciones: [
+    "a) Las compañías aseguradoras privadas en todos los casos",
+    "b) El Estado exclusivamente",
+    "c) El autor del daño o la administración según proceda",
+    "d) Los tribunales internacionales"
+  ],
+  correcta: "c) El autor del daño o la administración según proceda",
+  justificacion: "La Ley 42/2007 prevé la responsabilidad administrativa o civil según el contexto."
+},
+{
+  pregunta: "Las Zonas de Especial Protección para las Aves (ZEPA) han sido creadas de acuerdo con:",
+  opciones: [
+    "a) La Directiva Hábitats",
+    "b) La Directiva Aves de la Unión Europea",
+    "c) El Tratado de Lisboa",
+    "d) El Protocolo de Kioto"
+  ],
+  correcta: "b) La Directiva Aves de la Unión Europea",
+  justificacion: "Las ZEPA se incorporan a la Red Natura 2000 como exigencia de la Directiva Aves (79/409/CEE)."
+},
+{
+  pregunta: "Para declarar una especie como 'en peligro de extinción' es necesario:",
+  opciones: [
+    "a) Que haya al menos un 50% de pérdida poblacional en 10 años",
+    "b) Que la UE lo exija mediante convenio",
+    "c) Que no exista amenaza inminente de desaparición",
+    "d) Que el impacto sea únicamente a nivel regional"
+  ],
+  correcta: "a) Que haya al menos un 50% de pérdida poblacional en 10 años",
+  justificacion: "Este es uno de los criterios objetivos recogidos en el desarrollo del artículo 56."
+},
+{
+  pregunta: "La Ley 17/2015 incorpora al Sistema Nacional de Protección Civil el principio de:",
+  opciones: [
+    "a) Autonomía absoluta de cada municipio",
+    "b) Coordinación interadministrativa",
+    "c) Responsabilidad empresarial exclusiva",
+    "d) Externalización de la actuación pública"
+  ],
+  correcta: "b) Coordinación interadministrativa",
+  justificacion: "El sistema busca coordinación entre administraciones en todos los niveles."
+},
+{
+  pregunta: "La Ley 42/2007 es complementada en su desarrollo reglamentario por:",
+  opciones: [
+    "a) El Real Decreto 139/2011 sobre el Listado y Catálogo de Especies Protegidas",
+    "b) El Protocolo de Montreal",
+    "c) El Código Penal Ambiental de 2008",
+    "d) El Real Decreto Legislativo sobre Impacto Tecnológico"
+  ],
+  correcta: "a) El Real Decreto 139/2011 sobre el Listado y Catálogo de Especies Protegidas",
+  justificacion: "Este Real Decreto desarrolla la protección específica prevista en la Ley 42/2007."
+},
+{
+  pregunta: "El Sistema Nacional de Protección Civil puede contar con la colaboración de:",
+  opciones: [
+    "a) Unidades de voluntariado civil organizadas",
+    "b) Empresas privadas contratadas con carácter permanente",
+    "c) Sindicatos de empleados públicos",
+    "d) Organismos internacionales exclusivamente"
+  ],
+  correcta: "a) Unidades de voluntariado civil organizadas",
+  justificacion: "El artículo 7 quáter recoge la figura del voluntariado en protección civil."
+},
+{
+  pregunta: "El Sistema Nacional de Protección Civil se organiza conforme a los principios de:",
+  opciones: [
+    "a) Subsidiariedad, continuidad y delegación progresiva",
+    "b) Prevención, protección, planificación y coordinación",
+    "c) Privatización, gestión directa y eficiencia presupuestaria",
+    "d) Militarización, disciplina y actuación judicial"
+  ],
+  correcta: "b) Prevención, protección, planificación y coordinación",
+  justificacion: "Estos principios aparecen recogidos en el artículo 3 de la Ley 17/2015."
+},
+{
+  pregunta: "Las especies incluidas en el Listado de Especies Silvestres en Régimen de Protección Especial requieren:",
+  opciones: [
+    "a) Obligatoriamente un plan de recuperación",
+    "b) Seguimiento y evaluación periódica",
+    "c) Incluirse automáticamente en el Catálogo de Especies Amenazadas",
+    "d) La declaración inmediata como especie en peligro de extinción"
+  ],
+  correcta: "b) Seguimiento y evaluación periódica",
+  justificacion: "El artículo 56 prevé protección especial, pero no obliga a un plan de recuperación salvo que estén catalogadas."
+},
+{
+  pregunta: "La Ley 17/2015 define las 'situaciones de interés para la seguridad nacional' como:",
+  opciones: [
+    "a) Catástrofes que impliquen la intervención de organismos internacionales",
+    "b) Situaciones que afecten gravemente a la seguridad pública o bienes esenciales",
+    "c) Circunstancias que impliquen la suspensión de derechos fundamentales",
+    "d) Eventos con efectos exclusivamente económicos a nivel internacional"
+  ],
+  correcta: "b) Situaciones que afecten gravemente a la seguridad pública o bienes esenciales",
+  justificacion: "Estas definiciones se recogen como parte del sistema de seguridad nacional y protección civil."
+},
+{
+  pregunta: "Las especies migratorias que cruzan el territorio nacional están protegidas por:",
+  opciones: [
+    "a) Convenios internacionales ratificados por España",
+    "b) El Código Internacional de Conservación de Especies de la ONU",
+    "c) El Tratado de Ámsterdam",
+    "d) La Ley Orgánica de Conservación de Especies de 1996"
+  ],
+  correcta: "a) Convenios internacionales ratificados por España",
+  justificacion: "Entre otros, el Convenio de Bonn y acuerdos similares."
+},
+{
+  pregunta: "Una Reserva de la Biosfera puede incluirse en el Inventario Español del Patrimonio Natural:",
+  opciones: [
+    "a) Solo si está ubicada en territorio insular",
+    "b) Siempre que cuente con resolución de la UNESCO",
+    "c) Si lo solicita el propietario de los terrenos afectados",
+    "d) Únicamente si se encuentra en Red Natura 2000"
+  ],
+  correcta: "b) Siempre que cuente con resolución de la UNESCO",
+  justificacion: "Las Reservas de la Biosfera son reconocidas internacionalmente por la UNESCO."
+},
+{
+  pregunta: "En el Sistema Nacional de Protección Civil, el Centro Nacional de Seguimiento y Coordinación (CENEM):",
+  opciones: [
+    "a) Coordina instituciones militares en emergencias de origen exterior",
+    "b) Es el centro neurálgico de información y alerta para emergencias",
+    "c) Está ubicado únicamente en las dependencias del Ministerio de Defensa",
+    "d) Solo interviene en incendios forestales"
+  ],
+  correcta: "b) Es el centro neurálgico de información y alerta para emergencias",
+  justificacion: "El CENEM proporciona coordinación operativa y seguimiento de eventos en tiempo real."
+},
+{
+  pregunta: "La introducción de especies exóticas invasoras en el medio natural está prohibida:",
+  opciones: [
+    "a) Siempre que haya legislación autonómica específica",
+    "b) En cualquier caso, salvo autorización que cumpla requisitos legales",
+    "c) Solo si afecta a especies catalogadas como vulnerables",
+    "d) Únicamente si la Comisión Europea lo establece"
+  ],
+  correcta: "b) En cualquier caso, salvo autorización que cumpla requisitos legales",
+  justificacion: "La Ley 42/2007 exige evaluación y autorización para evitar su impacto ambiental."
+},
+{
+  pregunta: "Las infracciones graves en materia de protección civil pueden sancionarse con:",
+  opciones: [
+    "a) Multa de hasta 600.000 euros",
+    "b) Cierre definitivo del establecimiento responsable",
+    "c) Multa de entre 12.001 y 120.000 euros",
+    "d) Arresto domiciliario del responsable jurídico"
+  ],
+  correcta: "c) Multa de entre 12.001 y 120.000 euros",
+  justificacion: "El artículo 81 de la Ley 17/2015 establece este rango para infracciones graves."
+},
+{
+  pregunta: "El artículo 66 de la Ley 42/2007 establece medidas para la conservación de:",
+  opciones: [
+    "a) Espacios catalogados como turísticos",
+    "b) Poblaciones de especies exóticas invasoras",
+    "c) Recursos genéticos de especies silvestres",
+    "d) Áreas urbanas en desarrollo"
+  ],
+  correcta: "c) Recursos genéticos de especies silvestres",
+  justificacion: "El artículo incluye conservación y uso sostenible de dichos recursos."
+},
+{
+  pregunta: "El Comité Estatal de Coordinación y Dirección (CECOD) actúa en:",
+  opciones: [
+    "a) Emergencias de interés nacional",
+    "b) Conflictos laborales graves",
+    "c) Crisis de carácter exclusivamente económico",
+    "d) Catástrofes ambientales con impacto internacional"
+  ],
+  correcta: "a) Emergencias de interés nacional",
+  justificacion: "El CECOD se activa específicamente en emergencias que exceden la capacidad de las CCAA."
+},
+{
+  pregunta: "La responsabilidad de elaborar los Planes Territoriales de Protección Civil recae sobre:",
+  opciones: [
+    "a) El Gobierno central",
+    "b) Las Comunidades Autónomas",
+    "c) Las entidades privadas registradas",
+    "d) Los colegios profesionales"
+  ],
+  correcta: "b) Las Comunidades Autónomas",
+  justificacion: "Estos planes se adaptan al territorio autonómico y se ajustan al marco estatal."
+},
+{
+  pregunta: "El Plan Estatal General de Protección Civil se aprueba mediante:",
+  opciones: [
+    "a) Real Decreto",
+    "b) Ley Orgánica",
+    "c) Decreto Ley",
+    "d) Circular ministerial"
+  ],
+  correcta: "a) Real Decreto",
+  justificacion: "El marco jurídico para emergencias estatales se regula por Real Decreto."
+},
+{
+  pregunta: "La Estrategia Estatal de Infraestructura Verde tiene entre sus objetivos:",
+  opciones: [
+    "a) Fomentar la cercanía entre ciudad y campo mediante expansión urbana",
+    "b) Crear corredores ecológicos para conectar espacios naturales protegidos",
+    "c) Obligar a los propietarios privados a garantizar acceso público a bosques",
+    "d) Establecer límites a la explotación turística en áreas rurales"
+  ],
+  correcta: "b) Crear corredores ecológicos para conectar espacios naturales protegidos",
+  justificacion: "Así se establece en la planificación ecológica recogida en la Ley 42/2007."
+},
+{
+  pregunta: "Las Reservas Naturales marinas están declaradas para:",
+  opciones: [
+    "a) Facilitar la pesca tradicional sostenible",
+    "b) Proteger ecosistemas con alto valor ecológico en medios marinos",
+    "c) Regular el tránsito marítimo recreativo",
+    "d) Desarrollar actividades de turismo submarino"
+  ],
+  correcta: "b) Proteger ecosistemas con alto valor ecológico en medios marinos",
+  justificacion: "Las reservas marinas forman parte del patrimonio protegido por su valor ecológico."
+},
+{
+  pregunta: "Un Plan Especial de Protección Civil es aquel que se dirige a:",
+  opciones: [
+    "a) Situaciones ordinarias de riesgo laboral",
+    "b) Riesgos específicos como terremotos, inundaciones o incendios forestales",
+    "c) La gestión de infraestructuras críticas",
+    "d) Regular la circulación de ciudadanos en caso de huelga"
+  ],
+  correcta: "b) Riesgos específicos como terremotos, inundaciones o incendios forestales",
+  justificacion: "Estos planes están diseñados para riesgos concretos recogidos en la normativa."
+},
+{
+  pregunta: "¿Quién debe aprobar los planes de ámbito estatal en materia de protección civil?",
+  opciones: [
+    "a) El Congreso de los Diputados",
+    "b) El Gobierno a través de acuerdo en Consejo de Ministros",
+    "c) El Presidente de la Comunidad Autónoma más afectada",
+    "d) El Parlamento Europeo"
+  ],
+  correcta: "b) El Gobierno a través de acuerdo en Consejo de Ministros",
+  justificacion: "Los planes estatales deben ser aprobados por el órgano colegiado del Gobierno."
+},
+{
+  pregunta: "La Ley 42/2007 prevé la adopción de medidas de custodia voluntaria mediante:",
+  opciones: [
+    "a) Contratos de concesión con empresas privadas",
+    "b) Acuerdos de custodia del territorio con propietarios",
+    "c) Cesiones judiciales de terrenos protegidos",
+    "d) Compra obligatoria de terrenos con especies protegidas"
+  ],
+  correcta: "b) Acuerdos de custodia del territorio con propietarios",
+  justificacion: "Estos acuerdos buscan implicar a propietarios privados en la conservación."
+},
+{
+  pregunta: "Según la Ley 17/2015, los simulacros de protección civil:",
+  opciones: [
+    "a) Son opcionales en el ámbito autonómico",
+    "b) Deben realizarse periódicamente en función de los riesgos identificados",
+    "c) Solo deben realizarse si hay una emergencia real previa",
+    "d) Únicamente los organiza el Ministerio de Defensa"
+  ],
+  correcta: "b) Deben realizarse periódicamente en función de los riesgos identificados",
+  justificacion: "El artículo 15 obliga a la realización de simulacros para entrenamiento y planificación."
+},
+{
+  pregunta: "El Convenio de Aarhus, relacionado con el patrimonio natural, garantiza principalmente:",
+  opciones: [
+    "a) El derecho a la participación de los ciudadanos en las decisiones ambientales",
+    "b) El derecho de los Estados a controlar la información ambiental",
+    "c) La privatización de zonas de alto valor ecológico",
+    "d) El intercambio genético entre países europeos"
+  ],
+  correcta: "a) El derecho a la participación de los ciudadanos en las decisiones ambientales",
+  justificacion: "El Convenio de Aarhus garantiza acceso a la información, participación pública y acceso a la justicia en asuntos ambientales."
+},
+{
+  pregunta: "La vigente Ley 17/2015 reemplaza a la antigua Ley de Protección Civil de:",
+  opciones: [
+    "a) 1985",
+    "b) 1992",
+    "c) 2003",
+    "d) 1978"
+  ],
+  correcta: "a) 1985",
+  justificacion: "La Ley 17/2015 sustituyó a la Ley 2/1985, modernizando el sistema de protección civil."
+},
+{
+  pregunta: "El Inventario Español del Patrimonio Natural y Biodiversidad se regula en:",
+  opciones: [
+    "a) El artículo 9 de la Ley 42/2007",
+    "b) El artículo 59 de la Ley 42/2007",
+    "c) El artículo 33 de la Ley 17/2015",
+    "d) El Convenio de Río de 1992"
+  ],
+  correcta: "a) El artículo 9 de la Ley 42/2007",
+  justificacion: "Este inventario es uno de los instrumentos de planificación recogidos en el artículo 9."
+},
+{
+  pregunta: "En una emergencia de interés nacional, el mando operativo corresponde a:",
+  opciones: [
+    "a) El alcalde del municipio afectado",
+    "b) El ministro del Interior o la autoridad designada por él",
+    "c) El presidente autonómico correspondiente",
+    "d) El Consejo de Seguridad Nacional"
+  ],
+  correcta: "b) El ministro del Interior o la autoridad designada por él",
+  justificacion: "La Ley 17/2015 establece esta línea de mando en emergencias nacionales."
+},
+{
+  pregunta: "La Ley 42/2007 tiene como fundamento jurídico principal:",
+  opciones: [
+    "a) Los artículos 148 y 149 de la Constitución Española",
+    "b) El artículo 45 de la Constitución Española",
+    "c) El Tratado de Maastricht",
+    "d) La Ley Orgánica de Fuerzas y Cuerpos de Seguridad"
+  ],
+  correcta: "b) El artículo 45 de la Constitución Española",
+  justificacion: "Este artículo consagra el derecho al medio ambiente y la obligación de conservarlo."
+},
+{
+  pregunta: "Las estrategias de conservación para especies vulnerables tienen como objetivo principal:",
+  opciones: [
+    "a) Evitar que la especie llegue a estar en peligro de extinción",
+    "b) Incrementar la explotación eficiente de recursos naturales",
+    "c) Fomentar el comercio internacional de fauna protegida",
+    "d) Introducir la especie en nuevos hábitats para su expansión"
+  ],
+  correcta: "a) Evitar que la especie llegue a estar en peligro de extinción",
+  justificacion: "Los planes de conservación se dirigen a especies vulnerables para prevenir riesgos mayores."
+},
+{
+  pregunta: "Las infracciones muy graves en materia de protección civil se sancionan con:",
+  opciones: [
+    "a) Multas superiores a 300.000 euros",
+    "b) Multas de hasta 600.000 euros",
+    "c) Multas entre 1.000 y 3.000 euros",
+    "d) Pérdida de subvenciones estatales únicamente"
+  ],
+  correcta: "b) Multas de hasta 600.000 euros",
+  justificacion: "La Ley 17/2015 establece este límite en su artículo 82."
+},
+{
+  pregunta: "El concepto de 'uso sostenible' en la Ley 42/2007 se refiere a:",
+  opciones: [
+    "a) El uso intensivo de recursos en zonas naturales",
+    "b) El aprovechamiento de los recursos naturales sin afectar su disponibilidad futura",
+    "c) La explotación económica temporal de especies vulnerables",
+    "d) La venta controlada de flora en extinción"
+  ],
+  correcta: "b) El aprovechamiento de los recursos naturales sin afectar su disponibilidad futura",
+  justificacion: "El uso sostenible es clave para la conservación y gestión equilibrada del patrimonio natural."
+},
+{
+  pregunta: "El Sistema Nacional de Protección Civil coordina su actuación con:",
+  opciones: [
+    "a) El Ministerio de Hacienda",
+    "b) La Unión Europea y otros sistemas internacionales",
+    "c) Exclusivamente cuerpos policiales",
+    "d) Las autoridades sanitarias privadas"
+  ],
+  correcta: "b) La Unión Europea y otros sistemas internacionales",
+  justificacion: "La cooperación con sistemas internacionales forma parte del enfoque global de protección civil."
+},
+{
+  pregunta: "La alteración de hábitats naturales para urbanización no planificada es una:",
+  opciones: [
+    "a) Infracción muy grave según la Ley 42/2007",
+    "b) Infracción grave según la Ley 42/2007",
+    "c) Infracción leve si se respeta el uso forestal",
+    "d) Una situación regulada únicamente a nivel municipal"
+  ],
+  correcta: "a) Infracción muy grave según la Ley 42/2007",
+  justificacion: "La destrucción de hábitats protegidos conlleva sanciones muy severas."
+},
+{
+  pregunta: "El artículo 17 de la Ley 17/2015 promueve la creación de:",
+  opciones: [
+    "a) Sistemas públicos de información meteorológica privada",
+    "b) Redes de alerta ante riesgos naturales o tecnológicos",
+    "c) Un modelo de seguros privados para emergencias",
+    "d) Brigadas militares para vigilancia urbana"
+  ],
+  correcta: "b) Redes de alerta ante riesgos naturales o tecnológicos",
+  justificacion: "Estos sistemas de alerta temprana permiten proteger a la población."
+},
+{
+  pregunta: "En relación con la Red Natura 2000, las ZEC se designan tras:",
+  opciones: [
+    "a) Su inclusión en el Inventario Nacional de Especies",
+    "b) La aprobación de las medidas de conservación correspondientes",
+    "c) Un referéndum autonómico",
+    "d) La firma de un convenio autonómico con el Ministerio de Interior"
+  ],
+  correcta: "b) La aprobación de las medidas de conservación correspondientes",
+  justificacion: "Solo cuando se aprueba el plan de conservación, un LIC pasa a ser ZEC."
+},
+{
+  pregunta: "Los planes de autoprotección están dirigidos a:",
+  opciones: [
+    "a) Establecimientos y actividades que puedan generar situaciones de emergencia",
+    "b) Únicamente infraestructuras públicas de gran tamaño",
+    "c) Empresas multinacionales en zonas portuarias",
+    "d) Equipos deportivos de alto rendimiento"
+  ],
+  correcta: "a) Establecimientos y actividades que puedan generar situaciones de emergencia",
+  justificacion: "Están regulados por el Real Decreto 393/2007 como complemento a la Ley 17/2015."
+},
+{
+  pregunta: "Los parques naturales se diferencian de los parques nacionales en que:",
+  opciones: [
+    "a) No están sujetos a ningún régimen especial de protección",
+    "b) Su declaración corresponde a las Comunidades Autónomas",
+    "c) Carecen de valor turístico",
+    "d) Solo se protegen especies marinas"
+  ],
+  correcta: "b) Su declaración corresponde a las Comunidades Autónomas",
+  justificacion: "Los parques naturales pueden ser declarados por las CCAA según ley autonómica y la Ley 42/2007."
+},
+{
+  pregunta: "Una especie catalogada como 'en peligro de extinción' requiere:",
+  opciones: [
+    "a) Un plan de conservación",
+    "b) Un plan de recuperación",
+    "c) Su comercialización con restricciones",
+    "d) Protección mínima durante cinco años"
+  ],
+  correcta: "b) Un plan de recuperación",
+  justificacion: "Según el artículo 56, los planes de recuperación son obligatorios para las especies en peligro."
+},
+{
+  pregunta: "El artículo 5 de la Ley 17/2015 establece la colaboración de:",
+  opciones: [
+    "a) Las Fuerzas y Cuerpos de Seguridad únicamente",
+    "b) Las entidades privadas con recursos capaces de intervenir en emergencias",
+    "c) Únicamente las ONG con personal especializado",
+    "d) Organismos dependientes del Ministerio de Defensa"
+  ],
+  correcta: "b) Las entidades privadas con recursos capaces de intervenir en emergencias",
+  justificacion: "El sector privado puede ser llamado a colaborar cuando disponga de recursos adecuados."
+},
+{
+  pregunta: "Una situación de emergencia de interés autonómico se declara cuando:",
+  opciones: [
+    "a) La emergencia afecta a varias Comunidades Autónomas",
+    "b) Puede ser gestionada con recursos autonómicos exclusivamente",
+    "c) Se produce una alerta internacional de riesgo nuclear",
+    "d) Cualquier ayuntamiento lo solicita"
+  ],
+  correcta: "b) Puede ser gestionada con recursos autonómicos exclusivamente",
+  justificacion: "Estas emergencias no requieren el apoyo estatal para su resolución."
+},
+{
+  pregunta: "El artículo 70 de la Ley 42/2007 crea:",
+  opciones: [
+    "a) Las zonas de caza autorizada",
+    "b) El Fondo para el Patrimonio Natural y la Biodiversidad",
+    "c) La tarifa pública de uso forestal",
+    "d) El Registro Nacional de Caza y Pesca"
+  ],
+  correcta: "b) El Fondo para el Patrimonio Natural y la Biodiversidad",
+  justificacion: "Este fondo financia acciones de conservación y protección del patrimonio natural."
+},
+{
+  pregunta: "Las áreas críticas son:",
+  opciones: [
+    "a) Zonas sin protección destinadas a futuros usos industriales",
+    "b) Áreas donde existen poblaciones de especies en peligro y necesitan protección específica",
+    "c) Zonas únicamente declaradas como tales por directiva comunitaria",
+    "d) Espacios sin vegetación usados como cortafuegos"
+  ],
+  correcta: "b) Áreas donde existen poblaciones de especies en peligro y necesitan protección específica",
+  justificacion: "El concepto de áreas críticas se vincula a especies en recuperación."
+},
+{
+  pregunta: "El artículo 28 de la Ley 17/2015 establece el deber de:",
+  opciones: [
+    "a) Cumplir las indicaciones de las autoridades competentes en situaciones de emergencia",
+    "b) Realizar simulacros de emergencia al menos una vez al año",
+    "c) Informar directamente a las Fuerzas Armadas de cualquier riesgo detectado",
+    "d) Evacuar la vivienda en cualquier situación de alerta terrorista"
+  ],
+  correcta: "a) Cumplir las indicaciones de las autoridades competentes en situaciones de emergencia",
+  justificacion: "Es una obligación general establecida a los ciudadanos en la Ley de Protección Civil."
+},
+{
+  pregunta: "Según la Ley 42/2007, los hábitats de interés comunitario son aquellos que:",
+  opciones: [
+    "a) Solo se encuentran en zonas urbanizadas",
+    "b) Están amenazados de desaparición y requieren conservación",
+    "c) Son exclusivos de países no pertenecientes a la UE",
+    "d) No necesitan planes de gestión específicos"
+  ],
+  correcta: "b) Están amenazados de desaparición y requieren conservación",
+  justificacion: "Los hábitats de interés comunitario son clave para la conservación y están definidos en el artículo 43."
+},
+{
+  pregunta: "Los planes de Protección Civil deben ser revisados:",
+  opciones: [
+    "a) Cada seis meses obligatoriamente",
+    "b) Al menos cada cuatro años o cuando se modifiquen los riesgos",
+    "c) Solo si hay una emergencia importante",
+    "d) Únicamente cuando lo solicita un ayuntamiento"
+  ],
+  correcta: "b) Al menos cada cuatro años o cuando se modifiquen los riesgos",
+  justificacion: "Esta revisión periódica está fijada en el artículo 31 de la Ley 17/2015."
+},
+{
+  pregunta: "En materia de infraestructuras críticas, la Ley 17/2015 prevé:",
+  opciones: [
+    "a) Su protección bajo competencia exclusiva de las Fuerzas Armadas",
+    "b) Que su seguridad sea parte de la planificación de protección civil",
+    "c) Su desactivación temporal durante alertas meteorológicas",
+    "d) La obligación de uso exclusivamente civil"
+  ],
+  correcta: "b) Que su seguridad sea parte de la planificación de protección civil",
+  justificacion: "Las infraestructuras críticas tienen un papel importante en el sistema de protección civil."
+},
+{
+  pregunta: "El principio de subsidiariedad en protección civil implica que:",
+  opciones: [
+    "a) La administración más cercana al ciudadano actúa primero",
+    "b) Siempre debe intervenir el Estado en primer lugar",
+    "c) Los recursos privados sustituyen a los públicos",
+    "d) Los municipios no tienen competencias directas"
+  ],
+  correcta: "a) La administración más cercana al ciudadano actúa primero",
+  justificacion: "Este principio está recogido como base funcional en la Ley 17/2015."
+},
+{
+  pregunta: "El 'Plan Estatal General de Emergencias' tiene como función:",
+  opciones: [
+    "a) Coordinar la gestión de recursos en emergencias de ámbito estatal",
+    "b) Adjudicar fondos para obras públicas a nivel local",
+    "c) Establecer medidas fiscales ante catástrofes naturales",
+    "d) Regular los seguros obligatorios de protección civil"
+  ],
+  correcta: "a) Coordinar la gestión de recursos en emergencias de ámbito estatal",
+  justificacion: "Este plan regula la respuesta en eventos que superan el ámbito autonómico."
+},
+{
+  pregunta: "Las especies catalogadas como 'extintas' en estado silvestre se incluyen:",
+  opciones: [
+    "a) En el Listado de Especies en Régimen de Protección Especial",
+    "b) En el Catálogo Español de Especies Amenazadas",
+    "c) En la Red Natura 2000",
+    "d) En los catálogos zoológicos científicos únicamente"
+  ],
+  correcta: "b) En el Catálogo Español de Especies Amenazadas",
+  justificacion: "El catálogo incluye especies en peligro, vulnerables y extintas en estado silvestre."
+},
+{
+  pregunta: "La participación ciudadana en la gestión del patrimonio natural está reconocida en:",
+  opciones: [
+    "a) El artículo 15 de la Ley 42/2007",
+    "b) El Convenio de Aarhus y el artículo 4 de la Ley 42/2007",
+    "c) La Ley Orgánica de Participación Popular",
+    "d) Únicamente través de órganos consultivos municipales"
+  ],
+  correcta: "b) El Convenio de Aarhus y el artículo 4 de la Ley 42/2007",
+  justificacion: "La ley incorpora el espíritu del Convenio de Aarhus en su articulado."
+},
+{
+  pregunta: "La declaración de 'emergencia de interés autonómico' implica:",
+  opciones: [
+    "a) La intervención obligatoria de la Guardia Civil",
+    "b) La activación del plan de protección civil autonómico",
+    "c) La solicitud de ayuda internacional",
+    "d) Que la gestión pasa automáticamente al Gobierno central"
+  ],
+  correcta: "b) La activación del plan de protección civil autonómico",
+  justificacion: "Es competencia autonómica salvo que requiera apoyo del Estado."
+},
+{
+  pregunta: "Los Organismos Públicos de Investigación pueden colaborar con el inventario del patrimonio natural:",
+  opciones: [
+    "a) Exclusivamente mediante convenios internacionales",
+    "b) Mediante acuerdos con el Ministerio para la Transición Ecológica",
+    "c) Únicamente en la determinación de especies marinas",
+    "d) Participando en la creación de parques urbanos"
+  ],
+  correcta: "b) Mediante acuerdos con el Ministerio para la Transición Ecológica",
+  justificacion: "La ley permite colaboración científica para actualizar inventarios y estrategias."
+},
+{
+  pregunta: "El artículo 7 de la Ley 17/2015 establece que los ciudadanos tienen derecho a:",
+  opciones: [
+    "a) Participar activamente en la gestión militar de emergencias",
+    "b) Ser informados de los riesgos colectivos que les afecten",
+    "c) Recibir indemnización por cualquier daño en situaciones de alerta",
+    "d) Reclamar asistencia sanitaria gratuita en el extranjero"
+  ],
+  correcta: "b) Ser informados de los riesgos colectivos que les afecten",
+  justificacion: "El derecho a la información es básico en el Sistema Nacional de Protección Civil."
+},
+{
+  pregunta: "Las Zonas de Especial Protección para las Aves (ZEPA) se designan con base en:",
+  opciones: [
+    "a) La Directiva Hábitats",
+    "b) La Directiva Aves",
+    "c) La Ley General de Montes",
+    "d) La Ley del Régimen Local"
+  ],
+  correcta: "b) La Directiva Aves",
+  justificacion: "La Directiva 79/409/CEE sobre conservación de las aves silvestres regula las ZEPA."
+},
+{
+  pregunta: "Según la Ley 42/2007, un Lugar de Importancia Comunitaria (LIC) es seleccionado por:",
+  opciones: [
+    "a) La Comisión Europea a propuesta de los Estados Miembros",
+    "b) Los ayuntamientos mediante solicitud pública",
+    "c) Organizaciones no gubernamentales con fines conservacionistas",
+    "d) La UNESCO"
+  ],
+  correcta: "a) La Comisión Europea a propuesta de los Estados Miembros",
+  justificacion: "Los LIC forman parte de la Red Natura 2000 y son seleccionados de este modo."
+},
+{
+  pregunta: "El Sistema Nacional de Protección Civil cuenta con la Unidad Militar de Emergencias para:",
+  opciones: [
+    "a) Dirigir todos los planes de emergencia urbanos",
+    "b) Actuar en situaciones especialmente graves cuando se requiera su apoyo",
+    "c) Supervisar la evacuación de animales domésticos",
+    "d) Formar parte de los comités técnicos de investigación"
+  ],
+  correcta: "b) Actuar en situaciones especialmente graves cuando se requiera su apoyo",
+  justificacion: "La UME forma parte del dispositivo de protección civil como apoyo en emergencias."
+},
+{
+  pregunta: "La Ley 42/2007 considera los parques nacionales como:",
+  opciones: [
+    "a) Espacios protegidos de interés económico local",
+    "b) Espacios naturales de alto valor ecológico de competencia exclusiva estatal",
+    "c) Áreas turísticas gestionadas para su explotación sostenible",
+    "d) Zonas integradas en la Red Natura 2000 sin necesidad de ley específica"
+  ],
+  correcta: "b) Espacios naturales de alto valor ecológico de competencia exclusiva estatal",
+  justificacion: "Los parques nacionales deben ser declarados por ley y tienen competencia estatal."
+},
+{
+  pregunta: "El artículo 10 de la Ley 17/2015 establece que los planes especiales deben contemplar:",
+  opciones: [
+    "a) Las actuaciones frente a riesgos específicos y la coordinación necesaria",
+    "b) La entrega de ayudas económicas a todos los afectados",
+    "c) El despliegue militar obligatorio en zonas rurales",
+    "d) La intervención obligatoria de la Cruz Roja"
+  ],
+  correcta: "a) Las actuaciones frente a riesgos específicos y la coordinación necesaria",
+  justificacion: "Los planes especiales se diseñan para riesgos concretos como sísmicos o pandémicos."
+},
+{
+  pregunta: "Una especie que no se encuentra en libertad en el medio natural en España pero existe en cautividad se considera:",
+  opciones: [
+    "a) Extinta en estado silvestre",
+    "b) Vulnerable",
+    "c) Protegida especial",
+    "d) Doméstica"
+  ],
+  correcta: "a) Extinta en estado silvestre",
+  justificacion: "La Ley 42/2007 contempla esta categoría para especies que no tienen poblaciones naturales."
+},
+{
+  pregunta: "El artículo 8 de la Ley 17/2015 establece que el Sistema Nacional de Protección Civil funcionará bajo el principio de:",
+  opciones: [
+    "a) Exclusión de administraciones autonómicas",
+    "b) Cooperación y coordinación entre administraciones",
+    "c) Descentralización absoluta de competencias",
+    "d) Privatización de recursos operativos"
+  ],
+  correcta: "b) Cooperación y coordinación entre administraciones",
+  justificacion: "La cooperación entre las distintas administraciones es un principio básico del sistema."
+},
+{
+  pregunta: "Las especies incluidas en el Listado de Especies Silvestres en Régimen de Protección Especial:",
+  opciones: [
+    "a) Están en situación de vulnerabilidad severa",
+    "b) Requieren medidas de protección, pero pueden no estar en peligro",
+    "c) Pueden ser objeto de caza deportiva",
+    "d) Son especies que se han extinguido recientemente"
+  ],
+  correcta: "b) Requieren medidas de protección, pero pueden no estar en peligro",
+  justificacion: "Este listado puede incluir especies no necesariamente catalogadas como amenazadas, pero sí protegidas."
+},
+{
+  pregunta: "La competencia de declarar una emergencia de interés nacional corresponde a:",
+  opciones: [
+    "a) El Consejo de Ministros",
+    "b) Los ayuntamientos afectados",
+    "c) Las Comunidades Autónomas",
+    "d) La Comisión Europea"
+  ],
+  correcta: "a) El Consejo de Ministros",
+  justificacion: "Es el Gobierno central quien tiene esa competencia según la Ley 17/2015."
+},
+{
+  pregunta: "Las ZEPIM (Zonas Especialmente Protegidas de Importancia Mediterránea) están reguladas por:",
+  opciones: [
+    "a) El Convenio de Barcelona",
+    "b) La Ley 17/2015",
+    "c) El Convenio de Berna",
+    "d) La Directiva Hábitats"
+  ],
+  correcta: "a) El Convenio de Barcelona",
+  justificacion: "Las ZEPIM son una figura de protección derivada del Convenio de Barcelona para el Mediterráneo."
+},
+{
+  pregunta: "Los ciudadanos tienen el deber de colaborar en la protección civil:",
+  opciones: [
+    "a) Solo si son miembros de cuerpos de emergencia",
+    "b) Cuando lo determinen voluntariamente",
+    "c) En situaciones de grave peligro o desastre",
+    "d) Únicamente mediante aportaciones económicas"
+  ],
+  correcta: "c) En situaciones de grave peligro o desastre",
+  justificacion: "El artículo 29 de la Ley 17/2015 establece este deber de colaboración en situaciones graves."
+},
+{
+  pregunta: "El artículo 41 bis de la Ley 42/2007 regula:",
+  opciones: [
+    "a) Zonas de Exclusión Forestal",
+    "b) La Infraestructura Verde estatal",
+    "c) El Inventario de Áreas Recreativas Naturales",
+    "d) El Procedimiento de Expropiación en áreas protegidas"
+  ],
+  correcta: "b) La Infraestructura Verde estatal",
+  justificacion: "Este artículo se refiere a la planificación ecológica mediante la Infraestructura Verde."
+},
+{
+  pregunta: "La Red Natura 2000 está compuesta por:",
+  opciones: [
+    "a) ZEC y ZEPA",
+    "b) LIC y ZEPIM",
+    "c) LIC y ZECIM",
+    "d) ZEPIM y ZECA"
+  ],
+  correcta: "a) ZEC y ZEPA",
+  justificacion: "Red Natura 2000 integra Zonas Especiales de Conservación y Zonas Especiales de Protección para las Aves."
+},
+{
+  pregunta: "Según la Ley 17/2015, los Planes Territoriales de Protección Civil deben incluir:",
+  opciones: [
+    "a) Únicamente un informe de impacto económico",
+    "b) Medidas de seguimiento de daños y coordinación de recursos",
+    "c) Información exclusiva sobre riesgos meteorológicos",
+    "d) Referencias a la escalada militar"
+  ],
+  correcta: "b) Medidas de seguimiento de daños y coordinación de recursos",
+  justificacion: "Los planes territoriales abarcan los riesgos identificados y la coordinación de la respuesta."
+},
+{
+  pregunta: "El artículo 74 de la Ley 42/2007 establece sanciones por:",
+  opciones: [
+    "a) La falta de declaración de especies en peligro de extinción",
+    "b) Infracciones contra el patrimonio natural y la biodiversidad",
+    "c) Retrasos administrativos en la aplicación de planes de gestión",
+    "d) El incumplimiento del Impuesto sobre Bienes Naturales"
+  ],
+  correcta: "b) Infracciones contra el patrimonio natural y la biodiversidad",
+  justificacion: "Este artículo abre el régimen sancionador de la ley."
+},
+{
+  pregunta: "Las especies exóticas invasoras pueden incluirse en el Catálogo de Especies Amenazadas:",
+  opciones: [
+    "a) Cuando se declaren vulnerables a nivel local",
+    "b) En casos excepcionales de control poblacional",
+    "c) Nunca pueden incluirse en ese catálogo",
+    "d) Únicamente si entra en conflicto con especies autóctonas"
+  ],
+  correcta: "c) Nunca pueden incluirse en ese catálogo",
+  justificacion: "Las especies invasoras no se catalogan como amenazadas, sino que se controlan por normativa específica."
+},
+{
+  pregunta: "Las acciones de prevención del riesgo en protección civil abarcan:",
+  opciones: [
+    "a) Solo planes de evacuación",
+    "b) Educación, información, planificación y adopción de medidas preventivas",
+    "c) La destrucción preventiva de infraestructuras no esenciales",
+    "d) Proyectos de reconstrucción únicamente"
+  ],
+  correcta: "b) Educación, información, planificación y adopción de medidas preventivas",
+  justificacion: "La Ley 17/2015 incluye estas medidas como básicas para la prevención del riesgo."
+},
+{
+  pregunta: "La restauración ecológica de espacios degradados está prevista en:",
+  opciones: [
+    "a) El Convenio de Mar del Plata",
+    "b) La Ley 42/2007 como una misión de gestión del patrimonio natural",
+    "c) La Ley 2/1985 de Protección Civil",
+    "d) Únicamente en los estatutos autonómicos de medio ambiente"
+  ],
+  correcta: "b) La Ley 42/2007 como una misión de gestión del patrimonio natural",
+  justificacion: "La restauración ecológica forma parte de los objetivos de la ley de biodiversidad."
+},
+{
+  pregunta: "Los Planes Especiales pueden activarse en caso de:",
+  opciones: [
+    "a) Fiestas patronales de enorme afluencia",
+    "b) Riesgo de incendios forestales, inundaciones o terremotos",
+    "c) Cambios de gobierno en administraciones locales",
+    "d) Declaración de huelga general"
+  ],
+  correcta: "b) Riesgo de incendios forestales, inundaciones o terremotos",
+  justificacion: "Los planes especiales se diseñan para riesgos específicos recogidos en el catálogo nacional."
+},
+{
+  pregunta: "El 'uso sostenible' en el medio natural implica:",
+  opciones: [
+    "a) La explotación garantizada del recurso natural sin límites",
+    "b) Que se utilicen los recursos sin afectar su disponibilidad futura",
+    "c) La explotación intensiva bajo supervisión de las Fuerzas Armadas",
+    "d) Un uso sólo recreativo para el público"
+  ],
+  correcta: "b) Que se utilicen los recursos sin afectar su disponibilidad futura",
+  justificacion: "Este concepto aparece en el artículo 3 de la Ley 42/2007."
+},
+{
+  pregunta: "Las áreas críticas se identifican para:",
+  opciones: [
+    "a) Facilitar el desarrollo urbanístico en zonas protegidas",
+    "b) Proteger a especies en peligro de extinción, estableciendo medidas concretas",
+    "c) Gestionar zonas de alta densidad poblacional",
+    "d) Limitar el acceso del público a playas naturales"
+  ],
+  correcta: "b) Proteger a especies en peligro de extinción, estableciendo medidas concretas",
+  justificacion: "Son zonas donde las poblaciones de especies en riesgo están más amenazadas según la Ley 42/2007."
+},
+{
+  pregunta: "El artículo 30 de la Ley 17/2015 aborda la financiación del sistema mediante:",
+  opciones: [
+    "a) Subvenciones internacionales exclusivamente",
+    "b) Fondos estatales, autonómicos y tasas específicas",
+    "c) Inversión privada obligatoria",
+    "d) Créditos bancarios de emergencia"
+  ],
+  correcta: "b) Fondos estatales, autonómicos y tasas específicas",
+  justificacion: "La financiación es mixta y está regulada en el marco de la ley."
+},
+{
+  pregunta: "La declaración de un área marina protegida según la Ley 42/2007 implica:",
+  opciones: [
+    "a) Prohibir cualquier tipo de presencia humana",
+    "b) Un plan de gestión específico de uso y conservación",
+    "c) Su incorporación automática en el Catálogo de Especies Protegidas",
+    "d) Que el Ministerio de Transporte autorice la pesca"
+  ],
+  correcta: "b) Un plan de gestión específico de uso y conservación",
+  justificacion: "Las áreas marinas protegidas deben tener planes de gestión basados en el patrimonio natural."
+},
+{
+  pregunta: "En situaciones de emergencia, el Comité Estatal de Coordinación y Dirección (CECOD) está formado por:",
+  opciones: [
+    "a) Militares y autoridades extranjeras",
+    "b) Representantes de las comunidades autónomas y ministerios implicados",
+    "c) Exclusivamente técnicos del Ministerio del Interior",
+    "d) Funcionarios de organismos internacionales"
+  ],
+  correcta: "b) Representantes de las comunidades autónomas y ministerios implicados",
+  justificacion: "Este Comité coordina la respuesta en emergencias de interés nacional."
+},
+{
+  pregunta: "Una especie considerada 'vulnerable' en el Catálogo Español:",
+  opciones: [
+    "a) No requiere medidas especiales de conservación",
+    "b) Necesita un plan de conservación para evitar su deterioro",
+    "c) Puede ser objeto de caza controlada",
+    "d) Se encuentra solo en cautividad"
+  ],
+  correcta: "b) Necesita un plan de conservación para evitar su deterioro",
+  justificacion: "El artículo 56 lo establece como parte del régimen especial de vulnerabilidad."
+},
+{
+  pregunta: "Según la Ley 17/2015, el Sistema Nacional de Protección Civil se articula a través de:",
+  opciones: [
+    "a) Órganos de coordinación, planificación e intervención",
+    "b) Únicamente servicios de emergencia militares y policiales",
+    "c) Delegaciones autonómicas de tráfico y transporte",
+    "d) Organismos de voluntariado gestionados por el sector privado"
+  ],
+  correcta: "a) Órganos de coordinación, planificación e intervención",
+  justificacion: "El Sistema Nacional está estructurado en órganos responsables de esas funciones."
+},
+{
+  pregunta: "Las infracciones leves en materia de protección civil pueden ser sancionadas con:",
+  opciones: [
+    "a) Multas de hasta 3.000 euros",
+    "b) Advertencias por escrito",
+    "c) Multas de entre 3.001 y 6.000 euros",
+    "d) Multas superiores a 30.000 euros"
+  ],
+  correcta: "a) Multas de hasta 3.000 euros",
+  justificacion: "Según el artículo 81 de la Ley 17/2015, las infracciones leves tienen este límite."
+},
+{
+  pregunta: "La vigilancia y control de las especies invasoras se realiza mediante:",
+  opciones: [
+    "a) Planes estratégicos autonómicos sin coordinación estatal",
+    "b) Programas específicos de prevención, detección temprana y gestión",
+    "c) Exención de control si se trata de especies de uso ornamental",
+    "d) Normas internacionales sin desarrollo en España"
+  ],
+  correcta: "b) Programas específicos de prevención, detección temprana y gestión",
+  justificacion: "Estas medidas están previstas en el artículo 64 de la Ley 42/2007."
+},
+{
+  pregunta: "La definición de 'riesgo' en la Ley 17/2015 incluye:",
+  opciones: [
+    "a) Solo los riesgos de origen natural",
+    "b) La combinación de la probabilidad de un suceso y sus efectos negativos",
+    "c) Exclusivamente las situaciones derivadas de crisis económicas",
+    "d) Únicamente peligros derivados de conflictos armados"
+  ],
+  correcta: "b) La combinación de la probabilidad de un suceso y sus efectos negativos",
+  justificacion: "El concepto de riesgo se define de manera técnica y multidimensional en la ley."
+},
+{
+  pregunta: "Según la Ley 42/2007, las especies objeto de aprovechamiento comercial:",
+  opciones: [
+    "a) No pueden ser objeto de protección legal",
+    "b) Están excluidas del Catálogo de Especies Amenazadas",
+    "c) Pueden estar protegidas si su aprovechamiento compromete su conservación",
+    "d) Solo pueden gestionarse mediante normativa europea"
+  ],
+  correcta: "c) Pueden estar protegidas si su aprovechamiento compromete su conservación",
+  justificacion: "La Ley prevé protección incluso para especies con aprovechamiento comercial."
+},
+{
+  pregunta: "La declaración de una situación de emergencia de interés nacional implica:",
+  opciones: [
+    "a) La activación automática de las Fuerzas Armadas",
+    "b) La asunción de la dirección por parte del Estado",
+    "c) La intervención de organismos internacionales únicamente",
+    "d) La desmovilización de los recursos autonómicos"
+  ],
+  correcta: "b) La asunción de la dirección por parte del Estado",
+  justificacion: "El Estado asume el control cuando la emergencia supera las capacidades autonómicas."
+},
+{
+  pregunta: "El régimen de responsabilidad por daño ambiental en la Ley 42/2007 es:",
+  opciones: [
+    "a) Solo de carácter penal",
+    "b) Exclusivo para empresas privadas",
+    "c) Administrativo y también civil en casos graves",
+    "d) Voluntario en función de los acuerdos internacionales"
+  ],
+  correcta: "c) Administrativo y también civil en casos graves",
+  justificacion: "El daño al medio ambiente puede comportar sanciones administrativas y responsabilidades civiles."
+},
+{
+  pregunta: "La Red Natura 2000 incluye como objetivo principal:",
+  opciones: [
+    "a) Garantizar el uso intensivo de recursos rurales",
+    "b) Asegurar el estado de conservación favorable de especies y hábitats",
+    "c) Expandir las infraestructuras turísticas en zonas remotas",
+    "d) El control exclusivo de especies invasoras"
+  ],
+  correcta: "b) Asegurar el estado de conservación favorable de especies y hábitats",
+  justificacion: "Este es el objetivo prioritario para la red europea de espacios protegidos."
+},
+{
+  pregunta: "El Comité Estatal de Coordinación y Dirección (CECOD) se activa cuando:",
+  opciones: [
+    "a) Se produce una emergencia de interés local",
+    "b) Se declara una emergencia de interés autonómico",
+    "c) Hay una emergencia de interés nacional",
+    "d) El Consejo de Seguridad Nacional lo solicite de forma preventiva"
+  ],
+  correcta: "c) Hay una emergencia de interés nacional",
+  justificacion: "El CECOD coordina las actuaciones estatales en este tipo de emergencias."
+},
+{
+  pregunta: "La Ley 42/2007 establece que los planes de gestión de especies protegidas deben:",
+  opciones: [
+    "a) Ser aprobados exclusivamente por la administración local",
+    "b) Tener una vigencia temporal inferior a 5 años",
+    "c) Incluir medidas de conservación, seguimiento y control",
+    "d) Aprobarse únicamente con informes internacionales"
+  ],
+  correcta: "c) Incluir medidas de conservación, seguimiento y control",
+  justificacion: "Los planes deben ser completos y adaptados al estado de la especie."
+},
+{
+  pregunta: "El Sistema Nacional de Protección Civil cuenta con el apoyo de:",
+  opciones: [
+    "a) Unidades específicas de las Fuerzas Armadas como la UME",
+    "b) Solo servicios autonómicos de emergencia",
+    "c) Voluntariado internacional reconocido por el Consejo de Europa",
+    "d) Delegaciones de la OMS en España"
+  ],
+  correcta: "a) Unidades específicas de las Fuerzas Armadas como la UME",
+  justificacion: "La Unidad Militar de Emergencias forma parte del Sistema Nacional de Protección Civil."
+},
+{
+  pregunta: "Los Planes de Autoprotección deben ser elaborados por:",
+  opciones: [
+    "a) Instalaciones o actividades que puedan causar situaciones de emergencia",
+    "b) Ayuntamientos de más de 10.000 habitantes",
+    "c) Las comunidades de vecinos en entornos rurales",
+    "d) Únicamente los centros educativos y sanitarios"
+  ],
+  correcta: "a) Instalaciones o actividades que puedan causar situaciones de emergencia",
+  justificacion: "Esta obligación se deriva del Real Decreto 393/2007 que desarrolla la Ley 17/2015."
+},
+{
+  pregunta: "Una especie catalogada como 'en peligro de extinción' requiere obligatoriamente:",
+  opciones: [
+    "a) Que sus planes de recuperación se adapten a la legislación autonómica",
+    "b) Un plan de recuperación y designación de áreas críticas",
+    "c) La prohibición absoluta de cualquier actividad humana en su hábitat",
+    "d) Un plan de actuación elaborado por la Comisión Europea"
+  ],
+  correcta: "b) Un plan de recuperación y designación de áreas críticas",
+  justificacion: "Estas medidas están recogidas en el artículo 56 de la Ley 42/2007."
+},
+{
+  pregunta: "El artículo 29 de la Ley 17/2015 establece que los medios de comunicación tienen la obligación de:",
+  opciones: [
+    "a) Apoyar la recaudación de fondos en catástrofes",
+    "b) Facilitar la difusión de mensajes de alerta y avisos a la población",
+    "c) Garantizar la cobertura de todas las emergencias, aunque no sean relevantes",
+    "d) Elaborar informes técnicos sobre la gestión de riesgos"
+  ],
+  correcta: "b) Facilitar la difusión de mensajes de alerta y avisos a la población",
+  justificacion: "Los medios forman parte del sistema de alerta pública durante emergencias."
+},
+{
+  pregunta: "El patrimonio geológico se incluye dentro del patrimonio natural porque:",
+  opciones: [
+    "a) Es una categoría independiente sin relación con la biodiversidad",
+    "b) Incluye elementos que contribuyen al mantenimiento de procesos biológicos",
+    "c) Se protege únicamente en zonas no urbanizadas",
+    "d) No requiere medidas de conservación propias"
+  ],
+  correcta: "b) Incluye elementos que contribuyen al mantenimiento de procesos biológicos",
+  justificacion: "La Ley 42/2007 integra el patrimonio geológico como parte esencial del patrimonio natural."
+},
+{
+  pregunta: "Las especies exóticas invasoras se incluyen en un catálogo específico porque:",
+  opciones: [
+    "a) Son especies especialmente vulnerables",
+    "b) Su presencia puede suponer un grave peligro para el equilibrio ecológico",
+    "c) Son especies de alto valor económico que requieren regulación",
+    "d) Están protegidas por convenios internacionales de caza"
+  ],
+  correcta: "b) Su presencia puede suponer un grave peligro para el equilibrio ecológico",
+  justificacion: "La gestión y control de estas especies es esencial para la conservación del patrimonio natural."
+},
+{
+  pregunta: "Las Comunidades Autónomas son competentes para declarar:",
+  opciones: [
+    "a) Parques Nacionales",
+    "b) Reservas de la Biosfera",
+    "c) Parques Naturales",
+    "d) Zonas Especiales de Protección Integral Marina"
+  ],
+  correcta: "c) Parques Naturales",
+  justificacion: "La Ley 42/2007 permite a las CCAA declarar parques naturales según sus leyes."
+},
+{
+  pregunta: "Las emergencias de interés local:",
+  opciones: [
+    "a) Exigen la colaboración inmediata de todas las administraciones",
+    "b) Son gestionadas por los municipios sin intervención autonómica o estatal",
+    "c) Deben declararse en el marco del Sistema Nacional de Protección Civil",
+    "d) Son situaciones que afectan exclusivamente a infraestructuras críticas"
+  ],
+  correcta: "b) Son gestionadas por los municipios sin intervención autonómica o estatal",
+  justificacion: "Las emergencias locales son las más básicas en el sistema de protección civil."
+},
+{
+  pregunta: "La Ley 42/2007 permite la custodia del territorio a través de:",
+  opciones: [
+    "a) Contratos mercantiles con organismos públicos",
+    "b) Acuerdos voluntarios con propietarios o usuarios de terrenos",
+    "c) Imposición por vía judicial de medidas de conservación",
+    "d) Cesión obligatoria de terrenos privados"
+  ],
+  correcta: "b) Acuerdos voluntarios con propietarios o usuarios de terrenos",
+  justificacion: "Los acuerdos de custodia del territorio son voluntarios y buscan implicar a la sociedad en la conservación."
+},
+{
+  pregunta: "Los espacios naturales protegidos se clasifican en:",
+  opciones: [
+    "a) Parques nacionales, parques naturales, reservas, monumentos naturales y paisajes protegidos",
+    "b) Zonas de urbanización controlada y zonas fluviales",
+    "c) Sólo reservas naturales y parques nacionales",
+    "d) Áreas militares de interés estratégico"
+  ],
+  correcta: "a) Parques nacionales, parques naturales, reservas, monumentos naturales y paisajes protegidos",
+  justificacion: "Así lo establece el artículo 29 de la Ley 42/2007."
+},
+{
+  pregunta: "El Consejo Nacional de Protección Civil es:",
+  opciones: [
+    "a) Un órgano meramente consultivo sin capacidad normativa",
+    "b) Un órgano de cooperación entre administraciones en materia de protección civil",
+    "c) Una unidad operativa de intervención en emergencias",
+    "d) Una sección especializada dentro del Ministerio de Defensa"
+  ],
+  correcta: "b) Un órgano de cooperación entre administraciones en materia de protección civil",
+  justificacion: "Actúa como órgano de coordinación en el Sistema Nacional de Protección Civil según la Ley 17/2015."
+},
+{
+  pregunta: "La Ley 42/2007 considera 'patrimonio natural' a:",
+  opciones: [
+    "a) Solo los espacios forestales protegidos",
+    "b) El conjunto de bienes, recursos y elementos de la naturaleza con valor ambiental",
+    "c) Exclusivamente animales en peligro de extinción",
+    "d) Terrenos de propiedad estatal en áreas rurales"
+  ],
+  correcta: "b) El conjunto de bienes, recursos y elementos de la naturaleza con valor ambiental",
+  justificacion: "Incluye espacios, hábitats, especies, ecosistemas y procesos naturales."
+},
+{
+  pregunta: "La infraestructura verde estatal se implementa para:",
+  opciones: [
+    "a) Fomentar la construcción de viviendas sostenibles",
+    "b) Conectar espacios protegidos mediante corredores ecológicos",
+    "c) Crear áreas recreativas urbanas al aire libre",
+    "d) Sustituir los caminos tradicionales por vías de acceso restringido"
+  ],
+  correcta: "b) Conectar espacios protegidos mediante corredores ecológicos",
+  justificacion: "La infraestructura verde mejora la conectividad ambiental según el artículo 15 de la Ley 42/2007."
+},
+{
+  pregunta: "La obligación de elaborar el Catálogo Español de Especies Amenazadas recae sobre:",
+  opciones: [
+    "a) El Ministerio para la Transición Ecológica",
+    "b) Los ayuntamientos en cuyo término hay especies en peligro",
+    "c) La Unión Europea exclusivamente",
+    "d) Las ONG ambientales reconocidas"
+  ],
+  correcta: "a) El Ministerio para la Transición Ecológica",
+  justificacion: "El catálogo es competencia estatal, aunque se realiza en colaboración con las Comunidades Autónomas."
+},
+{
+  pregunta: "El rango normativo de la Ley 17/2015 de Protección Civil es:",
+  opciones: [
+    "a) Ley Orgánica",
+    "b) Ley Ordinaria",
+    "c) Real Decreto-ley",
+    "d) Orden Ministerial"
+  ],
+  correcta: "b) Ley Ordinaria",
+  justificacion: "No regula derechos fundamentales, sino el funcionamiento de la protección civil."
+},
+{
+  pregunta: "La planificación especial de protección civil se dirige:",
+  opciones: [
+    "a) A los riesgos genéricos que afectan en cualquier momento",
+    "b) A riesgos específicos como inundaciones, incendios o terremotos",
+    "c) A la gestión de infraestructuras turísticas sostenibles",
+    "d) A la protección del patrimonio cultural únicamente"
+  ],
+  correcta: "b) A riesgos específicos como inundaciones, incendios o terremotos",
+  justificacion: "Estos planes se activan según lo recogido en el artículo 10 de la Ley 17/2015."
+},
+{
+  pregunta: "¿Cuál de las siguientes es una obligación en materia de protección civil según la Ley 17/2015?",
+  opciones: [
+    "a) Colaborar con entidades privadas en la administración del sistema",
+    "b) Participar en simulacros y actividades formativas obligatorias",
+    "c) Informar inmediatamente a la población de cualquier riesgo detectado",
+    "d) Realizar ejercicios físicos de preparación ante emergencias"
+  ],
+  correcta: "c) Informar inmediatamente a la población de cualquier riesgo detectado",
+  justificacion: "La comunicación preventiva es una de las obligaciones recogidas en la ley."
+},
+{
+  pregunta: "Los espacios naturales protegidos gestionados por las Comunidades Autónomas pueden incluir:",
+  opciones: [
+    "a) Parques nacionales sin intervención estatal",
+    "b) Parques naturales y reservas regionales",
+    "c) Zonas de uso militar y de acceso restringido",
+    "d) Centros comerciales de interés ecológico"
+  ],
+  correcta: "b) Parques naturales y reservas regionales",
+  justificacion: "Las CCAA tienen competencias para declarar espacios naturales protegidos, excepto parques nacionales."
+},
+{
+  pregunta: "El artículo 45 de la Constitución Española establece:",
+  opciones: [
+    "a) El derecho a disfrutar de un medio ambiente adecuado y el deber de conservarlo",
+    "b) La obligación de los ciudadanos de participar en elecciones ecológicas",
+    "c) El derecho al libre acceso a todos los recursos naturales",
+    "d) La exención fiscal por cuidado de especies protegidas"
+  ],
+  correcta: "a) El derecho a disfrutar de un medio ambiente adecuado y el deber de conservarlo",
+  justificacion: "El artículo 45 CE es el fundamento constitucional de la Ley 42/2007."
+},
+{
+  pregunta: "La Ley 42/2007 establece que la 'caza y la pesca' pueden ser:",
+  opciones: [
+    "a) Actividades prohibidas en todo el territorio nacional",
+    "b) Gestionadas únicamente por organizaciones ecologistas",
+    "c) Reguladas para su práctica sostenible y compatible con la conservación",
+    "d) Declaradas como actividades de interés cultural"
+  ],
+  correcta: "c) Reguladas para su práctica sostenible y compatible con la conservación",
+  justificacion: "El artículo 3 identifica la sostenibilidad como objetivo en la regulación de estas actividades."
+},
+{
+  pregunta: "La principal diferencia entre las ZEPIM y las ZEPA es que:",
+  opciones: [
+    "a) Las ZEPIM se aplican solo en zonas marinas mediterráneas",
+    "b) Las ZEPA excluyen especies de aves migratorias",
+    "c) Las ZEPIM son de carácter autonómico exclusivamente",
+    "d) Las ZEPA no requieren planes de gestión propios"
+  ],
+  correcta: "a) Las ZEPIM se aplican solo en zonas marinas mediterráneas",
+  justificacion: "Las ZEPIM forman parte del Protocolo de Barcelona para la protección del Mediterráneo."
+},
+{
+  pregunta: "Según la Ley 17/2015, los simulacros de protección civil deben:",
+  opciones: [
+    "a) Realizarse únicamente en entornos urbanos de más de 100.000 habitantes",
+    "b) Ser aprobados por el Parlamento",
+    "c) Aplicarse de acuerdo con los planes de emergencia y territoriales correspondientes",
+    "d) Llevarse a cabo únicamente en centros escolares"
+  ],
+  correcta: "c) Aplicarse de acuerdo con los planes de emergencia y territoriales correspondientes",
+  justificacion: "Los simulacros son parte de la planificación operativa y se ajustan a los planes vigentes."
+},
+{
+  pregunta: "La Ley 42/2007 obliga a la Administración a elaborar y revisar periódicamente:",
+  opciones: [
+    "a) El Plan Nacional de Reforestación",
+    "b) El Inventario Español del Patrimonio Natural y la Biodiversidad",
+    "c) El Censo Nacional de Especies Domésticas",
+    "d) El Registro Mundial de Zonas Húmedas"
+  ],
+  correcta: "b) El Inventario Español del Patrimonio Natural y la Biodiversidad",
+  justificacion: "Este inventario es un instrumento básico de seguimiento y planificación ambiental."
+},
+{
+  pregunta: "Las medidas cautelares en materia de biodiversidad pueden incluir:",
+  opciones: [
+    "a) La paralización de actividades que dañen especies o hábitats protegidos",
+    "b) El reasentamiento obligatorio de poblaciones rurales",
+    "c) La prohibición temporal de acceso a espacios urbanos",
+    "d) La suspensión de toda actividad económica en zonas rurales"
+  ],
+  correcta: "a) La paralización de actividades que dañen especies o hábitats protegidos",
+  justificacion: "Estas medidas se recogen en el artículo 65 de la Ley 42/2007."
+},
+{
+  pregunta: "La participación del voluntariado organizado en protección civil está regulada en:",
+  opciones: [
+    "a) El artículo 8 bis de la Ley 17/2015",
+    "b) Una directiva europea vinculante",
+    "c) El Código de Protección Ciudadana Nacional",
+    "d) Un decreto autonómico exclusivo"
+  ],
+  correcta: "a) El artículo 8 bis de la Ley 17/2015",
+  justificacion: "La Ley regula la figura del voluntariado con reconocimiento estatal."
+},
+{
+  pregunta: "Un espacio de la Red Natura 2000 puede ser desclasificado si:",
+  opciones: [
+    "a) Se produce la recuperación biológica total de la zona",
+    "b) Lo solicita un municipio afectado",
+    "c) Se aprueba por mayoría en una consulta pública",
+    "d) La Comisión Europea acepta la propuesta del Estado miembro"
+  ],
+  correcta: "d) La Comisión Europea acepta la propuesta del Estado miembro",
+  justificacion: "La desclasificación de un espacio protegido requiere informe favorable europeo."
+},
+{
+  pregunta: "Las Zonas de Especial Conservación (ZEC) se designan oficialmente tras:",
+  opciones: [
+    "a) La declaración de Parque Nacional",
+    "b) La aprobación de las medidas de conservación necesarias",
+    "c) Un proceso de consulta en el Parlamento Europeo",
+    "d) La celebración de elecciones municipales"
+  ],
+  correcta: "b) La aprobación de las medidas de conservación necesarias",
+  justificacion: "Los LIC pasan a ZEC cuando se aprueban los planes de conservación."
+},
+{
+  pregunta: "La Ley 17/2015 establece que la responsabilidad por daños en protección civil recae sobre:",
+  opciones: [
+    "a) El Ministerio del Interior",
+    "b) El causante del daño, sea persona física o jurídica",
+    "c) Los afectados por el suceso",
+    "d) Los medios de comunicación de manera subsidiaria"
+  ],
+  correcta: "b) El causante del daño, sea persona física o jurídica",
+  justificacion: "El régimen de responsabilidad se basa en la autoría del daño y su compensación."
+},
+{
+  pregunta: "El artículo 7 de la Ley 42/2007 protege especialmente:",
+  opciones: [
+    "a) Los recursos económicos de los municipios con patrimonio natural",
+    "b) La diversidad genética de las especies silvestres",
+    "c) El uso recreativo de espacios naturales públicos",
+    "d) La concesión de licencias mineras en zonas protegidas"
+  ],
+  correcta: "b) La diversidad genética de las especies silvestres",
+  justificacion: "La conservación de la diversidad genética es clave para mantener la biodiversidad."
+},
+{
+  pregunta: "Según la Ley 17/2015, los Planes de Protección Civil deben contemplar:",
+  opciones: [
+    "a) Normas de actuación para evitar sanciones administrativas",
+    "b) Sistemas de aviso a la población y protocolos de actuación",
+    "c) La prohibición total de acceso en zonas afectadas",
+    "d) Exclusivamente el despliegue militar en situaciones de riesgo"
+  ],
+  correcta: "b) Sistemas de aviso a la población y protocolos de actuación",
+  justificacion: "Los planes deben incluir mecanismos de alerta y actuación ante emergencias."
+},
+{
+  pregunta: "La custodia del territorio es una herramienta que permite:",
+  opciones: [
+    "a) Transferir la propiedad privada a la administración pública",
+    "b) Involucrar a propietarios en la conservación de espacios naturales",
+    "c) Asegurar la explotación agrícola intensiva",
+    "d) Expulsar a comunidades locales de zonas protegidas"
+  ],
+  correcta: "b) Involucrar a propietarios en la conservación de espacios naturales",
+  justificacion: "Es un mecanismo voluntario regulado en la Ley 42/2007."
+},
+{
+  pregunta: "El Sistema Nacional de Protección Civil se rige por el principio de:",
+  opciones: [
+    "a) Exclusión de la participación ciudadana",
+    "b) Coordinación, eficacia y eficiencia en la gestión de recursos",
+    "c) Delegación unilateral de responsabilidades en el sector privado",
+    "d) Actuación exclusivamente reactiva ante emergencias"
+  ],
+  correcta: "b) Coordinación, eficacia y eficiencia en la gestión de recursos",
+  justificacion: "Estos principios están recogidos en el artículo 4 de la Ley 17/2015."
+},
+{
+  pregunta: "La Unión Europea exige que todos los espacios Natura 2000 tengan:",
+  opciones: [
+    "a) Paneles informativos turísticos",
+    "b) Planes de gestión que garanticen la conservación",
+    "c) Una oficina física en cada zona",
+    "d) Vigilantes ambientales contratados por el Estado"
+  ],
+  correcta: "b) Planes de gestión que garanticen la conservación",
+  justificacion: "Estos planes son obligatorios y forman parte de la directiva Hábitats."
+},
+{
+  pregunta: "Las medidas de conservación para especies vulnerables incluyen:",
+  opciones: [
+    "a) Planes de captación y comercialización",
+    "b) Planes de actuación y seguimiento para evitar que pasen a peligro de extinción",
+    "c) Su traslado obligatorio a zoológicos",
+    "d) Su eliminación controlada para proteger otras especies"
+  ],
+  correcta: "b) Planes de actuación y seguimiento para evitar que pasen a peligro de extinción",
+  justificacion: "Este es el enfoque preventivo recogido en el artículo 56 de la Ley 42/2007."
+},
+{
+  pregunta: "Un 'riesgo colectivo' según la Ley 17/2015 es:",
+  opciones: [
+    "a) Una situación que afecta únicamente a empresas privadas",
+    "b) Un evento que puede afectar simultáneamente a varias personas o bienes",
+    "c) Un riesgo financiero consecuencia de una recesión",
+    "d) Aquella situación de conflicto armado entre naciones"
+  ],
+  correcta: "b) Un evento que puede afectar simultáneamente a varias personas o bienes",
+  justificacion: "La definición figura en el artículo 2 de la Ley de Protección Civil."
+},
+{
+  pregunta: "La declaración de un Parque Nacional requiere:",
+  opciones: [
+    "a) La aprobación mediante ley por las Cortes Generales",
+    "b) Consulta directa del Gobierno a la UNESCO",
+    "c) Una resolución de la comunidad autónoma correspondiente",
+    "d) Que el espacio forme parte de la Red Natura 2000"
+  ],
+  correcta: "a) La aprobación mediante ley por las Cortes Generales",
+  justificacion: "Los parques nacionales son competencia exclusiva del Estado y requieren ley formal."
+},
+{
+  pregunta: "El Inventario Español del Patrimonio Natural y la Biodiversidad incluye:",
+  opciones: [
+    "a) Solo especies del Catálogo de Especies Amenazadas",
+    "b) Datos sobre el estado de conservación de ecosistemas y especies",
+    "c) Exclusivamente territorios forestales de propiedad pública",
+    "d) Las áreas urbanas con proyectos de renaturalización"
+  ],
+  correcta: "b) Datos sobre el estado de conservación de ecosistemas y especies",
+  justificacion: "Este inventario recopila toda la información relevante sobre patrimonio natural."
+},
+{
+  pregunta: "Los Planes de Autoprotección deben contener:",
+  opciones: [
+    "a) Una relación de los posibles daños económicos futuros",
+    "b) Procedimientos de actuación en caso de emergencia en la actividad o instalación",
+    "c) Exclusivamente manuales para evacuación escolar",
+    "d) Información reservada que solo el gobierno puede conocer"
+  ],
+  correcta: "b) Procedimientos de actuación en caso de emergencia en la actividad o instalación",
+  justificacion: "Los planes contemplan medidas específicas según el tipo de actividad."
+},
+{
+  pregunta: "La Ley 42/2007 contempla la figura del 'monumento natural' como:",
+  opciones: [
+    "a) Un espacio donde se ha declarado la existencia de restos arqueológicos",
+    "b) Un espacio o elemento de la naturaleza con valores singulares o ecológicos",
+    "c) Una obra humana integrada en el medio natural",
+    "d) Un paisaje modificado artificialmente con fines didácticos"
+  ],
+  correcta: "b) Un espacio o elemento de la naturaleza con valores singulares o ecológicos",
+  justificacion: "El monumento natural protege elementos únicos como formaciones geológicas o árboles monumentales."
+},
+{
+  pregunta: "Una emergencia de 'interés autonómico' implica que:",
+  opciones: [
+    "a) El Estado asume de inmediato la dirección operativa",
+    "b) La gestión corresponde a la comunidad autónoma afectada",
+    "c) Solo los municipios pueden actuar",
+    "d) Se requiere intervención de organismos internacionales"
+  ],
+  correcta: "b) La gestión corresponde a la comunidad autónoma afectada",
+  justificacion: "Las emergencias autonómicas son gestionadas con recursos propios, salvo refuerzo necesario."
+},
+{
+  pregunta: "Las medidas de alerta a la población se activan cuando:",
+  opciones: [
+    "a) No existe riesgo pero se desea ensayar el plan de emergencia",
+    "b) Se detecta un riesgo con posible impacto sobre bienes o personas",
+    "c) Ningún servicio público puede actuar",
+    "d) Lo proponga cualquier ciudadano"
+  ],
+  correcta: "b) Se detecta un riesgo con posible impacto sobre bienes o personas",
+  justificacion: "El objetivo es movilizar a la población ante riesgo presente o inminente."
+},
+{
+  pregunta: "La Ley 42/2007 incluye el término 'geodiversidad' para referirse a:",
+  opciones: [
+    "a) La variedad de especies geográficas en un solo territorio",
+    "b) La diversidad de tipos de suelo y mineralogía en el territorio español",
+    "c) La variedad de elementos geológicos como rocas, minerales y fósiles",
+    "d) La presencia de ecosistemas de alta montaña"
+  ],
+  correcta: "c) La variedad de elementos geológicos como rocas, minerales y fósiles",
+  justificacion: "El patrimonio geológico forma parte del patrimonio natural."
+},
+{
+  pregunta: "Según la Ley 17/2015, la creación del Sistema Nacional de Protección Civil obedece a:",
+  opciones: [
+    "a) La necesidad de un sistema militarizado de gestión de emergencias",
+    "b) La obligación de cumplir directivas de seguridad emanadas de la OTAN",
+    "c) La necesidad de coordinación entre administraciones en materia de riesgos",
+    "d) La voluntad de sustituir los cuerpos autonómicos de protección civil"
+  ],
+  correcta: "c) La necesidad de coordinación entre administraciones en materia de riesgos",
+  justificacion: "El sistema busca coordinación entre todos los niveles administrativos."
+},
+{
+  pregunta: "Una especie catalogada como 'extinta en estado silvestre' es aquella que:",
+  opciones: [
+    "a) Solo puede encontrarse en cautividad o mediante repoblación",
+    "b) Se ha trasladado a otros continentes con éxito",
+    "c) No presenta ningún valor de conservación actual",
+    "d) Ha sido excluida del Catálogo Español de Especies Amenazadas"
+  ],
+  correcta: "a) Solo puede encontrarse en cautividad o mediante repoblación",
+  justificacion: "La ley establece esta categoría para especies sin poblaciones en libertad."
+},
+{
+  pregunta: "El Convenio de Bonn está relacionado con la conservación de:",
+  opciones: [
+    "a) Especies marinas comerciales",
+    "b) Especies migratorias silvestres",
+    "c) Bosques templados en áreas montañosas",
+    "d) Fauna urbana en riesgo"
+  ],
+  correcta: "b) Especies migratorias silvestres",
+  justificacion: "Es un acuerdo internacional para proteger especies migratorias en peligro."
+},
+{
+  pregunta: "Una de las funciones de la red de alerta temprana es:",
+  opciones: [
+    "a) Predecir la actividad económica tras una catástrofe",
+    "b) Detectar y señalar riesgos antes de que se materialicen",
+    "c) Facilitar la recaudación de fondos en situaciones de desastre",
+    "d) Gestionar la evacuación de ciudades enteras"
+  ],
+  correcta: "b) Detectar y señalar riesgos antes de que se materialicen",
+  justificacion: "La alerta temprana es un componente clave de la prevención en el Sistema Nacional."
+},
+{
+  pregunta: "El artículo 45 de la Ley 42/2007 establece que la evaluación ambiental de proyectos se aplicará:",
+  opciones: [
+    "a) Solo en casos de construcción de centros comerciales",
+    "b) A cualquier proyecto que pueda afectar de forma significativa al medio natural",
+    "c) Exclusivamente a obras públicas de infraestructuras viales",
+    "d) A proyectos aprobados por mayoría parlamentaria"
+  ],
+  correcta: "b) A cualquier proyecto que pueda afectar de forma significativa al medio natural",
+  justificacion: "La evaluación ambiental es un requisito para proteger los valores de biodiversidad."
+},
+{
+  pregunta: "El Plan Estatal de Protección Civil frente al Riesgo Sísmico se activa cuando:",
+  opciones: [
+    "a) Se recibe una alerta del Servicio Europeo de Vigilancia Marítima",
+    "b) Se declara una situación de catástrofe o emergencia de ámbito estatal",
+    "c) Se producen movimientos sísmicos de baja magnitud",
+    "d) Lo solicite la autoridad local o provincial"
+  ],
+  correcta: "b) Se declara una situación de catástrofe o emergencia de ámbito estatal",
+  justificacion: "El plan se activa cuando la capacidad autonómica ha sido superada."
+},
+{
+  pregunta: "Según la Ley 42/2007, el Catálogo Español de Especies Amenazadas debe ser:",
+  opciones: [
+    "a) Fijo y no actualizable para garantizar su coherencia",
+    "b) Revisado periódicamente para adaptarse al estado de conservación",
+    "c) Elaborado únicamente por los ayuntamientos afectados",
+    "d) Limitado a especies en peligro de extinción"
+  ],
+  correcta: "b) Revisado periódicamente para adaptarse al estado de conservación",
+  justificacion: "El catálogo debe revisarse para incorporar cambios en el estado de las especies."
+},
+{
+  pregunta: "Una 'situación de interés nacional' en protección civil presenta:",
+  opciones: [
+    "a) Un riesgo limitado al ámbito municipal",
+    "b) Una emergencia que supera la capacidad autonómica",
+    "c) Una alerta internacional sin efectos internos",
+    "d) Una crisis política sin riesgo para la población"
+  ],
+  correcta: "b) Una emergencia que supera la capacidad autonómica",
+  justificacion: "Estas situaciones requieren la dirección del Gobierno de España."
+},
+{
+  pregunta: "El concepto de 'patrimonio natural' en la Ley 42/2007 incluye:",
+  opciones: [
+    "a) Recursos forestales únicamente",
+    "b) Flora, fauna, geodiversidad y diversidad genética",
+    "c) Solo hábitats prístinos sin intervención humana",
+    "d) Exclusivamente espacios forestales públicos"
+  ],
+  correcta: "b) Flora, fauna, geodiversidad y diversidad genética",
+  justificacion: "La Ley define patrimonio natural de manera amplia e integrada."
+},
+{
+  pregunta: "En el esquema de la Ley 17/2015, los planes territoriales son responsabilidad de:",
+  opciones: [
+    "a) Las Comunidades Autónomas o entidades locales",
+    "b) El Parlamento Europeo",
+    "c) El Ministerio de Defensa exclusivamente",
+    "d) La Guardia Civil sin aprobación autonómica"
+  ],
+  correcta: "a) Las Comunidades Autónomas o entidades locales",
+  justificacion: "Son las administraciones territoriales las competentes en este tipo de planes."
+},
+{
+  pregunta: "Una especie se considerará 'vulnerable' cuando:",
+  opciones: [
+    "a) Está a punto de extinguirse de forma irreversible",
+    "b) Corre riesgo de convertirse en especie en peligro de extinción",
+    "c) No presenta riesgo pero necesita observación científica",
+    "d) Su hábitat está totalmente destruido"
+  ],
+  correcta: "b) Corre riesgo de convertirse en especie en peligro de extinción",
+  justificacion: "Es una categoría preventiva antes del estado de peligro crítico."
+},
+{
+  pregunta: "El artículo 11 de la Ley 17/2015 señala la obligación de elaborar:",
+  opciones: [
+    "a) Planes Sindicales de Protección Civil",
+    "b) Planes Especiales de Protección Civil para determinados riesgos",
+    "c) Planes sobre fauna urbana",
+    "d) Reglamentos de gestión minera"
+  ],
+  correcta: "b) Planes Especiales de Protección Civil para determinados riesgos",
+  justificacion: "Son parte de la planificación ante riesgos concretos como inundaciones o incendios."
+},
+{
+  pregunta: "La figura de 'monumento natural' puede incluir:",
+  opciones: [
+    "a) Zonas de uso militar exclusivo",
+    "b) Árboles singulares y formaciones geológicas destacadas",
+    "c) Grandes extensiones de bosques únicamente",
+    "d) Barrios con patrimonio arquitectónico histórico"
+  ],
+  correcta: "b) Árboles singulares y formaciones geológicas destacadas",
+  justificacion: "El monumento natural protege elementos naturales de especial interés."
+},
+{
+  pregunta: "Los planes de autoprotección son obligatorios en:",
+  opciones: [
+    "a) Instalaciones con actividades que puedan generar emergencias",
+    "b) Solo centros educativos públicos",
+    "c) Empresas autonómicas de transporte urbano",
+    "d) Instalaciones de conservación de fauna salvaje"
+  ],
+  correcta: "a) Instalaciones con actividades que puedan generar emergencias",
+  justificacion: "Su contenido y obligatoriedad están regulados en el RD 393/2007, vinculado a la Ley 17/2015."
+},
+{
+  pregunta: "Las zonas de especial protección para las aves (ZEPA) se consideran:",
+  opciones: [
+    "a) Espacios de conservación exclusivamente autonómicos",
+    "b) Áreas de la Red Natura 2000 declaradas en virtud de la Directiva Aves",
+    "c) Zonas de valor turístico, sin protección legal",
+    "d) Espacios no conectados con la gestión de hábitats"
+  ],
+  correcta: "b) Áreas de la Red Natura 2000 declaradas en virtud de la Directiva Aves",
+  justificacion: "La ZEPA es una figura europea para la conservación de aves silvestres."
+},
+{
+  pregunta: "El Reglamento General de Normas Básicas de Protección Civil fue aprobado por:",
+  opciones: [
+    "a) Real Decreto 393/2007",
+    "b) Ley 42/2007",
+    "c) Orden Ministerial del Interior",
+    "d) Real Decreto Ley 7/2015"
+  ],
+  correcta: "a) Real Decreto 393/2007",
+  justificacion: "Este reglamento desarrolla aspectos de la Ley 2/1985, luego reemplazada por la Ley 17/2015."
+},
+{
+  pregunta: "La coordinación de la Red Natura 2000 corresponde en España a:",
+  opciones: [
+    "a) El Tribunal Constitucional",
+    "b) Las comunidades autónomas exclusivamente",
+    "c) El Ministerio para la Transición Ecológica en cooperación con las CCAA",
+    "d) La Comisión Europea directamente"
+  ],
+  correcta: "c) El Ministerio para la Transición Ecológica en cooperación con las CCAA",
+  justificacion: "La gestión se hace en coordinación entre Estado y autonomías."
+},
+{
+  pregunta: "Las infracciones muy graves en materia de protección de la biodiversidad pueden conllevar:",
+  opciones: [
+    "a) Multas de hasta 2.000 euros",
+    "b) Multas de hasta 2.000.000 de euros",
+    "c) Retirada automática de la nacionalidad",
+    "d) Imposibilidad de firmar contratos públicos durante 24 meses"
+  ],
+  correcta: "b) Multas de hasta 2.000.000 de euros",
+  justificacion: "El régimen sancionador de la Ley 42/2007 contempla cuantías elevadas por daños graves."
+},
+{
+  pregunta: "El Comité Estatal de Coordinación y Dirección (CECOD) está presidido por:",
+  opciones: [
+    "a) El Presidente del Gobierno",
+    "b) El Ministro del Interior o la autoridad que designe",
+    "c) El Jefe de Estado",
+    "d) El titular del Ministerio de Defensa"
+  ],
+  correcta: "b) El Ministro del Interior o la autoridad que designe",
+  justificacion: "Preside el órgano encargado de coordinar la respuesta a emergencias de interés nacional."
+},
+{
+  pregunta: "La restauración ecológica de espacios degradados es:",
+  opciones: [
+    "a) Una obligación tras una catástrofe natural",
+    "b) Una medida prevista en la Ley 42/2007 para recuperar el patrimonio natural",
+    "c) Un procedimiento sancionador diferente al restablecimiento",
+    "d) Una iniciativa privada sin respaldo legal"
+  ],
+  correcta: "b) Una medida prevista en la Ley 42/2007 para recuperar el patrimonio natural",
+  justificacion: "La restauración ecológica es un objetivo legal para la recuperación de ecosistemas dañados."
+},
+{
+  pregunta: "La Directiva Hábitats (92/43/CEE) exige la protección de:",
+  opciones: [
+    "a) Los parques nacionales exclusivamente",
+    "b) Hábitats y especies prioritarias para la Unión Europea",
+    "c) Animales domésticos de interés comercial",
+    "d) Monumentos arquitectónicos naturales"
+  ],
+  correcta: "b) Hábitats y especies prioritarias para la Unión Europea",
+  justificacion: "La Directiva regula la Red Natura 2000 en base a estos criterios."
+},
+{
+  pregunta: "El Gobierno puede activar el Mecanismo Europeo de Protección Civil cuando:",
+  opciones: [
+    "a) Se trate de una emergencia leve en un municipio rural",
+    "b) España solicite cooperación internacional en una emergencia grave",
+    "c) Solo en caso de emergencias de tipo político",
+    "d) La Comisión Europea lo considere necesario en cualquier momento"
+  ],
+  correcta: "b) España solicite cooperación internacional en una emergencia grave",
+  justificacion: "La Ley 17/2015 prevé la coordinación con sistemas internacionales de ayuda."
+},
+{
+  pregunta: "El Catálogo de Montes de Utilidad Pública es:",
+  opciones: [
+    "a) Parte del Inventario Español del Patrimonio Natural",
+    "b) Un registro de terrenos forestales propiedad privada",
+    "c) Excluido de la Ley 42/2007",
+    "d) Un instrumento para la explotación intensiva de recursos"
+  ],
+  correcta: "a) Parte del Inventario Español del Patrimonio Natural",
+  justificacion: "Este catálogo incluye montes protegidos por su función pública."
+},
+{
+  pregunta: "La clasificación 'ZEC' en Red Natura 2000 significa:",
+  opciones: [
+    "a) Zona Especial de Conservación",
+    "b) Zona de Exclusión Civil",
+    "c) Zona Ecológica Continental",
+    "d) Zona de Educación Cívica"
+  ],
+  correcta: "a) Zona Especial de Conservación",
+  justificacion: "Es una de las dos categorías fundamentales de la Red Natura 2000."
+},
+{
+  pregunta: "Las administraciones deben garantizar el acceso a la información ambiental conforme al:",
+  opciones: [
+    "a) Convenio de Berna",
+    "b) Convenio de Aarhus",
+    "c) Convenio de Ginebra",
+    "d) Tratado de Lisboa"
+  ],
+  correcta: "b) Convenio de Aarhus",
+  justificacion: "Este convenio garantiza derecho de acceso a la información ambiental, participación pública y acceso a la justicia."
+},
+{
+  pregunta: "El Plan Estatal de Protección Civil frente al Riesgo de Inundaciones es:",
+  opciones: [
+    "a) Un plan territorial aprobado por una Comunidad Autónoma",
+    "b) Un plan especial de competencia estatal para coordinar la respuesta ante grandes inundaciones",
+    "c) Una directiva no vinculante de la Unión Europea",
+    "d) Un programa privado de aseguradoras"
+  ],
+  correcta: "b) Un plan especial de competencia estatal para coordinar la respuesta ante grandes inundaciones",
+  justificacion: "Forma parte de los planes estatales establecidos en el marco de la Ley 17/2015."
+},
+{
+  pregunta: "Las especies exóticas invasoras aparecen reguladas mediante:",
+  opciones: [
+    "a) El artículo 61 de la Ley 42/2007 y su normativa derivada",
+    "b) Un tratado entre el Ministerio de Defensa y la ONU",
+    "c) La Constitución Española, artículo 149",
+    "d) Exclusivamente normas autonómicas de gestión forestal"
+  ],
+  correcta: "a) El artículo 61 de la Ley 42/2007 y su normativa derivada",
+  justificacion: "La ley establece un régimen específico para la prevención y control de estas especies."
+},
+{
+  pregunta: "El objetivo de los planes de emergencia nuclear es:",
+  opciones: [
+    "a) Sancionar el uso de energía nuclear",
+    "b) Proteger a la población ante posibles liberaciones radioactivas",
+    "c) Controlar el transporte de residuos químicos",
+    "d) Fomentar el uso civil de la energía nuclear"
+  ],
+  correcta: "b) Proteger a la población ante posibles liberaciones radioactivas",
+  justificacion: "Este tipo de planes se enmarcan en la planificación especial de protección civil."
+},
+{
+  pregunta: "La Ley 42/2007 incluye instrumentos de planificación como:",
+  opciones: [
+    "a) La Agenda Europea de Seguridad Ciudadana",
+    "b) Las Estrategias de Conservación, el Inventario de Patrimonio Natural y la Red Natura 2000",
+    "c) El Protocolo de Protección Forestal Estatal",
+    "d) La Ley de Montes y Bienes Rústicos"
+  ],
+  correcta: "b) Las Estrategias de Conservación, el Inventario de Patrimonio Natural y la Red Natura 2000",
+  justificacion: "Estos son los tres grandes instrumentos recogidos en la ley."
+},
+{
+  pregunta: "La Ley 17/2015 considera como 'protección civil' el conjunto de actividades dirigidas a:",
+  opciones: [
+    "a) La planificación urbana sostenible",
+    "b) La previsión, prevención y actuación frente a riesgos colectivos",
+    "c) La explotación agrícola adecuada de las zonas rurales",
+    "d) El fomento del turismo en áreas protegidas"
+  ],
+  correcta: "b) La previsión, prevención y actuación frente a riesgos colectivos",
+  justificacion: "Así se define en el artículo 1 de la Ley de Protección Civil."
+},
+];
+
+let totalPreguntasRenderizadas = 0;
+
+function barajar(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+}
+
+function setProgress(current, total) {
+  const bar = document.getElementById('progressBar');
+  const pct = total > 0 ? Math.round((current / total) * 100) : 0;
+  bar.style.width = pct + '%';
+  bar.title = pct + '%';
+}
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+// Carga el test con preguntas y respuestas aleatorias
+function cargarTest() {
+  const numPreguntas = parseInt(document.getElementById('numPreguntas').value);
+  const testForm = document.getElementById('testForm');
+  const progressBar = document.getElementById('progressBar');
+  const testResult = document.getElementById('testResult');
+
+  testForm.innerHTML = '';
+  testResult.innerHTML = '';
+  progressBar.style.width = '0%';
+
+  if (!preguntasBanco || preguntasBanco.length === 0) {
+    testForm.innerHTML = '<p style="color:red;font-weight:bold;">⚠️ No hay preguntas en el banco.</p>';
+    return;
+  }
+
+  const letras = ['a)', 'b)', 'c)', 'd)', 'e)', 'f)']; // por si hay más de 4 opciones
+  const preguntasSeleccionadas = shuffle([...preguntasBanco]).slice(0, numPreguntas);
+
+  preguntasSeleccionadas.forEach((preguntaObj, index) => {
+    // Mezclamos las opciones (pero vamos a limpiar su prefijo "a) " si lo llevan)
+    const opcionesMezcladas = shuffle([...preguntaObj.opciones]);
+
+    // Convertimos cada opción en un objeto { texto, esCorrecta }
+    const opcionesObj = opcionesMezcladas.map(opcion => {
+      // Limpiar prefijos como "a) ", "b) " si existen
+      const textoLimpio = opcion.replace(/^[A-Za-z]\)\s*/, '').trim();
+      const esCorrecta = opcion === preguntaObj.correcta || textoLimpio === preguntaObj.correcta.replace(/^[A-Za-z]\)\s*/, '').trim();
+      return { texto: textoLimpio, esCorrecta };
+    });
+
+    // Renderizamos las opciones asignando letras según la posición (letras fijas)
+    const opcionesHTML = opcionesObj.map((opt, optIndex) => {
+      const marcaCorrecta = opt.esCorrecta ? 'true' : 'false';
+      const letra = letras[optIndex] || `${optIndex + 1})`; // fallback si hay >6 opciones
+      // No incluimos la letra dentro del texto de la opción; la mostramos separada
+      return `
+        <label class="option">
+          <input type="radio" name="pregunta${index}" value="${opt.texto.replace(/"/g, '&quot;')}" data-correct="${marcaCorrecta}">
+          <span style="font-weight:700; margin-right:10px; color:var(--muted)">${letra}</span>
+          ${opt.texto}
+        </label>
+      `;
+    }).join('');
+
+    const preguntaHTML = `
+      <div class="question">
+        <div class="q-head">
+          <span class="q-num">${index + 1}.</span>
+          <p class="q-text">${preguntaObj.pregunta}</p>
+        </div>
+        <div class="options">
+          ${opcionesHTML}
+        </div>
+        <div class="justification muted" style="display:none;">
+          <span class="correct">✔ ${preguntaObj.correcta.replace(/^[A-Za-z]\)\s*/, '')}</span><br>
+          ${preguntaObj.justificacion}
+        </div>
+      </div>
+    `;
+    testForm.insertAdjacentHTML('beforeend', preguntaHTML);
+  });
+
+  // Añadir botón corregir (evitar duplicados)
+  const botonCorregirExistente = Array.from(testForm.getElementsByTagName('button')).find(b => b.textContent === 'Corregir');
+  if (!botonCorregirExistente) {
+    const botonCorregir = document.createElement('button');
+    botonCorregir.type = 'button';
+    botonCorregir.className = 'btn success';
+    botonCorregir.textContent = 'Corregir';
+    botonCorregir.onclick = () => corregirTest();
+    testForm.appendChild(botonCorregir);
+  }
+}
+
+
+function corregirTest() {
+  const preguntas = document.querySelectorAll('.question');
+  let aciertos = 0;
+
+  preguntas.forEach((pregunta) => {
+    const radios = pregunta.querySelectorAll('input[type="radio"]');
+    const labels = pregunta.querySelectorAll('.option');
+    const justificacion = pregunta.querySelector('.justification');
+    let seleccionCorrecta = false;
+
+    // Limpiar clases anteriores
+    labels.forEach(l => {
+      l.classList.remove('correct-option', 'wrong-option');
+      const checkmark = l.querySelector('.checkmark');
+      if (checkmark) checkmark.remove();
+    });
+
+    radios.forEach(radio => {
+      const label = radio.closest('.option');
+      if (radio.checked && radio.dataset.correct === 'true') {
+        seleccionCorrecta = true;
+      }
+    });
+
+    radios.forEach(radio => {
+      const label = radio.closest('.option');
+
+      if (radio.dataset.correct === 'true') {
+        // Mostrar check verde en la opción correcta
+        label.classList.add('correct-option');
+        label.insertAdjacentHTML('afterbegin', `<span class="checkmark" style="color:#059669;font-weight:700;">✔</span>`);
+      }
+
+      if (radio.checked && radio.dataset.correct !== 'true') {
+        // Mostrar X roja en la opción elegida incorrecta
+        label.classList.add('wrong-option');
+        label.insertAdjacentHTML('afterbegin', `<span class="checkmark" style="color:#dc2626;font-weight:700;">✘</span>`);
+      }
+    });
+
+    // Mostrar la justificación al final
+    if (justificacion) {
+      justificacion.style.display = 'block';
+      justificacion.innerHTML = `
+        ${seleccionCorrecta 
+          ? `<span class="correct">✔ ${pregunta.querySelector('input[data-correct="true"]').value}</span><br>` 
+          : `<span class="incorrect">✘ ${pregunta.querySelector('input[data-correct="true"]').value}</span><br>`
+        }
+        ${pregunta.querySelector('.justification').textContent || ''}
+      `;
+    }
+
+    if (seleccionCorrecta) aciertos++;
+  });
+
+  // Mostrar resultado final
+  const total = preguntas.length;
+  const porcentaje = Math.round((aciertos / total) * 100);
+  const testResult = document.getElementById('testResult');
+  testResult.innerHTML = `
+    <div class="result-card">
+      <p class="score">Has acertado ${aciertos} de ${total} preguntas (${porcentaje}%).</p>
+      <p class="muted">${porcentaje >= 70 ? "✅ ¡Buen trabajo!" : "❌ Puedes mejorar."}</p>
+    </div>
+  `;
+  document.getElementById('progressBar').style.width = '100%';
+}
+
+
+function reiniciarTest() {
+  document.getElementById('testForm').innerHTML = '';
+  document.getElementById('testResult').innerHTML = '';
+  setProgress(0, 0);
+}
+  // ==========================
+// 🔹 TEMPORIZADOR CONFIGURABLE
+// ==========================
+
+// Variables del temporizador
+let tiempoTotal = 0;
+let tiempoRestante = 0;
+let temporizadorInterval;
+
+// Crear selector de tiempo en el panel de controles
+const selectTiempo = document.createElement('select');
+selectTiempo.id = 'tiempoSeleccionado';
+selectTiempo.innerHTML = `
+  <option value="0">Sin límite</option>
+  <option value="5">5 minutos</option>
+  <option value="10" selected>10 minutos</option>
+  <option value="15">15 minutos</option>
+  <option value="20">20 minutos</option>
+  <option value="30">30 minutos</option>
+  <option value="40">40 minutos</option>
+  <option value="50">50 minutos</option>
+  <option value="60">60 minutos</option>
+`;
+const labelTiempo = document.createElement('label');
+labelTiempo.htmlFor = 'tiempoSeleccionado';
+labelTiempo.textContent = 'Tiempo límite:';
+const controlsDiv = document.querySelector('.controls');
+controlsDiv.insertBefore(labelTiempo, controlsDiv.children[2]);
+controlsDiv.insertBefore(selectTiempo, controlsDiv.children[3]);
+
+// Crear elemento visual del temporizador
+const temporizadorDiv = document.createElement('div');
+temporizadorDiv.id = 'temporizador';
+temporizadorDiv.style.textAlign = 'center';
+temporizadorDiv.style.fontSize = '18px';
+temporizadorDiv.style.fontWeight = '700';
+temporizadorDiv.style.color = '#2563eb';
+temporizadorDiv.style.marginTop = '12px';
+controlsDiv.appendChild(temporizadorDiv);
+
+// Mostrar tiempo en formato mm:ss
+function mostrarTiempo() {
+  let min = Math.floor(tiempoRestante / 60);
+  let seg = tiempoRestante % 60;
+  temporizadorDiv.textContent = `⏳ Tiempo restante: ${min}:${seg.toString().padStart(2, '0')}`;
+}
+
+// Iniciar temporizador
+function iniciarTemporizador() {
+  const minutosSeleccionados = parseInt(document.getElementById('tiempoSeleccionado').value);
+  if (minutosSeleccionados === 0) {
+    temporizadorDiv.textContent = '⏳ Sin límite de tiempo';
+    return;
+  }
+
+  tiempoTotal = minutosSeleccionados * 60;
+  tiempoRestante = tiempoTotal;
+  mostrarTiempo();
+
+  temporizadorInterval = setInterval(() => {
+    tiempoRestante--;
+    mostrarTiempo();
+    if (tiempoRestante <= 0) {
+      clearInterval(temporizadorInterval);
+      temporizadorDiv.textContent = '⏰ ¡Tiempo agotado!';
+      finalizarTestPorTiempo();
+    }
+  }, 1000);
+}
+
+// Detener temporizador
+function detenerTemporizador() {
+  clearInterval(temporizadorInterval);
+}
+
+// Modificar función cargarTest para que inicie el temporizador
+const originalCargarTest = cargarTest;
+cargarTest = function() {
+  originalCargarTest();
+  detenerTemporizador(); // Por si se reinicia
+  iniciarTemporizador();
+};
+
+// Al finalizar el test manualmente (botón Enviar)
+const originalEvaluarTest = evaluarTest;
+evaluarTest = function() {
+  detenerTemporizador(); // Detiene el contador al pulsar Enviar
+  originalEvaluarTest();
+};
+
+// Cuando el tiempo se agota automáticamente
+function finalizarTestPorTiempo() {
+  // Evita ejecuciones dobles
+  if (window.__finalizadoPorTiempo__) return;
+  window.__finalizadoPorTiempo__ = true;
+
+  detenerTemporizador();
+  if (temporizadorDiv) temporizadorDiv.textContent = '⏰ ¡Tiempo agotado! Pulsa "Enviar" para corregir.';
+
+  // 🔒 Bloquear todas las respuestas
+  document.querySelectorAll('input[type="radio"]').forEach(r => {
+    r.disabled = true;
+    const opt = r.closest('.option');
+    if (opt) {
+      opt.style.opacity = '0.6';
+      opt.style.pointerEvents = 'none';
+    }
+  });
+
+  // ✅ Dejar el botón "Enviar" activo y hacerlo destacar en verde
+  const btnEnviar = document.querySelector('button.btn.success, button[type="submit"]');
+  if (btnEnviar) {
+    btnEnviar.disabled = false;
+    btnEnviar.style.opacity = '1';
+    btnEnviar.style.cursor = 'pointer';
+
+    // 💚 Efecto parpadeo verde suave
+    btnEnviar.style.animation = 'blinkGreen 1.2s infinite';
+    btnEnviar.style.transition = 'background-color 0.3s ease';
+    btnEnviar.style.backgroundColor = '#22c55e'; // verde suave (Tailwind: green-500)
+    btnEnviar.style.color = 'white';
+
+    // Inyectar animación CSS si no existe
+    if (!document.getElementById('blinkGreen-style')) {
+      const style = document.createElement('style');
+      style.id = 'blinkGreen-style';
+      style.textContent = `
+        @keyframes blinkGreen {
+          0%, 100% { background-color: #22c55e; }
+          50% { background-color: #86efac; } /* verde claro (green-300) */
+        }
+      `;
+      document.head.appendChild(style);
+    }
+  }
+
+  // 🔄 Mantener botón "Reiniciar" activo
+  const btnReiniciar = document.querySelector('button.btn.secondary');
+  if (btnReiniciar) {
+    btnReiniciar.disabled = false;
+  }
+}
+</script>
+</body>
+</html>
