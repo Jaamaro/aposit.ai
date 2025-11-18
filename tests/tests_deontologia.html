@@ -1,0 +1,3823 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test de Deontología</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --card: #ffffff;
+      --text: #111827;
+      --muted: #6b7280;
+      --primary: #2563eb;
+      --primary-dark: #1e40af;
+      --success: #059669;
+      --danger: #dc2626;
+      --ring: rgba(37, 99, 235, 0.25);
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: 'Roboto', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      padding: 24px;
+    }
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+    header.hero {
+      text-align: center;
+      margin-bottom: 16px;
+    }
+    .title {
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--primary-dark);
+      margin: 0 0 8px;
+    }
+    .subtitle {
+      color: var(--muted);
+      margin: 0;
+    }
+    .controls {
+      background: var(--card);
+      border-radius: 14px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.06);
+      padding: 16px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      justify-content: center;
+      position: sticky;
+      top: 12px;
+      z-index: 5;
+    }
+    .controls label { font-weight: 500; }
+    select {
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid #e5e7eb;
+      background: #fff;
+      outline: none;
+      transition: box-shadow .2s, border-color .2s;
+    }
+    select:focus { border-color: var(--primary); box-shadow: 0 0 0 4px var(--ring); }
+
+    .btn {
+      cursor: pointer;
+      border: none;
+      border-radius: 10px;
+      padding: 12px 18px;
+      font-weight: 700;
+      transition: transform .15s, background .2s, box-shadow .2s;
+      color: #fff;
+      background: var(--primary);
+      box-shadow: 0 6px 14px rgba(37,99,235,.2);
+    }
+    .btn:hover { transform: translateY(-1px); background: var(--primary-dark); }
+    .btn.secondary { background: #6b7280; }
+    .btn.secondary:hover { background: #374151; }
+    .btn.success { background: var(--success); }
+    .btn.success:hover { background: #047857; }
+    .btn.danger { background: var(--danger); }
+    .btn.danger:hover { background: #b91c1c; }
+
+    .progress {
+      width: 100%;
+      height: 10px;
+      background: #e5e7eb;
+      border-radius: 999px;
+      overflow: hidden;
+      margin-top: 8px;
+    }
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--primary), #60a5fa);
+      transition: width .3s ease;
+    }
+
+    .question {
+      margin: 14px 0;
+      padding: 18px;
+      background: var(--card);
+      border-radius: 14px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.06);
+    }
+    .q-head {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+    }
+    .q-num {
+      font-weight: 800;
+      color: var(--primary-dark);
+    }
+    .q-text { margin: 0; }
+
+    .options { margin-top: 10px; display: grid; gap: 8px; }
+    .option {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid #e5e7eb;
+      background: #fff;
+      transition: background .15s, border-color .15s, box-shadow .15s;
+      cursor: pointer;
+    }
+    .option input { transform: scale(1.2); }
+    .option:hover { background: #f9fafb; border-color: #d1d5db; }
+    .option.is-selected { box-shadow: 0 0 0 4px var(--ring); border-color: var(--primary); }
+
+    .justification {
+      margin-top: 10px; color: var(--muted);
+    }
+    .correct { color: var(--success); font-weight: 700; }
+    .incorrect { color: var(--danger); font-weight: 700; }
+
+    .option.correct-option {
+      border-color: rgba(5,150,105,.4);
+      background: #ecfdf5;
+    }
+    .option.wrong-option {
+      border-color: rgba(220,38,38,.4);
+      background: #fef2f2;
+    }
+
+    .result-card {
+      margin: 18px 0;
+      padding: 16px;
+      background: var(--card);
+      border-radius: 14px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.06);
+      text-align: center;
+    }
+    .score {
+      font-size: 22px;
+      font-weight: 800;
+      margin: 8px 0;
+    }
+    .muted { color: var(--muted); }
+    footer { text-align: center; margin-top: 24px; color: var(--muted); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="hero">
+      <h1 class="title">Test de Deontología</h1>
+      <p class="subtitle">Selecciona cuántas preguntas quieres y pulsa <strong>Comenzar</strong>.</p>
+    </header>
+
+    <div class="controls">
+      <label for="numPreguntas">Número de preguntas:</label>
+      <select id="numPreguntas">
+        <option value="10">10</option>
+        <option value="20">20</option>
+        <option value="30">30</option>
+        <option value="40">40</option>
+        <option value="50" selected>50</option>
+      </select>
+      <button class="btn" type="button" onclick="cargarTest()">Comenzar</button>
+      <button class="btn secondary" type="button" onclick="reiniciarTest()">Reiniciar</button>
+      <div class="progress" style="flex-basis: 100%;">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+    </div>
+
+    <form id="testForm"></form>
+
+    <div id="testResult"></div>
+    <footer>© Test de práctica — Deontología</footer>
+  </div>
+
+<script>
+const preguntasBanco = [
+  {
+    pregunta: "¿En qué Congreso de Naciones Unidas fueron adoptados los Principios Básicos sobre el Empleo de la Fuerza?",
+    opciones: [
+      "a) Séptimo Congreso sobre prevención del delito, celebrado en Nueva York.",
+      "b) Octavo Congreso de Naciones Unidas en La Habana.",
+      "c) Sexto Congreso Internacional de Justicia Penal en Ginebra.",
+      "d) Quinto Congreso Mundial sobre Derechos Humanos en París."
+    ],
+    correcta: "b) Octavo Congreso de Naciones Unidas en La Habana.",
+    justificacion: "Los principios fueron adoptados en el Octavo Congreso de Naciones Unidas sobre prevención del delito en La Habana en 1990."
+  },
+  {
+    pregunta: "Según los Principios Básicos, el empleo de armas letales sólo se permitirá:",
+    opciones: [
+      "a) Para evitar cualquier acto ilícito.",
+      "b) Cuando otros medios menos extremos resulten ineficaces.",
+      "c) Cuando haya riesgo de fuga sin violencia.",
+      "d) En cualquier intervención policial."
+    ],
+    correcta: "b) Cuando otros medios menos extremos resulten ineficaces.",
+    justificacion: "Solo se podrá hacer uso intencional de armas letales cuando sea estrictamente inevitable."
+  },
+  {
+    pregunta: "Según el principio 04, los funcionarios encargados de hacer cumplir la ley utilizarán medios no violentos:",
+    opciones: [
+      "a) Cuando las órdenes superiores lo indiquen.",
+      "b) Solo en labores de prevención.",
+      "c) En la medida de lo posible, antes de usar la fuerza.",
+      "d) En situaciones donde la ley lo prohíba expresamente."
+    ],
+    correcta: "c) En la medida de lo posible, antes de usar la fuerza.",
+    justificacion: "Se establece la prioridad del empleo de medios no violentos en el desempeño de sus funciones."
+  },
+  {
+    pregunta: "¿Cuál de las siguientes opciones NO es un principio para el empleo de armas de fuego cuando su uso es inevitable?",
+    opciones: [
+      "a) Reducir al mínimo los daños y respetar la vida humana.",
+      "b) Notificar lo ocurrido a los familiares de los heridos.",
+      "c) Utilizar el arma sin identificar su condición de agente.",
+      "d) Prestar asistencia médica a las personas heridas."
+    ],
+    correcta: "c) Utilizar el arma sin identificar su condición de agente.",
+    justificacion: "Los agentes deberán identificarse y advertir antes de emplear armas de fuego salvo casos excepcionales."
+  },
+  {
+    pregunta: "Según las disposiciones generales, ¿quién adoptará normas sobre el empleo de la fuerza y armas de fuego?",
+    opciones: [
+      "a) Exclusivamente los organismos internacionales.",
+      "b) El Poder Judicial.",
+      "c) Los gobiernos y los organismos encargados de hacer cumplir la ley.",
+      "d) Las fuerzas armadas."
+    ],
+    correcta: "c) Los gobiernos y los organismos encargados de hacer cumplir la ley.",
+    justificacion: "Son ellos los responsables de establecer esas normas y reglamentaciones."
+  },
+  {
+    pregunta: "¿Qué tipo de armas deberían incluir los gobiernos para promover un uso diferenciado de la fuerza?",
+    opciones: [
+      "a) Únicamente armas de fuego convencionales.",
+      "b) Armas incapacitantes no letales.",
+      "c) Armas automáticas de reglamento.",
+      "d) Material antidisturbios exclusivo para unidades especiales."
+    ],
+    correcta: "b) Armas incapacitantes no letales.",
+    justificacion: "Se recomienda incluir este tipo de armas para restringir el empleo de medios que puedan ocasionar lesiones graves."
+  },
+  {
+    pregunta: "Para dispersar reuniones ilícitas pero NO violentas, los agentes deberán:",
+    opciones: [
+      "a) Utilizar armas de fuego según la gravedad del ilícito.",
+      "b) Evitar el uso de la fuerza o limitarla al mínimo necesario.",
+      "c) Proceder a la detención inmediata de todos los participantes.",
+      "d) Utilizar la fuerza de forma disuasoria siempre."
+    ],
+    correcta: "b) Evitar el uso de la fuerza o limitarla al mínimo necesario.",
+    justificacion: "Este principio establece una clara limitación en el uso de la fuerza."
+  },
+  {
+    pregunta: "¿Qué obligación tienen los funcionarios encargados de hacer cumplir la ley si provocan lesiones o muerte al emplear la fuerza?",
+    opciones: [
+      "a) Notificarlo al juez en un plazo de 72 horas.",
+      "b) Comunicar inmediatamente el hecho a sus superiores.",
+      "c) Registrar el incidente en el sistema y guardarlo en sigilo.",
+      "d) Solicitar autorización para abrir investigación interna."
+    ],
+    correcta: "b) Comunicar inmediatamente el hecho a sus superiores.",
+    justificacion: "El principio 06 exige una comunicación inmediata."
+  },
+  {
+    pregunta: "¿Cuál de las siguientes circunstancias NO justifica quebrantar los Principios Básicos sobre el uso de la fuerza?",
+    opciones: [
+      "a) Inestabilidad política interna.",
+      "b) Situación de emergencia pública.",
+      "c) Manifestación violenta.",
+      "d) Ninguna de las anteriores."
+    ],
+    correcta: "d) Ninguna de las anteriores.",
+    justificacion: "No pueden alegarse situaciones excepcionales para incumplir los Principios."
+  },
+  {
+    pregunta: "Los funcionarios deben recibir capacitación en el empleo de armas de fuego:",
+    opciones: [
+      "a) Sólo tras un año de servicio.",
+      "b) Después de una evaluación psicológica.",
+      "c) Antes de estar autorizados a portarlas.",
+      "d) Únicamente si prestan servicio rural."
+    ],
+    correcta: "c) Antes de estar autorizados a portarlas.",
+    justificacion: "El principio 19 establece que sólo portarán armas tras la formación correspondiente."
+  },
+  {
+    pregunta: "Cuando se usan armas de fuego contra personas bajo custodia, debe existir:",
+    opciones: [
+      "a) Orden escrita del mando superior.",
+      "b) Riesgo inminente de fuga sin supervisión.",
+      "c) Peligro inminente de muerte o lesiones graves.",
+      "d) Situación de protesta interna."
+    ],
+    correcta: "c) Peligro inminente de muerte o lesiones graves.",
+    justificacion: "El principio 16 establece condiciones estrictas para el uso de armas en este contexto."
+  },
+  {
+    pregunta: "¿Qué precepto establece la obligación de los superiores de asumir responsabilidad en caso de empleo ilícito de la fuerza por sus subordinados?",
+    opciones: [
+      "a) Principio 10.",
+      "b) Principio 24.",
+      "c) Principio 18.",
+      "d) Principio 04."
+    ],
+    correcta: "b) Principio 24.",
+    justificacion: "Se exige responsabilidad a superiores que conozcan o deban conocer el abuso y no actúen."
+  },
+  {
+    pregunta: "¿Qué acción NO está permitida a los funcionarios ante órdenes manifiestamente ilícitas de usar la fuerza?",
+    opciones: [
+      "a) Cumplir la orden pero luego informar internamente.",
+      "b) Negarse a obedecer la orden.",
+      "c) Comunicarlo a la autoridad competente.",
+      "d) Abstenerse de ejecutar los actos ordenados."
+    ],
+    correcta: "a) Cumplir la orden pero luego informar internamente.",
+    justificacion: "El principio 26 señala que no se puede alegar obediencia a órdenes ilícitas."
+  },
+  {
+    pregunta: "Según el Artículo 1 del Código de Conducta, el honor en la Guardia Civil es:",
+    opciones: [
+      "a) Un valor complementario al cumplimiento de la ley.",
+      "b) La principal divisa de sus integrantes.",
+      "c) Una norma de conducta secundaria.",
+      "d) Una virtud profesional de carácter opcional."
+    ],
+    correcta: "b) La principal divisa de sus integrantes.",
+    justificacion: "El honor es definido como seña de identidad y guía para el cumplimiento del deber."
+  },
+  {
+    pregunta: "Actuar con rectitud y oponerse a la corrupción corresponde al valor de:",
+    opciones: [
+      "a) Lealtad.",
+      "b) Integridad.",
+      "c) Justicia.",
+      "d) Dignidad."
+    ],
+    correcta: "b) Integridad.",
+    justificacion: "El Artículo 2 estipula que los miembros actuarán con rectitud y honradez."
+  },
+  {
+    pregunta: "¿Cuál de los siguientes valores implica la disposición a defender a otros incluso a riesgo propio?",
+    opciones: [
+      "a) Sentido de la justicia.",
+      "b) Responsabilidad.",
+      "c) Valor.",
+      "d) Espíritu de sacrificio."
+    ],
+    correcta: "c) Valor.",
+    justificacion: "El Artículo 4 define el valor como actuar frente a contingencias y peligros."
+  },
+  {
+    pregunta: "El principio de imparcialidad implica:",
+    opciones: [
+      "a) Aplicar criterios subjetivos en cada intervención.",
+      "b) Mantenerse al margen de cualquier prejuicio o discriminación.",
+      "c) Favorecer al colectivo más vulnerable.",
+      "d) Ajustar el criterio según la orden del mando."
+    ],
+    correcta: "b) Mantenerse al margen de cualquier prejuicio o discriminación.",
+    justificacion: "El Artículo 6 establece la obligación de actuar sin prejuicios."
+  },
+  {
+    pregunta: "La disciplina en la Guardia Civil se expresa colectivamente en:",
+    opciones: [
+      "a) El acatamiento de la Constitución.",
+      "b) El cumplimiento estricto de órdenes internas.",
+      "c) La participación en actos institucionales.",
+      "d) La obediencia a los mandos operativos."
+    ],
+    correcta: "a) El acatamiento de la Constitución.",
+    justificacion: "Según el Artículo 15, la disciplina tiene una dimensión colectiva en el acatamiento constitucional."
+  },
+  {
+    pregunta: "Obedecer las órdenes recibidas es una manifestación del principio de:",
+    opciones: [
+      "a) Jerarquía.",
+      "b) Subordinación.",
+      "c) Lealtad.",
+      "d) Neutralidad."
+    ],
+    correcta: "b) Subordinación.",
+    justificacion: "El Artículo 16 regula qué se entiende por órdenes y cómo deben obedecerse."
+  },
+  {
+    pregunta: "La defensa de la Constitución implica además:",
+    opciones: [
+      "a) Cumplir la ley con independencia del marco constitucional.",
+      "b) Seguir los tratados internacionales de forma discrecional.",
+      "c) Tener lealtad al Rey y al ordenamiento jurídico.",
+      "d) Ajustarse a las órdenes de cualquier autoridad política."
+    ],
+    correcta: "c) Tener lealtad al Rey y al ordenamiento jurídico.",
+    justificacion: "El Artículo 10 incluye expresamente este compromiso."
+  },
+ {
+    pregunta: "¿Cuál es uno de los principios institucionales recogidos en el artículo 13 del Código de Conducta?",
+    opciones: [
+      "a) Ejemplaridad política.",
+      "b) Neutralidad ideológica y política.",
+      "c) Participación activa en campañas públicas.",
+      "d) Respeto a todos los discursos partidistas."
+    ],
+    correcta: "b) Neutralidad ideológica y política.",
+    justificacion: "El artículo 13 establece la obligación de mantener neutralidad en cuestiones ideológicas y políticas."
+  },
+  {
+    pregunta: "Según el artículo 14, la jerarquía en la Guardia Civil implica:",
+    opciones: [
+      "a) Igualdad de trato entre todos los miembros.",
+      "b) Disciplina flexible según el mando.",
+      "c) Respeto al orden jerárquico en mando, subordinación y responsabilidad.",
+      "d) Obediencia solo a mandos superiores en servicio urgente."
+    ],
+    correcta: "c) Respeto al orden jerárquico en mando, subordinación y responsabilidad.",
+    justificacion: "La jerarquía regula el orden de mando establecido en el Cuerpo."
+  },
+  {
+    pregunta: "El artículo 18 del Código de Conducta establece que los miembros de la Guardia Civil deberán:",
+    opciones: [
+      "a) Fomentar la cultura general del Cuerpo.",
+      "b) Alcanzar el más alto nivel de competencia profesional.",
+      "c) Conocer las tradiciones del Ejército español.",
+      "d) Participar en actividades internacionales de formación."
+    ],
+    correcta: "b) Alcanzar el más alto nivel de competencia profesional.",
+    justificacion: "Este artículo exige formación continua y adaptabilidad."
+  },
+  {
+    pregunta: "La expresión individual de la disciplina en la Guardia Civil se concreta en:",
+    opciones: [
+      "a) El cumplimiento de las órdenes recibidas.",
+      "b) El respeto por las tradiciones del Cuerpo.",
+      "c) La iniciativa en situaciones no previstas.",
+      "d) La cooperación entre compañeros."
+    ],
+    correcta: "a) El cumplimiento de las órdenes recibidas.",
+    justificacion: "La disciplina se manifiesta en la obediencia individual."
+  },
+  {
+    pregunta: "El artículo 11 del Código de Conducta exige que los miembros de la Guardia Civil:",
+    opciones: [
+      "a) Informen siempre sobre la identidad de los detenidos.",
+      "b) Garanticen la seguridad ciudadana con respeto a los derechos fundamentales.",
+      "c) Apoyen el orden público en manifestaciones pacíficas.",
+      "d) Permanezcan neutrales en conflictos políticos."
+    ],
+    correcta: "b) Garanticen la seguridad ciudadana con respeto a los derechos fundamentales.",
+    justificacion: "Incluye explícitamente el respeto a la vida, dignidad e integridad física de las personas."
+  },
+  {
+    pregunta: "El espíritu benemérito se caracteriza por:",
+    opciones: [
+      "a) El compromiso exclusivo con la seguridad nacional.",
+      "b) La prestación de auxilio a todos, incluso fuera de servicio.",
+      "c) La defensa de los intereses del Cuerpo ante otros organismos.",
+      "d) La supervisión de actuaciones judiciales."
+    ],
+    correcta: "b) La prestación de auxilio a todos, incluso fuera de servicio.",
+    justificacion: "El artículo 21 destaca el socorro con medios propios a quien lo necesite."
+  },
+  {
+    pregunta: "La lealtad, según el artículo 3, debe ser:",
+    opciones: [
+      "a) Exclusiva hacia los superiores jerárquicos.",
+      "b) Recíproca entre superiores y subordinados.",
+      "c) Orientada solo al cumplimiento del deber.",
+      "d) Limitada a intereses profesionales."
+    ],
+    correcta: "b) Recíproca entre superiores y subordinados.",
+    justificacion: "El artículo 3 subraya el compromiso mutuo."
+  },
+  {
+    pregunta: "Según el artículo 8, la dignidad se manifiesta especialmente en:",
+    opciones: [
+      "a) El respeto a las tradiciones internacionales.",
+      "b) El buen nombre de la Institución y respeto a la persona.",
+      "c) La participación en campañas sociales.",
+      "d) La revisión periódica del uniforme."
+    ],
+    correcta: "b) El buen nombre de la Institución y respeto a la persona.",
+    justificacion: "El artículo 8 resalta la trascendencia de la función y el respeto a sí mismos y a los demás."
+  },
+  {
+    pregunta: "El artículo 17 del Código de Conducta establece que los guardias civiles deben:",
+    opciones: [
+      "a) Priorizar la cultura local sobre los principios institucionales.",
+      "b) Respetar la pluralidad cultural y las singularidades territoriales.",
+      "c) Promover la diversidad en las instituciones internacionales.",
+      "d) Usar los idiomas oficiales en todas sus comunicaciones."
+    ],
+    correcta: "b) Respetar la pluralidad cultural y las singularidades territoriales.",
+    justificacion: "Se refiere al respeto por la diversidad cultural en España."
+  },
+  {
+    pregunta: "Según el artículo 19, la cooperación debe darse:",
+    opciones: [
+      "a) Solo con otras unidades de seguridad nacionales.",
+      "b) Conforme al principio de lealtad institucional.",
+      "c) Si no compromete la seguridad del Cuerpo.",
+      "d) En base a necesidades políticas."
+    ],
+    correcta: "b) Conforme al principio de lealtad institucional.",
+    justificacion: "La cooperación con organismos e instituciones se basa en este principio."
+  },
+  {
+    pregunta: "El principio de responsabilidad del artículo 7 implica que los guardias civiles:",
+    opciones: [
+      "a) Solo responderán por acciones dolosas.",
+      "b) Asumen las consecuencias de sus acciones u omisiones.",
+      "c) Remitirán cualquier incidencia a un superior jerárquico.",
+      "d) Actuarán siempre siguiendo órdenes escritas."
+    ],
+    correcta: "b) Asumen las consecuencias de sus acciones u omisiones.",
+    justificacion: "La responsabilidad personal y directa por las actuaciones es clave."
+  },
+  {
+    pregunta: "¿Qué artículo regula el uso del uniforme en la Guardia Civil?",
+    opciones: [
+      "a) Artículo 24.",
+      "b) Artículo 28.",
+      "c) Artículo 35.",
+      "d) Artículo 45."
+    ],
+    correcta: "b) Artículo 28.",
+    justificacion: "El artículo 28 trata sobre el uso correcto del uniforme."
+  },
+  {
+    pregunta: "El principio de reserva respecto del servicio se encuentra en el artículo:",
+    opciones: [
+      "a) 37",
+      "b) 27",
+      "c) 15",
+      "d) 22"
+    ],
+    correcta: "b) 27",
+    justificacion: "El deber de reserva y secreto está regulado en el artículo 27."
+  },
+  {
+    pregunta: "Según el artículo 25, las intervenciones deben hacerse siguiendo los principios de:",
+    opciones: [
+      "a) Templanza, imparcialidad y rigor.",
+      "b) Oportunidad, congruencia y proporcionalidad.",
+      "c) Valor, neutralidad y jerarquía.",
+      "d) Eficiencia, rapidez y uniformidad."
+    ],
+    correcta: "b) Oportunidad, congruencia y proporcionalidad.",
+    justificacion: "El artículo 25 recoge estos principios en relación con prudencia y firmeza."
+  },
+  {
+    pregunta: "La manifestación de la disciplina individual en el Código de Conducta es:",
+    opciones: [
+      "a) Utilizar el saludo militar en todo momento.",
+      "b) Acatar la Constitución Española.",
+      "c) Cumplir las órdenes recibidas.",
+      "d) Participar activamente en el espíritu de cuerpo."
+    ],
+    correcta: "c) Cumplir las órdenes recibidas.",
+    justificacion: "La disciplina individual significa obediencia a las órdenes."
+  },
+  {
+    pregunta: "El respeto por la historia y tradiciones del Cuerpo tiene como objetivo:",
+    opciones: [
+      "a) Ajustar las costumbres tradicionales al contexto europeo.",
+      "b) Conservar y transmitir la herencia de valor y entrega.",
+      "c) Crear nuevas tradiciones para las generaciones futuras.",
+      "d) Promover la historia en los medios de comunicación."
+    ],
+    correcta: "b) Conservar y transmitir la herencia de valor y entrega.",
+    justificacion: "El artículo 23 establece esta obligación como un deber de gratitud."
+  },
+  {
+    pregunta: "Según el artículo 30, la Guardia Civil promoverá:",
+    opciones: [
+      "a) El equilibrio demográfico en las plantillas.",
+      "b) La igualdad real, diversidad y conciliación.",
+      "c) El acceso preferente de mujeres a puestos de mando.",
+      "d) La neutralidad parcial en desigualdades sociales."
+    ],
+    correcta: "b) La igualdad real, diversidad y conciliación.",
+    justificacion: "El artículo 30 del Código de Conducta recoge estos objetivos."
+  },
+  {
+    pregunta: "El artículo 29 pone énfasis en:",
+    opciones: [
+      "a) Sostenibilidad corporativa.",
+      "b) Renovación de infraestructuras.",
+      "c) Incentivos medioambientales.",
+      "d) Diseño ecológico del uniforme."
+    ],
+    correcta: "a) Sostenibilidad corporativa.",
+    justificacion: "Este artículo apuesta por un uso responsable de recursos y gestión sostenible."
+  },
+  {
+    pregunta: "El saludo militar es obligatorio según:",
+    opciones: [
+      "a) El artículo 31 y su relación con la disciplina.",
+      "b) Solo cuando se está de servicio.",
+      "c) En cualquier momento, lugar y uniforme.",
+      "d) El artículo 31 como muestra de saludo jerárquico."
+    ],
+    correcta: "d) El artículo 31 como muestra de saludo jerárquico.",
+    justificacion: "Regula específicamente el saludo militar como forma de respeto y disciplina."
+  },
+  {
+    pregunta: "Evitar difundir información personal o sensible sobre ciudadanos se enmarca en:",
+    opciones: [
+      "a) Transparencia pública.",
+      "b) Reserva respecto del servicio.",
+      "c) Espíritu benemérito.",
+      "d) Cuidado de la salud."
+    ],
+    correcta: "b) Reserva respecto del servicio.",
+    justificacion: "El artículo 27 exhorta a guardar sigilo sobre lo conocido en el ejercicio de sus funciones."
+  },
+  {
+  pregunta: "¿Cuál de los siguientes valores hace referencia a actuar con objetividad, ecuanimidad y comprensión?",
+  opciones: [
+    "a) Sentido de la justicia.",
+    "b) Espíritu de sacrificio.",
+    "c) Responsabilidad.",
+    "d) Integridad."
+  ],
+  correcta: "a) Sentido de la justicia.",
+  justificacion: "Según el artículo 5, este valor implica actuar siempre con objetividad y comprensión."
+},
+{
+  pregunta: "El artículo 42 del Código de Conducta trata sobre:",
+  opciones: [
+    "a) Liderazgo.",
+    "b) Relaciones con otras Fuerzas y Cuerpos de Seguridad.",
+    "c) Espíritu de cuerpo.",
+    "d) Disponibilidad permanente."
+  ],
+  correcta: "a) Liderazgo.",
+  justificacion: "Este artículo regula el comportamiento esperado de quienes ejercen liderazgo."
+},
+{
+  pregunta: "La participación en misiones de carácter militar está contemplada en:",
+  opciones: [
+    "a) El artículo 37.",
+    "b) El artículo 47.",
+    "c) El artículo 49.",
+    "d) El artículo 41."
+  ],
+  correcta: "b) El artículo 47.",
+  justificacion: "Este artículo especifica cómo debe ser el comportamiento en misiones militares."
+},
+{
+  pregunta: "¿Qué principio recoge la disposición de prestar auxilio a quien lo necesite, esté o no de servicio?",
+  opciones: [
+    "a) Espíritu benemérito.",
+    "b) Disciplina.",
+    "c) Respeto por la historia.",
+    "d) Integridad."
+  ],
+  correcta: "a) Espíritu benemérito.",
+  justificacion: "El artículo 21 define el espíritu benemérito como prestar auxilio con los medios a su alcance."
+},
+{
+  pregunta: "El artículo 39 del Código de Conducta regula:",
+  opciones: [
+    "a) La identificación.",
+    "b) La protección de datos.",
+    "c) La cooperación con la Justicia.",
+    "d) La autorregulación normativa."
+  ],
+  correcta: "a) La identificación.",
+  justificacion: "Este artículo garantiza la identificación del personal en su función policial."
+},
+{
+  pregunta: "El empleo de la fuerza durante el servicio está regulado por:",
+  opciones: [
+    "a) Artículo 43.",
+    "b) Artículo 41.",
+    "c) Artículo 45.",
+    "d) Artículo 49."
+  ],
+  correcta: "a) Artículo 43.",
+  justificacion: "Este artículo establece los límites del uso de la fuerza por los guardias civiles."
+},
+{
+  pregunta: "El trato hacia víctimas, testigos y colectivos vulnerables se recoge en el artículo:",
+  opciones: [
+    "a) 36",
+    "b) 45",
+    "c) 44",
+    "d) 32"
+  ],
+  correcta: "c) 44",
+  justificacion: "El artículo 44 regula el trato a estos colectivos durante la labor policial."
+},
+{
+  pregunta: "¿Qué artículo recoge el deber de cooperación y colaboración con las Fuerzas Armadas?",
+  opciones: [
+    "a) Artículo 37.",
+    "b) Artículo 36.",
+    "c) Artículo 15.",
+    "d) Artículo 10."
+  ],
+  correcta: "a) Artículo 37.",
+  justificacion: "Este artículo especifica cómo deben cooperar con las Fuerzas Armadas."
+},
+{
+  pregunta: "El deber de prestar un trato adecuado a personas detenidas o bajo custodia se recoge en:",
+  opciones: [
+    "a) Artículo 43.",
+    "b) Artículo 45.",
+    "c) Artículo 30.",
+    "d) Artículo 26."
+  ],
+  correcta: "b) Artículo 45.",
+  justificacion: "Este artículo obliga a garantizar la dignidad e integridad de las personas detenidas."
+},
+{
+  pregunta: "El artículo 46 del Código de Conducta hace referencia a:",
+  opciones: [
+    "a) Conciencia informativa e investigaciones.",
+    "b) Espiritualidad del mandato.",
+    "c) Espíritu de cuerpo.",
+    "d) Cooperación con el Ministerio Fiscal."
+  ],
+  correcta: "a) Conciencia informativa e investigaciones.",
+  justificacion: "Este artículo regula cómo deben manejarse las informaciones confidenciales."
+},
+{
+  pregunta: "¿Qué artículo trata sobre la transparencia y la información pública?",
+  opciones: [
+    "a) 48",
+    "b) 41",
+    "c) 38",
+    "d) 31"
+  ],
+  correcta: "c) 38",
+  justificacion: "El artículo 38 regula la comunicación e información pública."
+},
+{
+  pregunta: "La obligación de actuar de forma ejemplar para mantener el prestigio del Cuerpo se establece en:",
+  opciones: [
+    "a) Artículo 20.",
+    "b) Artículo 25.",
+    "c) Artículo 32.",
+    "d) Artículo 33."
+  ],
+  correcta: "a) Artículo 20.",
+  justificacion: "Se recoge en el Código de Conducta bajo el concepto de prestigio."
+},
+{
+  pregunta: "¿En qué artículo se exige el compromiso de disponibilidad permanente para el servicio?",
+  opciones: [
+    "a) Artículo 41.",
+    "b) Artículo 24.",
+    "c) Artículo 26.",
+    "d) Artículo 34."
+  ],
+  correcta: "b) Artículo 24.",
+  justificacion: "Este artículo exige disponibilidad y dedicación profesional."
+},
+{
+  pregunta: "La obligación de actuar de manera eficiente y óptima con los recursos asignados está en:",
+  opciones: [
+    "a) Artículo 18.",
+    "b) Artículo 41.",
+    "c) Artículo 26.",
+    "d) Artículo 39."
+  ],
+  correcta: "c) Artículo 26.",
+  justificacion: "La eficacia y eficiencia están reguladas en este artículo."
+},
+{
+  pregunta: "Según el artículo 32, el cuidado de la salud implica:",
+  opciones: [
+    "a) Control exclusivo de riesgos físicos.",
+    "b) Velar por su salud física y mental para el desempeño.",
+    "c) Interacciones con el sistema sanitario autonómico.",
+    "d) Informar de bajas médicas a la unidad de destino."
+  ],
+  correcta: "b) Velar por su salud física y mental para el desempeño.",
+  justificacion: "El artículo 32 habla del cuidado integral de la salud."
+},
+{
+  pregunta: "El deber de reserva y secreto en el servicio se menciona específicamente en:",
+  opciones: [
+    "a) Artículo 24.",
+    "b) Artículo 27.",
+    "c) Artículo 43.",
+    "d) Artículo 33."
+  ],
+  correcta: "b) Artículo 27.",
+  justificacion: "Se refiere al sigilo sobre lo conocido en el ejercicio de sus funciones."
+},
+{
+  pregunta: "El principio de actuar con firmeza y serenidad se recoge en el artículo:",
+  opciones: [
+    "a) 12",
+    "b) 28",
+    "c) 25",
+    "d) 33"
+  ],
+  correcta: "c) 25",
+  justificacion: "Actuar con prudencia y firmeza es parte de este artículo."
+},
+{
+  pregunta: "¿Qué artículo establece los principios del saludo militar?",
+  opciones: [
+    "a) Artículo 21.",
+    "b) Artículo 31.",
+    "c) Artículo 10.",
+    "d) Artículo 17."
+  ],
+  correcta: "b) Artículo 31.",
+  justificacion: "Regula el saludo como muestra de respeto y disciplina."
+},
+{
+  pregunta: "El respeto por las normas internacionales suscritas por España se exige en:",
+  opciones: [
+    "a) Artículo 12.",
+    "b) Artículo 10.",
+    "c) Artículo 14.",
+    "d) Artículo 16."
+  ],
+  correcta: "b) Artículo 10.",
+  justificacion: "Este artículo exige el cumplimiento de tratados y convenios internacionales."
+},
+{
+  pregunta: "El artículo 34 establece normas para las relaciones con:",
+  opciones: [
+    "a) Las autoridades civiles.",
+    "b) Los medios de comunicación.",
+    "c) El Ministerio Público.",
+    "d) Las ONG."
+  ],
+  correcta: "a) Las autoridades civiles.",
+  justificacion: "Se regula la relación con otras autoridades desde el respeto institucional."
+},
+{
+  pregunta: "¿Cuál de los siguientes aspectos regula el artículo 35 del Código de Conducta?",
+  opciones: [
+    "a) Relaciones con la Justicia.",
+    "b) Neutralidad política.",
+    "c) Límites al uso de vehículos oficiales.",
+    "d) Protección de datos sensibles."
+  ],
+  correcta: "a) Relaciones con la Justicia.",
+  justificacion: "Este artículo regula cómo deben actuar los guardias civiles con juzgados y tribunales."
+},
+{
+  pregunta: "El artículo 33 concierne a:",
+  opciones: [
+    "a) Actuación sanitaria.",
+    "b) Cuidado de la salud.",
+    "c) Ayuda humanitaria.",
+    "d) Control de riesgos laborales."
+  ],
+  correcta: "b) Cuidado de la salud.",
+  justificacion: "Este artículo contempla el mantenimiento de la salud como requisito profesional."
+},
+{
+  pregunta: "¿Qué artículo establece los mecanismos para el control de la ética pública?",
+  opciones: [
+    "a) Artículo 48.",
+    "b) Artículo 46.",
+    "c) Artículo 49.",
+    "d) Artículo 44."
+  ],
+  correcta: "c) Artículo 49.",
+    justificacion: "Este artículo hace referencia a los controles éticos dentro del Cuerpo."
+},
+{
+  pregunta: "El artículo 40 promueve:",
+  opciones: [
+    "a) El uso adecuado del armamento reglamentario.",
+    "b) La protección de la identidad de los agentes.",
+    "c) La formación y el adiestramiento continuado.",
+    "d) La retribución acorde al grado."
+  ],
+  correcta: "c) La formación y el adiestramiento continuado.",
+  justificacion: "El artículo 40 recoge la promoción de la formación como un deber institucional."
+},
+{
+  pregunta: "El artículo 41 aborda específicamente:",
+  opciones: [
+    "a) Transparencia en la actuación pública.",
+    "b) Disponibilidad operativa y servicio permanente.",
+    "c) Información a los medios.",
+    "d) Relaciones con entidades locales."
+  ],
+  correcta: "b) Disponibilidad operativa y servicio permanente.",
+  justificacion: "Este artículo detalla la disponibilidad a tiempo completo para el servicio."
+},
+{
+  pregunta: "¿En qué artículo se regula el trato con familiares de los miembros de la Guardia Civil?",
+  opciones: [
+    "a) Artículo 50.",
+    "b) Artículo 29.",
+    "c) Artículo 34.",
+    "d) Ninguno específicamente."
+  ],
+  correcta: "d) Ninguno específicamente.",
+  justificacion: "El Código de Conducta no incluye un artículo dedicado de manera específica a familiares."
+},
+{
+  pregunta: "El artículo 22 hace referencia al deber de:",
+  opciones: [
+    "a) Prestar socorro en carretera.",
+    "b) Servir con buena voluntad y colaboración.",
+    "c) Identificarse visiblemente en actos de servicio.",
+    "d) Informar a la familia del detenido."
+  ],
+  correcta: "b) Servir con buena voluntad y colaboración.",
+  justificacion: "Se destaca la idea de cooperación y aportación al bien común."
+},
+{
+  pregunta: "El artículo 12 del Código de Conducta determina que el espíritu de sacrificio implica:",
+  opciones: [
+    "a) Cooperación estrecha con medios de comunicación.",
+    "b) Renunciar a ciertas condiciones personales en beneficio del servicio.",
+    "c) No asumir riesgos innecesarios nunca.",
+    "d) Trabajar solo en horario reglamentado."
+  ],
+  correcta: "b) Renunciar a ciertas condiciones personales en beneficio del servicio.",
+  justificacion: "El espíritu de sacrificio se basa en la entrega, incluso a costa de intereses personales."
+},
+{
+  pregunta: "¿Qué artículo regula los límites en el uso de redes sociales?",
+  opciones: [
+    "a) 46",
+    "b) 27",
+    "c) 38",
+    "d) No se regula en el Código"
+  ],
+  correcta: "d) No se regula en el Código",
+  justificacion: "El Código no especifica el uso de redes sociales, aunque se deriva de la reserva y el deber de integridad."
+},
+{
+  pregunta: "Actuar con disciplina se manifiesta de manera colectiva a través de:",
+  opciones: [
+    "a) La obediencia de órdenes particulares.",
+    "b) El respeto a la ley y la Constitución.",
+    "c) El uso ordenado del armamento.",
+    "d) La identificación funcional constante."
+  ],
+  correcta: "b) El respeto a la ley y la Constitución.",
+  justificacion: "El artículo 15 recoge el acatamiento de la Constitución como disciplina colectiva."
+},
+{
+  pregunta: "Según el artículo 9, tener sentido de la justicia significa:",
+  opciones: [
+    "a) Aplicar la ley sin valorar circunstancias.",
+    "b) Actuar siempre con objetividad y ecuanimidad.",
+    "c) Evitar la toma de decisiones discrecionales.",
+    "d) Priorizar la ley sobre los derechos humanos."
+  ],
+  correcta: "b) Actuar siempre con objetividad y ecuanimidad.",
+  justificacion: "El código define este valor como actuar con imparcialidad y comprensión."
+},
+{
+  pregunta: "El artículo 36 establece un principio de cooperación con otras instituciones, ¿cuál es?",
+  opciones: [
+    "a) Cooperación internacional en conflictos bélicos.",
+    "b) Cooperación en investigaciones científicas.",
+    "c) Cooperación con otras Fuerzas y Cuerpos de Seguridad del Estado.",
+    "d) Cooperación con instituciones educativas."
+  ],
+  correcta: "c) Cooperación con otras Fuerzas y Cuerpos de Seguridad del Estado.",
+  justificacion: "Se recoge la necesidad de colaboración con otras fuerzas de seguridad."
+},
+{
+  pregunta: "¿Qué artículo establece el deber de identificación en el ejercicio policial?",
+  opciones: [
+    "a) Artículo 19.",
+    "b) Artículo 39.",
+    "c) Artículo 45.",
+    "d) Artículo 41."
+  ],
+  correcta: "b) Artículo 39.",
+  justificacion: "Garantiza la identificación de los agentes en sus actuaciones."
+},
+{
+  pregunta: "Señala cuál de los siguientes artículos regula los principios de oportunidad, congruencia y proporcionalidad:",
+  opciones: [
+    "a) Artículo 25.",
+    "b) Artículo 30.",
+    "c) Artículo 12.",
+    "d) Artículo 16."
+  ],
+  correcta: "a) Artículo 25.",
+  justificacion: "Este artículo los vincula con la actuación policial firme y prudente."
+},
+{
+  pregunta: "La obligación de mantener el prestigio de la Guardia Civil se establece en el artículo:",
+  opciones: [
+    "a) 16",
+    "b) 20",
+    "c) 23",
+    "d) 30"
+  ],
+  correcta: "b) 20",
+  justificacion: "Este artículo pone el foco en el prestigio y buena imagen institucional."
+},
+{
+  pregunta: "El artículo 11 indica que la Guardia Civil deberá actuar para garantizar:",
+  opciones: [
+    "a) La independencia económica de la ciudadanía.",
+    "b) La seguridad ciudadana y los derechos fundamentales.",
+    "c) El cumplimiento estricto de la ley, sin excepciones.",
+    "d) La gestión imparcial de conflictos comerciales."
+  ],
+  correcta: "b) La seguridad ciudadana y los derechos fundamentales.",
+  justificacion: "Incluye protección de la vida, dignidad e integridad."
+},
+{
+  pregunta: "¿Cuál de los siguientes aspectos NO forma parte del artículo 25 sobre actuación policial?",
+  opciones: [
+    "a) Prudencia.",
+    "b) Firmeza.",
+    "c) Serenidad.",
+    "d) Sigilo."
+  ],
+  correcta: "d) Sigilo.",
+  justificacion: "El sigilo corresponde a la reserva respecto al servicio (art. 27), no al art. 25."
+},
+{
+  pregunta: "El artículo 48 trata sobre:",
+  opciones: [
+    "a) Cooperación con la Justicia.",
+    "b) Relaciones internacionales.",
+    "c) Ética pública.",
+    "d) Conductas profesionales digitales."
+  ],
+  correcta: "a) Cooperación con la Justicia.",
+  justificacion: "El artículo 48 regula la colaboración con jueces y fiscales."
+},
+{
+  pregunta: "El artículo 13 establece la neutralidad en:",
+  opciones: [
+    "a) Ámbitos políticos e ideológicos.",
+    "b) Órdenes judiciales.",
+    "c) Conflictos laborales.",
+    "d) Recursos públicos."
+  ],
+  correcta: "a) Ámbitos políticos e ideológicos.",
+  justificacion: "Los agentes deben mantener una posición neutral ante ideologías o partidos."
+},
+{
+  pregunta: "¿Qué artículo se refiere al uso del uniforme reglamentario?",
+  opciones: [
+    "a) Artículo 27.",
+    "b) Artículo 16.",
+    "c) Artículo 28.",
+    "d) Artículo 49."
+  ],
+  correcta: "c) Artículo 28.",
+  justificacion: "Se estipula el correcto uso del uniforme en el servicio."
+},
+{
+  pregunta: "Según el artículo 14 del Código de Conducta, el respeto jerárquico implica:",
+  opciones: [
+    "a) Cumplir órdenes sin cuestionarlas nunca.",
+    "b) Respetar el escalafón de mando en todas las circunstancias.",
+    "c) Obedecer órdenes ilegales si provienen de un superior.",
+    "d) Comunicarse solo con mandos directos."
+  ],
+  correcta: "b) Respetar el escalafón de mando en todas las circunstancias.",
+  justificacion: "El artículo 14 establece la importancia del orden jerárquico como base del funcionamiento institucional."
+},
+{
+  pregunta: "¿Qué artículo regula el uso apropiado del material, instalaciones y recursos de la Guardia Civil?",
+  opciones: [
+    "a) Artículo 26.",
+    "b) Artículo 32.",
+    "c) Artículo 15.",
+    "d) Artículo 11."
+  ],
+  correcta: "a) Artículo 26.",
+  justificacion: "Este artículo exige la utilización responsable y eficiente de los recursos asignados."
+},
+{
+  pregunta: "¿Qué concepto central recoge el artículo 10?",
+  opciones: [
+    "a) Disciplina de servicio.",
+    "b) Defensa de la Constitución y del ordenamiento jurídico.",
+    "c) Autoridad moral del servicio público.",
+    "d) Formación constante."
+  ],
+  correcta: "b) Defensa de la Constitución y del ordenamiento jurídico.",
+  justificacion: "Este artículo vincula la actividad del Cuerpo al respeto y protección del marco constitucional."
+},
+{
+  pregunta: "El deber de actuar con espíritu de cuerpo implica:",
+  opciones: [
+    "a) Identificarse con la política institucional sin disidencias.",
+    "b) Mantener la cohesión y compañerismo dentro del Cuerpo.",
+    "c) Permitir que el mando decida sobre todo.",
+    "d) Priorizar el bienestar personal sobre el servicio."
+  ],
+  correcta: "b) Mantener la cohesión y compañerismo dentro del Cuerpo.",
+  justificacion: "El espíritu de cuerpo se plasma en el apoyo mutuo y la cohesión institucional."
+},
+{
+  pregunta: "¿A qué hace referencia el artículo 30 en términos de derechos?",
+  opciones: [
+    "a) Derechos fundamentales del personal militar.",
+    "b) Igualdad, diversidad y conciliación.",
+    "c) Derecho al ascenso automático por antigüedad.",
+    "d) Libertad de expresión en servicio."
+  ],
+  correcta: "b) Igualdad, diversidad y conciliación.",
+  justificacion: "Se promueve la igualdad real y la conciliación entre vida profesional y personal."
+},
+{
+  pregunta: "El artículo 31 se enfoca en:",
+  opciones: [
+    "a) Las relaciones de mando.",
+    "b) El saludo militar como símbolo de respeto.",
+    "c) El uso operativo de comunicaciones codificadas.",
+    "d) El desempeño de la protección civil."
+  ],
+  correcta: "b) El saludo militar como símbolo de respeto.",
+  justificacion: "Regula cómo y cuándo debe realizarse el saludo militar."
+},
+{
+  pregunta: "El principio de integridad se basa en:",
+  opciones: [
+    "a) Cumplir todas las órdenes sin excepción.",
+    "b) Buscar justicia sin tener en cuenta el impacto en terceros.",
+    "c) Actuar con rectitud y honradez en todo momento.",
+    "d) Anteponer la eficacia a la ética si es necesario."
+  ],
+  correcta: "c) Actuar con rectitud y honradez en todo momento.",
+  justificacion: "El artículo 2 establece la integridad como pilar fundamental del servicio."
+},
+{
+  pregunta: "El respeto por la vida, dignidad e integridad física de las personas se contempla en el artículo:",
+  opciones: [
+    "a) 7",
+    "b) 11",
+    "c) 26",
+    "d) 15"
+  ],
+  correcta: "b) 11",
+  justificacion: "Este artículo asegura el respeto a los derechos fundamentales en la actuación policial."
+},
+{
+  pregunta: "Actuar con equidad y sin prejuicios corresponde a:",
+  opciones: [
+    "a) Lealtad.",
+    "b) Imparcialidad.",
+    "c) Responsabilidad.",
+    "d) Jerarquía."
+  ],
+  correcta: "b) Imparcialidad.",
+  justificacion: "El artículo 6 establece actuar sin preferencias, prejuicios o discriminación."
+},
+{
+  pregunta: "El artículo 12 se refiere al valor, ¿qué implica este valor?",
+  opciones: [
+    "a) Enfrentar peligros con serenidad y ánimo decidido.",
+    "b) Ejecutar órdenes complejas con rapidez.",
+    "c) Desplegar recursos en situaciones de riesgo mínimo.",
+    "d) Usar la fuerza siempre que existan amenazas."
+  ],
+  correcta: "a) Enfrentar peligros con serenidad y ánimo decidido.",
+  justificacion: "Este artículo define el valor como disposición ante contingencias y peligros."
+},
+{
+  pregunta: "Según el artículo 16, las órdenes deben ser:",
+  opciones: [
+    "a) Expresamente verbales para rapidez.",
+    "b) Claras y adecuadas al servicio.",
+    "c) Escritas siempre y autorizadas por el mando superior.",
+    "d) Interpretadas libremente si se desconoce su origen."
+  ],
+  correcta: "b) Claras y adecuadas al servicio.",
+  justificacion: "Las órdenes deben ser precisas y ajustadas a la finalidad del servicio."
+},
+{
+  pregunta: "¿Qué concepto se relaciona directamente con la protección del bien común?",
+  opciones: [
+    "a) Espíritu benemérito.",
+    "b) Sentido de la justicia.",
+    "c) Servicio público.",
+    "d) Responsabilidad."
+  ],
+  correcta: "c) Servicio público.",
+  justificacion: "Los miembros del Cuerpo deben orientar su labor al beneficio social general."
+},
+{
+  pregunta: "El artículo 47 menciona el comportamiento en misiones militares, que debe ser:",
+  opciones: [
+    "a) Regido por el Derecho Penal Militar exclusivamente.",
+    "b) Con respeto al Derecho Internacional Humanitario.",
+    "c) Dependiente de las normas internas del Cuerpo.",
+    "d) Supervisado solo por mandos extranjeros."
+  ],
+  correcta: "b) Con respeto al Derecho Internacional Humanitario.",
+  justificacion: "Se exige el respeto a las normas humanitarias en conflictos armados."
+},
+{
+  pregunta: "Actuar con buena voluntad es una manifestación de:",
+  opciones: [
+    "a) Espíritu de sacrificio.",
+    "b) Espíritu benemérito.",
+    "c) Respeto institucional.",
+    "d) Neutralidad política."
+  ],
+  correcta: "b) Espíritu benemérito.",
+  justificacion: "El artículo 21 recoge el auxilio incluso fuera de servicio como parte de este espíritu."
+},
+{
+  pregunta: "El artículo 38 trata sobre:",
+  opciones: [
+    "a) Transparencia en el servicio público.",
+    "b) Uso correcto del uniforme.",
+    "c) Protección del secreto profesional.",
+    "d) Información comunicada a la ciudadanía."
+  ],
+  correcta: "a) Transparencia en el servicio público.",
+  justificacion: "Establece responsabilidad en la comunicación de información sin comprometer investigaciones."
+},
+{
+  pregunta: "El artículo 24 exige que un guardia civil esté:",
+  opciones: [
+    "a) Disponible permanentemente para cualquier tipo de servicio.",
+    "b) Asignado a servicio en función de su elección propia.",
+    "c) Exento de actividad si carece de medios.",
+    "d) Limitado a su horario oficial de jornada."
+  ],
+  correcta: "a) Disponible permanentemente para cualquier tipo de servicio.",
+  justificacion: "Este artículo habla de disponibilidad constante como compromiso profesional."
+},
+{
+  pregunta: "El artículo 17 promueve el respeto a:",
+  opciones: [
+    "a) Las tradiciones castrenses internacionales.",
+    "b) La pluralidad cultural en España.",
+    "c) Las preferencias lingüísticas autónomas.",
+    "d) El valor internacional de derechos humanos."
+  ],
+  correcta: "b) La pluralidad cultural en España.",
+  justificacion: "Se recoge el deber de respeto a las diferencias culturales y tradiciones."
+},
+{
+  pregunta: "Según el artículo 27, la reserva profesional implica:",
+  opciones: [
+    "a) Evitar informar sobre actuaciones en curso incluso a mandos.",
+    "b) Guardar sigilo sobre hechos conocidos en el ejercicio de la función.",
+    "c) Comunicar todos los datos del servicio al público en general.",
+    "d) Usar el uniforme solo en actos oficiales."
+  ],
+  correcta: "b) Guardar sigilo sobre hechos conocidos en el ejercicio de la función.",
+  justificacion: "Se protege la confidencialidad de la información obtenida por razón del servicio."
+},
+{
+  pregunta: "El Código de Conducta establece que la formación debe:",
+  opciones: [
+    "a) Ser opcional una vez alcanzado un grado superior.",
+    "b) Adaptarse a los nuevos riesgos y demandas de la sociedad.",
+    "c) Centrarse solo en el adiestramiento físico.",
+    "d) Ser supervisada por entidades internacionales."
+  ],
+  correcta: "b) Adaptarse a los nuevos riesgos y demandas de la sociedad.",
+  justificacion: "El artículo 40 destaca la formación constante orientada a necesidades emergentes."
+},
+{
+  pregunta: "El deber de responsabilidad implica que los guardias civiles deben:",
+  opciones: [
+    "a) Informar inmediatamente cualquier incidencia a sus superiores.",
+    "b) Responder por sus actos u omisiones, incluso fuera de servicio.",
+    "c) Asumir consecuencias solo cuando actúan de forma voluntaria.",
+    "d) Delegar responsabilidad en otros miembros del equipo."
+  ],
+  correcta: "b) Responder por sus actos u omisiones, incluso fuera de servicio.",
+  justificacion: "El artículo 7 recoge la responsabilidad individual como principio ético fundamental."
+},
+{
+  pregunta: "El artículo 22 del Código de Conducta hace referencia a:",
+  opciones: [
+    "a) La colaboración con organismos internacionales.",
+    "b) La prestación de auxilio con buena voluntad.",
+    "c) La conservación de la cadena de mando.",
+    "d) El uso racional del material del Cuerpo."
+  ],
+  correcta: "b) La prestación de auxilio con buena voluntad.",
+  justificacion: "Este artículo subraya la disposición a servir con buena voluntad y cooperación."
+},
+{
+  pregunta: "El principio de neutralidad establece que los guardias civiles:",
+  opciones: [
+    "a) Pueden participar activamente en manifestaciones políticas durante el servicio.",
+    "b) No pueden expresar opiniones personales nunca.",
+    "c) Deben actuar sin vincularse con partidos o ideologías.",
+    "d) Deben informar sobre sus preferencias políticas si son requeridos."
+  ],
+  correcta: "c) Deben actuar sin vincularse con partidos o ideologías.",
+  justificacion: "El artículo 13 asegura la imparcialidad y la neutralidad en su actuación."
+},
+{
+  pregunta: "El artículo 29 compromete al Cuerpo con:",
+  opciones: [
+    "a) El desarrollo sostenible y el buen uso de los recursos.",
+    "b) La participación en eventos medioambientales.",
+    "c) La creación de unidades ecológicas específicas.",
+    "d) La colaboración con ONG de conservación."
+  ],
+  correcta: "a) El desarrollo sostenible y el buen uso de los recursos.",
+  justificacion: "Este artículo fomenta el respeto al medio ambiente como parte del servicio público."
+},
+{
+  pregunta: "¿En qué artículo se recoge la obligación de respetar las tradiciones del Cuerpo?",
+  opciones: [
+    "a) Artículo 23.",
+    "b) Artículo 21.",
+    "c) Artículo 10.",
+    "d) Artículo 28."
+  ],
+  correcta: "a) Artículo 23.",
+  justificacion: "Este artículo habla de la gratitud y transmisión del legado del Cuerpo."
+},
+{
+  pregunta: "El artículo 34 se refiere a las relaciones con:",
+  opciones: [
+    "a) Otras fuerzas de seguridad internacionales.",
+    "b) Las autoridades civiles y administrativas.",
+    "c) Las personas detenidas.",
+    "d) La prensa y los medios."
+  ],
+  correcta: "b) Las autoridades civiles y administrativas.",
+  justificacion: "Este artículo establece el respeto institucional y la colaboración con autoridades civiles."
+},
+{
+  pregunta: "El uso correcto del uniforme reglamentario está regulado en el artículo:",
+  opciones: [
+    "a) 28",
+    "b) 31",
+    "c) 19",
+    "d) 40"
+  ],
+  correcta: "a) Artículo 28.",
+  justificacion: "El artículo 28 especifica cómo debe utilizarse el uniforme, garantizando su buen uso."
+},
+{
+  pregunta: "La actuación con proporcionalidad y prudencia se recoge en el artículo:",
+  opciones: [
+    "a) Artículo 7.",
+    "b) Artículo 11.",
+    "c) Artículo 25.",
+    "d) Artículo 39."
+  ],
+  correcta: "c) Artículo 25.",
+  justificacion: "Este artículo establece que el uso de la fuerza debe ser proporcional, congruente y prudente."
+},
+{
+  pregunta: "El deber de cooperación con los juzgados y tribunales está regulado en:",
+  opciones: [
+    "a) Artículo 48.",
+    "b) Artículo 35.",
+    "c) Artículo 39.",
+    "d) Artículo 38."
+  ],
+  correcta: "a) Artículo 48.",
+  justificacion: "Este artículo se dedica a la colaboración con la Justicia."
+},
+{
+  pregunta: "¿Qué artículo regula la identificación del agente durante sus actuaciones?",
+  opciones: [
+    "a) Artículo 39.",
+    "b) Artículo 25.",
+    "c) Artículo 35.",
+    "d) Artículo 11."
+  ],
+  correcta: "a) Artículo 39.",
+  justificacion: "Específico sobre identificación policial en servicio."
+},
+{
+  pregunta: "El deber de obedecer órdenes en el servicio está establecido en el artículo:",
+  opciones: [
+    "a) 12",
+    "b) 39",
+    "c) 16",
+    "d) 24"
+  ],
+  correcta: "c) Artículo 16.",
+  justificacion: "Regula la obediencia debida y las órdenes dentro del marco legal."
+},
+{
+  pregunta: "Actuar con disciplina colectiva implica principalmente:",
+  opciones: [
+    "a) Seguir normas internas sin cuestionamiento.",
+    "b) Acatar la Constitución y el ordenamiento jurídico.",
+    "c) Estar disponible siempre ante el mando superior.",
+    "d) Cumplir con todas las órdenes directamente."
+  ],
+  correcta: "b) Acatar la Constitución y el ordenamiento jurídico.",
+  justificacion: "Este aspecto de la disciplina se trata en el artículo 15."
+},
+{
+  pregunta: "¿Qué valor exige actuar con rectitud incluso en situaciones difíciles?",
+  opciones: [
+    "a) Lealtad.",
+    "b) Integridad.",
+    "c) Responsabilidad.",
+    "d) Espíritu de sacrificio."
+  ],
+  correcta: "b) Integridad.",
+  justificacion: "El artículo 2 define la integridad como rectitud y honestidad."
+},
+{
+  pregunta: "El artículo 37 fomenta la cooperación con:",
+  opciones: [
+    "a) Las Fuerzas Armadas.",
+    "b) Las ONG de defensa civil.",
+    "c) Los servicios de emergencia extranjeros.",
+    "d) Los partidos políticos."
+  ],
+  correcta: "a) Las Fuerzas Armadas.",
+  justificacion: "Este artículo trata de la cooperación institucional con las Fuerzas Armadas."
+},
+{
+  pregunta: "El artículo 18 del Código establece que:",
+  opciones: [
+    "a) Los miembros deben aspirar a la excelencia profesional.",
+    "b) Los guardias civiles pueden elegir libremente su destino.",
+    "c) El acceso a la formación depende de la antigüedad.",
+    "d) El aprendizaje se realiza exclusivamente en academias."
+  ],
+  correcta: "a) Los miembros deben aspirar a la excelencia profesional.",
+  justificacion: "Se exige alcanzar el nivel de formación y habilidad necesarios para el servicio."
+},
+{
+  pregunta: "El valor que representa la capacidad de arriesgar la propia vida por el servicio se denomina:",
+  opciones: [
+    "a) Espíritu benemérito.",
+    "b) Integridad.",
+    "c) Valor.",
+    "d) Responsabilidad."
+  ],
+  correcta: "c) Valor.",
+  justificacion: "El artículo 4 define el valor como asumir riesgos en favor del servicio."
+},
+{
+  pregunta: "El artículo 33 contempla la obligación de:",
+  opciones: [
+    "a) Practicar deporte diariamente.",
+    "b) Mantener la salud física y mental.",
+    "c) Evaluar el estado físico del compañero.",
+    "d) Solicitar licencias médicas periódicas."
+  ],
+  correcta: "b) Mantener la salud física y mental.",
+  justificacion: "Se especifica que el guardia civil debe velar por su salud para cumplir con sus funciones."
+},
+{
+  pregunta: "El artículo 41 indica sobre la disponibilidad:",
+  opciones: [
+    "a) Que solo se exige en horario laboral.",
+    "b) Que es condición esencial para el servicio.",
+    "c) Que se mantiene solo para mandos superiores.",
+    "d) Que se regula por orden interna."
+  ],
+  correcta: "b) Que es condición esencial para el servicio.",
+  justificacion: "La disponibilidad permanente se considera un deber según el artículo 41."
+},
+{
+  pregunta: "El artículo 32 promueve el cuidado de la salud como:",
+  opciones: [
+    "a) Un esfuerzo colectivo del Cuerpo.",
+    "b) Un deber personal del guardia civil.",
+    "c) Un derecho que sólo se activa en situaciones de riesgo.",
+    "d) Una obligación para los mandos exclusivamente."
+  ],
+  correcta: "b) Un deber personal del guardia civil.",
+  justificacion: "Cada miembro debe velar por su propia salud para servir eficazmente."
+},
+{
+  pregunta: "El artículo 46 trata sobre:",
+  opciones: [
+    "a) La ética pública en expedientes disciplinarios.",
+    "b) La correcta gestión de la información reservada y confidencial.",
+    "c) El acceso restringido a la base de datos policial.",
+    "d) Cómo actuar ante filtraciones a medios."
+  ],
+  correcta: "b) La correcta gestión de la información reservada y confidencial.",
+  justificacion: "Regula el uso y tratamiento de la información sensible."
+},
+{
+  pregunta: "¿Cuál de estos principios aparece en el artículo 5?",
+  opciones: [
+    "a) Sentido de la justicia.",
+    "b) Jerarquía.",
+    "c) Neutralidad.",
+    "d) Espíritu de sacrificio."
+  ],
+  correcta: "a) Sentido de la justicia.",
+  justificacion: "El artículo 5 destaca actuar con objetividad y ecuanimidad (justicia)."
+},
+{
+  pregunta: "Según el artículo 1 del Código de Conducta, el honor es:",
+  opciones: [
+    "a) Un principio opcional según la situación del servicio.",
+    "b) La principal divisa de los miembros de la Guardia Civil.",
+    "c) Un valor exclusivamente militar.",
+    "d) Un aspecto que depende del reconocimiento profesional."
+  ],
+  correcta: "b) La principal divisa de los miembros de la Guardia Civil.",
+  justificacion: "El honor es la base del comportamiento y la ética profesional, según el artículo 1."
+},
+{
+  pregunta: "El artículo 6 establece que el guardia civil debe actuar con imparcialidad, lo que implica:",
+  opciones: [
+    "a) Favorecer al más débil siempre.",
+    "b) Mantener la neutralidad en situaciones conflictivas.",
+    "c) Tener en cuenta las preferencias del servicio.",
+    "d) Priorizar los intereses de la víctima."
+  ],
+  correcta: "b) Mantener la neutralidad en situaciones conflictivas.",
+  justificacion: "La imparcialidad significa actuar sin prejuicios o preferencias."
+},
+{
+  pregunta: "El deber de reserva y sigilo está contemplado en el artículo:",
+  opciones: [
+    "a) 39",
+    "b) 16",
+    "c) 27",
+    "d) 45"
+  ],
+  correcta: "c) Artículo 27.",
+  justificacion: "Este artículo obliga a mantener confidencialidad sobre información de servicio."
+},
+{
+  pregunta: "¿Qué artículo regula el liderazgo dentro de la Guardia Civil?",
+  opciones: [
+    "a) 42",
+    "b) 43",
+    "c) 38",
+    "d) 49"
+  ],
+  correcta: "a) Artículo 42.",
+  justificacion: "Establece los principios éticos y de conducta esperados de los líderes del Cuerpo."
+},
+{
+  pregunta: "El guardia civil deberá actuar con proporcionalidad según lo dispuesto en el artículo:",
+  opciones: [
+    "a) 19",
+    "b) 16",
+    "c) 25",
+    "d) 12"
+  ],
+  correcta: "c) Artículo 25.",
+  justificacion: "Este artículo establece la proporcionalidad, congruencia y prudencia en la actuación."
+},
+{
+  pregunta: "Entre los valores superiores que recoge el Código está:",
+  opciones: [
+    "a) El interés personal del guardia civil.",
+    "b) La preservación del orden público sobre los derechos individuales.",
+    "c) La defensa de la Constitución y del ordenamiento jurídico.",
+    "d) La eficiencia corporativa ante todo."
+  ],
+  correcta: "c) La defensa de la Constitución y del ordenamiento jurídico.",
+  justificacion: "Artículo 10: se enfatiza la lealtad a la Constitución como valor principal."
+},
+{
+  pregunta: "Según el artículo 37, la Guardia Civil cooperará especialmente con:",
+  opciones: [
+    "a) La Policía Local.",
+    "b) Las ONG internacionales.",
+    "c) Las Fuerzas Armadas.",
+    "d) La Policía Nacional exclusivamente."
+  ],
+  correcta: "c) Las Fuerzas Armadas.",
+  justificacion: "Este artículo destaca la cooperación institucional con las Fuerzas Armadas."
+},
+{
+  pregunta: "El artículo 44 está orientado hacia el trato especial de:",
+  opciones: [
+    "a) Personas reincidentes.",
+    "b) Personas detenidas.",
+    "c) Víctimas, testigos y colectivos vulnerables.",
+    "d) Menores infractores."
+  ],
+  correcta: "c) Víctimas, testigos y colectivos vulnerables.",
+  justificacion: "Se enfatiza la protección especiales con estos grupos."
+},
+{
+  pregunta: "El deber de informar de forma veraz y proporcionada a los medios se contempla en el artículo:",
+  opciones: [
+    "a) 38",
+    "b) 27",
+    "c) 45",
+    "d) 35"
+  ],
+  correcta: "a) Artículo 38.",
+  justificacion: "Este artículo hace referencia a la información pública y la transparencia."
+},
+{
+  pregunta: "El artículo 47 hace mención a las misiones militares, estableciendo que estas deben ejercerse:",
+  opciones: [
+    "a) Bajo directrices estrictas del Derecho Internacional Humanitario.",
+    "b) Con flexibilidad ética en casos extremos.",
+    "c) Solo en misiones de paz.",
+    "d) Únicamente bajo supervisión civil."
+  ],
+  correcta: "a) Bajo directrices estrictas del Derecho Internacional Humanitario.",
+  justificacion: "Se recuerda que la ética y respeto al DIH están presentes también en misiones militares."
+},
+{
+  pregunta: "¿Qué artículo incluye la obligación de los guardias civiles de velar por su salud física y mental?",
+  opciones: [
+    "a) 32",
+    "b) 23",
+    "c) 39",
+    "d) 12"
+  ],
+  correcta: "a) Artículo 32.",
+  justificacion: "Este artículo incluye el cuidado de la salud como parte del deber de servicio."
+},
+{
+  pregunta: "¿Qué valor ético exige actuar a pesar del peligro y la adversidad?",
+  opciones: [
+    "a) Lealtad.",
+    "b) Integridad.",
+    "c) Valor.",
+    "d) Justicia."
+  ],
+  correcta: "c) Valor.",
+  justificacion: "El artículo 4 define el valor como la disposición a enfrentarse a situaciones de riesgo."
+},
+{
+  pregunta: "Según el artículo 14, la jerarquía implica también responsabilidad:",
+  opciones: [
+    "a) Compartida entre mandos y subordinados.",
+    "b) Exclusivamente de la cadena de mando.",
+    "c) Individual de los subordinados.",
+    "d) Inherente al cargo y no compartida."
+  ],
+  correcta: "a) Compartida entre mandos y subordinados.",
+  justificacion: "La responsabilidad jerárquica es recíproca."
+},
+{
+  pregunta: "El artículo 18 promueve un nivel de competencia profesional mediante:",
+  opciones: [
+    "a) La formación continua y la actualización de conocimientos.",
+    "b) La valoración de los méritos exclusivamente en antigüedad.",
+    "c) La participación obligatoria en cursos internacionales.",
+    "d) La supervisión exclusiva de los mandos."
+  ],
+  correcta: "a) La formación continua y la actualización de conocimientos.",
+  justificacion: "La formación es esencial para la competencia profesional."
+},
+{
+  pregunta: "Actuar con lealtad según el artículo 3 implica:",
+  opciones: [
+    "a) Obedecer órdenes sin cuestionar su legalidad.",
+    "b) Comprometerse con los superiores de forma exclusiva.",
+    "c) Servir con fidelidad a los principios constitucionales.",
+    "d) Anteponer la ética personal a la disciplina."
+  ],
+  correcta: "c) Servir con fidelidad a los principios constitucionales.",
+  justificacion: "La lealtad se dirige hacia los valores institucionales."
+},
+{
+  pregunta: "El artículo 33 está relacionado con el deber de:",
+  opciones: [
+    "a) Mantener un estado de forma física apto para el servicio.",
+    "b) Depender exclusivamente de la unidad médica del Cuerpo.",
+    "c) Comunicar cualquier enfermedad a la autoridad sanitaria.",
+    "d) Gestionar la salud de los compañeros."
+  ],
+  correcta: "a) Mantener un estado de forma física apto para el servicio.",
+  justificacion: "El artículo 33 señala el autocuidado como obligación profesional."
+},
+{
+  pregunta: "El artículo 35 promueve la colaboración con:",
+  opciones: [
+    "a) Los medios de comunicación",
+    "b) Los órganos judiciales",
+    "c) Las ONG de derechos humanos",
+    "d) Instituciones educativas"
+  ],
+  correcta: "b) Los órganos judiciales",
+  justificacion: "El artículo 35 regula la relación con juzgados y tribunales."
+},
+{
+  pregunta: "¿En qué artículo se aborda el deber de identificación del guardia civil en acto de servicio?",
+  opciones: [
+    "a) 39",
+    "b) 45",
+    "c) 21",
+    "d) 27"
+  ],
+  correcta: "a) Artículo 39.",
+  justificacion: "Se garantiza la identificación del agente durante su actuación pública."
+},
+{
+  pregunta: "El artículo 30 promueve la igualdad, la diversidad y:",
+  opciones: [
+    "a) La innovación digital.",
+    "b) El voluntariado externo.",
+    "c) La conciliación.",
+    "d) La participación política libre."
+  ],
+  correcta: "c) La conciliación.",
+  justificacion: "Este artículo subraya la conciliación laboral y personal como parte de la ética profesional."
+},
+{
+  pregunta: "El artículo 25 exige actuar con firmeza pero también con:",
+  opciones: [
+    "a) Agresividad si es necesario.",
+    "b) Serenidad.",
+    "c) Superioridad táctica.",
+    "d) Secreto completo."
+  ],
+  correcta: "b) Serenidad.",
+  justificacion: "El equilibrio entre firmeza y serenidad define la correcta actuación policial según el artículo 25."
+},
+{
+  pregunta: "El deber de prestar auxilio incluso fuera de servicio se contempla en:",
+  opciones: [
+    "a) Artículo 21, espíritu benemérito.",
+    "b) Artículo 44, trato a víctimas.",
+    "c) Artículo 20, prestigio del Cuerpo.",
+    "d) Artículo 26, eficiencia."
+  ],
+  correcta: "a) Artículo 21, espíritu benemérito.",
+  justificacion: "Se refiere al socorro con medios propios, incluso fuera de servicio."
+},
+{
+  pregunta: "El artículo 49 incluye normas para:",
+  opciones: [
+    "a) Gestionar el uniforme en actos públicos.",
+    "b) El control ético de la conducta profesional.",
+    "c) Tratar delitos de carácter militar.",
+    "d) Encubrir a compañeros ante acusaciones."
+  ],
+  correcta: "b) El control ético de la conducta profesional.",
+  justificacion: "Este artículo establece mecanismos de supervisión y ética interna."
+},
+{
+  pregunta: "El valor de responsabilidad implica:",
+  opciones: [
+    "a) Delegar decisiones difíciles en los superiores.",
+    "b) Asumir las consecuencias por actos u omisiones.",
+    "c) Ejecutar órdenes sin reflexión.",
+    "d) No tomar decisiones sin respaldo judicial."
+  ],
+  correcta: "b) Asumir las consecuencias por actos u omisiones.",
+  justificacion: "Artículo 7: el guardia civil es responsable de su conducta."
+},
+{
+  pregunta: "¿Cuál de estos artículos hace alusión al trato específico hacia personas detenidas?",
+  opciones: [
+    "a) Artículo 43.",
+    "b) Artículo 45.",
+    "c) Artículo 37.",
+    "d) Artículo 23."
+  ],
+  correcta: "b) Artículo 45.",
+  justificacion: "Este artículo regula la dignidad e integridad de las personas privadas de libertad."
+},
+{
+  pregunta: "La disciplina colectiva según el artículo 15 se caracteriza por:",
+  opciones: [
+    "a) La obediencia a órdenes del Ministerio del Interior.",
+    "b) El acatamiento de la Constitución y la ley.",
+    "c) La participación en decisiones democráticas internas.",
+    "d) La subordinación a mandos internacionales."
+  ],
+  correcta: "b) El acatamiento de la Constitución y la ley.",
+  justificacion: "La disciplina tiene como guía la Constitución y el ordenamiento jurídico."
+},
+{
+  pregunta: "El artículo 40 establece que la formación del guardia civil debe ser:",
+  opciones: [
+    "a) Solo técnica y operativa.",
+    "b) Constante y adaptada a las nuevas demandas.",
+    "c) Voluntaria tras obtener el primer destino.",
+    "d) Limitada a la enseñanza militar básica."
+  ],
+  correcta: "b) Constante y adaptada a las nuevas demandas.",
+  justificacion: "Se debe estudiar para responder a las exigencias actuales de la ciudadanía."
+},
+{
+  pregunta: "El principio de justicia objetiva se asocia con:",
+  opciones: [
+    "a) Tratar a todos de manera uniforme sin importar circunstancias.",
+    "b) Actuar con objetividad, equilibrio y comprensión.",
+    "c) Priorizar el bien público sobre el interés privado.",
+    "d) Ajustar la ley según necesidad operativa."
+  ],
+  correcta: "b) Actuar con objetividad, equilibrio y comprensión.",
+  justificacion: "Este valor está recogido en el artículo 5."
+},
+{
+  pregunta: "Según el artículo 18, la competencia profesional implica:",
+  opciones: [
+    "a) Ascender según antigüedad.",
+    "b) Tener un conocimiento adecuado y actualizado para el servicio.",
+    "c) Ejecutar siempre las órdenes sin objeción.",
+    "d) Evaluar a los subordinados constantemente."
+  ],
+  correcta: "b) Tener un conocimiento adecuado y actualizado para el servicio.",
+  justificacion: "La formación y el conocimiento son claves para la competencia."
+},
+{
+  pregunta: "El artículo 27 establece que la reserva incluye:",
+  opciones: [
+    "a) No revelar información obtenida en el servicio.",
+    "b) Evitar el uso de armas fuera del horario laboral.",
+    "c) Limitar las comunicaciones con mandos superiores.",
+    "d) Solicitar autorización para declarar ante medios."
+  ],
+  correcta: "a) No revelar información obtenida en el servicio.",
+  justificacion: "Este artículo trata del sigilo profesional en todas las actuaciones."
+},
+{
+  pregunta: "El artículo 28 recoge normas sobre:",
+  opciones: [
+    "a) Seguridad en edificios oficiales.",
+    "b) El uso apropiado del uniforme reglamentario.",
+    "c) La dirección de investigaciones internas.",
+    "d) La actuación policial bajo supervisión."
+  ],
+  correcta: "b) El uso apropiado del uniforme reglamentario.",
+  justificacion: "Especifica cómo debe utilizarse para mantener la imagen institucional."
+},
+{
+  pregunta: "El deber de identificación del agente es importante porque:",
+  opciones: [
+    "a) Permite la verificación administrativa.",
+    "b) Garantiza la transparencia en la actuación policial.",
+    "c) Sirve como medida disuasoria en situaciones de conflicto.",
+    "d) Asegura la respuesta disciplinaria pública."
+  ],
+  correcta: "b) Garantiza la transparencia en la actuación policial.",
+  justificacion: "Se recoge en el artículo 39 como parte de la ética profesional."
+},
+{
+  pregunta: "¿Qué principio obliga a evitar cualquier abuso de autoridad o discriminación?",
+  opciones: [
+    "a) Igualdad.",
+    "b) Justicia.",
+    "c) Imparcialidad.",
+    "d) Integridad."
+  ],
+  correcta: "c) Imparcialidad.",
+  justificacion: "El artículo 6 señala la necesidad de actuar sin prejuicios ni preferencias."
+},
+{
+  pregunta: "El artículo 46 advierte sobre el manejo de información confidencial, estableciendo que:",
+  opciones: [
+    "a) Debe ser protegida incluso frente a compañeros de menor rango.",
+    "b) Puede ser divulgada si lo decide el mando.",
+    "c) Debe comunicarse a los medios bajo control público.",
+    "d) Se transmite siempre a todas las instituciones de seguridad."
+  ],
+  correcta: "a) Debe ser protegida incluso frente a compañeros de menor rango.",
+  justificacion: "El deber de reserva se extiende a toda la información reservada en el servicio."
+},
+{
+  pregunta: "Entre las funciones del artículo 35 está:",
+  opciones: [
+    "a) Regular el derecho a huelga.",
+    "b) Promover la colaboración con la Justicia.",
+    "c) Facilitar la neutralidad política.",
+    "d) Ordenar la movilidad funcional."
+  ],
+  correcta: "b) Promover la colaboración con la Justicia.",
+  justificacion: "El artículo 35 trata de las relaciones con los juzgados y tribunales."
+},
+{
+  pregunta: "El artículo 31 regula el saludo militar, el cual se considera:",
+  opciones: [
+    "a) Un acto simbólico para las ceremonias.",
+    "b) Una muestra de respeto institucional y disciplina.",
+    "c) Trámite formal sin relevancia profesional.",
+    "d) Opcional fuera del servicio."
+  ],
+  correcta: "b) Una muestra de respeto institucional y disciplina.",
+  justificacion: "El saludo forma parte del comportamiento militar y tradición del Cuerpo."
+},
+{
+  pregunta: "El artículo 43 se relaciona con:",
+  opciones: [
+    "a) El uso de vehículos policiales.",
+    "b) El empleo de la fuerza en el servicio.",
+    "c) La gestión de expedientes internos.",
+    "d) El apoyo psicológico en actuaciones."
+  ],
+  correcta: "b) El empleo de la fuerza en el servicio.",
+  justificacion: "Este artículo regula cómo y cuándo puede emplearse la fuerza de manera proporcional."
+},
+{
+  pregunta: "La disposición a soportar penalidades en favor del servicio se identifica con el valor de:",
+  opciones: [
+    "a) Integridad.",
+    "b) Coraje.",
+    "c) Espíritu de sacrificio.",
+    "d) Responsabilidad."
+  ],
+  correcta: "c) Espíritu de sacrificio.",
+  justificacion: "El artículo 12 define este valor como asumir dificultades por el bien del servicio."
+},
+{
+  pregunta: "La obediencia a órdenes ilegales debe:",
+  opciones: [
+    "a) Cumplirse y luego recurrirse.",
+    "b) Ser rechazada respetuosamente.",
+    "c) Ejercerse solo si involucra detención.",
+    "d) Trasladarse al ámbito judicial."
+  ],
+  correcta: "b) Ser rechazada respetuosamente.",
+  justificacion: "El artículo 16 permite negarse ante órdenes manifiestamente ilegales."
+},
+{
+  pregunta: "El artículo 48 exige cooperación con:",
+  opciones: [
+    "a) La Fiscalía y los órganos judiciales.",
+    "b) La prensa nacional en testimonios públicos.",
+    "c) Entidades privadas de seguridad.",
+    "d) Organizaciones de defensa civil."
+  ],
+  correcta: "a) La Fiscalía y los órganos judiciales.",
+  justificacion: "Es un deber institucional ayudar en la administración de justicia."
+},
+{
+  pregunta: "¿Qué artículo se refiere al comportamiento del guardia civil en misiones militares?",
+  opciones: [
+    "a) Artículo 45.",
+    "b) Artículo 47.",
+    "c) Artículo 30.",
+    "d) Artículo 49."
+  ],
+  correcta: "b) Artículo 47.",
+  justificacion: "Regula la conducta en misiones internacionales de carácter militar."
+},
+{
+  pregunta: "El artículo 46 del Código de Conducta está relacionado con:",
+  opciones: [
+    "a) La gestión de información reservada.",
+    "b) El trato a detenidos.",
+    "c) La neutralidad política.",
+    "d) La cooperación con la prensa local."
+  ],
+  correcta: "a) La gestión de información reservada.",
+  justificacion: "Este artículo trata sobre el manejo adecuado de datos, documentos e información sensible."
+},
+{
+  pregunta: "El artículo 29 promueve el compromiso de la Guardia Civil con:",
+  opciones: [
+    "a) La eficiencia digital de sus procesos.",
+    "b) Los derechos humanos en contexto internacional.",
+    "c) La sostenibilidad y el respeto ambiental.",
+    "d) La reducción de la jornada laboral."
+  ],
+  correcta: "c) La sostenibilidad y el respeto ambiental.",
+  justificacion: "Esta disposición busca garantizar el uso responsable de medios y recursos naturales."
+},
+{
+  pregunta: "El artículo 33 establece la obligación de:",
+  opciones: [
+    "a) Aceptación voluntaria de misiones internacionales.",
+    "b) Mantener la salud física y mental para la actividad profesional.",
+    "c) Informar al mando sobre cualquier problema psicológico.",
+    "d) Pasar revisión médica semanal obligatoria."
+  ],
+  correcta: "b) Mantener la salud física y mental para la actividad profesional.",
+  justificacion: "Este artículo señala que el guardia debe velar por su estado de salud para cumplir con su deber."
+},
+{
+  pregunta: "¿En qué artículo se regula el deber de identificación del agente en sus actuaciones?",
+  opciones: [
+    "a) Artículo 39.",
+    "b) Artículo 45.",
+    "c) Artículo 28.",
+    "d) Artículo 48."
+  ],
+  correcta: "a) Artículo 39.",
+  justificacion: "Es el artículo específico sobre identificación en intervenciones policiales."
+},
+{
+  pregunta: "El principio de neutralidad ideológica está recogido en:",
+  opciones: [
+    "a) Artículo 3.",
+    "b) Artículo 13.",
+    "c) Artículo 14.",
+    "d) Artículo 19."
+  ],
+  correcta: "b) Artículo 13.",
+  justificacion: "Este artículo establece que el guardia civil actuará al margen de preferencias ideológicas."
+},
+{
+  pregunta: "¿Cuál de los siguientes NO se encuentra entre los valores expresados en el Código de Conducta?",
+  opciones: [
+    "a) Espíritu de sacrificio.",
+    "b) Responsabilidad.",
+    "c) Autoridad moral.",
+    "d) Imparcialidad."
+  ],
+  correcta: "c) Autoridad moral.",
+  justificacion: "No se menciona como valor explícito en el Código."
+},
+{
+  pregunta: "El artículo 15 trata sobre la disciplina colectiva, que se manifiesta en:",
+  opciones: [
+    "a) Cumplir de forma estricta toda orden interna.",
+    "b) Reflejar el acatamiento a la Constitución.",
+    "c) La subordinación a mandos superiores.",
+    "d) La obediencia inmediata al órgano competente."
+  ],
+  correcta: "b) Reflejar el acatamiento a la Constitución.",
+  justificacion: "La disciplina colectiva se basa en el respeto a la Constitución y el ordenamiento jurídico."
+},
+{
+  pregunta: "Según el artículo 12, el espíritu de sacrificio implica:",
+  opciones: [
+    "a) Dejar de lado actividades familiares por necesidad del servicio.",
+    "b) Actuar sin temor a las consecuencias legales.",
+    "c) Delegar funciones en compañeros con mejor estado físico.",
+    "d) Realizar funciones no incluidas en el servicio."
+  ],
+  correcta: "a) Dejar de lado actividades familiares por necesidad del servicio.",
+  justificacion: "Significa asumir sacrificios personales en beneficio del servicio público."
+},
+{
+  pregunta: "La correcta dirección de los subordinados está recogida en el artículo:",
+  opciones: [
+    "a) Artículo 42.",
+    "b) Artículo 19.",
+    "c) Artículo 24.",
+    "d) Artículo 35."
+  ],
+  correcta: "a) Artículo 42.",
+  justificacion: "Este artículo trata el liderazgo ético y el ejercicio de autoridad."
+},
+{
+  pregunta: "¿Qué artículo recoge el principio de cooperación con otras Fuerzas y Cuerpos de Seguridad?",
+  opciones: [
+    "a) Artículo 41.",
+    "b) Artículo 32.",
+    "c) Artículo 36.",
+    "d) Artículo 17."
+  ],
+  correcta: "c) Artículo 36.",
+  justificacion: "El artículo 36 establece el deber de cooperación con otras fuerzas policiales."
+},
+{
+  pregunta: "El artículo 20 hace énfasis en:",
+  opciones: [
+    "a) El prestigio de la institución como objetivo colectivo.",
+    "b) La aplicación de códigos disciplinarios estrictos.",
+    "c) La defensa de los intereses personales sobre los colectivos.",
+    "d) La elaboración de reglamentos internos continuamente."
+  ],
+  correcta: "a) El prestigio de la institución como objetivo colectivo.",
+  justificacion: "El comportamiento ético fortalece la imagen y prestigio de la Guardia Civil."
+},
+{
+  pregunta: "¿Cuál de las siguientes funciones se asocia al artículo 31 del Código de Conducta?",
+  opciones: [
+    "a) Regulación de la uniformidad y distintivos.",
+    "b) Establecimiento de derechos fundamentales.",
+    "c) Salud y bienestar personal de los guardias.",
+    "d) Definición del saludo militar y su uso."
+  ],
+  correcta: "d) Definición del saludo militar y su uso.",
+  justificacion: "El artículo 31 se centra en el saludo como muestra de respeto."
+},
+{
+  pregunta: "El artículo 25 incide en que la actuación policial debe caracterizarse por:",
+  opciones: [
+    "a) Oportunidad, congruencia y proporcionalidad.",
+    "b) Rigidez, firmeza y verticalidad.",
+    "c) Órdenes directas sin opción de réplica.",
+    "d) Prioridad de objetivos sobre derechos individuales."
+  ],
+  correcta: "a) Oportunidad, congruencia y proporcionalidad.",
+  justificacion: "Este artículo recoge los principios básicos de la actuación policial."
+},
+{
+  pregunta: "El artículo 23 trata sobre:",
+  opciones: [
+    "a) El cuidado de la salud física.",
+    "b) El respeto a las tradiciones y legado histórico del Cuerpo.",
+    "c) La superación de los mandos mediante formación.",
+    "d) El uso oportuno de la fuerza preventiva."
+  ],
+  correcta: "b) El respeto a las tradiciones y legado histórico del Cuerpo.",
+  justificacion: "Se valoran las tradiciones como inspiración y guía para el servicio actual."
+},
+{
+  pregunta: "¿Qué valor está directamente relacionado con mantener la palabra dada?",
+  opciones: [
+    "a) Lealtad.",
+    "b) Justicia.",
+    "c) Valor.",
+    "d) Integridad."
+  ],
+  correcta: "a) Lealtad.",
+  justificacion: "La lealtad implica cumplimiento de compromisos adquiridos."
+},
+{
+  pregunta: "El artículo 10 señala que el guardia civil debe actuar con lealtad hacia:",
+  opciones: [
+    "a) La cadena de mando interna.",
+    "b) El Estado y el ordenamiento jurídico.",
+    "c) Los mandos militares y civiles.",
+    "d) La sociedad únicamente."
+  ],
+  correcta: "b) El Estado y el ordenamiento jurídico.",
+  justificacion: "Se establece la lealtad a la Constitución y la legalidad vigente."
+},
+{
+  pregunta: "El artículo 32 indica que la salud emocional implica:",
+  opciones: [
+    "a) La obligación de someterse a evaluaciones anuales.",
+    "b) El equilibrio entre la salud mental y el desempeño.",
+    "c) La solicitud de baja médica ante estrés.",
+    "d) El uso de técnicas de apoyo psicológico externo."
+  ],
+  correcta: "b) El equilibrio entre la salud mental y el desempeño.",
+  justificacion: "Se reconoce la importancia de la salud integral en el servicio público."
+},
+{
+  pregunta: "El artículo 42 establece que el liderazgo debe ejercerse con:",
+  opciones: [
+    "a) Protocolo estricto y orden cerrado.",
+    "b) Autoridad, ejemplo y dignidad.",
+    "c) Disciplina jerárquica y firmeza.",
+    "d) El apoyo exclusivo de mandos superiores."
+  ],
+  correcta: "b) Autoridad, ejemplo y dignidad.",
+  justificacion: "El liderazgo debe basarse en el ejemplo personal y la dignidad profesional."
+},
+{
+  pregunta: "¿En qué artículo aparece el compromiso de contar con una información veraz y oportuna para el servicio?",
+  opciones: [
+    "a) Artículo 41.",
+    "b) Artículo 46.",
+    "c) Artículo 38.",
+    "d) Artículo 30."
+  ],
+  correcta: "c) Artículo 38.",
+  justificacion: "El artículo 38 regula la transparencia y comunicación responsable en el servicio público."
+},
+{
+  pregunta: "El artículo 24, sobre disponibilidad, exige que el guardia civil:",
+  opciones: [
+    "a) Esté siempre localizable durante las 24 horas del día.",
+    "b) Cumpla su horario laboral estricto y reglamentado.",
+    "c) Disponga de flexibilidad para elegir turnos libres.",
+    "d) Solo atienda servicios previamente planificados."
+  ],
+  correcta: "a) Esté siempre localizable durante las 24 horas del día.",
+  justificacion: "La disponibilidad permanente es un deber esencial según este artículo."
+},
+{
+  pregunta: "¿Qué artículo promueve la igualdad real, la diversidad y la conciliación laboral?",
+  opciones: [
+    "a) Artículo 30.",
+    "b) Artículo 40.",
+    "c) Artículo 28.",
+    "d) Artículo 15."
+  ],
+  correcta: "a) Artículo 30.",
+  justificacion: "Este artículo recoge los principios de igualdad real, diversidad y conciliación."
+},
+{
+  pregunta: "El artículo 11 obliga a los guardias civiles a garantizar:",
+  opciones: [
+    "a) La seguridad pública por encima de la dignidad humana.",
+    "b) La seguridad ciudadana sin importar los medios.",
+    "c) El respeto a la vida, dignidad e integridad física.",
+    "d) La prevalencia del deber sobre los derechos individuales."
+  ],
+  correcta: "c) El respeto a la vida, dignidad e integridad física.",
+  justificacion: "El artículo 11 enfatiza el respeto a los derechos fundamentales."
+},
+{
+  pregunta: "El artículo 27 regula el deber de reserva que afecta a:",
+  opciones: [
+    "a) Información confidencial y datos sensibles.",
+    "b) Uso de vehículos oficiales.",
+    "c) Formación de los subordinados.",
+    "d) Relaciones con la prensa."
+  ],
+  correcta: "a) Información confidencial y datos sensibles.",
+  justificacion: "La reserva obliga a no divulgar lo conocido por razón del servicio."
+},
+{
+  pregunta: "¿Qué artículo establece el uso adecuado del uniforme como parte del comportamiento deontológico?",
+  opciones: [
+    "a) Artículo 28.",
+    "b) Artículo 31.",
+    "c) Artículo 39.",
+    "d) Artículo 42."
+  ],
+  correcta: "a) Artículo 28.",
+  justificacion: "Este artículo regula el uso correcto del uniforme en relación con la imagen profesional."
+},
+{
+  pregunta: "Actuar con rectitud, honradez y lealtad es un componente esencial del valor de:",
+  opciones: [
+    "a) Lealtad.",
+    "b) Integridad.",
+    "c) Justicia.",
+    "d) Disciplina."
+  ],
+  correcta: "b) Integridad.",
+  justificacion: "El artículo 2 define integridad como actuar con rectitud en todo momento."
+},
+{
+  pregunta: "El artículo 47, relativo a misiones militares, obliga a cumplir:",
+  opciones: [
+    "a) Exclusivamente la Ley Orgánica de Defensa Nacional.",
+    "b) Las órdenes militares aun contra la ética profesional.",
+    "c) Las normas del Derecho Internacional Humanitario.",
+    "d) Las directrices políticas en misiones internacionales."
+  ],
+  correcta: "c) Las normas del Derecho Internacional Humanitario.",
+  justificacion: "Incluso en misiones militares, debe respetarse la normativa humanitaria."
+},
+{
+  pregunta: "La obligación de colaborar con la Justicia se recoge en:",
+  opciones: [
+    "a) Artículo 35.",
+    "b) Artículo 49.",
+    "c) Artículo 38.",
+    "d) Artículo 25."
+  ],
+  correcta: "a) Artículo 35.",
+  justificacion: "Este artículo establece el deber de colaboración con juzgados y tribunales."
+},
+{
+  pregunta: "El artículo 32 establece la importancia de:",
+  opciones: [
+    "a) Mantener formación en cooperación internacional.",
+    "b) Cuidar la salud para el desempeño de las funciones.",
+    "c) Portar siempre el arma reglamentaria.",
+    "d) Identificarse obligatoriamente en todos los servicios."
+  ],
+  correcta: "b) Cuidar la salud para el desempeño de las funciones.",
+  justificacion: "Se refiere a la responsabilidad personal de mantenerse en condiciones óptimas."
+},
+{
+  pregunta: "El artículo 10 está directamente relacionado con:",
+  opciones: [
+    "a) La gestión de recursos públicos.",
+    "b) La defensa de la Constitución y el ordenamiento jurídico.",
+    "c) La unidad de acción entre mandos.",
+    "d) La imparcialidad frente a la prensa."
+  ],
+  correcta: "b) La defensa de la Constitución y el ordenamiento jurídico.",
+  justificacion: "Este artículo establece la fidelidad a la Carta Magna."
+},
+{
+  pregunta: "El artículo 6, al referirse a la imparcialidad, señala que:",
+  opciones: [
+    "a) El agente debe tener preferencia por las víctimas.",
+    "b) No deben existir prejuicios o preferencias personales.",
+    "c) Se debe actuar exclusivamente según órdenes superiores.",
+    "d) Está permitido actuar discrecionalmente según el caso."
+  ],
+  correcta: "b) No deben existir prejuicios o preferencias personales.",
+  justificacion: "La imparcialidad implica actuar sin discriminación o sesgo."
+},
+{
+  pregunta: "El valor de la justicia, según el artículo 5, implica actuar:",
+  opciones: [
+    "a) Con agresividad ante la duda.",
+    "b) Solo en función de la ley positiva.",
+    "c) Con objetividad y ecuanimidad.",
+    "d) En defensa exclusiva de los intereses de la víctima."
+  ],
+  correcta: "c) Con objetividad y ecuanimidad.",
+  justificacion: "La justicia se relaciona con la capacidad de actuar de manera equilibrada."
+},
+{
+  pregunta: "El buen uso de los recursos asignados está recogido en el principio de:",
+  opciones: [
+    "a) Integridad.",
+    "b) Eficiencia.",
+    "c) Sostenibilidad.",
+    "d) Disciplina."
+  ],
+  correcta: "b) Eficiencia.",
+  justificacion: "El artículo 26 recoge el deber de emplear los medios de manera responsable."
+},
+{
+  pregunta: "El Código de Conducta exige que los guardias civiles mantengan:",
+  opciones: [
+    "a) La distancia social con familiares de detenidos.",
+    "b) Relaciones cordiales con los medios informativos en todo caso.",
+    "c) El buen nombre de la Institución con su conducta.",
+    "d) Un perfil bajo en redes sociales en todo momento."
+  ],
+  correcta: "c) El buen nombre de la Institución con su conducta.",
+  justificacion: "El artículo 20 fomenta la conservación del prestigio del Cuerpo."
+},
+{
+  pregunta: "Según el artículo 24, la disponibilidad implica:",
+  opciones: [
+    "a) Estar localizable en todo momento para el servicio.",
+    "b) Contestar siempre a cualquier llamada externa.",
+    "c) Cumplir solo con la jornada oficial de 40 horas.",
+    "d) Estar preparado para turnos rotatorios únicamente."
+  ],
+  correcta: "a) Estar localizable en todo momento para el servicio.",
+  justificacion: "La disponibilidad es esencial para la continuidad operativa."
+},
+{
+  pregunta: "¿En qué artículo se recoge el valor de la lealtad?",
+  opciones: [
+    "a) Artículo 3.",
+    "b) Artículo 5.",
+    "c) Artículo 10.",
+    "d) Artículo 12."
+  ],
+  correcta: "a) Artículo 3.",
+  justificacion: "Este artículo define la lealtad como valor fundamental en el servicio."
+},
+{
+  pregunta: "El artículo 45 establece la obligación de:",
+  opciones: [
+    "a) Garantizar la seguridad de funcionarios en manifestaciones.",
+    "b) Tratar a las personas detenidas con dignidad e integridad.",
+    "c) Cumplir órdenes judiciales sobre uso de la fuerza.",
+    "d) Revisar la actuación de otros agentes en detención."
+  ],
+  correcta: "b) Tratar a las personas detenidas con dignidad e integridad.",
+  justificacion: "Este artículo regula específicamente la custodia y dignidad de los detenidos."
+},
+{
+  pregunta: "La cooperación entre la Guardia Civil y servicios de emergencia extranjeros se contempla en:",
+  opciones: [
+    "a) Artículo 47.",
+    "b) Artículo 36.",
+    "c) Artículo 29.",
+    "d) No está regulada en el Código."
+  ],
+  correcta: "d) No está regulada en el Código.",
+  justificacion: "El Código no especifica esta cooperación internacional concreta."
+},
+{
+  pregunta: "Según el artículo 42, el liderazgo implica:",
+  opciones: [
+    "a) Imponer disciplina sin explicaciones.",
+    "b) Ejercer influencia positiva por medio del ejemplo.",
+    "c) Delegar funciones administrativas en los subordinados.",
+    "d) Regir exclusivamente la gestión de recursos materiales."
+  ],
+  correcta: "b) Ejercer influencia positiva por medio del ejemplo.",
+  justificacion: "Este artículo define el liderazgo como guía y referencia ética."
+},
+{
+  pregunta: "¿Qué artículo recoge la expresión de disciplina individual?",
+  opciones: [
+    "a) Artículo 16.",
+    "b) Artículo 15.",
+    "c) Artículo 25.",
+    "d) Artículo 42."
+  ],
+  correcta: "a) Artículo 16.",
+  justificacion: "El artículo 16 trata del cumplimiento de órdenes como disciplina individual."
+},
+{
+  pregunta: "El artículo 38 establece que toda información facilitada al público debe ser:",
+  opciones: [
+    "a) Seleccionada por el mando superior.",
+    "b) Veraz y proporcionada, sin comprometer el servicio.",
+    "c) Restringida a intervenciones judiciales.",
+    "d) Autorizada por la prensa nacional."
+  ],
+  correcta: "b) Veraz y proporcionada, sin comprometer el servicio.",
+  justificacion: "Este artículo subraya la importancia de la transparencia responsable."
+},
+{
+  pregunta: "El artículo 23 del Código de Conducta hace referencia a:",
+  opciones: [
+    "a) La defensa de los intereses personales del agente.",
+    "b) La valorización de las tradiciones y la historia del Cuerpo.",
+    "c) El mantenimiento del orden público en situaciones de crisis.",
+    "d) La obligatoriedad de instrucción militar periódica."
+  ],
+  correcta: "b) La valorización de las tradiciones y la historia del Cuerpo.",
+  justificacion: "El artículo 23 promueve el respeto y transmisión del legado institucional."
+},
+{
+  pregunta: "¿En qué artículo se recoge la obligación de aplicar la ley con imparcialidad?",
+  opciones: [
+    "a) Artículo 5.",
+    "b) Artículo 6.",
+    "c) Artículo 10.",
+    "d) Artículo 16."
+  ],
+  correcta: "b) Artículo 6.",
+  justificacion: "Este artículo recoge el principio de imparcialidad."
+},
+{
+  pregunta: "El artículo 28 se refiere directamente a:",
+  opciones: [
+    "a) La conducta con los medios de comunicación.",
+    "b) El uniforme y los distintivos del Cuerpo.",
+    "c) La presentación de los servicios operativos.",
+    "d) La entrada a instalaciones militares."
+  ],
+  correcta: "b) El uniforme y los distintivos del Cuerpo.",
+  justificacion: "Este artículo regula el uso del uniforme como imagen institucional."
+},
+{
+  pregunta: "El Código de Conducta establece que el guardia civil debe servir con espíritu benemérito, lo que implica:",
+  opciones: [
+    "a) Anteponer el prestigio personal al colectivo.",
+    "b) Actuar con buena voluntad incluso fuera del servicio.",
+    "c) Mantener la disciplina militar de forma absoluta.",
+    "d) Evitar cualquier contacto con la sociedad civil."
+  ],
+  correcta: "b) Actuar con buena voluntad incluso fuera del servicio.",
+  justificacion: "Este principio, recogido en el artículo 21, refuerza la vocación de servicio público."
+},
+{
+  pregunta: "El respeto a la dignidad de la persona detenida está contemplado en:",
+  opciones: [
+    "a) Artículo 17.",
+    "b) Artículo 26.",
+    "c) Artículo 45.",
+    "d) Artículo 35."
+  ],
+  correcta: "c) Artículo 45.",
+  justificacion: "Este artículo exige trato digno y respetuoso a personas detenidas."
+},
+{
+  pregunta: "El artículo 40 exige que la formación sea:",
+  opciones: [
+    "a) Realizada solo en academias exclusivas.",
+    "b) Esporádica para los agentes de base.",
+    "c) Continua, actualizada y adaptada a las necesidades del servicio.",
+    "d) Supervisada únicamente por mandos militares."
+  ],
+  correcta: "c) Continua, actualizada y adaptada a las necesidades del servicio.",
+  justificacion: "El artículo 40 fomenta el aprendizaje permanente para la eficiencia profesional."
+},
+{
+  pregunta: "El artículo 24 destaca que la disponibilidad implica:",
+  opciones: [
+    "a) Estar en todo momento disponible para el servicio.",
+    "b) Cumplir únicamente con el horario establecido.",
+    "c) Registrar todas las ausencias en turnos libres.",
+    "d) Trabajar exclusivamente en días laborables."
+  ],
+  correcta: "a) Estar en todo momento disponible para el servicio.",
+  justificacion: "La disponibilidad permanente es un deber fundamental del guardia civil."
+},
+{
+  pregunta: "Según el artículo 39, la identificación del agente constituye:",
+  opciones: [
+    "a) Un protocolo exclusivo para misiones especiales.",
+    "b) Una garantía de transparencia y responsabilidad.",
+    "c) Un trámite que solo se requiere en investigaciones.",
+    "d) Una medida opcional según el criterio del mando."
+  ],
+  correcta: "b) Una garantía de transparencia y responsabilidad.",
+  justificacion: "La identificación es un mecanismo ético y de control en la actuación policial."
+},
+{
+  pregunta: "El artículo 49 se refiere a:",
+  opciones: [
+    "a) Las sanciones disciplinarias internas.",
+    "b) Las normas de conducta ética en el desempeño profesional.",
+    "c) El uso del uniforme durante actos de servicio.",
+    "d) La cooperación con la Administración de Justicia."
+  ],
+  correcta: "b) Las normas de conducta ética en el desempeño profesional.",
+  justificacion: "Este artículo incluye cláusulas generales de conducta y ética profesional."
+},
+{
+  pregunta: "El deber de informar verazmente a los ciudadanos aparece regulado en:",
+  opciones: [
+    "a) Artículo 38.",
+    "b) Artículo 48.",
+    "c) Artículo 29.",
+    "d) Artículo 27."
+  ],
+  correcta: "a) Artículo 38.",
+  justificacion: "Este artículo establece que la información pública debe ser veraz, oportuna y responsable."
+},
+{
+  pregunta: "El artículo 15 describe la disciplina colectiva como:",
+  opciones: [
+    "a) La cooperación entre agentes de diferentes unidades.",
+    "b) La identificación del grupo ante los órganos de mando.",
+    "c) El compromiso conjunto con la Constitución y las leyes.",
+    "d) La obediencia absoluta a los mandos superiores."
+  ],
+  correcta: "c) El compromiso conjunto con la Constitución y las leyes.",
+  justificacion: "La disciplina colectiva se basa en el respeto al marco legal común."
+},
+{
+  pregunta: "¿Cuál es el objetivo principal del artículo 10?",
+  opciones: [
+    "a) Regular los ascensos internos.",
+    "b) Garantizar la lealtad al orden constitucional.",
+    "c) Reforzar la jerarquía interna.",
+    "d) Disciplinar las relaciones externas."
+  ],
+  correcta: "b) Garantizar la lealtad al orden constitucional.",
+  justificacion: "El artículo 10 exige fidelidad a la Constitución y al orden jurídico."
+},
+{
+  pregunta: "El artículo 31 regula:",
+  opciones: [
+    "a) El saludo militar.",
+    "b) La jerarquía del mando.",
+    "c) Los símbolos del Cuerpo del Ejército.",
+    "d) El uso de armas en combate."
+  ],
+  correcta: "a) El saludo militar.",
+  justificacion: "El artículo 31 se refiere específicamente al saludo como muestra de respeto y disciplina."
+},
+{
+  pregunta: "¿Cuál de los siguientes valores está presente en el Código de Conducta?",
+  opciones: [
+    "a) Independencia política.",
+    "b) Espíritu de sacrificio.",
+    "c) Privacidad funcional.",
+    "d) Iniciativa operativa absoluta."
+  ],
+  correcta: "b) Espíritu de sacrificio.",
+  justificacion: "Este valor está recogido en los artículos iniciales y define la disposición al servicio."
+},
+{
+  pregunta: "Actuar sin favoritismos ni influencias externas es parte del valor de:",
+  opciones: [
+    "a) Imparcialidad.",
+    "b) Lealtad.",
+    "c) Integridad.",
+    "d) Eficiencia."
+  ],
+  correcta: "a) Imparcialidad.",
+  justificacion: "El artículo 6 recoge este principio como esencial en la actuación policial."
+},
+{
+  pregunta: "El artículo 42 hace referencia a la conducta del mando como:",
+  opciones: [
+    "a) Representante militar ante la sociedad.",
+    "b) Modelo de conducta ética y profesional.",
+    "c) Pozo de autoridad absoluta sobre subordinados.",
+    "d) Mediador entre la ley y el uso de la fuerza."
+  ],
+  correcta: "b) Modelo de conducta ética y profesional.",
+  justificacion: "El liderazgo exige ejercer la autoridad con ejemplo y dignidad."
+},
+{
+  pregunta: "¿En qué artículo aparece el deber de respeto a la vida, dignidad e integridad?",
+  opciones: [
+    "a) Artículo 17.",
+    "b) Artículo 11.",
+    "c) Artículo 46.",
+    "d) Artículo 24."
+  ],
+  correcta: "b) Artículo 11.",
+  justificacion: "Este artículo garantiza el respeto fundamental a los derechos humanos."
+},
+{
+  pregunta: "El artículo 25 establece que la actuación policial debe:",
+  opciones: [
+    "a) Tener como objetivo principal la seguridad inmediata.",
+    "b) Respetar siempre los principios de proporcionalidad, oportunidad y congruencia.",
+    "c) Ejercerse sin necesidad de justificar los medios.",
+    "d) Priorizar la rapidez ante cualquier circunstancia."
+  ],
+  correcta: "b) Respetar siempre los principios de proporcionalidad, oportunidad y congruencia.",
+  justificacion: "Estos principios guían el uso de la fuerza y la intervención."
+},
+{
+  pregunta: "El artículo 36 hace referencia a la cooperación con:",
+  opciones: [
+    "a) Otras Fuerzas y Cuerpos de Seguridad.",
+    "b) Organizaciones humanitarias.",
+    "c) Entidades de seguridad privada.",
+    "d) Instituciones internacionales."
+  ],
+  correcta: "a) Otras Fuerzas y Cuerpos de Seguridad.",
+  justificacion: "Este artículo establece la obligación de cooperación entre cuerpos policiales."
+},
+{
+  pregunta: "El artículo 12 se refiere al valor de:",
+  opciones: [
+    "a) Valor.",
+    "b) Espíritu de sacrificio.",
+    "c) Justicia.",
+    "d) Responsabilidad."
+  ],
+  correcta: "b) Espíritu de sacrificio.",
+  justificacion: "Define la voluntad de soportar penalidades por la misión encomendada."
+},
+{
+  pregunta: "El artículo 38 establece que la información ofrecida al público debe:",
+  opciones: [
+    "a) Responder siempre a criterios políticos.",
+    "b) Adecuarse a las normas de competencia desleal.",
+    "c) Ser veraz, oportuna y no comprometer el servicio.",
+    "d) Comunicarse solo mediante canales oficiales estrictos."
+  ],
+  correcta: "c) Ser veraz, oportuna y no comprometer el servicio.",
+  justificacion: "Este artículo promueve la transparencia responsable en la comunicación."
+},
+{
+  pregunta: "El artículo 41 establece que la disponibilidad del guardia civil implica:",
+  opciones: [
+    "a) Estar preparado para el servicio incluso fuera del horario laboral.",
+    "b) Solicitar permiso para sustituir a otro agente en su turno.",
+    "c) Cumplir solo con tareas previamente asignadas.",
+    "d) Priorizar la vida personal sobre la profesional."
+  ],
+  correcta: "a) Estar preparado para el servicio incluso fuera del horario laboral.",
+  justificacion: "La disponibilidad es un deber esencial para garantizar la continuidad del servicio."
+},
+{
+  pregunta: "El artículo 29 del Código de Conducta se refiere específicamente a:",
+  opciones: [
+    "a) La eficiencia en el uso operativo de armas.",
+    "b) La protección del medio ambiente y sostenibilidad.",
+    "c) La gestión económica interna del Cuerpo.",
+    "d) La actuación ante emergencias naturales.”
+  ],
+  correcta: "b) La protección del medio ambiente y sostenibilidad.",
+  justificacion: "Este artículo promueve el compromiso ecológico del guardia civil."
+},
+{
+  pregunta: "Según el artículo 42, el mando debe ejercer su autoridad con:",
+  opciones: [
+    "a) Rigor excesivo para evitar errores.",
+    "b) Ejemplo, profesionalidad y dignidad.",
+    "c) Tolerancia ante la indisciplina menor.",
+    "d) Autonomía verbal sobre la ley escrita."
+  ],
+  correcta: "b) Ejemplo, profesionalidad y dignidad.",
+  justificacion: "El mando es referente moral y profesional para sus subordinados."
+},
+{
+  pregunta: "El artículo 20 exige que la conducta de los guardias civiles favorezca:",
+  opciones: [
+    "a) El acceso rápido a los ascensos internos.",
+    "b) El reconocimiento internacional del Cuerpo.",
+    "c) El prestigio institucional ante la ciudadanía.",
+    "d) El ascenso automático según méritos académicos."
+  ],
+  correcta: "c) El prestigio institucional ante la ciudadanía.",
+  justificacion: "El comportamiento ético fortalece la imagen y prestigio de la Guardia Civil."
+},
+{
+  pregunta: "El artículo 25 impone la obligación de actuar con congruencia, oportunidad y:",
+  opciones: [
+    "a) Fuerza coercitiva máxima.",
+    "b) Proporcionalidad.",
+    "c) Justicia correctiva.",
+    "d) Severidad disuasoria."
+  ],
+  correcta: "b) Proporcionalidad.",
+  justificacion: "Proporcionalidad es una de las claves éticas del uso de la fuerza."
+},
+{
+  pregunta: "¿Qué valor se expresa como obligación de velar por el bienestar ajeno incluso en situaciones adversas?",
+  opciones: [
+    "a) Imparcialidad.",
+    "b) Espíritu benemérito.",
+    "c) Responsabilidad.",
+    "d) Disciplina."
+  ],
+  correcta: "b) Espíritu benemérito.",
+  justificacion: "Este valor incluye el auxilio voluntario y desinteresado incluso fuera de servicio."
+},
+{
+  pregunta: "El artículo 17 hace referencia al respeto a:",
+  opciones: [
+    "a) Los traditiones castrenses internacionales.",
+    "b) La diversidad cultural y social de España.",
+    "c) La autonomía personal de los agentes.",
+    "d) La cooperación con universidades civiles."
+  ],
+  correcta: "b) La diversidad cultural y social de España.",
+  justificacion: "Este artículo promueve el respeto hacia las diferencias y pluralidad en la sociedad."
+},
+{
+  pregunta: "El artículo 36 establece la cooperación con:",
+  opciones: [
+    "a) Fuerzas Armadas en conflictos armados.",
+    "b) Otras Fuerzas y Cuerpos de Seguridad.",
+    "c) Organismos privados de defensa.",
+    "d) Agencias internacionales de espionaje."
+  ],
+  correcta: "b) Otras Fuerzas y Cuerpos de Seguridad.",
+  justificacion: "Este artículo asegura la colaboración con otros cuerpos policiales para mejorar el servicio."
+},
+{
+  pregunta: "El deber de actuar con responsabilidad implica reconocer que:",
+  opciones: [
+    "a) Los errores son responsabilidad del mando superior.",
+    "b) Solo las acciones directas deben ser evaluadas.",
+    "c) Tanto las acciones como las omisiones tienen consecuencias.",
+    "d) El agente solo responde por actuaciones fuera de servicio."
+  ],
+  correcta: "c) Tanto las acciones como las omisiones tienen consecuencias.",
+  justificacion: "La responsabilidad incluye el deber de asumir las consecuencias por inacción también."
+},
+{
+  pregunta: "El artículo 26 se refiere al uso adecuado de:",
+  opciones: [
+    "a) Material de defensa personal.",
+    "b) Recursos públicos, instalaciones y bienes asignados.",
+    "c) Protocolos de intervención en conflicto armados.",
+    "d) Armamento reglamentario y munición."
+  ],
+  correcta: "b) Recursos públicos, instalaciones y bienes asignados.",
+  justificacion: "Se exige responsabilidad y eficiencia en el uso de recursos asignados."
+},
+{
+  pregunta: "El artículo 47 regula la conducta durante:",
+  opciones: [
+    "a) Actos de servicio en conflictos armados o misiones militares.",
+    "b) Operaciones civiles en tráfico y control urbano.",
+    "c) Intervenciones privadas de guardias fuera de servicio.",
+    "d) Encuentros con medios de comunicación."
+  ],
+  correcta: "a) Actos de servicio en conflictos armados o misiones militares.",
+  justificacion: "Se establece la obligación de cumplir el DIH en dichas situaciones."
+},
+{
+  pregunta: "El principio de neutralidad ideológica está regulado expresamente en el artículo:",
+  opciones: [
+    "a) Artículo 8.",
+    "b) Artículo 13.",
+    "c) Artículo 38.",
+    "d) Artículo 42."
+  ],
+  correcta: "b) Artículo 13.",
+  justificacion: "En este artículo se establece la obligación de actuar sin vinculación política o ideológica."
+},
+{
+  pregunta: "El artículo 33 establece que los guardias civiles deben cuidar de su salud para:",
+  opciones: [
+    "a) Cumplir con la normativa de evaluación médica militar.",
+    "b) Mantener la forma física en desfiles públicos.",
+    "c) Estar en condiciones óptimas para cumplir con su función.",
+    "d) Tener acceso a ascensos específicos del Cuerpo."
+  ],
+  correcta: "c) Estar en condiciones óptimas para cumplir con su función.",
+  justificacion: "La salud es considerada un deber hacia la misión del servicio público."
+},
+{
+  pregunta: "¿En qué artículo se menciona la actuación con unidad de criterio y coherencia con el cuerpo de valores institucional?",
+  opciones: [
+    "a) Artículo 15, disciplina colectiva.",
+    "b) Artículo 30, diversidad activa.",
+    "c) Artículo 40, formación permanente.",
+    "d) Artículo 31, saludo militar."
+  ],
+  correcta: "a) Artículo 15, disciplina colectiva.",
+  justificacion: "La disciplina colectiva debe ser coherente con los valores comunes del Cuerpo."
+},
+{
+  pregunta: "El artículo 35 establece que el guardia civil debe colaborar con:",
+  opciones: [
+    "a) Los medios de comunicación.",
+    "b) Las autoridades judiciales en el ejercicio de sus funciones.",
+    "c) Asociaciones de víctimas del terrorismo.",
+    "d) Mandos militares de otras unidades."
+  ],
+  correcta: "b) Las autoridades judiciales en el ejercicio de sus funciones.",
+  justificacion: "La cooperación con órganos judiciales es un deber moral e institucional."
+},
+{
+  pregunta: "El artículo 16 señala que las órdenes deben ser obedecidas siempre que:",
+  opciones: [
+    "a) No requieran uso de la fuerza.",
+    "b) No sean manifiestamente ilegales.",
+    "c) Se emitan de forma escrita únicamente.",
+    "d) Sean dadas por mandos superiores directos."
+  ],
+  correcta: "b) No sean manifiestamente ilegales.",
+  justificacion: "El deber de obediencia no excluye la responsabilidad frente a órdenes ilegales."
+},
+{
+  pregunta: "El artículo 5 define el derecho a actuar con:",
+  opciones: [
+    "a) Justicia y equilibrio.",
+    "b) Firmeza y determinación.",
+    "c) Responsabilidad y obediencia ciega.",
+    "d) Eficacia y superioridad."
+  ],
+  correcta: "a) Justicia y equilibrio.",
+  justificacion: "En el artículo 5 se desarrolla el sentido de la justicia como valor esencial."
+},
+{
+  pregunta: "El artículo 9 alude a la observancia de:",
+  opciones: [
+    "a) Las costumbres sociales de cada comunidad autónoma.",
+    "b) Las normas internas del Código de Conducta.",
+    "c) Los valores institucionales y éticos del Cuerpo.",
+    "d) La disciplina castrense aplicada en la Guardia Civil."
+  ],
+  correcta: "c) Los valores institucionales y éticos del Cuerpo.",
+  justificacion: "Este artículo enfatiza la interiorización de los valores del Cuerpo."
+},
+{
+  pregunta: "Según el artículo 44, los guardias civiles deben actuar con especial sensibilidad hacia:",
+  opciones: [
+    "a) Menores infractores.",
+    "b) Víctimas, testigos y colectivos vulnerables.",
+    "c) Personas con antecedentes penales.",
+    "d) Funcionarios de otras administraciones."
+  ],
+  correcta: "b) Víctimas, testigos y colectivos vulnerables.",
+  justificacion: "Este artículo destaca la necesidad de protección y respeto hacia estos grupos."
+},
+{
+  pregunta: "El artículo 21 del Código de Conducta señala que el espíritu benemérito implica:",
+  opciones: [
+    "a) El cumplimiento estricto de órdenes militares.",
+    "b) La disposición a ayudar incluso fuera del horario de servicio.",
+    "c) La participación en servicios sociales organizados.",
+    "d) La denuncia obligatoria de delitos en tiempo de ocio."
+  ],
+  correcta: "b) La disposición a ayudar incluso fuera del horario de servicio.",
+  justificacion: "El espíritu benemérito refleja la vocación de servicio permanente."
+},
+{
+  pregunta: "¿Cuál de los siguientes principios no forma parte del contenido del artículo 25?",
+  opciones: [
+    "a) Congruencia.",
+    "b) Prudencia.",
+    "c) Proporcionalidad.",
+    "d) Agresividad."
+  ],
+  correcta: "d) Agresividad.",
+  justificacion: "El artículo 25 recoge congruencia, oportunidad, proporción y prudencia."
+},
+{
+  pregunta: "El artículo 36 trata sobre la cooperación con:",
+  opciones: [
+    "a) Las Fuerzas Armadas en estados de sitio.",
+    "b) Otras Fuerzas y Cuerpos de Seguridad.",
+    "c) Organismos extranjeros de lucha contra el crimen.",
+    "d) Empresarios de seguridad privada."
+  ],
+  correcta: "b) Otras Fuerzas y Cuerpos de Seguridad.",
+  justificacion: "Este artículo destaca el deber de colaboración operativa con otros cuerpos policiales."
+},
+{
+  pregunta: "El artículo 31 se refiere a:",
+  opciones: [
+    "a) La cooperación en misiones internacionales.",
+    "b) El uso adecuado de tecnologías digitales.",
+    "c) La profesionalidad en el saludo militar.",
+    "d) La gestión de la logística de intervención."
+  ],
+  correcta: "c) La profesionalidad en el saludo militar.",
+  justificacion: "El saludo militar es regulado como actuación práctica y simbólica de respeto."
+},
+{
+  pregunta: "El artículo 10 obliga al agente a:",
+  opciones: [
+    "a) Proteger el interés general ante cualquier circunstancia.",
+    "b) Promover la eficiencia organizativa del Cuerpo.",
+    "c) Servir con lealtad a la Constitución y al ordenamiento jurídico.",
+    "d) Actuar con firmeza en situaciones de conflicto institucional."
+  ],
+  correcta: "c) Servir con lealtad a la Constitución y al ordenamiento jurídico.",
+  justificacion: "La lealtad se extiende al marco constitucional establecido."
+},
+{
+  pregunta: "El artículo 16 regula el principio de obediencia, estableciendo que:",
+  opciones: [
+    "a) Se debe obedecer cualquier orden independientemente de su carácter.",
+    "b) La obediencia no incluye órdenes injustas o ilegales.",
+    "c) El agente debe consultar cada orden con su superior inmediato.",
+    "d) Toda orden solo es válida si se emite por escrito."
+  ],
+  correcta: "b) La obediencia no incluye órdenes injustas o ilegales.",
+  justificacion: "El deber de obediencia se limita a órdenes legales."
+},
+{
+  pregunta: "El artículo 42 exige que los mandos actúen con:",
+  opciones: [
+    "a) Superioridad táctica y dominio institucional.",
+    "b) Autoridad, dignidad y ejemplo personal.",
+    "c) Coherencia con las normas internas exclusivamente.",
+    "d) Exclusión de los subordinados en la toma de decisiones."
+  ],
+  correcta: "b) Autoridad, dignidad y ejemplo personal.",
+  justificacion: "El liderazgo ético se expresa en comportamientos correctos y ejemplares."
+},
+{
+  pregunta: "El artículo 44 exige una atención especial a:",
+  opciones: [
+    "a) Personas con síntomas de estrés psicológico.",
+    "b) Víctimas, testigos y colectivos vulnerables.",
+    "c) Miembros del propio Cuerpo en misión.",
+    "d) Personas vinculadas con el terrorismo."
+  ],
+  correcta: "b) Víctimas, testigos y colectivos vulnerables.",
+  justificacion: "Se subraya la protección específica a los más vulnerables."
+},
+{
+  pregunta: "La actuación del guardia civil en misiones militares debe respetar:",
+  opciones: [
+    "a) La Ley de Seguridad Nacional exclusivamente.",
+    "b) El Derecho Penal Militar solamente.",
+    "c) El Derecho Internacional Humanitario.",
+    "d) Las normas internas del Cuerpo."
+  ],
+  correcta: "c) El Derecho Internacional Humanitario.",
+  justificacion: "El artículo 47 establece el respeto al DIH en conflictos armados."
+},
+{
+  pregunta: "El artículo 32 establece como obligación personal:",
+  opciones: [
+    "a) Mantener la salud física y mental en condiciones óptimas.",
+    "b) No enfermar durante misiones críticas.",
+    "c) Comunicar cualquier lesión inmediatamente al mando.",
+    "d) Desempeñar exclusivamente trabajos de oficina si se está en baja."
+  ],
+  correcta: "a) Mantener la salud física y mental en condiciones óptimas.",
+  justificacion: "La salud es parte de la disponibilidad y rendimiento del servicio."
+},
+{
+  pregunta: "El artículo 38 garantiza que la información profesional ofrecida a la ciudadanía será:",
+  opciones: [
+    "a) Veraz y ponderada dentro de los límites del servicio.",
+    "b) Acorde con intereses políticos y corporativos.",
+    "c) Exclusivamente filtrada por los mandos superiores.",
+    "d) Comunicada solo al finalizar el procedimiento judicial."
+  ],
+  correcta: "a) Veraz y ponderada dentro de los límites del servicio.",
+  justificacion: "El artículo regula la transparencia responsable en la comunicación pública."
+},
+{
+  pregunta: "¿Qué artículo recoge el valor de la justicia objetiva como criterio de actuación?",
+  opciones: [
+    "a) Artículo 3.",
+    "b) Artículo 5.",
+    "c) Artículo 7.",
+    "d) Artículo 14."
+  ],
+  correcta: "b) Artículo 5.",
+  justificacion: "El artículo 5 promueve actuar con objetividad y ecuanimidad."
+},
+{
+  pregunta: "El artículo 6 hace referencia directa a la obligación de actuar sin:",
+  opciones: [
+    "a) Temor.",
+    "b) Excesiva autoridad.",
+    "c) Discriminación o favoritismo.",
+    "d) Forma escrita."
+  ],
+  correcta: "c) Discriminación o favoritismo.",
+  justificacion: "La imparcialidad es esencial para la actuación del agente."
+},
+{
+  pregunta: "El artículo 27 detalla que el guardia civil debe mantener reserva respecto a:",
+  opciones: [
+    "a) Secretos relativos a la identidad de la víctima solamente.",
+    "b) Toda información conocida en el ejercicio de su función.",
+    "c) Las instrucciones operativas del mando.",
+    "d) Órdenes de los mandos con carácter temporal."
+  ],
+  correcta: "b) Toda información conocida en el ejercicio de su función.",
+  justificacion: "La reserva profesional impide divulgar cualquier información de servicio."
+},
+{
+  pregunta: "El artículo 45 señala que el trato a personas detenidas debe hacerse:",
+  opciones: [
+    "a) Únicamente bajo la supervisión judicial.",
+    "b) Garantizando su dignidad e integridad física.",
+    "c) Aplicando siempre las medidas de fuerza estipuladas.",
+    "d) Sin necesidad de justificación escrita."
+  ],
+  correcta: "b) Garantizando su dignidad e integridad física.",
+  justificacion: "El artículo 45 exige protección de los derechos fundamentales del detenido."
+},
+{
+  pregunta: "La conducta del guardia debe favorecer el prestigio del Cuerpo según:",
+  opciones: [
+    "a) Artículo 20.",
+    "b) Artículo 40.",
+    "c) Artículo 11.",
+    "d) Artículo 46."
+  ],
+  correcta: "a) Artículo 20.",
+  justificacion: "Este artículo establece la importancia del buen comportamiento para la imagen institucional."
+},
+{
+  pregunta: "El artículo 28 regula el uso del uniforme porque:",
+  opciones: [
+    "a) Es una herramienta crucial en la lucha contra el crimen.",
+    "b) Forma parte de la imagen corporativa de la Guardia Civil.",
+    "c) Establece diferencias visibles entre los rangos.",
+    "d) Mejora el acceso a beneficios sociales."
+  ],
+  correcta: "b) Forma parte de la imagen corporativa de la Guardia Civil.",
+  justificacion: "Su buen uso contribuye a la percepción social del Cuerpo."
+},
+{
+  pregunta: "Obedecer la ley antes que una orden interna se vincula directamente con el principio de:",
+  opciones: [
+    "a) Disciplina.",
+    "b) Integridad.",
+    "c) Imparcialidad.",
+    "d) Lealtad."
+  ],
+  correcta: "b) Integridad.",
+  justificacion: "La integridad exige actuar conforme a la ley por encima de cualquier orden."
+},
+{
+  pregunta: "El artículo 48 fomenta la colaboración con:",
+  opciones: [
+    "a) La sociedad civil en campañas educativas.",
+    "b) Órganos judiciales y fiscales.",
+    "c) Entidades militares en conflictos abiertos.",
+    "d) Oficinas de cooperación internacional exclusivamente."
+  ],
+  correcta: "b) Órganos judiciales y fiscales.",
+  justificacion: "Se promueve la cooperación en el cumplimiento del deber de justicia."
+},
+{
+  pregunta: "El artículo 19 establece que la conducta del guardia civil deberá inspirarse en:",
+  opciones: [
+    "a) La costumbre y tradición popular.",
+    "b) La misión encomendada y su dignidad.",
+    "c) Las directrices políticas del Ministerio de Defensa.",
+    "d) Las preferencias del mando superior en todo momento."
+  ],
+  correcta: "b) La misión encomendada y su dignidad.",
+  justificacion: "El artículo 19 resalta la importancia del honor y vocación en su actuación."
+},
+{
+  pregunta: "El Código de Conducta establece en su artículo 1 que el honor es:",
+  opciones: [
+    "a) La virtud más distintiva del mando superior.",
+    "b) La principal divisa del guardia civil.",
+    "c) Una característica común a todos los cuerpos militares.",
+    "d) Un valor que debe demostrarse solo en servicio."
+  ],
+  correcta: "b) La principal divisa del guardia civil.",
+  justificacion: "El artículo 1 define el honor como la esencia del comportamiento del guardia civil."
+},
+{
+  pregunta: "El principio de responsabilidad recogido en el artículo 7 obliga al agente a:",
+  opciones: [
+    "a) Transmitir toda responsabilidad al mando superior.",
+    "b) Responder por sus actos y también por sus omisiones.",
+    "c) Cumplir órdenes sin reflexionar sobre ellas.",
+    "d) Actuar únicamente en presencia de testigos."
+  ],
+  correcta: "b) Responder por sus actos y también por sus omisiones.",
+  justificacion: "La responsabilidad incluye las acciones realizadas y las que se omiten."
+},
+{
+  pregunta: "El artículo 12 establece que el espíritu de sacrificio implica:",
+  opciones: [
+    "a) Cumplir únicamente con las tareas asignadas.",
+    "b) Aceptar dificultades y riesgos en beneficio del servicio.",
+    "c) Delegar las tareas más peligrosas en compañeros de menor rango.",
+    "d) Exigir compensación adicional por trabajos de riesgo."
+  ],
+  correcta: "b) Aceptar dificultades y riesgos en beneficio del servicio.",
+  justificacion: "El espíritu de sacrificio implica asumir penalidades sin pedir nada a cambio."
+},
+{
+  pregunta: "El artículo 39 obliga al guardia civil a:",
+  opciones: [
+    "a) Identificarse al inicio y fin de cada servicio, con uniforme o sin él.",
+    "b) Mostrar su número de identificación cuando lo solicite cualquier ciudadano.",
+    "c) Presentar documentación reservada ante autoridades judiciales.",
+    "d) Exhibir su placa solo ante otros agentes públicos."
+  ],
+  correcta: "b) Mostrar su número de identificación cuando lo solicite cualquier ciudadano.",
+  justificacion: "La identificación garantiza transparencia y responsabilidad en el servicio."
+},
+{
+  pregunta: "Según el artículo 3, la lealtad debe dirigirse a:",
+  opciones: [
+    "a) El mando directo y solo al mando directo.",
+    "b) La misión y a los intereses del Estado en su conjunto.",
+    "c) Las órdenes del Ministerio del Interior únicamente.",
+    "d) El personal del Cuerpo sin distinción de rango."
+  ],
+  correcta: "b) La misión y a los intereses del Estado en su conjunto.",
+  justificacion: "La lealtad se dirige hacia la Institución, la Constitución y el servicio público."
+},
+{
+  pregunta: "El artículo 47 menciona que las actuaciones en misiones militares deben respetar:",
+  opciones: [
+    "a) Las directrices del país anfitrión exclusivamente.",
+    "b) Los protocolos de cortesía internacional.",
+    "c) El Derecho Internacional Humanitario.",
+    "d) Las instrucciones operativas del mando militar únicamente."
+  ],
+  correcta: "c) El Derecho Internacional Humanitario.",
+  justificacion: "Se exige el cumplimiento de las normas internacionales humanitarias en dichos contextos."
+},
+{
+  pregunta: "El artículo 13 prohíbe cualquier actuación basada en:",
+  opciones: [
+    "a) Procedimientos de seguridad establecidos.",
+    "b) Creencias personales o ideológicas.",
+    "c) Criterios de urgencia operativa.",
+    "d) Normas internas del Cuerpo."
+  ],
+  correcta: "b) Creencias personales o ideológicas.",
+  justificacion: "Se establece la neutralidad ideológica en la actuación profesional."
+},
+{
+  pregunta: "Según el artículo 15, la disciplina colectiva requiere:",
+  opciones: [
+    "a) Seguir exclusivamente criterios operativos internos.",
+    "b) Coordinar la actuación con otros organismos internacionales.",
+    "c) El compromiso conjunto con la Constitución y la ley.",
+    "d) La eliminación de jerarquías en situaciones tácticas."
+  ],
+  correcta: "c) El compromiso conjunto con la Constitución y la ley.",
+  justificacion: "La disciplina colectiva se expresa en el respeto al marco jurídico común."
+},
+{
+  pregunta: "La actuación basada en valores institucionales se menciona en el artículo:",
+  opciones: [
+    "a) Artículo 9.",
+    "b) Artículo 15.",
+    "c) Artículo 21.",
+    "d) Artículo 32."
+  ],
+  correcta: "a) Artículo 9.",
+  justificacion: "Este artículo incide en la observancia de los valores y principios institucionales."
+},
+{
+  pregunta: "El artículo 18 recoge la obligación de una competencia profesional que se mantiene mediante:",
+  opciones: [
+    "a) Formación inicial suficiente.",
+    "b) Constante formación, actualización y estudio.",
+    "c) Antigüedad profesional de más de cinco años.",
+    "d) Supervisión exclusiva de mandos superiores."
+  ],
+  correcta: "b) Constante formación, actualización y estudio.",
+  justificacion: "La eficiencia se garantiza mediante una formación continua y renovada."
+},
+{
+  pregunta: "El artículo 45 establece la dignidad del detenido como:",
+  opciones: [
+    "a) Un derecho derivado solo de la Constitución.",
+    "b) Un principio conectado con garantías judiciales.",
+    "c) Un principio inalienable que debe ser protegido siempre.",
+    "d) Una garantía sujeta a valoración policial."
+  ],
+  correcta: "c) Un principio inalienable que debe ser protegido siempre.",
+  justificacion: "Se protege la dignidad como parte del respeto a los derechos fundamentales."
+},
+{
+  pregunta: "El artículo 26 exige que el guardia civil utilice los recursos públicos:",
+  opciones: [
+    "a) Con eficiencia, austeridad y responsabilidad.",
+    "b) Según su criterio personal y profesional.",
+    "c) En función del nivel jerárquico alcanzado.",
+    "d) Únicamente en presencia de supervisión."
+  ],
+  correcta: "a) Con eficiencia, austeridad y responsabilidad.",
+  justificacion: "El uso de recursos se debe hacer con arreglo al interés público."
+},
+{
+  pregunta: "¿En qué artículo se habla específicamente del trato a los testigos?",
+  opciones: [
+    "a) Artículo 44.",
+    "b) Artículo 17.",
+    "c) Artículo 45.",
+    "d) Artículo 38."
+  ],
+  correcta: "a) Artículo 44.",
+  justificacion: "Este artículo trata la atención especial a víctimas, testigos y colectivos vulnerables."
+},
+{
+  pregunta: "El artículo 19 establece que la conducta del guardia debe inspirarse en:",
+  opciones: [
+    "a) La misión encomendada y el honor del servicio.",
+    "b) La autonomía profesional del agente.",
+    "c) La prioridad de la orden política.",
+    "d) La preservación del estatus laboral."
+  ],
+  correcta: "a) La misión encomendada y el honor del servicio.",
+  justificacion: "El artículo 19 enfatiza la visión honorífica y digna de la misión del guardia civil."
+},
+{
+  pregunta: "El artículo 48 establece que deberá prestarse colaboración con:",
+  opciones: [
+    "a) Embajadas y cuerpos diplomáticos.",
+    "b) Órganos judiciales y el Ministerio Fiscal.",
+    "c) Instituciones educativas en programas sociales.",
+    "d) Asociaciones de prevención del delito."
+  ],
+  correcta: "b) Órganos judiciales y el Ministerio Fiscal.",
+  justificacion: "El deber de colaboración con la justicia se recoge en este artículo."
+},
+{
+  pregunta: "¿Cuál de los siguientes no es un valor citado en el Código de Conducta?",
+  opciones: [
+    "a) Valor.",
+    "b) Neutralidad.",
+    "c) Solidaridad.",
+    "d) Justicia."
+  ],
+  correcta: "c) Solidaridad.",
+  justificacion: "Aunque la solidaridad es un valor general, no aparece específicamente en el Código."
+},
+{
+  pregunta: "El artículo 28 regula el uniforme como:",
+  opciones: [
+    "a) Un símbolo de autoridad y confianza que debe emplearse adecuadamente.",
+    "b) Un requisito meramente protocolario.",
+    "c) Una imagen opcional solo para actos institucionales.",
+    "d) Un elemento para diferenciar rangos."
+  ],
+  correcta: "a) Un símbolo de autoridad y confianza que debe emplearse adecuadamente.",
+  justificacion: "El uniforme representa la imagen de la Guardia Civil ante la ciudadanía."
+},
+{
+  pregunta: "Actuar con imparcialidad implica no dejarse influir por:",
+  opciones: [
+    "a) La jerarquía interna.",
+    "b) Preferencias personales o prejuicios.",
+    "c) Exigencias del servicio público.",
+    "d) Demandas sociales y mediáticas."
+  ],
+  correcta: "b) Preferencias personales o prejuicios.",
+  justificacion: "La imparcialidad implica ausencia de influencias injustas."
+},
+{
+  pregunta: "El artículo 32 vincula la salud del agente con:",
+  opciones: [
+    "a) El derecho a reposo ilimitado tras cada servicio.",
+    "b) El deber de estar en condiciones físicas y mentales óptimas.",
+    "c) La capacidad de acceder a destinos operativos internacionales.",
+    "d) Las restricciones sobre prácticas de riesgo."
+  ],
+  correcta: "b) El deber de estar en condiciones físicas y mentales óptimas.",
+  justificacion: "La salud es una responsabilidad personal hacia el servicio y el rendimiento."
+},
+{
+  pregunta: "El artículo 24 señala que la disponibilidad obliga al agente a:",
+  opciones: [
+    "a) Realizar turnos forzosos durante las vacaciones.",
+    "b) Estar localizable para el servicio en todo momento.",
+    "c) Solicitar autorización para ausentarse.",
+    "d) Estar siempre presente en el lugar de trabajo."
+  ],
+  correcta: "b) Estar localizable para el servicio en todo momento.",
+  justificacion: "Este artículo destaca la disponibilidad permanente como deber básico."
+},
+{
+  pregunta: "El artículo 42 indica que el mando debe actuar como:",
+  opciones: [
+    "a) Un administrador de recursos exclusivamente.",
+    "b) Un referente ético y profesional para sus subordinados.",
+    "c) Un jefe rígido sin excepciones.",
+    "d) Un ejecutor de órdenes sin criterio propio."
+  ],
+  correcta: "b) Un referente ético y profesional para sus subordinados.",
+  justificacion: "El liderazgo se basa en la autoridad ejemplar y la conducta ética."
+},
+{
+  pregunta: "¿Qué artículo recoge la importancia de la formación permanente?",
+  opciones: [
+    "a) Artículo 13.",
+    "b) Artículo 40.",
+    "c) Artículo 19.",
+    "d) Artículo 35."
+  ],
+  correcta: "b) Artículo 40.",
+  justificacion: "Este artículo destaca la formación continua como base de la profesionalidad."
+},
+{
+  pregunta: "El artículo 11 obliga a los guardias civiles a proteger:",
+  opciones: [
+    "a) La seguridad institucional exclusivamente.",
+    "b) La propiedad privada de los contribuyentes.",
+    "c) La vida, dignidad e integridad física de las personas.",
+    "d) La imagen pública de la Guardia Civil sobre todo lo demás."
+  ],
+  correcta: "c) La vida, dignidad e integridad física de las personas.",
+  justificacion: "Es un mandato expreso para garantizar los derechos fundamentales."
+},
+{
+  pregunta: "La neutralidad política en la actuación policial está recogida en el artículo:",
+  opciones: [
+    "a) Artículo 6.",
+    "b) Artículo 13.",
+    "c) Artículo 19.",
+    "d) Artículo 40."
+  ],
+  correcta: "b) Artículo 13.",
+  justificacion: "Este artículo prohíbe la actuación influenciada por ideología personal."
+},
+{
+  pregunta: "El cumplimiento del Derecho Internacional Humanitario en misiones militares aparece en el artículo:",
+  opciones: [
+    "a) Artículo 47.",
+    "b) Artículo 38.",
+    "c) Artículo 25.",
+    "d) Artículo 14."
+  ],
+  correcta: "a) Artículo 47.",
+  justificacion: "Este artículo obliga al respeto de las normas internacionales humanitarias."
+},
+{
+  pregunta: "El artículo 29 establece el compromiso de los guardias civiles con:",
+  opciones: [
+    "a) El medio ambiente y la sostenibilidad.",
+    "b) Los informes detallados a la superioridad.",
+    "c) El bienestar de los internos en centros penitenciarios.",
+    "d) Las actuaciones del Ministerio Fiscal."
+  ],
+  correcta: "a) El medio ambiente y la sostenibilidad.",
+  justificacion: "Este artículo promueve un comportamiento responsable con el medio natural."
+},
+{
+  pregunta: "El artículo 38 exige que, frente a los medios de comunicación, la información:",
+  opciones: [
+    "a) Sea transmitida sin ningún tipo de filtro.",
+    "b) Sea veraz y proporcionada.",
+    "c) Se limite a noticias favorables al Cuerpo.",
+    "d) Sea autorizada únicamente por el Ministerio del Interior."
+  ],
+  correcta: "b) Sea veraz y proporcionada.",
+  justificacion: "Se prioriza la transparencia responsable sin afectar el servicio."
+},
+{
+  pregunta: "El artículo 15 se refiere a la disciplina colectiva, la cual exige:",
+  opciones: [
+    "a) El empleo de códigos privados de actuación interna.",
+    "b) El cumplimiento conjunto de los valores constitucionales.",
+    "c) La obediencia ciega a cualquier orden.",
+    "d) La participación en órganos sindicales internos."
+  ],
+  correcta: "b) El cumplimiento conjunto de los valores constitucionales.",
+  justificacion: "La disciplina colectiva debe sostenerse en valores compartidos."
+},
+{
+  pregunta: "El artículo 25 exige el uso de la fuerza con criterios de:",
+  opciones: [
+    "a) Rigurosidad y represalia.",
+    "b) Igualdad y prevención.",
+    "c) Proporcionalidad, oportunidad y congruencia.",
+    "d) Exclusividad y eficacia táctica."
+  ],
+  correcta: "c) Proporcionalidad, oportunidad y congruencia.",
+  justificacion: "Es una guía esencial ética para el uso de la fuerza."
+},
+{
+  pregunta: "El artículo 24 se refiere a la disponibilidad, la cual implica:",
+  opciones: [
+    "a) Estar localizable en cualquier momento para el servicio.",
+    "b) Priorizar la vida familiar sobre la operativa profesional.",
+    "c) Cumplir únicamente con el horario establecido.",
+    "d) Prestar servicio solo mediante orden verbal directa."
+  ],
+  correcta: "a) Estar localizable en cualquier momento para el servicio.",
+  justificacion: "La disponibilidad es un deber clave para la misión policial."
+},
+{
+  pregunta: "¿Qué artículo obliga a mantener reserva sobre la información obtenida en servicio?",
+  opciones: [
+    "a) Artículo 27.",
+    "b) Artículo 31.",
+    "c) Artículo 42.",
+    "d) Artículo 19."
+  ],
+  correcta: "a) Artículo 27.",
+  justificacion: "Este artículo obliga a guardar reserva profesional."
+},
+{
+  pregunta: "Según el artículo 20, la conducta de los guardias civiles debe favorecer:",
+  opciones: [
+    "a) La recaudación económica del Estado.",
+    "b) El prestigio de la Institución ante la ciudadanía.",
+    "c) La disciplina de otros Cuerpos de Seguridad.",
+    "d) El reconocimiento político internacional."
+  ],
+  correcta: "b) El prestigio de la Institución ante la ciudadanía.",
+  justificacion: "La imagen pública del Cuerpo es un valor fundamental a proteger."
+},
+{
+  pregunta: "El artículo 44 establece una especial sensibilidad hacia:",
+  opciones: [
+    "a) Cualquier persona en condición de detenida.",
+    "b) Personas vinculadas a delitos violentos.",
+    "c) Víctimas, testigos y colectivos vulnerables.",
+    "d) Mandos intermedios con riesgo laboral."
+  ],
+  correcta: "c) Víctimas, testigos y colectivos vulnerables.",
+  justificacion: "Este artículo subraya la protección especial hacia personas vulnerables."
+},
+{
+  pregunta: "Según el artículo 16, los guardias civiles deben obedecer las órdenes de sus superiores:",
+  opciones: [
+    "a) Solo si están supervisadas por un superior inmediato.",
+    "b) En todo caso, sin cuestionamiento posible.",
+    "c) Siempre que no sean manifiestamente ilegales.",
+    "d) Solo si se redactan por escrito y son firmadas."
+  ],
+  correcta: "c) Siempre que no sean manifiestamente ilegales.",
+  justificacion: "La obediencia no excluye la responsabilidad frente a órdenes ilegales."
+},
+{
+  pregunta: "El artículo 7 establece que el guardia civil es responsable por:",
+  opciones: [
+    "a) Los errores de sus subordinados cuando no supervisa.",
+    "b) Sus acciones, omisiones y consecuencias que se deriven.",
+    "c) Los procedimientos judiciales en curso.",
+    "d) Cualquier decisión operativa del mando."
+  ],
+  correcta: "b) Sus acciones, omisiones y consecuencias que se deriven.",
+  justificacion: "El principio de responsabilidad individual se extiende a hechos y omisiones."
+},
+{
+  pregunta: "La lealtad como valor está regulada en el artículo:",
+  opciones: [
+    "a) Artículo 14.",
+    "b) Artículo 3.",
+    "c) Artículo 9.",
+    "d) Artículo 39."
+  ],
+  correcta: "b) Artículo 3.",
+  justificacion: "Este artículo describe la lealtad como valor constitucional y profesional."
+},
+{
+  pregunta: "¿En qué artículo se menciona la obligación de cuidar la salud física y mental?",
+  opciones: [
+    "a) Artículo 33.",
+    "b) Artículo 24.",
+    "c) Artículo 44.",
+    "d) Artículo 38."
+  ],
+  correcta: "a) Artículo 33.",
+  justificacion: "Este artículo establece el deber personal de mantenerse en condiciones óptimas."
+},
+{
+  pregunta: "El saludo militar como muestra de respeto está regulado en el artículo:",
+  opciones: [
+    "a) Artículo 31.",
+    "b) Artículo 36.",
+    "c) Artículo 47.",
+    "d) Artículo 19."
+  ],
+  correcta: "a) Artículo 31.",
+  justificacion: "El saludo militar es un acto simbólico de responsabilidad y disciplina."
+},
+{
+  pregunta: "El artículo 45 exige respeto en el trato a personas detenidas, garantizando:",
+  opciones: [
+    "a) El silencio administrativo ante denuncias.",
+    "b) El acceso inmediato a recursos económicos.",
+    "c) La dignidad, integridad y respeto de sus derechos.",
+    "d) La custodia exclusiva por mandos de alta graduación."
+  ],
+  correcta: "c) La dignidad, integridad y respeto de sus derechos.",
+  justificacion: "La protección de los derechos humanos es esencial en la custodia."
+},
+{
+  pregunta: "El valor que exige actuar con valor y firmeza ante situaciones de riesgo está regulado en:",
+  opciones: [
+    "a) Artículo 3.",
+    "b) Artículo 12.",
+    "c) Artículo 2.",
+    "d) Artículo 5."
+  ],
+  correcta: "c) Artículo 2.",
+  justificacion: "Este artículo recoge el valor como cualidad para actuar con firmeza y audacia en situaciones peligrosas."
+},
+];
+
+let totalPreguntasRenderizadas = 0;
+
+function barajar(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+}
+
+function setProgress(current, total) {
+  const bar = document.getElementById('progressBar');
+  const pct = total > 0 ? Math.round((current / total) * 100) : 0;
+  bar.style.width = pct + '%';
+  bar.title = pct + '%';
+}
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+// Carga el test con preguntas y respuestas aleatorias
+function cargarTest() {
+  const numPreguntas = parseInt(document.getElementById('numPreguntas').value);
+  const testForm = document.getElementById('testForm');
+  const progressBar = document.getElementById('progressBar');
+  const testResult = document.getElementById('testResult');
+
+  testForm.innerHTML = '';
+  testResult.innerHTML = '';
+  progressBar.style.width = '0%';
+
+  if (!preguntasBanco || preguntasBanco.length === 0) {
+    testForm.innerHTML = '<p style="color:red;font-weight:bold;">⚠️ No hay preguntas en el banco.</p>';
+    return;
+  }
+
+  const letras = ['a)', 'b)', 'c)', 'd)', 'e)', 'f)']; // por si hay más de 4 opciones
+  const preguntasSeleccionadas = shuffle([...preguntasBanco]).slice(0, numPreguntas);
+
+  preguntasSeleccionadas.forEach((preguntaObj, index) => {
+    // Mezclamos las opciones (pero vamos a limpiar su prefijo "a) " si lo llevan)
+    const opcionesMezcladas = shuffle([...preguntaObj.opciones]);
+
+    // Convertimos cada opción en un objeto { texto, esCorrecta }
+    const opcionesObj = opcionesMezcladas.map(opcion => {
+      // Limpiar prefijos como "a) ", "b) " si existen
+      const textoLimpio = opcion.replace(/^[A-Za-z]\)\s*/, '').trim();
+      const esCorrecta = opcion === preguntaObj.correcta || textoLimpio === preguntaObj.correcta.replace(/^[A-Za-z]\)\s*/, '').trim();
+      return { texto: textoLimpio, esCorrecta };
+    });
+
+    // Renderizamos las opciones asignando letras según la posición (letras fijas)
+    const opcionesHTML = opcionesObj.map((opt, optIndex) => {
+      const marcaCorrecta = opt.esCorrecta ? 'true' : 'false';
+      const letra = letras[optIndex] || `${optIndex + 1})`; // fallback si hay >6 opciones
+      // No incluimos la letra dentro del texto de la opción; la mostramos separada
+      return `
+        <label class="option">
+          <input type="radio" name="pregunta${index}" value="${opt.texto.replace(/"/g, '&quot;')}" data-correct="${marcaCorrecta}">
+          <span style="font-weight:700; margin-right:10px; color:var(--muted)">${letra}</span>
+          ${opt.texto}
+        </label>
+      `;
+    }).join('');
+
+    const preguntaHTML = `
+      <div class="question">
+        <div class="q-head">
+          <span class="q-num">${index + 1}.</span>
+          <p class="q-text">${preguntaObj.pregunta}</p>
+        </div>
+        <div class="options">
+          ${opcionesHTML}
+        </div>
+        <div class="justification muted" style="display:none;">
+          <span class="correct">✔ ${preguntaObj.correcta.replace(/^[A-Za-z]\)\s*/, '')}</span><br>
+          ${preguntaObj.justificacion}
+        </div>
+      </div>
+    `;
+    testForm.insertAdjacentHTML('beforeend', preguntaHTML);
+  });
+
+  // Añadir botón corregir (evitar duplicados)
+  const botonCorregirExistente = Array.from(testForm.getElementsByTagName('button')).find(b => b.textContent === 'Corregir');
+  if (!botonCorregirExistente) {
+    const botonCorregir = document.createElement('button');
+    botonCorregir.type = 'button';
+    botonCorregir.className = 'btn success';
+    botonCorregir.textContent = 'Corregir';
+    botonCorregir.onclick = () => corregirTest();
+    testForm.appendChild(botonCorregir);
+  }
+}
+
+
+function corregirTest() {
+  const preguntas = document.querySelectorAll('.question');
+  let aciertos = 0;
+
+  preguntas.forEach((pregunta) => {
+    const radios = pregunta.querySelectorAll('input[type="radio"]');
+    const labels = pregunta.querySelectorAll('.option');
+    const justificacion = pregunta.querySelector('.justification');
+    let seleccionCorrecta = false;
+
+    // Limpiar clases anteriores
+    labels.forEach(l => {
+      l.classList.remove('correct-option', 'wrong-option');
+      const checkmark = l.querySelector('.checkmark');
+      if (checkmark) checkmark.remove();
+    });
+
+    radios.forEach(radio => {
+      const label = radio.closest('.option');
+      if (radio.checked && radio.dataset.correct === 'true') {
+        seleccionCorrecta = true;
+      }
+    });
+
+    radios.forEach(radio => {
+      const label = radio.closest('.option');
+
+      if (radio.dataset.correct === 'true') {
+        // Mostrar check verde en la opción correcta
+        label.classList.add('correct-option');
+        label.insertAdjacentHTML('afterbegin', `<span class="checkmark" style="color:#059669;font-weight:700;">✔</span>`);
+      }
+
+      if (radio.checked && radio.dataset.correct !== 'true') {
+        // Mostrar X roja en la opción elegida incorrecta
+        label.classList.add('wrong-option');
+        label.insertAdjacentHTML('afterbegin', `<span class="checkmark" style="color:#dc2626;font-weight:700;">✘</span>`);
+      }
+    });
+
+    // Mostrar la justificación al final
+    if (justificacion) {
+      justificacion.style.display = 'block';
+      justificacion.innerHTML = `
+        ${seleccionCorrecta 
+          ? `<span class="correct">✔ ${pregunta.querySelector('input[data-correct="true"]').value}</span><br>` 
+          : `<span class="incorrect">✘ ${pregunta.querySelector('input[data-correct="true"]').value}</span><br>`
+        }
+        ${pregunta.querySelector('.justification').textContent || ''}
+      `;
+    }
+
+    if (seleccionCorrecta) aciertos++;
+  });
+
+  // Mostrar resultado final
+  const total = preguntas.length;
+  const porcentaje = Math.round((aciertos / total) * 100);
+  const testResult = document.getElementById('testResult');
+  testResult.innerHTML = `
+    <div class="result-card">
+      <p class="score">Has acertado ${aciertos} de ${total} preguntas (${porcentaje}%).</p>
+      <p class="muted">${porcentaje >= 70 ? "✅ ¡Buen trabajo!" : "❌ Puedes mejorar."}</p>
+    </div>
+  `;
+  document.getElementById('progressBar').style.width = '100%';
+}
+
+
+function reiniciarTest() {
+  document.getElementById('testForm').innerHTML = '';
+  document.getElementById('testResult').innerHTML = '';
+  setProgress(0, 0);
+}
+  // ==========================
+// 🔹 TEMPORIZADOR CONFIGURABLE
+// ==========================
+
+// Variables del temporizador
+let tiempoTotal = 0;
+let tiempoRestante = 0;
+let temporizadorInterval;
+
+// Crear selector de tiempo en el panel de controles
+const selectTiempo = document.createElement('select');
+selectTiempo.id = 'tiempoSeleccionado';
+selectTiempo.innerHTML = `
+  <option value="0">Sin límite</option>
+  <option value="5">5 minutos</option>
+  <option value="10" selected>10 minutos</option>
+  <option value="15">15 minutos</option>
+  <option value="20">20 minutos</option>
+  <option value="30">30 minutos</option>
+  <option value="40">40 minutos</option>
+  <option value="50">50 minutos</option>
+  <option value="60">60 minutos</option>
+`;
+const labelTiempo = document.createElement('label');
+labelTiempo.htmlFor = 'tiempoSeleccionado';
+labelTiempo.textContent = 'Tiempo límite:';
+const controlsDiv = document.querySelector('.controls');
+controlsDiv.insertBefore(labelTiempo, controlsDiv.children[2]);
+controlsDiv.insertBefore(selectTiempo, controlsDiv.children[3]);
+
+// Crear elemento visual del temporizador
+const temporizadorDiv = document.createElement('div');
+temporizadorDiv.id = 'temporizador';
+temporizadorDiv.style.textAlign = 'center';
+temporizadorDiv.style.fontSize = '18px';
+temporizadorDiv.style.fontWeight = '700';
+temporizadorDiv.style.color = '#2563eb';
+temporizadorDiv.style.marginTop = '12px';
+controlsDiv.appendChild(temporizadorDiv);
+
+// Mostrar tiempo en formato mm:ss
+function mostrarTiempo() {
+  let min = Math.floor(tiempoRestante / 60);
+  let seg = tiempoRestante % 60;
+  temporizadorDiv.textContent = `⏳ Tiempo restante: ${min}:${seg.toString().padStart(2, '0')}`;
+}
+
+// Iniciar temporizador
+function iniciarTemporizador() {
+  const minutosSeleccionados = parseInt(document.getElementById('tiempoSeleccionado').value);
+  if (minutosSeleccionados === 0) {
+    temporizadorDiv.textContent = '⏳ Sin límite de tiempo';
+    return;
+  }
+
+  tiempoTotal = minutosSeleccionados * 60;
+  tiempoRestante = tiempoTotal;
+  mostrarTiempo();
+
+  temporizadorInterval = setInterval(() => {
+    tiempoRestante--;
+    mostrarTiempo();
+    if (tiempoRestante <= 0) {
+      clearInterval(temporizadorInterval);
+      temporizadorDiv.textContent = '⏰ ¡Tiempo agotado!';
+      finalizarTestPorTiempo();
+    }
+  }, 1000);
+}
+
+// Detener temporizador
+function detenerTemporizador() {
+  clearInterval(temporizadorInterval);
+}
+
+// Modificar función cargarTest para que inicie el temporizador
+const originalCargarTest = cargarTest;
+cargarTest = function() {
+  originalCargarTest();
+  detenerTemporizador(); // Por si se reinicia
+  iniciarTemporizador();
+};
+
+// Al finalizar el test manualmente (botón Enviar)
+const originalEvaluarTest = evaluarTest;
+evaluarTest = function() {
+  detenerTemporizador(); // Detiene el contador al pulsar Enviar
+  originalEvaluarTest();
+};
+
+// Cuando el tiempo se agota automáticamente
+function finalizarTestPorTiempo() {
+  // Evita ejecuciones dobles
+  if (window.__finalizadoPorTiempo__) return;
+  window.__finalizadoPorTiempo__ = true;
+
+  detenerTemporizador();
+  if (temporizadorDiv) temporizadorDiv.textContent = '⏰ ¡Tiempo agotado! Pulsa "Enviar" para corregir.';
+
+  // 🔒 Bloquear todas las respuestas
+  document.querySelectorAll('input[type="radio"]').forEach(r => {
+    r.disabled = true;
+    const opt = r.closest('.option');
+    if (opt) {
+      opt.style.opacity = '0.6';
+      opt.style.pointerEvents = 'none';
+    }
+  });
+
+  // ✅ Dejar el botón "Enviar" activo y hacerlo destacar en verde
+  const btnEnviar = document.querySelector('button.btn.success, button[type="submit"]');
+  if (btnEnviar) {
+    btnEnviar.disabled = false;
+    btnEnviar.style.opacity = '1';
+    btnEnviar.style.cursor = 'pointer';
+
+    // 💚 Efecto parpadeo verde suave
+    btnEnviar.style.animation = 'blinkGreen 1.2s infinite';
+    btnEnviar.style.transition = 'background-color 0.3s ease';
+    btnEnviar.style.backgroundColor = '#22c55e'; // verde suave (Tailwind: green-500)
+    btnEnviar.style.color = 'white';
+
+    // Inyectar animación CSS si no existe
+    if (!document.getElementById('blinkGreen-style')) {
+      const style = document.createElement('style');
+      style.id = 'blinkGreen-style';
+      style.textContent = `
+        @keyframes blinkGreen {
+          0%, 100% { background-color: #22c55e; }
+          50% { background-color: #86efac; } /* verde claro (green-300) */
+        }
+      `;
+      document.head.appendChild(style);
+    }
+  }
+
+  // 🔄 Mantener botón "Reiniciar" activo
+  const btnReiniciar = document.querySelector('button.btn.secondary');
+  if (btnReiniciar) {
+    btnReiniciar.disabled = false;
+  }
+}
+</script>
+</body>
+</html>
