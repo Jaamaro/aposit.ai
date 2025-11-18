@@ -1,0 +1,3812 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test de Responsabilidad penal de los menores</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --card: #ffffff;
+      --text: #111827;
+      --muted: #6b7280;
+      --primary: #2563eb;
+      --primary-dark: #1e40af;
+      --success: #059669;
+      --danger: #dc2626;
+      --ring: rgba(37, 99, 235, 0.25);
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: 'Roboto', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      padding: 24px;
+    }
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+    header.hero {
+      text-align: center;
+      margin-bottom: 16px;
+    }
+    .title {
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--primary-dark);
+      margin: 0 0 8px;
+    }
+    .subtitle {
+      color: var(--muted);
+      margin: 0;
+    }
+    .controls {
+      background: var(--card);
+      border-radius: 14px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.06);
+      padding: 16px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      justify-content: center;
+      position: sticky;
+      top: 12px;
+      z-index: 5;
+    }
+    .controls label { font-weight: 500; }
+    select {
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid #e5e7eb;
+      background: #fff;
+      outline: none;
+      transition: box-shadow .2s, border-color .2s;
+    }
+    select:focus { border-color: var(--primary); box-shadow: 0 0 0 4px var(--ring); }
+
+    .btn {
+      cursor: pointer;
+      border: none;
+      border-radius: 10px;
+      padding: 12px 18px;
+      font-weight: 700;
+      transition: transform .15s, background .2s, box-shadow .2s;
+      color: #fff;
+      background: var(--primary);
+      box-shadow: 0 6px 14px rgba(37,99,235,.2);
+    }
+    .btn:hover { transform: translateY(-1px); background: var(--primary-dark); }
+    .btn.secondary { background: #6b7280; }
+    .btn.secondary:hover { background: #374151; }
+    .btn.success { background: var(--success); }
+    .btn.success:hover { background: #047857; }
+    .btn.danger { background: var(--danger); }
+    .btn.danger:hover { background: #b91c1c; }
+
+    .progress {
+      width: 100%;
+      height: 10px;
+      background: #e5e7eb;
+      border-radius: 999px;
+      overflow: hidden;
+      margin-top: 8px;
+    }
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--primary), #60a5fa);
+      transition: width .3s ease;
+    }
+
+    .question {
+      margin: 14px 0;
+      padding: 18px;
+      background: var(--card);
+      border-radius: 14px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.06);
+    }
+    .q-head {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+    }
+    .q-num {
+      font-weight: 800;
+      color: var(--primary-dark);
+    }
+    .q-text { margin: 0; }
+
+    .options { margin-top: 10px; display: grid; gap: 8px; }
+    .option {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid #e5e7eb;
+      background: #fff;
+      transition: background .15s, border-color .15s, box-shadow .15s;
+      cursor: pointer;
+    }
+    .option input { transform: scale(1.2); }
+    .option:hover { background: #f9fafb; border-color: #d1d5db; }
+    .option.is-selected { box-shadow: 0 0 0 4px var(--ring); border-color: var(--primary); }
+
+    .justification {
+      margin-top: 10px; color: var(--muted);
+    }
+    .correct { color: var(--success); font-weight: 700; }
+    .incorrect { color: var(--danger); font-weight: 700; }
+
+    .option.correct-option {
+      border-color: rgba(5,150,105,.4);
+      background: #ecfdf5;
+    }
+    .option.wrong-option {
+      border-color: rgba(220,38,38,.4);
+      background: #fef2f2;
+    }
+
+    .result-card {
+      margin: 18px 0;
+      padding: 16px;
+      background: var(--card);
+      border-radius: 14px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.06);
+      text-align: center;
+    }
+    .score {
+      font-size: 22px;
+      font-weight: 800;
+      margin: 8px 0;
+    }
+    .muted { color: var(--muted); }
+    footer { text-align: center; margin-top: 24px; color: var(--muted); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="hero">
+      <h1 class="title">Test de Responsabilidad penal de los menores</h1>
+      <p class="subtitle">Selecciona cuántas preguntas quieres y pulsa <strong>Comenzar</strong>.</p>
+    </header>
+
+    <div class="controls">
+      <label for="numPreguntas">Número de preguntas:</label>
+      <select id="numPreguntas">
+        <option value="10">10</option>
+        <option value="20">20</option>
+        <option value="30">30</option>
+        <option value="40">40</option>
+        <option value="50" selected>50</option>
+      </select>
+      <button class="btn" type="button" onclick="cargarTest()">Comenzar</button>
+      <button class="btn secondary" type="button" onclick="reiniciarTest()">Reiniciar</button>
+      <div class="progress" style="flex-basis: 100%;">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+    </div>
+
+    <form id="testForm"></form>
+
+    <div id="testResult"></div>
+    <footer>© Test de práctica — Responsabilidad penal de los menores</footer>
+  </div>
+
+<script>
+const preguntasBanco = [
+{
+  pregunta: "¿Qué ley regula en España la responsabilidad penal de los menores?",
+  opciones: [
+    "a) Ley Orgánica 5/2000.",
+    "b) Ley Orgánica 1/1996.",
+    "c) Ley Orgánica 2/2006.",
+    "d) Ley Orgánica 4/2015."
+  ],
+  correcta: "a) Ley Orgánica 5/2000.",
+  justificacion: "La Ley Orgánica 5/2000, de 12 de enero, regula la responsabilidad penal de los menores en España."
+},
+{
+  pregunta: "Según la Ley Orgánica 5/2000, la edad mínima a partir de la cual un menor puede ser penalmente responsable es:",
+  opciones: [
+    "a) 12 años.",
+    "b) 14 años.",
+    "c) 16 años.",
+    "d) 18 años."
+  ],
+  correcta: "b) 14 años.",
+  justificacion: "La Ley establece que solo los menores entre 14 y 18 años pueden ser responsables penalmente."
+},
+{
+  pregunta: "¿Qué tribunal es competente para conocer los delitos cometidos por menores?",
+  opciones: [
+    "a) Tribunal de Menores.",
+    "b) Juzgado de lo Penal.",
+    "c) Juzgado de Menores.",
+    "d) Audiencia Provincial."
+  ],
+  correcta: "c) Juzgado de Menores.",
+  justificacion: "Los Juzgados de Menores conocen en exclusiva de los delitos cometidos por menores de edad."
+},
+{
+  pregunta: "¿Cuál de las siguientes medidas no está prevista en la Ley Orgánica 5/2000?",
+  opciones: [
+    "a) Internamiento terapéutico.",
+    "b) Prestación en beneficio de la comunidad.",
+    "c) Trabajo forzado.",
+    "d) Amonestación."
+  ],
+  correcta: "c) Trabajo forzado.",
+  justificacion: "El trabajo forzado está prohibido por la legislación. Las otras sí son medidas contempladas."
+},
+{
+  pregunta: "La medida de internamiento puede ser:",
+  opciones: [
+    "a) Solo en régimen cerrado.",
+    "b) En régimen abierto, semiabierto o cerrado.",
+    "c) Exclusivamente terapéutica.",
+    "d) Siempre sustituible por multa."
+  ],
+  correcta: "b) En régimen abierto, semiabierto o cerrado.",
+  justificacion: "La Ley prevé distintos regímenes de internamiento según la gravedad del caso."
+},
+{
+  pregunta: "¿Quién dirige la ejecución de las medidas impuestas a menores?",
+  opciones: [
+    "a) El Ministerio del Interior.",
+    "b) La Fiscalía de Menores.",
+    "c) Las Comunidades Autónomas.",
+    "d) El Tribunal Supremo."
+  ],
+  correcta: "c) Las Comunidades Autónomas.",
+  justificacion: "Las medidas se ejecutan por los servicios competentes de las Comunidades Autónomas."
+},
+{
+  pregunta: "La medida de libertad vigilada incluye la obligación de:",
+  opciones: [
+    "a) Permanecer en el domicilio 24 horas.",
+    "b) Informar periódicamente sobre actividades.",
+    "c) Cumplir trabajos profesionales definidos.",
+    "d) Asistir a cursos de formación militar."
+  ],
+  correcta: "b) Informar periódicamente sobre actividades.",
+  justificacion: "La libertad vigilada supone un control del menor con visitas y comunicaciones establecidas."
+},
+{
+  pregunta: "La medida de internamiento en régimen cerrado se aplica:",
+  opciones: [
+    "a) Siempre que el delito sea grave.",
+    "b) Cuando se deba preservar la seguridad del menor y de terceras personas.",
+    "c) Únicamente a partir de los 16 años.",
+    "d) Solo cuando lo solicite el Ministerio Fiscal."
+  ],
+  correcta: "b) Cuando se deba preservar la seguridad del menor y de terceras personas.",
+  justificacion: "El internamiento cerrado se reserva para delitos graves o menores con perfil de peligrosidad."
+},
+{
+  pregunta: "La medida de amonestación:",
+  opciones: [
+    "a) Se realiza en un acto público.",
+    "b) Es una reprensión formal del juez al menor.",
+    "c) Sustituye cualquier medida en delitos graves.",
+    "d) Solo puede imponerse por infracciones leves."
+  ],
+  correcta: "b) Es una reprensión formal del juez al menor.",
+  justificacion: "La amonestación es una advertencia directa y solemne del juez."
+},
+{
+  pregunta: "¿Qué medida está orientada a reparar los daños causados a la víctima?",
+  opciones: [
+    "a) Internamiento terapéutico.",
+    "b) Libertad vigilada.",
+    "c) Prestaciones en beneficio de la comunidad.",
+    "d) Reparación del daño."
+  ],
+  correcta: "d) Reparación del daño.",
+  justificacion: "La reparación es una medida restaurativa dirigida a la víctima y a la sociedad."
+},
+{
+  pregunta: "El equipo técnico en la jurisdicción de menores está formado por:",
+  opciones: [
+    "a) Abogados y médicos forenses.",
+    "b) Psicólogos, trabajadores sociales y educadores.",
+    "c) Policías y jueces.",
+    "d) Funcionarios del Ministerio Fiscal."
+  ],
+  correcta: "b) Psicólogos, trabajadores sociales y educadores.",
+  justificacion: "El equipo técnico asesora al juez sobre la situación personal y social del menor."
+},
+{
+  pregunta: "La aplicación de la Ley de Responsabilidad Penal de los Menores tiene un carácter:",
+  opciones: [
+    "a) Exclusivamente sancionador.",
+    "b) Fundamentalmente educativo y reeducador.",
+    "c) Militarizado.",
+    "d) Administrativo."
+  ],
+  correcta: "b) Fundamentalmente educativo y reeducador.",
+  justificacion: "La finalidad de las medidas es reinsertar al menor en la sociedad."
+},
+{
+  pregunta: "En la Ley Orgánica 5/2000, ¿quién puede promover la conciliación con la víctima?",
+  opciones: [
+    "a) El juez de menores.",
+    "b) El Ministerio Fiscal.",
+    "c) Las Fuerzas y Cuerpos de Seguridad.",
+    "d) Los padres del menor."
+  ],
+  correcta: "a) El juez de menores.",
+  justificacion: "El juez puede promover la mediación víctima-infractor en el procedimiento."
+},
+{
+  pregunta: "El internamiento terapéutico se aplica cuando:",
+  opciones: [
+    "a) El menor presenta alteraciones psíquicas o adicciones.",
+    "b) El delito se comete con violencia física.",
+    "c) La víctima es también menor de edad.",
+    "d) El menor lo solicita expresamente."
+  ],
+  correcta: "a) El menor presenta alteraciones psíquicas o adicciones.",
+  justificacion: "Es una medida específica para menores con problemas de salud mental o adicciones."
+},
+{
+  pregunta: "¿Qué edad debe tener el menor para cumplir una medida de internamiento?",
+  opciones: [
+    "a) 12 a 18 años.",
+    "b) 14 a 17 años.",
+    "c) Solo mayores de 16 años.",
+    "d) A partir de los 15 años."
+  ],
+  correcta: "b) 14 a 17 años.",
+  justificacion: "La LO 5/2000 establece que los menores responsables penalmente deben tener entre 14 y 17 años."
+},
+{
+  pregunta: "La competencia para recurrir las decisiones del Juzgado de Menores corresponde a:",
+  opciones: [
+    "a) El Tribunal Supremo.",
+    "b) La Audiencia Provincial.",
+    "c) El Tribunal Constitucional.",
+    "d) El propio Juzgado de Menores."
+  ],
+  correcta: "b) La Audiencia Provincial.",
+  justificacion: "Las resoluciones del juez de menores pueden recurrirse en apelación ante la Audiencia Provincial."
+},
+{
+  pregunta: "La medida de privación del permiso de conducir se considera:",
+  opciones: [
+    "a) Una medida restrictiva de derechos.",
+    "b) Una medida de intervención ambiental.",
+    "c) Una medida educativa para delitos menores.",
+    "d) Una sanción administrativa complementaria."
+  ],
+  correcta: "a) Una medida restrictiva de derechos.",
+  justificacion: "Esta medida restringe derechos para evitar riesgos y fomentar la responsabilidad."
+},
+{
+  pregunta: "La medida de convivencia con otra persona, familia o grupo educativo tiene como finalidad:",
+  opciones: [
+    "a) Alejar al menor de su núcleo familiar.",
+    "b) Favorecer la reinserción social en un entorno educativo.",
+    "c) Sustituir al juez de menores por un tutor legal.",
+    "d) Aplicarse solo en delitos de violencia de género."
+  ],
+  correcta: "b) Favorecer la reinserción social en un entorno educativo.",
+  justificacion: "Esta medida busca un contexto adecuado para la educación y socialización del menor."
+},
+{
+  pregunta: "El artículo 1 de la Ley Orgánica 5/2000 establece el principio de:",
+  opciones: [
+    "a) Proporcionalidad.",
+    "b) Justicia restaurativa.",
+    "c) Legalidad.",
+    "d) Discrecionalidad."
+  ],
+  correcta: "c) Legalidad.",
+  justificacion: "El artículo 1 establece que el procedimiento se rige por el principio de legalidad."
+},
+{
+  pregunta: "En el procedimiento de menores, la presencia del abogado defensor es:",
+  opciones: [
+    "a) Opcional en medidas leves.",
+    "b) Obligatoria en todo el procedimiento.",
+    "c) Exclusiva si lo solicita el menor.",
+    "d) Reemplazable por el equipo técnico."
+  ],
+  correcta: "b) Obligatoria en todo el procedimiento.",
+  justificacion: "La defensa técnica del menor es necesaria en todo el proceso penal."
+},
+{
+  pregunta: "La medida de prestaciones en beneficio de la comunidad solo puede imponerse cuando:",
+  opciones: [
+    "a) El menor es reincidente.",
+    "b) El menor y su representante legal consienten la medida.",
+    "c) La Fiscalía lo solicita expresamente.",
+    "d) El delito tenga una pena superior a 2 años."
+  ],
+  correcta: "b) El menor y su representante legal consienten la medida.",
+  justificacion: "Esta medida requiere el consentimiento del menor para garantizar su finalidad educativa."
+},
+{
+  pregunta: "¿Cuál es la duración máxima de una medida de internamiento en régimen cerrado para menores?",
+  opciones: [
+    "a) 1 año.",
+    "b) 2 años.",
+    "c) 5 años.",
+    "d) 10 años."
+  ],
+  correcta: "c) 5 años.",
+  justificacion: "La duración máxima del internamiento cerrado es de 5 años, según la norma general."
+},
+{
+  pregunta: "¿Qué órgano está facultado para modificar o suspender las medidas impuestas al menor?",
+  opciones: [
+    "a) El Ministerio Fiscal.",
+    "b) El Juzgado de Menores.",
+    "c) La Audiencia Provincial.",
+    "d) El equipo técnico."
+  ],
+  correcta: "b) El Juzgado de Menores.",
+  justificacion: "El juez de menores puede modificar, sustituir o suspender las medidas en función de la evolución del menor."
+},
+{
+  pregunta: "La medida de tratamiento ambulatorio implica que el menor:",
+  opciones: [
+    "a) Debe permanecer ingresado en un centro médico.",
+    "b) Recibe tratamiento médico o psicológico sin privación de libertad.",
+    "c) Tiene prohibido salir de su domicilio.",
+    "d) Puede ser internado en cualquier momento."
+  ],
+  correcta: "b) Recibe tratamiento médico o psicológico sin privación de libertad.",
+  justificacion: "Es una medida terapéutica compatible con su vida en la comunidad."
+},
+{
+  pregunta: "Las medidas cautelares en el procedimiento de menores pueden incluir:",
+  opciones: [
+    "a) Internamiento en régimen cerrado.",
+    "b) Arresto domiciliario indefinido.",
+    "c) Restricción temporal de movilidad internacional.",
+    "d) Secuestro de bienes familiares."
+  ],
+  correcta: "a) Internamiento en régimen cerrado.",
+  justificacion: "La ley permite medidas cautelares como el internamiento cuando existe riesgo grave."
+},
+{
+  pregunta: "¿Qué tipo de delitos justifican la aplicación de un internamiento en régimen cerrado?",
+  opciones: [
+    "a) Delitos de menor gravedad sin violencia.",
+    "b) Infracciones administrativas leves.",
+    "c) Delitos graves con peligro para la comunidad.",
+    "d) Acciones imprudentes sin daño material."
+  ],
+  correcta: "c) Delitos graves con peligro para la comunidad.",
+  justificacion: "El internamiento cerrado busca proteger a la sociedad y reeducar al menor."
+},
+{
+  pregunta: "La conciliación entre el menor y la víctima tiene como principal finalidad:",
+  opciones: [
+    "a) Suspender automáticamente el procedimiento penal.",
+    "b) Establecer una relación amistosa entre ellos.",
+    "c) Reparar el daño y responsabilizar al menor.",
+    "d) Reducir los costes judiciales."
+  ],
+  correcta: "c) Reparar el daño y responsabilizar al menor.",
+  justificacion: "La justicia restaurativa es uno de los principios de la Ley 5/2000."
+},
+{
+  pregunta: "La medida de libertad vigilada puede incluir la prohibición de:",
+  opciones: [
+    "a) Cambiar de domicilio sin autorización.",
+    "b) Participar en actividades escolares.",
+    "c) Acceder a Internet.",
+    "d) Realizar llamadas telefónicas."
+  ],
+  correcta: "a) Cambiar de domicilio sin autorización.",
+  justificacion: "El control del entorno es clave en la supervisión del menor."
+},
+{
+  pregunta: "En el procedimiento de menores, la audiencia a los padres del infractor es:",
+  opciones: [
+    "a) Prescindible en delitos graves.",
+    "b) Obligatoria, salvo causa justificada.",
+    "c) Sustituible por informe del centro educativo.",
+    "d) Solo relevante cuando el menor es menor de 16 años."
+  ],
+  correcta: "b) Obligatoria, salvo causa justificada.",
+  justificacion: "Los padres deben ser oídos como parte interesada."
+},
+{
+  pregunta: "Según la Ley, la mediación víctima-infractor puede ser promovida por:",
+  opciones: [
+    "a) El Juez de Menores.",
+    "b) El Fiscal de Menores.",
+    "c) El centro educativo del menor.",
+    "d) Ambos, juez y fiscal."
+  ],
+  correcta: "d) Ambos, juez y fiscal.",
+  justificacion: "La mediación puede promoverse por el juez o el fiscal, como medida educativa."
+},
+{
+  pregunta: "La responsabilidad civil derivada de los delitos cometidos por menores corresponde:",
+  opciones: [
+    "a) Solo al menor.",
+    "b) A los padres o tutores del menor.",
+    "c) Al Estado.",
+    "d) Al Ministerio Fiscal."
+  ],
+  correcta: "b) A los padres o tutores del menor.",
+  justificacion: "Los padres responden civilmente salvo que demuestren no haber podido evitar el daño."
+},
+{
+  pregunta: "Si un menor comete un delito con 13 años, el procedimiento penal:",
+  opciones: [
+    "a) Se inicia con medidas formativas.",
+    "b) Se archiva al no ser penalmente responsable.",
+    "c) Se sustituye por la vía militar.",
+    "d) Es competencia de los juzgados civiles."
+  ],
+  correcta: "b) Se archiva al no ser penalmente responsable.",
+  justificacion: "Solo desde los 14 años se puede aplicar el régimen de menores."
+},
+{
+  pregunta: "La medida de permanencia de fin de semana supone:",
+  opciones: [
+    "a) Permanecer en el domicilio durante determinados fines de semana.",
+    "b) Regresar al centro educativo cada viernes.",
+    "c) Asistir obligatoriamente a actividades sociales los domingos.",
+    "d) Cumplir un arresto domiciliario por un año."
+  ],
+  correcta: "a) Permanecer en el domicilio durante determinados fines de semana.",
+  justificacion: "Es una medida que restringe temporalmente la libertad del menor."
+},
+{
+  pregunta: "¿Cuál es la duración máxima de las medidas no privativas de libertad para un menor?",
+  opciones: [
+    "a) 1 año.",
+    "b) 2 años.",
+    "c) 5 años.",
+    "d) 10 años."
+  ],
+  correcta: "c) 5 años.",
+  justificacion: "Al igual que las medidas privativas, las no privativas tienen un límite general de 5 años."
+},
+{
+  pregunta: "Las medidas impuestas se orientan a:",
+  opciones: [
+    "a) Castigar los actos delictivos.",
+    "b) Fomentar el arrepentimiento religioso.",
+    "c) La reeducación y reinserción del menor.",
+    "d) Coordinar actividades policiales."
+  ],
+  correcta: "c) La reeducación y reinserción del menor.",
+  justificacion: "El fin último es educativo y restaurativo, no punitivo."
+},
+{
+  pregunta: "Si el menor está imputado por delito grave, el juicio debe celebrarse:",
+  opciones: [
+    "a) En audiencia pública.",
+    "b) En privado, garantizando su intimidad.",
+    "c) Con presencia de medios de comunicación.",
+    "d) Solo con oyentes autorizados por el Ministerio Fiscal."
+  ],
+  correcta: "b) En privado, garantizando su intimidad.",
+  justificacion: "El proceso penal de menores se desarrolla protegiendo su privacidad."
+},
+{
+  pregunta: "La ejecución de las medidas terapéuticas depende de:",
+  opciones: [
+    "a) Las decisiones del Ministerio Fiscal.",
+    "b) El criterio técnico de los servicios autonómicos competentes.",
+    "c) El régimen disciplinario penitenciario.",
+    "d) Las instrucciones del juez militar."
+  ],
+  correcta: "b) El criterio técnico de los servicios autonómicos competentes.",
+  justificacion: "Las Comunidades Autónomas gestionan centros y programas terapéuticos."
+},
+{
+  pregunta: "El principio de proporcionalidad en la Ley de Responsabilidad Penal de los Menores implica que:",
+  opciones: [
+    "a) La medida será igual al delito cometido.",
+    "b) Siempre se impondrá la medida más leve posible.",
+    "c) Las medidas se adaptarán al menor y su situación personal.",
+    "d) Las medidas se aplican de manera automática según el tipo de delito."
+  ],
+  correcta: "c) Las medidas se adaptarán al menor y su situación personal.",
+  justificacion: "El principio de proporcionalidad busca un equilibrio entre el hecho y las circunstancias del menor."
+},
+{
+  pregunta: "¿Quién puede solicitar el alzamiento de una medida impuesta a un menor?",
+  opciones: [
+    "a) El propio menor.",
+    "b) Su representante legal.",
+    "c) El equipo técnico.",
+    "d) Todos los anteriores."
+  ],
+  correcta: "d) Todos los anteriores.",
+  justificacion: "Cualquier parte interesada puede pedir la revisión de una medida si han cambiado las circunstancias."
+},
+{
+  pregunta: "Cuando un menor y un mayor de edad cometen un delito juntos:",
+  opciones: [
+    "a) El procedimiento se acumula en el juzgado ordinario.",
+    "b) El menor será juzgado conforme a la Ley 5/2000.",
+    "c) Ambos serán juzgados en el mismo procedimiento.",
+    "d) El menor queda automáticamente exento de responsabilidad."
+  ],
+  correcta: "b) El menor será juzgado conforme a la Ley 5/2000.",
+  justificacion: "Cada uno será juzgado según su régimen jurídico correspondiente."
+},
+{
+  pregunta: "¿Qué principio establece que ningún menor podrá ser sancionado por acciones que no estén previamente tipificadas como delito?",
+  opciones: [
+    "a) Principio de proporcionalidad.",
+    "b) Principio de legalidad.",
+    "c) Principio de oportunidad.",
+    "d) Principio de humanidad."
+  ],
+  correcta: "b) Principio de legalidad.",
+  justificacion: "La Ley 5/2000 garantiza que solo los hechos tipificados previamente pueden ser sancionados."
+},
+{
+  pregunta: "El artículo 1 de la Ley 5/2000 declara la aplicación de la ley a:",
+  opciones: [
+    "a) Menores entre 12 y 16 años.",
+    "b) Menores entre 14 y 18 años.",
+    "c) Menores entre 10 y 21 años.",
+    "d) Mayores de 16 años con reincidencia."
+  ],
+  correcta: "b) Menores entre 14 y 18 años.",
+  justificacion: "Solo los menores de 14 a 18 años pueden ser responsables penalmente."
+},
+{
+  pregunta: "La medida de internamiento en régimen semiabierto supone que:",
+  opciones: [
+    "a) El menor permanece en el centro durante todo el día.",
+    "b) El menor solo acude al centro para dormir.",
+    "c) El menor puede tener salidas programadas bajo supervisión.",
+    "d) Se permite la residencia familiar los fines de semana."
+  ],
+  correcta: "c) El menor puede tener salidas programadas bajo supervisión.",
+  justificacion: "El régimen semiabierto combina estancia en el centro con actividades sociales externas."
+},
+{
+  pregunta: "¿Qué medida puede imponerse con carácter cautelar durante la tramitación del procedimiento?",
+  opciones: [
+    "a) Libertad vigilada.",
+    "b) Internamiento en régimen cerrado.",
+    "c) Reparación del daño.",
+    "d) Convivencia con otra persona o familia."
+  ],
+  correcta: "b) Internamiento en régimen cerrado.",
+  justificacion: "El internamiento cerrado es una medida cautelar aplicable para garantizar el procedimiento."
+},
+{
+  pregunta: "El juez de menores puede suspender la ejecución de una medida cuando:",
+  opciones: [
+    "a) Se haya iniciado el proceso de reeducación.",
+    "b) El menor cumpla la mayoría de edad.",
+    "c) Existan indicios de buena evolución y cumplimiento de objetivos.",
+    "d) Lo soliciten los educadores o familiares."
+  ],
+  correcta: "c) Existan indicios de buena evolución y cumplimiento de objetivos.",
+  justificacion: "La suspensión busca reforzar los avances del menor respetando su reinserción."
+},
+{
+  pregunta: "Si un menor incumple reiteradamente una medida impuesta, el juez puede:",
+  opciones: [
+    "a) Imponer directamente prisión provisional.",
+    "b) Sustituirla por otra más grave.",
+    "c) Revocar la medida sin alternativa.",
+    "d) Ceder la competencia al Ministerio Fiscal."
+  ],
+  correcta: "b) Sustituirla por otra más grave.",
+  justificacion: "El juez puede modificar la medida para garantizar su cumplimiento."
+},
+{
+  pregunta: "La medida de prestaciones en beneficio de la comunidad se caracteriza por ser:",
+  opciones: [
+    "a) Privativa de libertad.",
+    "b) Voluntaria y gratuita.",
+    "c) Terapéutica con control médico.",
+    "d) Limitada a delitos de violencia."
+  ],
+  correcta: "b) Voluntaria y gratuita.",
+  justificacion: "Esta medida exige consentimiento, no implica retribución y tiene finalidad educativa."
+},
+{
+  pregunta: "¿Qué ocurre si un menor comete un delito grave a pocos días de cumplir 18 años?",
+  opciones: [
+    "a) Se aplica automáticamente el Código Penal ordinario.",
+    "b) Se aplica la Ley 5/2000 si los hechos ocurrieron antes de los 18.",
+    "c) Se abre expediente disciplinario sin procedimiento penal.",
+    "d) Se aplica procedimiento civil por riesgo social."
+  ],
+  correcta: "b) Se aplica la Ley 5/2000 si los hechos ocurrieron antes de los 18.",
+  justificacion: "La edad del hecho delictivo determina la aplicación de la Ley de menores."
+},
+{
+  pregunta: "Las medidas de intervención indirecta incluyen:",
+  opciones: [
+    "a) Internamiento terapéutico.",
+    "b) Prestaciones en beneficio de la comunidad.",
+    "c) Amonestación y libertad vigilada.",
+    "d) Seguimiento sin retirada de libertad."
+  ],
+  correcta: "c) Amonestación y libertad vigilada.",
+  justificacion: "Son medidas que no suponen ingreso en centro, sino control y orientación."
+},
+{
+  pregunta: "¿Cuál de las siguientes medidas tiene un componente restaurativo explícito?",
+  opciones: [
+    "a) Internamiento en régimen cerrado.",
+    "b) Reparación del daño.",
+    "c) Permanencia de fin de semana.",
+    "d) Convivencia con persona o familia."
+  ],
+  correcta: "b) Reparación del daño.",
+  justificacion: "Esta medida busca restituir o compensar a la víctima, parte de la justicia restaurativa."
+},
+{
+  pregunta: "Las medidas previstas en la Ley 5/2000 se clasifican en:",
+  opciones: [
+    "a) Privativas y no privativas de libertad.",
+    "b) Educativas y laborales.",
+    "c) Judiciales y administrativas.",
+    "d) Ordinarias y extraordinarias."
+  ],
+  correcta: "a) Privativas y no privativas de libertad.",
+  justificacion: "La ley organiza las medidas según impliquen ingreso o no del menor."
+},
+{
+  pregunta: "La medida de convivencia con otra persona, familia o grupo educativo puede aplicarse:",
+  opciones: [
+    "a) Solo como medida cautelar.",
+    "b) Como alternativa al internamiento en casos leves.",
+    "c) Únicamente para menores de 16 años.",
+    "d) Para delitos relacionados con violencia intrafamiliar."
+  ],
+  correcta: "b) Como alternativa al internamiento en casos leves.",
+  justificacion: "Se usa como alternativa educativa al alejamiento familiar."
+},
+{
+  pregunta: "La competencia para ejecutar las medidas impuestas por el Juzgado de Menores corresponde a:",
+  opciones: [
+    "a) El Ministerio Fiscal.",
+    "b) Las Comunidades Autónomas.",
+    "c) El Tribunal Supremo.",
+    "d) El Consejo General del Poder Judicial."
+  ],
+  correcta: "b) Las Comunidades Autónomas.",
+  justificacion: "La ejecución administrativa de las medidas está descentralizada."
+},
+{
+  pregunta: "Cuando se aplica la libertad vigilada, el menor debe:",
+  opciones: [
+    "a) Permanecer en domicilio bajo supervisión electrónica.",
+    "b) Informar regularmente sobre sus actividades al responsable designado.",
+    "c) Cumplir un régimen disciplinario estricto.",
+    "d) Estar obligado a servicios penitenciarios diarios."
+  ],
+  correcta: "b) Informar regularmente sobre sus actividades al responsable designado.",
+  justificacion: "El objetivo es un control flexible de su comportamiento."
+},
+{
+  pregunta: "El artículo 9 de la Ley 5/2000 establece que las medidas deben tener una duración:",
+  opciones: [
+    "a) Igual a la pena prevista en el Código Penal.",
+    "b) Adaptada a la gravedad del hecho y circunstancias del menor.",
+    "c) Determinada únicamente por el Ministerio Fiscal.",
+    "d) Superior a la pena del adulto para reforzar el carácter preventivo."
+  ],
+  correcta: "b) Adaptada a la gravedad del hecho y circunstancias del menor.",
+  justificacion: "La personalización es clave, no hay equiparación automática con adultos."
+},
+{
+  pregunta: "En caso de reincidencia, el juez puede:",
+  opciones: [
+    "a) Desestimar toda medida educativa.",
+    "b) Imponer medidas de mayor gravedad o duración.",
+    "c) Sancionar a los padres del menor.",
+    "d) Solicitar internamiento en prisión de adulto."
+  ],
+  correcta: "b) Imponer medidas de mayor gravedad o duración.",
+  justificacion: "La reincidencia puede justificar la intensificación de las medidas aplicadas."
+},
+{
+  pregunta: "¿Qué figura actúa como parte en el procedimiento, defendiendo el interés del menor?",
+  opciones: [
+    "a) El Ministerio Fiscal.",
+    "b) El Juez de Menores.",
+    "c) El equipo técnico.",
+    "d) El abogado defensor."
+  ],
+  correcta: "d) El abogado defensor.",
+  justificacion: "La defensa técnica es esencial para proteger los derechos del menor."
+},
+{
+  pregunta: "Durante la audiencia, ¿qué derechos tiene el menor acusado?",
+  opciones: [
+    "a) Guardar silencio.",
+    "b) Ser interrogado sin abogado.",
+    "c) No responder preguntas del juez.",
+    "d) Declarar sin presencia de familiares."
+  ],
+  correcta: "a) Guardar silencio.",
+  justificacion: "El menor tiene los mismos derechos procesales básicos que un adulto."
+},
+{
+  pregunta: "La ejecución de las medidas con componente terapéutico dependerá de:",
+  opciones: [
+    "a) La evaluación médica inicial.",
+    "b) La edad del menor.",
+    "c) El lugar donde se cometió el delito.",
+    "d) La disponibilidad de centros públicos."
+  ],
+  correcta: "a) La evaluación médica inicial.",
+  justificacion: "La ejecución terapéutica se basa en el diagnóstico profesional."
+},
+{
+  pregunta: "El internamiento terapéutico puede aplicarse en casos de:",
+  opciones: [
+    "a) Menores con trastornos psíquicos o adicciones.",
+    "b) Menores que no colaboran con el procedimiento.",
+    "c) Casos de agresión a menores de edad.",
+    "d) Menores extranjeros sin residencia legal."
+  ],
+  correcta: "a) Menores con trastornos psíquicos o adicciones.",
+  justificacion: "Es una medida diseñada para atender las necesidades de tratamiento del menor."
+},
+{
+  pregunta: "¿Cuál es el órgano encargado de velar por la legalidad del procedimiento de menores?",
+  opciones: [
+    "a) El Ministerio Fiscal.",
+    "b) El Juez de Menores.",
+    "c) El Secretario Judicial.",
+    "d) El equipo técnico."
+  ],
+  correcta: "a) El Ministerio Fiscal.",
+  justificacion: "El Fiscal de Menores garantiza la protección de los derechos del menor y la legalidad."
+},
+{
+  pregunta: "¿Qué medida puede incluir actividades de apoyo educativo y control del tiempo libre?",
+  opciones: [
+    "a) Internamiento abierto.",
+    "b) Convivencia con otra familia.",
+    "c) Libertad vigilada.",
+    "d) Tratamiento ambulatorio."
+  ],
+  correcta: "c) Libertad vigilada.",
+  justificacion: "La libertad vigilada permite coordinar actividades educativas y de control social."
+},
+{
+  pregunta: "¿Qué tipo de medida requiere consentimiento expreso del menor?",
+  opciones: [
+    "a) Internamiento terapéutico.",
+    "b) Reparación del daño.",
+    "c) Prestaciones en beneficio de la comunidad.",
+    "d) Permanencia de fin de semana."
+  ],
+  correcta: "c) Prestaciones en beneficio de la comunidad.",
+  justificacion: "Esta medida requiere consentimiento voluntario del menor y su representante."
+},
+{
+  pregunta: "¿Cuál es la medida menos restrictiva de libertad prevista en la Ley Orgánica 5/2000?",
+  opciones: [
+    "a) Internamiento semiabierto.",
+    "b) Permanencia de fin de semana.",
+    "c) Amonestación.",
+    "d) Libertad vigilada."
+  ],
+  correcta: "c) Amonestación.",
+  justificacion: "Es una advertencia solemne realizada por el juez sin implicar restricción de libertad."
+},
+{
+  pregunta: "La audiencia al menor en todas las fases del procedimiento se garantiza mediante:",
+  opciones: [
+    "a) El principio de inmediación.",
+    "b) El derecho de contradicción.",
+    "c) El principio de participación.",
+    "d) El principio acusatorio."
+  ],
+  correcta: "c) El principio de participación.",
+  justificacion: "Se asegura que el menor sea escuchado y participe en el procedimiento."
+},
+{
+  pregunta: "El plazo máximo de duración del procedimiento de menores es de:",
+  opciones: [
+    "a) 12 meses.",
+    "b) 6 meses.",
+    "c) 18 meses.",
+    "d) 2 años."
+  ],
+  correcta: "b) 6 meses.",
+  justificacion: "La Ley establece un plazo máximo de 6 meses para resolver el expediente."
+},
+{
+  pregunta: "¿Qué medida no puede tener una duración superior a 3 años?",
+  opciones: [
+    "a) Internamiento cerrado.",
+    "b) Libertad vigilada.",
+    "c) Prestaciones en beneficio de la comunidad.",
+    "d) Permanencia de fin de semana."
+  ],
+  correcta: "c) Prestaciones en beneficio de la comunidad.",
+  justificacion: "Las prestaciones tienen un límite de 3 años de duración."
+},
+{
+  pregunta: "La reeducación del menor infractor es el objetivo principal de:",
+  opciones: [
+    "a) El procedimiento sancionador.",
+    "b) La Ley Orgánica 5/2000.",
+    "c) El proceso disciplinario civil.",
+    "d) Las sanciones administrativas juveniles."
+  ],
+  correcta: "b) La Ley Orgánica 5/2000.",
+  justificacion: "El enfoque de la Ley es esencialmente educativo-restaurativo."
+},
+{
+  pregunta: "Los equipos técnicos actúan como asesores de:",
+  opciones: [
+    "a) El juez de menores.",
+    "b) La policía judicial.",
+    "c) Los padres del menor.",
+    "d) El Ministerio del Interior."
+  ],
+  correcta: "a) El juez de menores.",
+  justificacion: "El equipo técnico aporta informes sobre la situación personal y familiar del menor."
+},
+{
+  pregunta: "La medida de internamiento en régimen abierto se caracteriza por:",
+  opciones: [
+    "a) Confinar al menor en un centro cerrado las 24 horas.",
+    "b) Permitir al menor salir para actividades educativas o laborales.",
+    "c) Establecer aislamiento total del menor.",
+    "d) Convertirse en régimen cerrado si hay infracciones graves."
+  ],
+  correcta: "b) Permitir al menor salir para actividades educativas o laborales.",
+  justificacion: "Es compatible con actividades externas con supervisión y retorno al centro."
+},
+{
+  pregunta: "Cuando el delito cometido por el menor es leve, se aplican preferentemente medidas:",
+  opciones: [
+    "a) Restrictivas de libertad.",
+    "b) Restaurativas y educativas.",
+    "c) Mixtas con internamiento no permanente.",
+    "d) Instrucción militar obligatoria."
+  ],
+  correcta: "b) Restaurativas y educativas.",
+  justificacion: "La Ley da prioridad a la educación y reparación del daño en delitos leves."
+},
+{
+  pregunta: "La Ley 5/2000 establece que las medidas adoptadas deben tener una duración:",
+  opciones: [
+    "a) Proporcional al tipo de delito.",
+    "b) Igual a la del adulto.",
+    "c) Suficiente para evitar la reincidencia solamente.",
+    "d) No superior a cinco años, en general."
+  ],
+  correcta: "d) No superior a cinco años, en general.",
+  justificacion: "El límite general para la duración de las medidas es de 5 años."
+},
+{
+  pregunta: "La medida de tratamientos terapéuticos se aplica especialmente en casos de:",
+  opciones: [
+    "a) Agotamiento escolar.",
+    "b) Trastornos psicológicos, adicciones o alteraciones mentales.",
+    "c) Acceso ilegal a redes públicas.",
+    "d) Problemas de disciplina escolar."
+  ],
+  correcta: "b) Trastornos psicológicos, adicciones o alteraciones mentales.",
+  justificacion: "Está destinada a menores que presentan necesidades específicas de salud mental."
+},
+{
+  pregunta: "¿Cuál es la finalidad última del sistema de justicia juvenil?",
+  opciones: [
+    "a) Eliminar las conductas antisociales.",
+    "b) La privación de libertad del infractor.",
+    "c) La reeducación y reinserción del menor.",
+    "d) La disuasión de la delincuencia juvenil."
+  ],
+  correcta: "c) La reeducación y reinserción del menor.",
+  justificacion: "El objetivo esencial es la integración social del menor infractor."
+},
+{
+  pregunta: "El internamiento en régimen cerrado se utiliza cuando:",
+  opciones: [
+    "a) El menor necesita tratamiento de adicciones exclusivamente.",
+    "b) Existe riesgo de fuga o peligrosidad.",
+    "c) Los padres lo solicitan como medida disciplinaria.",
+    "d) Se trata de un delito menor sin violencia."
+  ],
+  correcta: "b) Existe riesgo de fuga o peligrosidad.",
+  justificacion: "Es la medida más restrictiva, adecuada para delitos graves o perfiles peligrosos."
+},
+{
+  pregunta: "El internamiento semiabierto permite al menor:",
+  opciones: [
+    "a) Realizar actividades laborales, educativas o terapéuticas externas.",
+    "b) Cumplir la medida únicamente en domicilio familiar.",
+    "c) Trasladarse libremente entre centros de menores.",
+    "d) Reducir automáticamente la pena si cumple tareas adicionales."
+  ],
+  correcta: "a) Realizar actividades laborales, educativas o terapéuticas externas.",
+  justificacion: "Este régimen combina internamiento con participación en el entorno social controlado."
+},
+{
+  pregunta: "El equipo técnico está compuesto por:",
+  opciones: [
+    "a) Psicólogos y abogados.",
+    "b) Psicólogos, educadores y trabajadores sociales.",
+    "c) Fuerzas y Cuerpos de Seguridad, psicólogos y médicos.",
+    "d) Personal penitenciario y trabajador social."
+  ],
+  correcta: "b) Psicólogos, educadores y trabajadores sociales.",
+  justificacion: "Es un equipo multidisciplinar que evalúa la situación del menor."
+},
+{
+  pregunta: "¿Qué órgano tiene la potestad de imponer medidas coercitivas durante el proceso?",
+  opciones: [
+    "a) El equipo técnico.",
+    "b) El Juzgado de Menores.",
+    "c) El Ministerio Fiscal.",
+    "d) La Audiencia Provincial."
+  ],
+  correcta: "b) El Juzgado de Menores.",
+  justificacion: "El juez tiene autoridad para imponer medidas coercitivas como el internamiento cautelar."
+},
+{
+  pregunta: "La medida de permanencia de fin de semana implica que el menor:",
+  opciones: [
+    "a) Permanezca recluido en un centro todos los días.",
+    "b) Se presente en el centro todos los fines de semana.",
+    "c) Permanezca en su domicilio durante fines de semana, con control.",
+    "d) Cumpla una pena de internamiento no presencial."
+  ],
+  correcta: "c) Permanezca en su domicilio durante fines de semana, con control.",
+  justificacion: "La medida pretende restringir temporalmente la libertad sin ingreso permanente."
+},
+{
+  pregunta: "La ejecución de las medidas se realiza bajo supervisión de:",
+  opciones: [
+    "a) El equipo técnico de los servicios autonómicos.",
+    "b) El Ministerio de Justicia.",
+    "c) El Ministerio Fiscal en exclusiva.",
+    "d) La Guardia Civil."
+  ],
+  correcta: "a) El equipo técnico de los servicios autonómicos.",
+  justificacion: "Los equipos especializados supervisan la aplicación efectiva de las medidas."
+},
+{
+  pregunta: "¿Qué medida puede combinarse con la libertad vigilada?",
+  opciones: [
+    "a) Internamiento terapéutico.",
+    "b) Reparación del daño.",
+    "c) Amonestación.",
+    "d) Prestaciones en beneficio de la comunidad."
+  ],
+  correcta: "d) Prestaciones en beneficio de la comunidad.",
+  justificacion: "Ambas medidas son compatibles y buscan la reinserción del menor mediante control y responsabilidad social."
+},
+{
+  pregunta: "El procedimiento abreviado en la Ley 5/2000 se aplica cuando:",
+  opciones: [
+    "a) El menor se declara culpable.",
+    "b) Se han cometido delitos graves con violencia.",
+    "c) Existe una única víctima identificada.",
+    "d) Existen pruebas suficientes y el menor tiene más de 16 años."
+  ],
+  correcta: "a) El menor se declara culpable.",
+  justificacion: "El procedimiento abreviado facilita la resolución cuando el menor reconoce los hechos."
+},
+{
+  pregunta: "La Ley Orgánica 5/2000 contempla la reparación del daño como:",
+  opciones: [
+    "a) Una medida cautelar.",
+    "b) Una medida permanente.",
+    "c) Una medida de carácter educativo y restaurativo.",
+    "d) Una sanción civil automática."
+  ],
+  correcta: "c) Una medida de carácter educativo y restaurativo.",
+  justificacion: "La reparación del daño busca responsabilizar al menor frente a la víctima y la comunidad."
+},
+{
+  pregunta: "¿Cuál de las siguientes NO es una medida privativa de libertad?",
+  opciones: [
+    "a) Internamiento cerrado.",
+    "b) Internamiento terapéutico.",
+    "c) Internamiento semiabierto.",
+    "d) Libertad vigilada."
+  ],
+  correcta: "d) Libertad vigilada.",
+  justificacion: "La libertad vigilada es una medida restrictiva pero no privativa de libertad."
+},
+{
+  pregunta: "La mediación en el ámbito de menores tiene como objetivo principal:",
+  opciones: [
+    "a) Evitar el juicio y archivar siempre el caso.",
+    "b) Que el menor pida perdón sin imponer sanciones.",
+    "c) Lograr una solución dialogada entre las partes con carácter restaurativo.",
+    "d) Respetar la decisión del Ministerio Fiscal sin intervención judicial."
+  ],
+  correcta: "c) Lograr una solución dialogada entre las partes con carácter restaurativo.",
+  justificacion: "La mediación promueve el diálogo y la reparación del daño como fórmula educativa."
+},
+{
+  pregunta: "¿Cuál es el órgano competente para revisar una medida impuesta por el juez de menores?",
+  opciones: [
+    "a) Tribunal Supremo.",
+    "b) Audiencia Provincial.",
+    "c) Junta de Tratamiento de Menores.",
+    "d) Ministerio de Justicia."
+  ],
+  correcta: "b) Audiencia Provincial.",
+  justificacion: "La Audiencia Provincial resuelve los recursos presentados contra las decisiones del Juzgado de Menores."
+},
+{
+  pregunta: "Una de las características del procedimiento penal de menores es que:",
+  opciones: [
+    "a) Es siempre público.",
+    "b) Es confidencial para proteger al menor.",
+    "c) Es de competencia militar.",
+    "d) No requiere abogado defensor si el menor lo rechaza."
+  ],
+  correcta: "b) Es confidencial para proteger al menor.",
+  justificacion: "La confidencialidad es esencial para proteger la intimidad y evitar la estigmatización."
+},
+{
+  pregunta: "¿Quién firma la sentencia en el procedimiento penal de menores?",
+  opciones: [
+    "a) El equipo técnico.",
+    "b) El juez y el equipo técnico.",
+    "c) El juez de menores.",
+    "d) El fiscal de menores."
+  ],
+  correcta: "c) El juez de menores.",
+  justificacion: "Solo el juez tiene potestad para dictar sentencia y resolver sobre las medidas."
+},
+{
+  pregunta: "El internamiento terapéutico es obligatorio para:",
+  opciones: [
+    "a) Delitos de violencia doméstica.",
+    "b) Menores con trastorno mental o adicciones que influyan en el comportamiento delictivo.",
+    "c) Menores extranjeros sin límites legales.",
+    "d) Cualquier menor que cometa un delito grave."
+  ],
+  correcta: "b) Menores con trastorno mental o adicciones que influyan en el comportamiento delictivo.",
+  justificacion: "La medida se reserva a casos con necesidades clínicas específicas."
+},
+{
+  pregunta: "El plazo máximo de tramitación del expediente de menores en fase de instrucción es de:",
+  opciones: [
+    "a) 6 meses.",
+    "b) 2 meses.",
+    "c) 3 meses.",
+    "d) 4 meses."
+  ],
+  correcta: "b) 2 meses.",
+  justificacion: "La Ley establece un plazo de 2 meses para instrucción, pudiendo prorrogarse en casos complejos."
+},
+{
+  pregunta: "¿Cuál es el principio que obliga a adaptar las medidas al desarrollo evolutivo del menor?",
+  opciones: [
+    "a) Proporcionalidad.",
+    "b) Flexibilidad educativa.",
+    "c) Interés superior del menor.",
+    "d) Legalidad."
+  ],
+  correcta: "c) Interés superior del menor.",
+  justificacion: "Todas las medidas deben aplicarse con la finalidad de favorecer su desarrollo y reinserción."
+},
+{
+  pregunta: "Durante el procedimiento de menores, el derecho a ser informado incluye:",
+  opciones: [
+    "a) La obligación de declarar siempre.",
+    "b) Ser informado de los derechos y del motivo de la acusación.",
+    "c) El acceso a todos los documentos judiciales sin restricción.",
+    "d) Que los padres puedan reemplazar al abogado."
+  ],
+  correcta: "b) Ser informado de los derechos y del motivo de la acusación.",
+  justificacion: "La información clara y adaptada a la comprensión del menor es esencial en el proceso."
+},
+{
+  pregunta: "¿Qué medida puede imponerse en delitos sin resultado de violencia o daños graves?",
+  opciones: [
+    "a) Internamiento en régimen cerrado.",
+    "b) Prestaciones en beneficio de la comunidad.",
+    "c) Internamiento terapéutico.",
+    "d) Internamiento semiabierto."
+  ],
+  correcta: "b) Prestaciones en beneficio de la comunidad.",
+  justificacion: "Es una medida con naturaleza educativa, reparadora y no restrictiva."
+},
+{
+  pregunta: "Si el menor cumple 18 años durante la ejecución de una medida de internamiento:",
+  opciones: [
+    "a) La medida se suspende automáticamente.",
+    "b) Se traslada la ejecución a centro penitenciario de adultos.",
+    "c) La medida puede continuar hasta su finalización.",
+    "d) La medida se sustituye por multa."
+  ],
+  correcta: "c) La medida puede continuar hasta su finalización.",
+  justificacion: "Las medidas pueden extenderse más allá de los 18, pero nunca más allá de los 21 años."
+},
+{
+  pregunta: "El principio de celeridad en la Ley Orgánica 5/2000 establece que:",
+  opciones: [
+    "a) El juez debe actuar con rapidez para evitar la dilación del proceso.",
+    "b) Se aplican medidas sin evaluación del equipo técnico.",
+    "c) Se evitarán las apelaciones para hacer el proceso más rápido.",
+    "d) El menor tiene prioridad sobre cualquier otro procedimiento penal."
+  ],
+  correcta: "a) El juez debe actuar con rapidez para evitar la dilación del proceso.",
+  justificacion: "La celeridad evita la desvinculación entre el delito y la medida educativa."
+},
+{
+  pregunta: "La medida de libertad vigilada puede incorporar la obligación de:",
+  opciones: [
+    "a) Asistir a cursos escolares y formativos.",
+    "b) Permanecer internado los fines de semana.",
+    "c) Someterse a vigilancia electrónica permanente.",
+    "d) Vivir sin supervisión educativa."
+  ],
+  correcta: "a) Asistir a cursos escolares y formativos.",
+  justificacion: "Se puede dirigir el tiempo libre hacia actividades educativas bajo supervisión."
+},
+{
+  pregunta: "¿Cuál es la edad máxima a la que se puede ejecutar una medida impuesta por la Ley 5/2000?",
+  opciones: [
+    "a) 18 años.",
+    "b) 20 años.",
+    "c) 21 años.",
+    "d) 25 años."
+  ],
+  correcta: "c) 21 años.",
+  justificacion: "Las medidas pueden ejecutarse hasta los 21 años si fueron impuestas antes de esa edad."
+},
+{
+  pregunta: "La posibilidad de aplicar medidas en casos de menores con 18 años cumplidos y delitos anteriores obedece a:",
+  opciones: [
+    "a) La justicia universal.",
+    "b) El principio de continuidad educativa.",
+    "c) El principio de oportunidad.",
+    "d) El principio de desjudicialización."
+  ],
+  correcta: "b) El principio de continuidad educativa.",
+  justificacion: "El proceso se mantiene cuando sirve al fin educativo, aunque el menor alcance la mayoría de edad."
+},
+{
+  pregunta: "¿Quién puede solicitar la revisión de la medida impuesta al menor?",
+  opciones: [
+    "a) Solo el juez.",
+    "b) El menor, su representante legal o el Ministerio Fiscal.",
+    "c) Solo el equipo técnico.",
+    "d) La víctima exclusivamente."
+  ],
+  correcta: "b) El menor, su representante legal o el Ministerio Fiscal.",
+  justificacion: "Cualquiera de las partes puede solicitar la revisión atendiendo a nuevas circunstancias."
+},
+{
+  pregunta: "La intervención educativa en la ejecución de la medida debe ser:",
+  opciones: [
+    "a) Uniforme para todos los menores.",
+    "b) Adaptada a las características del menor.",
+    "c) Impositiva y de cumplimiento estricto.",
+    "d) Supervisada únicamente por el Ministerio de Justicia."
+  ],
+  correcta: "b) Adaptada a las características del menor.",
+  justificacion: "La personalización es una clave del sistema juvenil para garantizar su efectividad."
+},
+{
+  pregunta: "¿Qué medida tiene una finalidad específicamente terapéutica en la Ley 5/2000?",
+  opciones: [
+    "a) Internamiento semiabierto.",
+    "b) Tratamiento ambulatorio.",
+    "c) Libertad vigilada.",
+    "d) Amonestación."
+  ],
+  correcta: "b) Tratamiento ambulatorio.",
+  justificacion: "El tratamiento ambulatorio se destina a menores con necesidades clínicas específicas sin necesidad de internamiento."
+},
+{
+  pregunta: "El procedimiento penal de menores se inicia mediante:",
+  opciones: [
+    "a) Solicitud del equipo técnico.",
+    "b) Auto de incoación del juez.",
+    "c) Denuncia o querella presentada ante Fiscalía de Menores.",
+    "d) Orden judicial previa del Tribunal Supremo."
+  ],
+  correcta: "c) Denuncia o querella presentada ante Fiscalía de Menores.",
+  justificacion: "La Fiscalía es la primera que toma conocimiento del hecho y puede iniciar diligencias."
+},
+{
+  pregunta: "¿Qué derecho tiene el menor durante su declaración en sede judicial?",
+  opciones: [
+    "a) Declarar en ausencia de sus representantes.",
+    "b) Declarar sin presencia obligatoria de abogado.",
+    "c) No declarar contra sí mismo ni confesarse culpable.",
+    "d) Exigir que no se grabe su declaración."
+  ],
+  correcta: "c) No declarar contra sí mismo ni confesarse culpable.",
+  justificacion: "Este es un derecho procesal básico aplicable tanto a menores como a adultos."
+},
+{
+  pregunta: "Las sentencias dictadas en procedimientos de menores:",
+  opciones: [
+    "a) Son siempre públicas.",
+    "b) Pueden incluir medidas civiles accesorias.",
+    "c) No tienen efectos civiles.",
+    "d) Deben ser avaladas por un tribunal superior."
+  ],
+  correcta: "b) Pueden incluir medidas civiles accesorias.",
+  justificacion: "La sentencia puede incluir reparaciones y responsabilidades civiles."
+},
+{
+  pregunta: "La medida de convivencia con otra persona o familia tiene como objetivo:",
+  opciones: [
+    "a) Establecer un entorno adecuado cuando el familiar es el causante del riesgo.",
+    "b) Permitir mayores libertades sin supervisión.",
+    "c) Reemplazar el internamiento cerrado en delitos graves.",
+    "d) Castigar la falta de respeto hacia los padres."
+  ],
+  correcta: "a) Establecer un entorno adecuado cuando el familiar es el causante del riesgo.",
+  justificacion: "Se usa cuando el entorno familiar puede resultar perjudicial para el menor."
+},
+{
+  pregunta: "¿Cuál de los siguientes NO es un principio aplicado en la Ley 5/2000?",
+  opciones: [
+    "a) Educación personalizada.",
+    "b) Confidencialidad.",
+    "c) Estigmatización pública.",
+    "d) Reeducación y reinserción social."
+  ],
+  correcta: "c) Estigmatización pública.",
+  justificacion: "El sistema de justicia juvenil evita la estigmatización del menor."
+},
+{
+  pregunta: "La medida de privación del permiso de conducir se considera:",
+  opciones: [
+    "a) Una medida en beneficio de la comunidad.",
+    "b) Una medida restrictiva de derechos.",
+    "c) Una medida privativa de libertad.",
+    "d) Una medida económica."
+  ],
+  correcta: "b) Una medida restrictiva de derechos.",
+  justificacion: "No implica privación de libertad, pero limita derechos específicos del menor."
+},
+{
+  pregunta: "El menor que no cumple con una medida impuesta puede:",
+  opciones: [
+    "a) Ser declarado en rebeldía y detenido.",
+    "b) Ver agravada su medida o sustituida por otra más severa.",
+    "c) Quedar exento de responsabilidad.",
+    "d) Ser trasladado automáticamente a prisión adulto."
+  ],
+  correcta: "b) Ver agravada su medida o sustituida por otra más severa.",
+  justificacion: "El incumplimiento puede justificar la modificación de la medida para garantizar la ejecución."
+},
+{
+  pregunta: "El sistema de justicia juvenil señala que la imposición de medidas debe fundarse en:",
+  opciones: [
+    "a) El riesgo de reincidencia únicamente.",
+    "b) La edad y el sexo del menor.",
+    "c) La gravedad del hecho y la situación personal.",
+    "d) La actuación de la Fiscalía."
+  ],
+  correcta: "c) La gravedad del hecho y la situación personal.",
+  justificacion: "La Ley exige tener en cuenta tanto el delito como las circunstancias del menor."
+},
+{
+  pregunta: "El Ministerio Fiscal podrá decretar el archivo del expediente cuando:",
+  opciones: [
+    "a) El menor no tenga recursos económicos.",
+    "b) El hecho sea leve, se repare el daño y sea de escasa trascendencia.",
+    "c) No se presente querella en 24 horas.",
+    "d) Se trate de un delito de acción pública con pena grave."
+  ],
+  correcta: "b) El hecho sea leve, se repare el daño y sea de escasa trascendencia.",
+  justificacion: "La normativa permite archivar en casos leves si se logra reparación y conciliación."
+},
+{
+  pregunta: "¿Cuál de las siguientes afirmaciones sobre la libertad vigilada es correcta?",
+  opciones: [
+    "a) Implica la internación durante ciertos días del mes.",
+    "b) Puede incluir normas de conducta y seguimiento por educadores.",
+    "c) Se aplica solamente a menores de 16 años.",
+    "d) Exige la firma de un contrato de obediencia con el juez."
+  ],
+  correcta: "b) Puede incluir normas de conducta y seguimiento por educadores.",
+  justificacion: "La supervisión y el cumplimiento de normas educativas son parte integral de esta medida."
+},
+{
+  pregunta: "El internamiento abierto se caracteriza por:",
+  opciones: [
+    "a) La prohibición de cualquier actividad externa.",
+    "b) La posibilidad de realizar actividades educativas o laborales fuera del centro.",
+    "c) La convivencia con el equipo técnico exclusivamente.",
+    "d) Ser aplicable únicamente a menores reincidentes."
+  ],
+  correcta: "b) La posibilidad de realizar actividades educativas o laborales fuera del centro.",
+  justificacion: "Es un régimen flexible que permite la interacción con la sociedad bajo control."
+},
+{
+  pregunta: "La duración de la medida de internamiento terapéutico en régimen cerrado está limitada a:",
+  opciones: [
+    "a) 2 años.",
+    "b) 4 años.",
+    "c) 5 años.",
+    "d) Indefinida hasta la curación."
+  ],
+  correcta: "c) 5 años.",
+  justificacion: "El internamiento terapéutico mantiene el mismo límite general para medidas privativas."
+},
+{
+  pregunta: "El equipo técnico tiene entre sus funciones:",
+  opciones: [
+    "a) Expedir certificados de internamiento.",
+    "b) Elaborar informes socioeducativos para el juez.",
+    "c) Representar al menor en juicio.",
+    "d) Imponer medidas disciplinarias dentro del centro."
+  ],
+  correcta: "b) Elaborar informes socioeducativos para el juez.",
+  justificacion: "Estos informes ayudan a valorar la situación del menor para la toma de decisiones judiciales."
+},
+{
+  pregunta: "La ejecución de las medidas terapéuticas según la Ley 5/2000 corresponde a:",
+  opciones: [
+    "a) Equipos médicos privados.",
+    "b) Servicios autonómicos competentes en salud mental.",
+    "c) Dirección General de Trabajo Social.",
+    "d) Servicio penitenciario estatal."
+  ],
+  correcta: "b) Servicios autonómicos competentes en salud mental.",
+  justificacion: "Las Comunidades Autónomas gestionan los recursos de salud mental para estos casos."
+},
+{
+  pregunta: "¿Qué medida puede sustituir al internamiento cerrado si se cumplen condiciones terapéuticas?",
+  opciones: [
+    "a) Convivencia en familia extensa.",
+    "b) Libertad vigilada.",
+    "c) Internamiento terapéutico.",
+    "d) Prestaciones en beneficio de la comunidad."
+  ],
+  correcta: "c) Internamiento terapéutico.",
+  justificacion: "Si el delito está relacionado con trastorno mental o adicciones, se puede sustituir la medida."
+},
+{
+  pregunta: "El menor extranjero no acompañado está sujeto a:",
+  opciones: [
+    "a) El régimen general de responsabilidad penal de menores.",
+    "b) Procedimiento civil especial.",
+    "c) Exclusión automática del proceso penal.",
+    "d) Tratamiento migratorio prioritario."
+  ],
+  correcta: "a) El régimen general de responsabilidad penal de menores.",
+  justificacion: "Los menores extranjeros se someten a la misma regulación de responsabilidad penal."
+},
+{
+  pregunta: "La jurisdicción de menores se ocupa de:",
+  opciones: [
+    "a) Todos los procedimientos administrativos con menores.",
+    "b) Delitos cometidos por niños de entre 12 y 16 años únicamente.",
+    "c) Delitos cometidos por menores de 14 a 18 años.",
+    "d) Delitos cometidos por mayores de 18 en situación de vulnerabilidad."
+  ],
+  correcta: "c) Delitos cometidos por menores de 14 a 18 años.",
+  justificacion: "Es un ámbito penal específico para esta franja de edad."
+},
+{
+  pregunta: "La medida de internamiento en régimen cerrado:",
+  opciones: [
+    "a) Se aplica solo a menores mayores de 16 años.",
+    "b) Tiene como objetivo el aislamiento en centros penitenciarios.",
+    "c) Se adopta en casos de extrema gravedad o peligrosidad.",
+    "d) Es una medida accesoria siempre a la libertad vigilada."
+  ],
+  correcta: "c) Se adopta en casos de extrema gravedad o peligrosidad.",
+  justificacion: "Es la medida más restrictiva, reservada para delitos graves y menores peligrosos."
+},
+{
+  pregunta: "El artículo 7 de la Ley 5/2000 señala que las medidas deben orientarse a:",
+  opciones: [
+    "a) La sanción del menor por su conducta.",
+    "b) La educación y plena integración social del menor.",
+    "c) La protección del orden público exclusivamente.",
+    "d) El cumplimiento estricto del Código Penal."
+  ],
+  correcta: "b) La educación y plena integración social del menor.",
+  justificacion: "El enfoque educativo y reintegrador es esencial en el sistema de menores."
+},
+{
+  pregunta: "La medida de internamiento en régimen abierto permite al menor:",
+  opciones: [
+    "a) Permanecer en su domicilio sin supervisión.",
+    "b) Abandonar el centro en periodos cortos sin control.",
+    "c) Realizar actividades externas educativas o laborales.",
+    "d) Cumplir tareas de vigilancia nocturna."
+  ],
+  correcta: "c) Realizar actividades externas educativas o laborales.",
+  justificacion: "El régimen abierto busca una transición controlada hacia la autonomía."
+},
+{
+  pregunta: "¿Qué órgano está facultado para imponer medidas provisionales durante la instrucción?",
+  opciones: [
+    "a) El Secretario Judicial.",
+    "b) El Juez de Menores.",
+    "c) El Equipo Técnico.",
+    "d) La Audiencia Provincial."
+  ],
+  correcta: "b) El Juez de Menores.",
+  justificacion: "El juez puede imponer medidas cautelares para garantizar la seguridad y el proceso."
+},
+{
+  pregunta: "La amonestación consiste en:",
+  opciones: [
+    "a) Una advertencia formal del juez al menor.",
+    "b) El cumplimiento de una pena privativa de libertad.",
+    "c) La firma de un compromiso ante el equipo técnico.",
+    "d) La realización obligatoria de tareas de limpieza."
+  ],
+  correcta: "a) Una advertencia formal del juez al menor.",
+  justificacion: "Es una llamada de atención solemne y no restrictiva."
+},
+{
+  pregunta: "La Ley 5/2000 se aplica a menores que hayan cometido un delito cuando:",
+  opciones: [
+    "a) Tenían entre 12 y 18 años en el momento del juicio.",
+    "b) Eran menores de 18 años en el momento de los hechos.",
+    "c) Tenían 18 años en el momento de la sentencia.",
+    "d) Tienen capacidad de discernimiento penal."
+  ],
+  correcta: "b) Eran menores de 18 años en el momento de los hechos.",
+  justificacion: "La edad en el momento de la comisión del delito define la jurisdicción."
+},
+{
+  pregunta: "La medida de reparación del daño puede implicar:",
+  opciones: [
+    "a) Ingreso en centro de internamiento.",
+    "b) Indemnización económica o disculpa pública.",
+    "c) Retirada del permiso de conducir.",
+    "d) Reclusión nocturna con custodia policial."
+  ],
+  correcta: "b) Indemnización económica o disculpa pública.",
+  justificacion: "Se busca reparar el daño producido a la víctima de forma proporcional."
+},
+{
+  pregunta: "Según la Ley 5/2000, el internamiento terapéutico tiene como horizonte principal:",
+  opciones: [
+    "a) Reeducación laboral.",
+    "b) Tratamiento psicológico o psiquiátrico del menor.",
+    "c) Aislamiento social preventivo.",
+    "d) Cumplimiento de un protocolo penitenciario."
+  ],
+  correcta: "b) Tratamiento psicológico o psiquiátrico del menor.",
+  justificacion: "Está previsto para menores con patologías mentales o adicciones."
+},
+{
+  pregunta: "¿Cuál de los siguientes supuestos NO se contempla como causa de extinción de la medida?",
+  opciones: [
+    "a) Fallecimiento del menor.",
+    "b) Cumplimiento integro de la medida.",
+    "c) Revisión del sistema por el Tribunal Constitucional.",
+    "d) Prescripción del delito."
+  ],
+  correcta: "c) Revisión del sistema por el Tribunal Constitucional.",
+  justificacion: "Las causas son: cumplimiento, prescripción, muerte, y revocación judicial."
+},
+{
+  pregunta: "La medida de permanencia de fin de semana busca:",
+  opciones: [
+    "a) Restringir la libertad durante días específicos sin internamiento.",
+    "b) Recaudar fondos para centros juveniles.",
+    "c) Probar la capacidad de autonomía total del menor.",
+    "d) Aplicarse junto con internamiento cerrado obligatoriamente."
+  ],
+  correcta: "a) Restringir la libertad durante días específicos sin internamiento.",
+  justificacion: "Mantiene al menor en su entorno, pero limita sus salidas durante fines de semana."
+},
+{
+  pregunta: "El procedimiento abreviado puede aplicarse cuando:",
+  opciones: [
+    "a) El menor es mayor de 16 años.",
+    "b) El menor se confiesa culpable de forma voluntaria.",
+    "c) La víctima no comparece al juicio.",
+    "d) La Fiscalía no dispone de pruebas."
+  ],
+  correcta: "b) El menor se confiesa culpable de forma voluntaria.",
+  justificacion: "Este procedimiento busca agilizar la resolución cuando se admite la responsabilidad."
+},
+{
+  pregunta: "El archivo del expediente cuando se han reparado los daños y la infracción es leve responde al principio de:",
+  opciones: [
+    "a) Justicia restaurativa.",
+    "b) Legalidad absoluta.",
+    "c) Castigo ejemplarizante.",
+    "d) Neutralidad judicial."
+  ],
+  correcta: "a) Justicia restaurativa.",
+  justificacion: "La Ley prioriza la reparación y reeducación frente al castigo en casos leves."
+},
+{
+  pregunta: "El juez de menores podrá modificar la medida impuesta cuando:",
+  opciones: [
+    "a) El equipo técnico lo proponga por cambio de circunstancias.",
+    "b) El menor alcance la mayoría de edad.",
+    "c) Lo solicite la víctima después del juicio.",
+    "d) El menor sea trasladado a otra Comunidad Autónoma."
+  ],
+  correcta: "a) El equipo técnico lo proponga por cambio de circunstancias.",
+  justificacion: "La evolución del menor puede justificar una modificación de la medida."
+},
+{
+  pregunta: "Las medidas privativas de libertad requieren:",
+  opciones: [
+    "a) Evaluación por el equipo técnico y orden judicial.",
+    "b) Solo aprobación del Ministerio Fiscal.",
+    "c) Necesidad de orden administrativa.",
+    "d) Consentimiento expreso del menor infractor."
+  ],
+  correcta: "a) Evaluación por el equipo técnico y orden judicial.",
+  justificacion: "El internamiento requiere base técnica y autorización judicial."
+},
+{
+  pregunta: "La reparación del daño está orientada a:",
+  opciones: [
+    "a) Castigar al menor mediante multa.",
+    "b) Restituir o compensar a la víctima del delito.",
+    "c) Sustituir al procedimiento penal.",
+    "d) Permitir que el menor negocie la pena."
+  ],
+  correcta: "b) Restituir o compensar a la víctima del delito.",
+  justificacion: "Es una medida educativa centrada en las consecuencias del acto del menor."
+},
+{
+  pregunta: "En caso de delito grave con significativa peligrosidad, se suele aplicar:",
+  opciones: [
+    "a) Amonestación.",
+    "b) Internamiento en régimen cerrado.",
+    "c) Convivencia con familia.",
+    "d) Reprimenda social pública."
+  ],
+  correcta: "b) Internamiento en régimen cerrado.",
+  justificacion: "Es la medida más severa y restrictiva reservada para casos de extrema gravedad."
+},
+{
+  pregunta: "La duración máxima de la medida de libertada vigilada es de:",
+  opciones: [
+    "a) 3 años.",
+    "b) 5 años.",
+    "c) 2 años.",
+    "d) 6 meses."
+  ],
+  correcta: "b) 5 años.",
+  justificacion: "La Ley fija un máximo de 5 años para las medidas no privativas de libertad."
+},
+{
+  pregunta: "El equipo técnico debe ser oído:",
+  opciones: [
+    "a) En todas las fases del procedimiento de menores.",
+    "b) Solo en los casos de internamiento cerrado.",
+    "c) Cuando el juez lo solicite durante la audiencia final.",
+    "d) Únicamente si el menor tiene antecedentes."
+  ],
+  correcta: "a) En todas las fases del procedimiento de menores.",
+  justificacion: "El equipo técnico cumple funciones esenciales en la orientación del proceso."
+},
+{
+  pregunta: "El derecho del menor a estar presente durante el juicio se basa en el principio de:",
+  opciones: [
+    "a) Inmediación.",
+    "b) Discrecionalidad.",
+    "c) Privacidad.",
+    "d) Oportunidad."
+  ],
+  correcta: "a) Inmediación.",
+  justificacion: "La inmediación garantiza que el juez perciba directamente las declaraciones."
+},
+{
+  pregunta: "La medida de privación del permiso de conducir puede imponerse:",
+  opciones: [
+    "a) Solo a mayores de 16 años.",
+    "b) A cualquier menor entre 14 y 18 si lo permite la ley.",
+    "c) Únicamente en delitos contra la seguridad vial.",
+    "d) Solo cuando el menor posee permiso válido."
+  ],
+  correcta: "b) A cualquier menor entre 14 y 18 si lo permite la ley.",
+  justificacion: "La medida puede aplicarse aunque el menor no posea aún el permiso."
+},
+{
+  pregunta: "La reeducación del menor infractor implica:",
+  opciones: [
+    "a) Un proceso de cambio estructurado mediante medidas educativas.",
+    "b) La suspensión de derechos constitucionales.",
+    "c) Traslado a centro penitenciario si reincide.",
+    "d) Obligación de ingresar en el ejército."
+  ],
+  correcta: "a) Un proceso de cambio estructurado mediante medidas educativas.",
+  justificacion: "La Ley 5/2000 enfatiza el proceso educativo como núcleo del sistema."
+},
+{
+  pregunta: "La medida de prestaciones en beneficio de la comunidad debe:",
+  opciones: [
+    "a) Ejecutarse sin perjuicio de la educación obligatoria.",
+    "b) Sustituir obligatoriamente a la reparación del daño.",
+    "c) Ser impuesta solo con internamiento previo.",
+    "d) Implicar remuneración económica al menor."
+  ],
+  correcta: "a) Ejecutarse sin perjuicio de la educación obligatoria.",
+  justificacion: "La medida debe ser compatible con la escolarización y derechos del menor."
+},
+{
+  pregunta: "La intervención del abogado defensor en el procedimiento de menores es:",
+  opciones: [
+    "a) Opcional si el menor tiene más de 16 años.",
+    "b) Obligatoria en todo el procedimiento.",
+    "c) Sustituible por un representante legal.",
+    "d) Solo necesaria en la fase de juicio oral."
+  ],
+  correcta: "b) Obligatoria en todo el procedimiento.",
+  justificacion: "El menor debe contar con asistencia letrada desde el inicio del proceso."
+},
+{
+  pregunta: "La responsabilidad civil por daños causados por el menor recae:",
+  opciones: [
+    "a) Exclusivamente sobre el menor.",
+    "b) Sobre los padres, tutores o guardadores legales.",
+    "c) Sobre el Estado en casos graves.",
+    "d) Únicamente cuando hay sentencia firme."
+  ],
+  correcta: "b) Sobre los padres, tutores o guardadores legales.",
+  justificacion: "Los padres o tutores deben responder civilmente por los daños causados por el menor."
+},
+{
+  pregunta: "La Ley 5/2000 promueve la mediación como instrumento de:",
+  opciones: [
+    "a) Agilización de trámites judiciales.",
+    "b) Castigo ejemplar para delitos graves.",
+    "c) Reconciliación y responsabilidad del menor.",
+    "d) Reducción de costos judiciales."
+  ],
+  correcta: "c) Reconciliación y responsabilidad del menor.",
+  justificacion: "La mediación se basa en principios restaurativos y educativos."
+},
+{
+  pregunta: "¿Qué medida se aplica cuando el entorno familiar del menor no garantiza su educación?",
+  opciones: [
+    "a) Internamiento en régimen cerrado.",
+    "b) Reparación del daño.",
+    "c) Convivencia con otra persona o familia.",
+    "d) Prestación en beneficio de la comunidad."
+  ],
+  correcta: "c) Convivencia con otra persona o familia.",
+  justificacion: "Esta medida busca un entorno educativo y seguro para el menor."
+},
+{
+  pregunta: "La medida de internamiento en régimen cerrado sólo puede imponerse cuando:",
+  opciones: [
+    "a) Lo soliciten los padres del menor.",
+    "b) La Fiscalía considere la conducta delictiva gravísima.",
+    "c) Existan pruebas de que el menor es peligroso o ha cometido delito grave.",
+    "d) El menor no tenga escolarización formal."
+  ],
+  correcta: "c) Existan pruebas de que el menor es peligroso o ha cometido delito grave.",
+  justificacion: "El internamiento cerrado está reservado para supuestos de alta gravedad."
+},
+{
+  pregunta: "¿Qué elemento determina la competencia de los juzgados de menores?",
+  opciones: [
+    "a) Tipo de delito.",
+    "b) Gravedad del daño causado a la víctima.",
+    "c) Edad del menor en el momento de los hechos.",
+    "d) Condición económica del menor infractor."
+  ],
+  correcta: "c) Edad del menor en el momento de los hechos.",
+  justificacion: "La competencia se basa en la edad al cometer el delito (14-18 años)."
+},
+{
+  pregunta: "La medida de internamiento abierto tiene como objetivo:",
+  opciones: [
+    "a) Separar al menor totalmente de la sociedad.",
+    "b) Mantener al menor en un centro sin actividades externas.",
+    "c) Permitir una transición controlada con actividades externas.",
+    "d) Ejecutar una pena de prisión fijada por juez civil."
+  ],
+  correcta: "c) Permitir una transición controlada con actividades externas.",
+  justificacion: "Se combina el internamiento con programas educativos o laborales fuera del centro."
+},
+{
+  pregunta: "Una de las características del juez de menores es que:",
+  opciones: [
+    "a) Puede imponer sanciones administrativas.",
+    "b) Debe contar con formación específica en materia juvenil.",
+    "c) Tiene competencia universal sobre delitos cometidos por adultos contra menores.",
+    "d) Sólo se encarga de casos de menores de 16 años."
+  ],
+  correcta: "b) Debe contar con formación específica en materia juvenil.",
+  justificacion: "La Ley exige que los jueces tengan preparación específica para el trato con menores."
+},
+{
+  pregunta: "Durante la ejecución de la medida de internamiento terapéutico:",
+  opciones: [
+    "a) El menor debe permanecer siempre en aislamiento.",
+    "b) Se asegura atención médica y apoyo psicológico.",
+    "c) Se concede libertad condicional automática al detectar progreso.",
+    "d) La familia del menor asume las decisiones clínicas."
+  ],
+  correcta: "b) Se asegura atención médica y apoyo psicológico.",
+  justificacion: "Esta medida específica busca tratar necesidades especiales de salud mental."
+},
+{
+  pregunta: "En la Ley 5/2000, una medida educativa de carácter no privativo de libertad es:",
+  opciones: [
+    "a) Libertad vigilada.",
+    "b) Internamiento terapéutico.",
+    "c) Internamiento semiabierto.",
+    "d) Internamiento fechado."
+  ],
+  correcta: "a) Libertad vigilada.",
+  justificacion: "Es una medida no privativa que involucra supervisión y orientación del menor."
+},
+{
+  pregunta: "La duración máxima del internamiento en régimen semiabierto es de:",
+  opciones: [
+    "a) 2 años.",
+    "b) 3 años.",
+    "c) 5 años.",
+    "d) 10 años."
+  ],
+  correcta: "c) 5 años.",
+  justificacion: "Las medidas privativas de libertad tienen un límite general de 5 años."
+},
+{
+  pregunta: "El principio de proporcionalidad en el sistema de menores implica que:",
+  opciones: [
+    "a) Las medidas sean idénticas para todos los menores.",
+    "b) Las medidas se ajusten a la gravedad del delito y la situación personal.",
+    "c) Solo se impongan medidas terapéuticas.",
+    "d) La sanción sea igual a la pena del adulto."
+  ],
+  correcta: "b) Las medidas se ajusten a la gravedad del delito y la situación personal.",
+  justificacion: "La proporcionalidad busca un equilibrio entre el hecho cometido y las condiciones del menor."
+},
+{
+  pregunta: "¿Cuál de los siguientes NO es un tipo de internamiento previsto en la Ley 5/2000?",
+  opciones: [
+    "a) Internamiento cerrado.",
+    "b) Internamiento semiabierto.",
+    "c) Internamiento abierto.",
+    "d) Internamiento domiciliario."
+  ],
+  correcta: "d) Internamiento domiciliario.",
+  justificacion: "La Ley no contempla el internamiento domiciliario como medida."
+},
+{
+  pregunta: "El procedimiento de menores es preferentemente:",
+  opciones: [
+    "a) Público y escrito.",
+    "b) Privado y oral.",
+    "c) Civil y administrativo.",
+    "d) Militar y reservado."
+  ],
+  correcta: "b) Privado y oral.",
+  justificacion: "La publicidad se restringe para proteger al menor y se usa la oralidad para facilitar su participación."
+},
+{
+  pregunta: "La reparación del daño puede incluir:",
+  opciones: [
+    "a) Servicio militar obligatorio.",
+    "b) Disculpa pública o compensación económica.",
+    "c) Privación de derechos fundamentales.",
+    "d) Suspensión de escolarización."
+  ],
+  correcta: "b) Disculpa pública o compensación económica.",
+  justificacion: "Esta medida busca reparar el daño causado a la víctima directa."
+},
+{
+  pregunta: "¿Qué órgano es competente para la ejecución de las medidas impuestas por los jueces de menores?",
+  opciones: [
+    "a) Las Fuerzas y Cuerpos de Seguridad del Estado.",
+    "b) Las Comunidades Autónomas.",
+    "c) El Ministerio de Justicia.",
+    "d) El Tribunal Supremo."
+  ],
+  correcta: "b) Las Comunidades Autónomas.",
+  justificacion: "La ejecución de las medidas corresponde a los servicios autonómicos."
+},
+{
+  pregunta: "La medida de convivencia con otra familia puede aplicarse cuando:",
+  opciones: [
+    "a) El menor es víctima de violencia familiar.",
+    "b) El juez desea enseñar al menor disciplina militar.",
+    "c) El menor está en crisis académica o escolar.",
+    "d) El delito requiere aislamiento completo."
+  ],
+  correcta: "a) El menor es víctima de violencia familiar.",
+  justificacion: "Se busca proteger al menor y ofrecerle un entorno adecuado en ciertos casos."
+},
+{
+  pregunta: "La Ley 5/2000 fija la responsabilidad penal de menores desde los:",
+  opciones: [
+    "a) 10 años.",
+    "b) 12 años.",
+    "c) 14 años.",
+    "d) 16 años."
+  ],
+  correcta: "c) 14 años.",
+  justificacion: "Los menores solo son penalmente responsables a partir de los 14 años."
+},
+{
+  pregunta: "La privación del permiso de conducir se impone como:",
+  opciones: [
+    "a) Medida educativa vinculada a delitos viales.",
+    "b) Sanción administrativa paralela.",
+    "c) Obligación de asistir a cursos de mecánica.",
+    "d) Castigo automático en caso de lesiones."
+  ],
+  correcta: "a) Medida educativa vinculada a delitos viales.",
+  justificacion: "La medida tiene objetivo preventivo y educativo relacionada con infracciones de tráfico."
+},
+{
+  pregunta: "¿Cuál es el objetivo principal de las medidas no privativas de libertad?",
+  opciones: [
+    "a) Castigar de forma menos intensa al menor.",
+    "b) Facilitar su reinserción educativa y social.",
+    "c) Sustituir el proceso penal por completo.",
+    "d) Servir como sanción sin responsabilidad civil."
+  ],
+  correcta: "b) Facilitar su reinserción educativa y social.",
+  justificacion: "Las medidas no privativas se centran en la educación y la inserción del menor en la sociedad."
+},
+{
+  pregunta: "La medida de internamiento terapéutico está dirigida a menores que:",
+  opciones: [
+    "a) Han cometido delitos imprudentes.",
+    "b) Presentan trastornos mentales o adicciones.",
+    "c) Tienen problemas de convivencia en el centro escolar.",
+    "d) Han abandonado temporalmente el domicilio."
+  ],
+  correcta: "b) Presentan trastornos mentales o adicciones.",
+  justificacion: "Esta medida se aplica específicamente a menores con necesidades de tratamiento clínico."
+},
+{
+  pregunta: "La duración máxima de la medida de internamiento cerrado en supuestos graves es de:",
+  opciones: [
+    "a) 2 años.",
+    "b) 3 años.",
+    "c) 5 años.",
+    "d) 10 años."
+  ],
+  correcta: "c) 5 años.",
+  justificacion: "Las medidas privativas de libertad tienen un máximo general de 5 años."
+},
+{
+  pregunta: "En caso de incumplimiento reiterado de la medida impuesta, el juez puede:",
+  opciones: [
+    "a) Imponer directamente pena de prisión de adulto.",
+    "b) Modificar la medida por otra más adecuada o más severa.",
+    "c) Suspender la ejecución y archivar el caso.",
+    "d) Solicitar ayuda a la unidad militar más cercana."
+  ],
+  correcta: "b) Modificar la medida por otra más adecuada o más severa.",
+  justificacion: "La Ley permite la modificación de medidas si se incumplen o no se adaptan al menor."
+},
+{
+  pregunta: "La prescripción del expediente de menores se produce:",
+  opciones: [
+    "a) A los 6 meses del delito.",
+    "b) Conforme a los plazos establecidos para delitos leves.",
+    "c) Según los plazos del Código Penal ordinario para adultos.",
+    "d) A los 2 años para cualquier tipo de delito."
+  ],
+  correcta: "b) Conforme a los plazos establecidos para delitos leves.",
+  justificacion: "La prescripción sigue el régimen general del delito imputado, teniendo en cuenta su gravedad."
+},
+{
+  pregunta: "La medida de libertad vigilada incluye la obligación de:",
+  opciones: [
+    "a) No salir de la ciudad sin autorización.",
+    "b) Cumplir arresto domiciliario nocturno.",
+    "c) Asistir a cursos educativos o formativos.",
+    "d) Realizar trabajos de investigación social."
+  ],
+  correcta: "c) Asistir a cursos educativos o formativos.",
+  justificacion: "Puede incluir programas educativos y de orientación para facilitar la reinserción."
+},
+{
+  pregunta: "El procedimiento penal de menores se basa en los principios de:",
+  opciones: [
+    "a) Publicidad, oralidad y culpabilidad.",
+    "b) Celeridad, flexibilidad y protección del menor.",
+    "c) Legalidad, castigo y aislamiento.",
+    "d) Secreto, rigidez y proporcionalidad."
+  ],
+  correcta: "b) Celeridad, flexibilidad y protección del menor.",
+  justificacion: "El sistema está diseñado para ser rápido, adaptado y protector para el menor."
+},
+{
+  pregunta: "¿Cuál de las siguientes NO es una medida del catálogo previsto en la Ley 5/2000?",
+  opciones: [
+    "a) Libertad vigilada.",
+    "b) Prestaciones en beneficio de la comunidad.",
+    "c) Internamiento cerrado.",
+    "d) Suspensión de derecho de sufragio activo."
+  ],
+  correcta: "d) Suspensión de derecho de sufragio activo.",
+  justificacion: "La suspensión del derecho al voto no está prevista como medida en el catálogo."
+},
+{
+  pregunta: "La asistencia del defensor en el procedimiento de menores garantiza el derecho a:",
+  opciones: [
+    "a) Un juicio público si el menor lo desea.",
+    "b) Ser acompañado en todo momento por un abogado.",
+    "c) Evitar cualquier notificación a los padres del menor.",
+    "d) Elegir la sanción que desea cumplir."
+  ],
+  correcta: "b) Ser acompañado en todo momento por un abogado.",
+  justificacion: "El derecho de defensa incluye la presencia obligatoria de abogado desde la detención."
+},
+{
+  pregunta: "La autonomía de las Comunidades Autónomas en la ejecución de medidas se basa en:",
+  opciones: [
+    "a) El principio de subsidiariedad penal.",
+    "b) La descentralización competencial en materia de menores.",
+    "c) La falta de recursos del Estado central.",
+    "d) La voluntad de las víctimas."
+  ],
+  correcta: "b) La descentralización competencial en materia de menores.",
+  justificacion: "Las Comunidades Autónomas gestionan centros y programas de ejecución educativa y terapéutica."
+},
+{
+  pregunta: "El principio de intervención mínima en el contexto de menores implica que:",
+  opciones: [
+    "a) Solo se aplicarán medidas en delitos graves o muy graves.",
+    "b) Las medidas deben ser las menos restrictivas posibles.",
+    "c) El juez debe evitar el proceso penal por completo.",
+    "d) No se debe informar al menor de las consecuencias legales."
+  ],
+  correcta: "b) Las medidas deben ser las menos restrictivas posibles.",
+  justificacion: "Se busca intervenir lo mínimo necesario para la educación y reinserción del menor."
+},
+{
+  pregunta: "¿Qué ocurre si un menor de 13 años comete un delito?",
+  opciones: [
+    "a) Se aplica directamente el régimen de menores.",
+    "b) Se cierra el expediente sin posibilidad de recurso.",
+    "c) No es penalmente responsable, pero puede aplicarse una medida protectora.",
+    "d) Se inicia procedimiento penal vigilado por servicios sociales."
+  ],
+  correcta: "c) No es penalmente responsable, pero puede aplicarse una medida protectora.",
+  justificacion: "El menor de 14 años no tiene responsabilidad penal, pero puede ser derivado a servicios sociales."
+},
+{
+  pregunta: "El principio de confidencialidad en el proceso penal de menores implica que:",
+  opciones: [
+    "a) El procedimiento siempre es público.",
+    "b) No se pueden divulgar datos del menor sin autorización.",
+    "c) Solo se publica la sentencia si hay interés social.",
+    "d) El expediente puede ser consultado libremente."
+  ],
+  correcta: "b) No se pueden divulgar datos del menor sin autorización.",
+  justificacion: "La confidencialidad protege la identidad e intimidad del menor durante y después del proceso."
+},
+{
+  pregunta: "La resolución judicial que impone una medida debe estar fundamentada en:",
+  opciones: [
+    "a) Las pruebas aportadas por la defensa.",
+    "b) El informe del equipo técnico y las circunstancias del menor.",
+    "c) La opinión exclusiva del Ministerio Fiscal.",
+    "d) El tipo de delito cometido por el menor."
+  ],
+  correcta: "b) El informe del equipo técnico y las circunstancias del menor.",
+  justificacion: "El juez debe basar su decisión en criterios técnicos y educativos, además del hecho delictivo."
+},
+{
+  pregunta: "Las medidas privativas de libertad requieren para su aplicación:",
+  opciones: [
+    "a) Informe previo del equipo técnico y autorización judicial.",
+    "b) Solicitud expresa de la víctima.",
+    "c) Requisito de reincidencia del menor.",
+    "d) Aval del Ministerio del Interior."
+  ],
+  correcta: "a) Informe previo del equipo técnico y autorización judicial.",
+  justificacion: "El internamiento requiere una base profesional y legal firme, especialmente en menores."
+},
+{
+  pregunta: "¿Qué medida se considera la más severa dentro del sistema de justicia juvenil?",
+  opciones: [
+    "a) Internamiento cerrado.",
+    "b) Reparación del daño.",
+    "c) Prestación en beneficio de la comunidad.",
+    "d) Amonestación."
+  ],
+  correcta: "a) Internamiento cerrado.",
+  justificacion: "Es la medida más restrictiva y se reserva para los supuestos más graves o peligrosos."
+},
+{
+  pregunta: "El archivo del expediente sin responsabilidad penal se podrá realizar cuando:",
+  opciones: [
+    "a) El menor no reconoce los hechos.",
+    "b) El delito sea leve y exista mediación o reparación del daño.",
+    "c) La víctima renuncia a denunciar.",
+    "d) El juez lo decide por motivos administrativos."
+  ],
+  correcta: "b) El delito sea leve y exista mediación o reparación del daño.",
+  justificacion: "El archivo está basado en criterios de justicia restaurativa y mínima intervención."
+},
+{
+  pregunta: "El juez de menores podrá ordenar la tutela del menor infractor en:",
+  opciones: [
+    "a) Casos de abandono o desprotección familiar.",
+    "b) Delitos contra la propiedad intelectual.",
+    "c) Casos de delitos reincidentes exclusivamente.",
+    "d) Si el menor solicita asilo internacional."
+  ],
+  correcta: "a) Casos de abandono o desprotección familiar.",
+  justificacion: "La tutela protectora forma parte de las competencias de la jurisdicción de menores."
+},
+{
+  pregunta: "En caso de delito cometido en grupo por menores y adultos:",
+  opciones: [
+    "a) Se juzgará a todos en el procedimiento ordinario.",
+    "b) El menor será juzgado en la jurisdicción de menores.",
+    "c) El menor será derivado a los mismos centros penitenciarios.",
+    "d) La Fiscalía unificará el caso sin distinción de edad."
+  ],
+  correcta: "b) El menor será juzgado en la jurisdicción de menores.",
+  justificacion: "Cada uno será juzgado según su régimen: los menores conforme a la Ley 5/2000."
+},
+{
+  pregunta: "El principio de flexibilidad en la Ley de Responsabilidad Penal de los Menores permite:",
+  opciones: [
+    "a) Cambiar la medida sin necesidad de audiencia.",
+    "b) Adaptar las medidas a la evolución del menor.",
+    "c) Imponer sanciones sin procedimiento judicial.",
+    "d) Aplicar las penas de adultos a menores reincidentes."
+  ],
+  correcta: "b) Adaptar las medidas a la evolución del menor.",
+  justificacion: "La flexibilidad permite adecuar las medidas según los avances educativos y sociales del menor."
+},
+{
+  pregunta: "El objetivo principal de la jurisdicción de menores es:",
+  opciones: [
+    "a) Castigar al menor por el acto delictivo.",
+    "b) Rehabilitar y reinsertar socialmente al menor.",
+    "c) Evitar que el menor tenga antecedentes penales.",
+    "d) Aislar al menor infractor del resto de la sociedad."
+  ],
+  correcta: "b) Rehabilitar y reinsertar socialmente al menor.",
+  justificacion: "La finalidad esencial del sistema de justicia juvenil es la reeducación e integración del menor."
+},
+{
+  pregunta: "La responsabilidad civil subsidiaria recae sobre:",
+  opciones: [
+    "a) El colegio del menor.",
+    "b) Los padres o tutores del menor.",
+    "c) El centro de internamiento.",
+    "d) El equipo técnico."
+  ],
+  correcta: "b) Los padres o tutores del menor.",
+  justificacion: "Son responsables civiles subsidiarios por los daños causados por el menor."
+},
+{
+  pregunta: "¿Qué requisito se necesita para aplicar medidas al menor según la Ley 5/2000?",
+  opciones: [
+    "a) Que el menor tenga antecedentes desde los 12 años.",
+    "b) Que el menor sea imputable penalmente (14-18 años).",
+    "c) Que exista un informe negativo del centro escolar.",
+    "d) Que los padres estén ausentes del domicilio."
+  ],
+  correcta: "b) Que el menor sea imputable penalmente (14-18 años).",
+  justificacion: "Solo los menores entre 14 y 18 años son responsables penalmente."
+},
+{
+  pregunta: "El internamiento en régimen semiabierto permite al menor:",
+  opciones: [
+    "a) Salir del centro en horario escolar o laboral bajo control.",
+    "b) Permanecer completamente aislado.",
+    "c) Evitar el cumplimiento de medidas adicionales.",
+    "d) Elegir libremente las actividades fuera del centro."
+  ],
+  correcta: "a) Salir del centro en horario escolar o laboral bajo control.",
+  justificacion: "Combina la residencia obligatoria con actividades externas programadas."
+},
+{
+  pregunta: "Una medida de carácter reparador que no implica privación de libertad es:",
+  opciones: [
+    "a) Reparación del daño.",
+    "b) Internamiento cerrado.",
+    "c) Internamiento abierto.",
+    "d) Internamiento terapéutico."
+  ],
+  correcta: "a) Reparación del daño.",
+  justificacion: "Se trata de una medida orientada a restaurar los perjuicios causados a la víctima."
+},
+{
+  pregunta: "La Ley Orgánica 5/2000 establece que durante el procedimiento el menor tiene derecho a:",
+  opciones: [
+    "a) No ser informado de su imputación.",
+    "b) Ser oído personalmente.",
+    "c) Declarar sin presencia de abogado.",
+    "d) Ser juzgado únicamente por jueces militares."
+  ],
+  correcta: "b) Ser oído personalmente.",
+  justificacion: "El menor debe ser escuchado, asegurando su participación activa en todas las fases."
+},
+{
+  pregunta: "La competencia para ejecutar una medida impuesta por un juez de menores recae en:",
+  opciones: [
+    "a) Ministerio de Justicia.",
+    "b) Tribunal Supremo.",
+    "c) Comunidad Autónoma correspondiente.",
+    "d) Juzgado de Vigilancia Penitenciaria."
+  ],
+  correcta: "c) Comunidad Autónoma correspondiente.",
+  justificacion: "Las Comunidades Autónomas tienen competencia para gestionar los centros y recursos de ejecución."
+},
+{
+  pregunta: "El principio de educación personalizado implica que:",
+  opciones: [
+    "a) Las medidas deben ser iguales para todos los menores.",
+    "b) Las medidas se adaptan a la evolución y necesidades del menor.",
+    "c) Las medidas deben ser estrictamente punitivas.",
+    "d) El menor puede elegir la medida que desea cumplir."
+  ],
+  correcta: "b) Las medidas se adaptan a la evolución y necesidades del menor.",
+  justificacion: "La personalización es clave en el diseño de medidas efectivas para la reeducación."
+},
+{
+  pregunta: "El juez puede imponer medidas cautelares durante la fase de instrucción si:",
+  opciones: [
+    "a) La Fiscalía lo solicita y hay riesgo de fuga.",
+    "b) El equipo técnico identifica necesidad de internamiento.",
+    "c) El menor no comparece a una cita educativa.",
+    "d) El representante legal del menor lo exige."
+  ],
+  correcta: "a) La Fiscalía lo solicita y hay riesgo de fuga.",
+  justificacion: "El interés del procedimiento y la seguridad del menor justifican las medidas cautelares."
+},
+{
+  pregunta: "El internamiento terapéutico puede cumplirse en:",
+  opciones: [
+    "a) Hospital psiquiátrico o centro especializado.",
+    "b) Centro de internamiento cerrado ordinario.",
+    "c) Instalación militar con apoyo médico.",
+    "d) Centro de detención preventiva."
+  ],
+  correcta: "a) Hospital psiquiátrico o centro especializado.",
+  justificacion: "La atención en salud mental requiere un entorno especializado y adaptado."
+},
+{
+  pregunta: "¿Cuál es el plazo máximo de duración del expediente de menores desde su apertura?",
+  opciones: [
+    "a) 2 meses.",
+    "b) 6 meses.",
+    "c) 12 meses.",
+    "d) 18 meses."
+  ],
+  correcta: "b) 6 meses.",
+  justificacion: "El expediente debe resolverse en un plazo máximo de seis meses, salvo excepciones justificadas."
+},
+{
+  pregunta: "La reparación del daño puede implicar que el menor:",
+  opciones: [
+    "a) Cumpla trabajos forzosos.",
+    "b) Pida disculpas a la víctima o compense económicamente.",
+    "c) Sea internado en régimen cerrado.",
+    "d) Actúe como mediador en otros procesos."
+  ],
+  correcta: "b) Pida disculpas a la víctima o compense económicamente.",
+  justificacion: "La reparación busca reconocer el daño y restaurar relaciones afectadas por el delito."
+},
+{
+  pregunta: "Las medidas de libertad vigilada pueden incluir:",
+  opciones: [
+    "a) Alojamiento en un centro de internamiento diario.",
+    "b) Realización de actividades de voluntariado supervisadas.",
+    "c) Privación de derechos fundamentales.",
+    "d) Desvinculación del sistema educativo."
+  ],
+  correcta: "b) Realización de actividades de voluntariado supervisadas.",
+  justificacion: "La libertad vigilada puede incluir actividades educativas o comunitarias según el plan."
+},
+{
+  pregunta: "La jurisdicción de menores NO tiene competencia para:",
+  opciones: [
+    "a) Juzgar delitos cometidos por menores de 14 años.",
+    "b) Dictar medidas provisionales.",
+    "c) Autorizar el internamiento terapéutico.",
+    "d) Resolver recursos contra medidas."
+  ],
+  correcta: "a) Juzgar delitos cometidos por menores de 14 años.",
+  justificacion: "Los menores de 14 años no son responsables penalmente y su caso se deriva a servicios sociales."
+},
+{
+  pregunta: "¿Qué principio obliga a que las medidas sean proporcionales al hecho y adecuadas al menor?",
+  opciones: [
+    "a) Legalidad.",
+    "b) Proporcionalidad.",
+    "c) Exclusión social.",
+    "d) Publicidad."
+  ],
+  correcta: "b) Proporcionalidad.",
+  justificacion: "Las medidas deben ser equilibradas entre el delito cometido y las circunstancias del menor."
+},
+{
+  pregunta: "La duración de la medida de prestaciones en beneficio de la comunidad no puede exceder:",
+  opciones: [
+    "a) 3 meses.",
+    "b) 1 año.",
+    "c) 3 años.",
+    "d) 5 años."
+  ],
+  correcta: "c) 3 años.",
+  justificacion: "El límite general para esta medida es de 3 años según la normativa vigente."
+},
+{
+  pregunta: "¿Cuál de las siguientes medidas podría aplicarse como alternativa al internamiento?",
+  opciones: [
+    "a) Internamiento cerrado.",
+    "b) Libertad vigilada.",
+    "c) Internamiento terapéutico.",
+    "d) Suspensión de la responsabilidad penal."
+  ],
+  correcta: "b) Libertad vigilada.",
+  justificacion: "La libertad vigilada es una medida educativa y menos restrictiva que el internamiento."
+},
+{
+  pregunta: "La medida de convivencia con otra familia se adopta especialmente cuando:",
+  opciones: [
+    "a) El menor necesita disciplina militar.",
+    "b) El entorno familiar resulta inadecuado o perjudicial.",
+    "c) La víctima es un miembro de la familia.",
+    "d) El menor rechaza el internamiento por motivos religiosos."
+  ],
+  correcta: "b) El entorno familiar resulta inadecuado o perjudicial.",
+  justificacion: "Se busca un ambiente seguro y educativo para el menor fuera del entorno familiar conflictivo."
+},
+{
+  pregunta: "El control de las medidas impuestas por los jueces de menores corresponde a:",
+  opciones: [
+    "a) El Ministerio de Justicia.",
+    "b) Las Fuerzas y Cuerpos de Seguridad del Estado.",
+    "c) Las Comunidades Autónomas a través de los servicios específicos.",
+    "d) Los Equipos Técnicos Nacionales."
+  ],
+  correcta: "c) Las Comunidades Autónomas a través de los servicios específicos.",
+  justificacion: "La ejecución y supervisión de las medidas está descentralizada."
+},
+{
+  pregunta: "El objeto del expediente de menores es:",
+  opciones: [
+    "a) Imponer una pena privativa de libertad según el Código Penal.",
+    "b) Determinar la responsabilidad penal y fijar medidas educativas.",
+    "c) Castigar de manera ejemplar para evitar futuras conductas.",
+    "d) Declarar al menor como incapaz civil y penalmente."
+  ],
+  correcta: "b) Determinar la responsabilidad penal y fijar medidas educativas.",
+  justificacion: "El expediente tiene por objeto demostrar los hechos y decidir la medida más adecuada según la Ley 5/2000."
+},
+{
+  pregunta: "El artículo 3 de la Ley Orgánica 5/2000 establece que las medidas aplicadas deben ser:",
+  opciones: [
+    "a) Exclusivamente sancionadoras.",
+    "b) Reeducativas y orientadas a la integración social.",
+    "c) Prioritariamente privativas de libertad.",
+    "d) Idénticas para todos los infractores."
+  ],
+  correcta: "b) Reeducativas y orientadas a la integración social.",
+  justificacion: "El sistema está diseñado con un enfoque educativo y rehabilitador."
+},
+{
+  pregunta: "La medida de internamiento en régimen semiabierto implica que el menor:",
+  opciones: [
+    "a) Solo puede salir para actos judiciales.",
+    "b) Puede realizar actividades externas bajo supervisión.",
+    "c) Debe cumplir con un aislamiento obligatorio nocturno.",
+    "d) Está en un régimen idéntico al abierto, sin cambios."
+  ],
+  correcta: "b) Puede realizar actividades externas bajo supervisión.",
+  justificacion: "El régimen semiabierto permite combinar internamiento y actividades comunitarias."
+},
+{
+  pregunta: "Los informes del equipo técnico deben incluir:",
+  opciones: [
+    "a) Valoración del entorno delictivo únicamente.",
+    "b) Diagnóstico sociofamiliar y personalidad del menor.",
+    "c) Estudios estadísticos sobre el índice de criminalidad del barrio.",
+    "d) Opiniones del menor sin respaldo técnico."
+  ],
+  correcta: "b) Diagnóstico sociofamiliar y personalidad del menor.",
+  justificacion: "El informe valora la situación personal del menor para orientar las medidas."
+},
+{
+  pregunta: "La medida de prestación en beneficio de la comunidad tiene una duración máxima de:",
+  opciones: [
+    "a) 1 año.",
+    "b) 6 meses.",
+    "c) 3 años.",
+    "d) 5 años."
+  ],
+  correcta: "c) 3 años.",
+  justificacion: "Es una medida educativa, restaurativa y con límite de duración fijado en tres años."
+},
+{
+  pregunta: "La medida de internamiento terapéutico se ejecuta en centros:",
+  opciones: [
+    "a) Militares especializados.",
+    "b) Psiquiátricos o de atención a adicciones.",
+    "c) Asociados a centros penitenciarios.",
+    "d) Privados bajo convenio internacional."
+  ],
+  correcta: "b) Psiquiátricos o de atención a adicciones.",
+  justificacion: "Está destinada a menores con necesidades terapéuticas específicas."
+},
+{
+  pregunta: "La audiencia del menor en el procedimiento se considera una aplicación del principio de:",
+  opciones: [
+    "a) Culpabilidad.",
+    "b) Inmediación.",
+    "c) Oportunidad.",
+    "d) Neutralidad."
+  ],
+  correcta: "b) Inmediación.",
+  justificacion: "Este principio garantiza que el juez escuche directamente al menor."
+},
+{
+  pregunta: "Cuando el delito cometido por el menor es leve y se ha reparado el daño, el fiscal puede:",
+  opciones: [
+    "a) Archivar el expediente.",
+    "b) Convertir el expediente en procedimiento abreviado.",
+    "c) Solicitar internamiento en régimen abierto.",
+    "d) Derivar el caso a la jurisdicción ordinaria."
+  ],
+  correcta: "a) Archivar el expediente.",
+  justificacion: "El archivo se fundamenta en los principios de justicia restaurativa y mínima intervención."
+},
+{
+  pregunta: "La medida de libertad vigilada puede incluir todas las siguientes obligaciones salvo:",
+  opciones: [
+    "a) Asistir a programas educativos.",
+    "b) Presentarse periódicamente ante el juez.",
+    "c) Ignorar las normas establecidas por el tribunal.",
+    "d) Aceptar las visitas de educadores o técnicos."
+  ],
+  correcta: "c) Ignorar las normas establecidas por el tribunal.",
+  justificacion: "El incumplimiento de las normas contradice la finalidad educativa de la medida."
+},
+{
+  pregunta: "La ejecución de las medidas adoptadas por el juez de menores es responsabilidad de:",
+  opciones: [
+    "a) El equipo técnico únicamente.",
+    "b) Las Comunidades Autónomas.",
+    "c) El Ministerio Fiscal.",
+    "d) La Audiencia Nacional."
+  ],
+  correcta: "b) Las Comunidades Autónomas.",
+  justificacion: "La gestión y administración de las medidas dependen de los servicios autonómicos."
+},
+{
+  pregunta: "La medida de internamiento cerrado se impone en casos de:",
+  opciones: [
+    "a) Incumplimiento de una medida económica.",
+    "b) Delitos graves y presencia de riesgo para terceros.",
+    "c) Falta de asistencia a clases escolares.",
+    "d) Petición exclusiva de los padres."
+  ],
+  correcta: "b) Delitos graves y presencia de riesgo para terceros.",
+  justificacion: "Es la medida más severa y se aplica en situaciones de gravedad y peligrosidad del menor."
+},
+{
+  pregunta: "El fichero donde se registran las resoluciones firmes de menores es:",
+  opciones: [
+    "a) Registro Central de Penados.",
+    "b) Fichero de Especial Protección de Menores.",
+    "c) Registro de Responsabilidad Penal Juvenil.",
+    "d) Fichero del Centro de Internamiento."
+  ],
+  correcta: "c) Registro de Responsabilidad Penal Juvenil.",
+  justificacion: "Sirve para registrar antecedentes de menores sometidos a medidas judiciales."
+},
+{
+  pregunta: "El artículo 7 de la Ley 5/2000 señala que una de sus finalidades es:",
+  opciones: [
+    "a) La denuncia permanente de los hechos a la opinión pública.",
+    "b) La reeducación y reinserción del menor infractor.",
+    "c) Garantizar registro criminal hasta la mayoría de edad.",
+    "d) Mantener al menor alejado de cualquier actividad social."
+  ],
+  correcta: "b) La reeducación y reinserción del menor infractor.",
+  justificacion: "Este artículo establece los objetivos educativos del sistema."
+},
+{
+  pregunta: "La medida de amonestación implica:",
+  opciones: [
+    "a) Un juicio abreviado sin posibilidad de recurso.",
+    "b) Una advertencia solemne hecha por el juez al menor.",
+    "c) La imposición de una multa simbólica al menor.",
+    "d) La obligación de reparar el daño a través de trabajos."
+  ],
+  correcta: "b) Una advertencia solemne hecha por el juez al menor.",
+  justificacion: "Es una medida de carácter educativo sin contenido punitivo o restrictivo."
+},
+{
+  pregunta: "¿Cuál de los siguientes es un principio de la justicia juvenil según la Ley 5/2000?",
+  opciones: [
+    "a) Confidencialidad.",
+    "b) Publicidad total.",
+    "c) Privación automática de derechos civiles.",
+    "d) Sanción punitiva rápida."
+  ],
+  correcta: "a) Confidencialidad.",
+  justificacion: "Se evita la divulgación de datos personales del menor para proteger su desarrollo."
+},
+{
+  pregunta: "La medida de internamiento abierto puede imponerse cuando:",
+  opciones: [
+    "a) El menor ha cometido delitos leves sin violencia.",
+    "b) Se considera necesaria una vigilancia permanente sin actividades educativas.",
+    "c) El menor cumple 18 años.",
+    "d) La familia del menor lo solicita como castigo."
+  ],
+  correcta: "a) El menor ha cometido delitos leves sin violencia.",
+  justificacion: "Se reserva para infracciones menos graves y permite intervención educativa flexible."
+},
+{
+  pregunta: "La medida de permanencia de fin de semana limita:",
+  opciones: [
+    "a) La libertad del menor en períodos determinados sin internamiento completo.",
+    "b) El acceso del menor a internet o medios digitales.",
+    "c) Las decisiones parentales durante 48 horas.",
+    "d) El derecho del menor a salir de su comunidad autónoma."
+  ],
+  correcta: "a) La libertad del menor en períodos determinados sin internamiento completo.",
+  justificacion: "Es una medida restrictiva parcial que evita la ruptura con la vida habitual del menor."
+},
+{
+  pregunta: "Las resoluciones del Juzgado de Menores pueden ser recurridas ante:",
+  opciones: [
+    "a) Tribunal Constitucional.",
+    "b) Audiencia Provincial.",
+    "c) Tribunal Supremo.",
+    "d) Consejo General del Poder Judicial."
+  ],
+  correcta: "b) Audiencia Provincial.",
+  justificacion: "La Audiencia Provincial es competente para resolver los recursos contra las resoluciones del juez de menores."
+},
+{
+  pregunta: "La suspensión de la ejecución de una medida puede concederse cuando:",
+  opciones: [
+    "a) El menor demuestra capacidad económica.",
+    "b) El menor reconoce los hechos y no hay riesgo de reincidencia.",
+    "c) La víctima lo solicita por escrito.",
+    "d) El delito sea menor y el juez lo estime oportuno."
+  ],
+  correcta: "d) El delito sea menor y el juez lo estime oportuno.",
+  justificacion: "La Ley permite la suspensión si se valora que la medida no es necesaria para la reeducación."
+},
+{
+  pregunta: "El juicio oral en el proceso penal de menores se desarrolla con carácter:",
+  opciones: [
+    "a) Público y abierto para toda la ciudadanía.",
+    "b) Semiabierto, con acceso limitado a representantes autorizados.",
+    "c) Privado, para proteger al menor.",
+    "d) Público únicamente si el menor lo solicita."
+  ],
+  correcta: "c) Privado, para proteger al menor.",
+  justificacion: "La privacidad garantiza la protección de la identidad y situación del menor."
+},
+{
+  pregunta: "La medida de convivencia con otra persona o familia persigue:",
+  opciones: [
+    "a) Desarraigar al menor de su lugar de origen.",
+    "b) Sustituir el internamiento por un entorno sociofamiliar adecuado.",
+    "c) Castigar al menor con nuevas normas más estrictas.",
+    "d) Reemplazar la tutela de los padres de forma definitiva."
+  ],
+  correcta: "b) Sustituir el internamiento por un entorno sociofamiliar adecuado.",
+  justificacion: "Se busca ofrecer un ambiente seguro cuando el entorno familiar no lo garantiza."
+},
+{
+  pregunta: "La medida de libertad vigilada puede imponerse durante:",
+  opciones: [
+    "a) Un máximo de 2 años únicamente.",
+    "b) Un periodo máximo de 5 años.",
+    "c) Solo si el menor tiene antecedentes previos.",
+    "d) Únicamente en combinación con internamiento."
+  ],
+  correcta: "b) Un periodo máximo de 5 años.",
+  justificacion: "La libertad vigilada tiene una duración máxima de cinco años, según lo previsto en la Ley."
+},
+{
+  pregunta: "¿Cuál es la finalidad del internamiento terapéutico?",
+  opciones: [
+    "a) Aislamiento y castigo del menor.",
+    "b) Reeducación a través de trabajo físico.",
+    "c) Tratamiento de patologías y adicciones.",
+    "d) Desvinculación de su entorno familiar."
+  ],
+  correcta: "c) Tratamiento de patologías y adicciones.",
+  justificacion: "El internamiento terapéutico persigue tratar trastornos mentales o adictivos que influyen en la conducta delictiva."
+},
+{
+  pregunta: "El principio de celeridad en el procedimiento de menores implica que:",
+  opciones: [
+    "a) El proceso debe resolverse en el plazo de tres meses.",
+    "b) Las medidas deben ejecutarse antes de seis meses.",
+    "c) El proceso debe resolverse sin dilaciones indebidas.",
+    "d) Se reduzca el número de pruebas necesarias para agilizar el juicio."
+  ],
+  correcta: "c) El proceso debe resolverse sin dilaciones indebidas.",
+  justificacion: "El principio de celeridad busca evitar que la medida pierda eficacia educativa por el paso del tiempo."
+},
+{
+  pregunta: "La medida de amonestación se caracteriza por:",
+  opciones: [
+    "a) Ser una medida restrictiva de derechos.",
+    "b) Ser una advertencia formal por parte del juez.",
+    "c) Exigir reparación económica obligatoria.",
+    "d) Implicar privación de libertad parcial."
+  ],
+  correcta: "b) Ser una advertencia formal por parte del juez.",
+  justificacion: "La amonestación pretende concienciar al menor sin recurrir a medidas más restrictivas."
+},
+{
+  pregunta: "El juez de menores podrá cambiar la medida impuesta si:",
+  opciones: [
+    "a) La víctima lo solicita en su declaración.",
+    "b) El equipo técnico lo propone en informe motivado.",
+    "c) El Ministerio Fiscal reabre el caso.",
+    "d) El menor cumple 18 años durante el proceso."
+  ],
+  correcta: "b) El equipo técnico lo propone en informe motivado.",
+  justificacion: "La modificación de la medida puede hacerse a propuesta del equipo técnico si se dan nuevas circunstancias."
+},
+{
+  pregunta: "El internamiento en régimen cerrado se aplica cuando:",
+  opciones: [
+    "a) El menor ha cometido un delito leve sin violencia.",
+    "b) Existe riesgo de fuga o peligro grave para terceros.",
+    "c) Los padres solicitan la medida para corregir al menor.",
+    "d) Se trata de una falta leve continuada."
+  ],
+  correcta: "b) Existe riesgo de fuga o peligro grave para terceros.",
+  justificacion: "Es la medida más severa y se reserva para casos de máxima gravedad."
+},
+{
+  pregunta: "El Registro de Responsabilidad Penal Juvenil tiene como función principal:",
+  opciones: [
+    "a) Almacenar datos sobre denuncias sin resolución.",
+    "b) Servir como historial académico del menor.",
+    "c) Registrar medidas impuestas en procedimientos de menores.",
+    "d) Evaluar el comportamiento de los padres."
+  ],
+  correcta: "c) Registrar medidas impuestas en procedimientos de menores.",
+  justificacion: "Solo recoge medidas firmes aplicadas a los menores por infracciones penales."
+},
+{
+  pregunta: "La medida de prestaciones en beneficio de la comunidad está condicionada a:",
+  opciones: [
+    "a) El consentimiento del menor y su representante legal.",
+    "b) La voluntad exclusiva del juez.",
+    "c) La solicitud de la víctima.",
+    "d) La edad del menor exclusivamente."
+  ],
+  correcta: "a) El consentimiento del menor y su representante legal.",
+  justificacion: "Para imponer esta medida se requiere el consentimiento expreso del menor y su tutor."
+},
+{
+  pregunta: "La duración máxima de la medida de permanencia de fin de semana es:",
+  opciones: [
+    "a) 6 meses.",
+    "b) 1 año.",
+    "c) 18 meses.",
+    "d) 2 años."
+  ],
+  correcta: "b) 1 año.",
+  justificacion: "La medida puede durar hasta un año, según el catálogo de la Ley 5/2000."
+},
+{
+  pregunta: "El principio de proporcionalidad implica que las medidas aplicadas deben:",
+  opciones: [
+    "a) Ser equivalentes a la pena de adulto.",
+    "b) Ser proporcionales al daño causado únicamente.",
+    "c) Ajustarse al hecho cometido y las circunstancias del menor.",
+    "d) Depender de la capacidad económica del menor."
+  ],
+  correcta: "c) Ajustarse al hecho cometido y las circunstancias del menor.",
+  justificacion: "La proporcionalidad exige equilibrio entre delito y contexto del menor."
+},
+{
+  pregunta: "¿Cuál de las siguientes NO es una medida contemplada en la Ley 5/2000?",
+  opciones: [
+    "a) Internamiento semiabierto.",
+    "b) Reparación del daño.",
+    "c) Libertad vigilada.",
+    "d) Retención administrativa."
+  ],
+  correcta: "d) Retención administrativa.",
+  justificacion: "La retención administrativa no figura como medida judicial de menores."
+},
+{
+  pregunta: "La medida de convivencia con otra persona o familia es adecuada cuando:",
+  opciones: [
+    "a) El entorno familiar del menor es perjudicial para su desarrollo.",
+    "b) El menor ha cometido un delito económico sin violencia.",
+    "c) La víctima del delito es un familiar directo del menor.",
+    "d) El menor se niega a asistir al colegio."
+  ],
+  correcta: "a) El entorno familiar del menor es perjudicial para su desarrollo.",
+  justificacion: "Esta medida busca ofrecer un entorno seguro y educativo alternativo."
+},
+{
+  pregunta: "¿En qué supuestos se aplica el procedimiento abreviado en el ámbito de menores?",
+  opciones: [
+    "a) Cuando el menor no tiene antecedentes y el delito es leve.",
+    "b) Cuando el menor reconoce los hechos de forma voluntaria.",
+    "c) Cuando lo solicitan los padres del menor.",
+    "d) Siempre que haya concurrencia de menores con adultos."
+  ],
+  correcta: "b) Cuando el menor reconoce los hechos de forma voluntaria.",
+  justificacion: "El procedimiento abreviado permite agilizar la resolución cuando hay confesión."
+},
+{
+  pregunta: "La duración de una medida privativa de libertad puede prolongarse hasta:",
+  opciones: [
+    "a) El máximo de seis meses.",
+    "b) Cinco años según la gravedad del delito.",
+    "c) Que el menor cumpla 18 años únicamente.",
+    "d) Diez años en casos de reincidencia."
+  ],
+  correcta: "b) Cinco años según la gravedad del delito.",
+  justificacion: "Las medidas privativas tienen un límite máximo de cinco años."
+},
+{
+  pregunta: "La mediación en el sistema de menores se interpreta como una forma de:",
+  opciones: [
+    "a) Evitar el juicio y derivar responsabilidad a terceros.",
+    "b) Restaurar el daño causado y promover la responsabilidad del menor.",
+    "c) Reducir las responsabilidades civiles de los representantes legales.",
+    "d) Encubrir al menor para evitar antecedentes."
+  ],
+  correcta: "b) Restaurar el daño causado y promover la responsabilidad del menor.",
+  justificacion: "Es una herramienta restaurativa que facilita la conciliación entre menor y víctima."
+},
+{
+  pregunta: "El internamiento terapéutico puede durar hasta un máximo de:",
+  opciones: [
+    "a) 18 meses.",
+    "b) 2 años.",
+    "c) 3 años.",
+    "d) 5 años."
+  ],
+  correcta: "d) 5 años.",
+  justificacion: "Como medida privativa de libertad, comparte el límite general de cinco años."
+},
+{
+  pregunta: "La intervención del equipo técnico es obligatoria:",
+  opciones: [
+    "a) Solo en la audiencia previa.",
+    "b) Durante todas las fases del procedimiento de menores.",
+    "c) Únicamente si el menor es reincidente.",
+    "d) Nunca si el delito es leve."
+  ],
+  correcta: "b) Durante todas las fases del procedimiento de menores.",
+  justificacion: "El equipo técnico orienta al juez en todas las fases, desde la instrucción hasta la ejecución."
+},
+{
+  pregunta: "La privación del permiso de conducir puede imponerse como medida si:",
+  opciones: [
+    "a) El menor ha cometido delitos relacionados con la seguridad vial.",
+    "b) El menor no posee todavía licencia de conducir.",
+    "c) El menor lo solicita como medida educativa.",
+    "d) Se trata de delitos económicos sin relación con tráfico."
+  ],
+  correcta: "a) El menor ha cometido delitos relacionados con la seguridad vial.",
+  justificacion: "La medida está vinculada a delitos de seguridad vial independientemente de que posea o no el permiso."
+},
+{
+  pregunta: "El principio de igualdad de menores y adultos en responsabilidad penal significa que:",
+  opciones: [
+    "a) Las penas deben ser las mismas para ambos.",
+    "b) Las responsabilidades son equiparables en función del delito.",
+    "c) El procedimiento debe ser idéntico.",
+    "d) Solo afecta a la responsabilidad civil."
+  ],
+  correcta: "b) Las responsabilidades son equiparables en función del delito.",
+  justificacion: "Significa que el menor responde por el delito, pero el procedimiento y medidas son distintas."
+},
+{
+  pregunta: "La suspensión de la medida aplicada al menor puede depender de:",
+  opciones: [
+    "a) El cumplimiento de condiciones educativas establecidas.",
+    "b) Solicitud escrita de la víctima.",
+    "c) La edad del menor únicamente.",
+    "d) El registro de antecedentes de los padres."
+  ],
+  correcta: "a) El cumplimiento de condiciones educativas establecidas.",
+  justificacion: "La suspensión puede concederse si el menor demuestra avances o compromiso educacional."
+},
+{
+  pregunta: "El internamiento abierto se caracteriza por:",
+  opciones: [
+    "a) El aislamiento total del menor dentro del centro.",
+    "b) La posibilidad de realizar actividades externas bajo control.",
+    "c) La privación absoluta de libertad con medidas disciplinarias.",
+    "d) La obligación de cumplir tareas policiales."
+  ],
+  correcta: "b) La posibilidad de realizar actividades externas bajo control.",
+  justificacion: "Es el régimen menos restrictivo dentro de los internamientos, permitiendo la participación en actividades externas."
+},
+{
+  pregunta: "El procedimiento penal de menores es:",
+  opciones: [
+    "a) Público y con presencia de medios de comunicación.",
+    "b) Confidencial, con acceso restringido a terceros.",
+    "c) Equiparable en todos sus aspectos al proceso penal de adultos.",
+    "d) Sometido a reglas militares si el delito es grave."
+  ],
+  correcta: "b) Confidencial, con acceso restringido a terceros.",
+  justificacion: "La confidencialidad protege la intimidad y el desarrollo del menor."
+},
+{
+  pregunta: "La medida de internamiento cerrado sólo se impone cuando:",
+  opciones: [
+    "a) El menor comete delitos de especial gravedad o peligroso para terceros.",
+    "b) El menor no atiende a sus tareas escolares.",
+    "c) Los padres del menor lo solicitan como castigo.",
+    "d) La Fiscalía quiere asegurar el aislamiento del menor."
+  ],
+  correcta: "a) El menor comete delitos de especial gravedad o peligroso para terceros.",
+  justificacion: "Es una medida reservada para supuestos de alta peligrosidad o delitos especialmente graves."
+},
+{
+  pregunta: "¿Cuál es el máximo de edades hasta las que se puede ejecutar una medida de la Ley 5/2000?",
+  opciones: [
+    "a) 18 años.",
+    "b) 20 años.",
+    "c) 21 años.",
+    "d) 25 años."
+  ],
+  correcta: "c) 21 años.",
+  justificacion: "La ejecución puede continuar incluso después de que el menor cumpla 18, con el límite máximo de 21 años."
+},
+{
+  pregunta: "El informe del equipo técnico debe incluir obligatoriamente:",
+  opciones: [
+    "a) Opiniones personales sin sustento técnico.",
+    "b) Valoración de la personalidad, situación familiar y educativa del menor.",
+    "c) Exclusivamente datos de la víctima.",
+    "d) Una única posible medida para aplicar al menor."
+  ],
+  correcta: "b) Valoración de la personalidad, situación familiar y educativa del menor.",
+  justificacion: "Este informe es clave para adecuar las medidas a las necesidades del menor."
+},
+{
+  pregunta: "La medida de convivencia con otra familia o persona se adopta cuando:",
+  opciones: [
+    "a) El entorno familiar del menor no es adecuado.",
+    "b) La víctima del delito es un familiar del menor.",
+    "c) El menor rechaza internamiento terapéutico.",
+    "d) El menor es mayor de 17 años."
+  ],
+  correcta: "a) El entorno familiar del menor no es adecuado.",
+  justificacion: "Se busca ofrecer un ambiente seguro y educativo alternativo al familiar."
+},
+{
+  pregunta: "El principio de interés superior del menor significa que:",
+  opciones: [
+    "a) Las medidas deben ser lo menos restrictivas posibles para su desarrollo.",
+    "b) La Fiscalía puede imponer las medidas sin intervención judicial.",
+    "c) El interés de la sociedad siempre prevalece sobre el del menor.",
+    "d) El menor será tratado como adulto si comete delito grave."
+  ],
+  correcta: "a) Las medidas deben ser lo menos restrictivas posibles para su desarrollo.",
+  justificacion: "El interés del menor es la referencia principal en todo el proceso."
+},
+{
+  pregunta: "La medida de libertad vigilada puede incluir:",
+  opciones: [
+    "a) Internamiento parcial nocturno.",
+    "b) Supervisión por educadores y acompañamiento en actividades.",
+    "c) Aislamiento por periodos intermitentes.",
+    "d) Retención de pasaporte y documentos personales."
+  ],
+  correcta: "b) Supervisión por educadores y acompañamiento en actividades.",
+  justificacion: "Se acompaña al menor para asegurar un desarrollo adecuado y evitar la reincidencia."
+},
+{
+  pregunta: "La medida de prestación en beneficio de la comunidad requiere:",
+  opciones: [
+    "a) Consentimiento expreso del menor y su representante legal.",
+    "b) No requiere autorización y se impone siempre como sanción leve.",
+    "c) Autorización de la víctima únicamente.",
+    "d) Inclusión obligatoria en el sistema escolar."
+  ],
+  correcta: "a) Consentimiento expreso del menor y su representante legal.",
+  justificacion: "Se trata de una medida restaurativa que debe aceptarse voluntariamente para ser aplicada."
+},
+{
+  pregunta: "La medida de amonestación tiene como objetivo:",
+  opciones: [
+    "a) Imponer una sanción económica al menor.",
+    "b) Advertir solemnemente al menor por el juez sobre las consecuencias de sus actos.",
+    "c) Confinar al menor temporalmente.",
+    "d) Sustituir la responsabilidad civil por penal."
+  ],
+  correcta: "b) Advertir solemnemente al menor por el juez sobre las consecuencias de sus actos.",
+  justificacion: "No implica privación de libertad ni obligaciones, pero refuerza el reproche judicial."
+},
+{
+  pregunta: "¿Cuál de los siguientes es un principio clave del proceso penal de menores?",
+  opciones: [
+    "a) Publicidad total como medida preventiva.",
+    "b) Reeducación y reinserción del menor.",
+    "c) Castigo y aislamiento.",
+    "d) Imposición obligatoria de internamiento."
+  ],
+  correcta: "b) Reeducación y reinserción del menor.",
+  justificacion: "La finalidad esencial es educativa y preventivo-social."
+},
+{
+  pregunta: "El juez de menores puede ordenar medidas cautelares durante la instrucción cuando:",
+  opciones: [
+    "a) El menor no tiene recursos económicos.",
+    "b) Existe riesgo de fuga o reincidencia.",
+    "c) El profesor lo solicita por escrito.",
+    "d) La víctima no desea declarar."
+  ],
+  correcta: "b) Existe riesgo de fuga o reincidencia.",
+  justificacion: "Las medidas cautelares garantizan el proceso y protegen a terceros."
+},
+{
+  pregunta: "El internamiento semiabierto permite al menor:",
+  opciones: [
+    "a) Salir para actividades educativas o laborales."
+    ,
+    "b) Permanecer en confinamiento total.",
+    "c) Cumplir la medida solo los fines de semana.",
+    "d) Evitar el contacto con su familia."
+  ],
+  correcta: "a) Salir para actividades educativas o laborales.",
+  justificacion: "Permite la participación controlada en actividades externas al centro."
+},
+{
+  pregunta: "El Ministerio Fiscal en el proceso de menores actúa como:",
+  opciones: [
+    "a) Defensa exclusiva del menor.",
+    "b) Garantía de legalidad y protección de derechos del menor y la sociedad.",
+    "c) Supervisor de las medidas de los centros penitenciarios.",
+    "d) Criterio para aplicar medidas disciplinarias."
+  ],
+  correcta: "b) Garantía de legalidad y protección de derechos del menor y la sociedad.",
+  justificacion: "El fiscal tiene un papel clave en el equilibrio entre la protección y responsabilidad."
+},
+{
+  pregunta: "Si un menor de 15 años comete un delito violento, se le aplicará:",
+  opciones: [
+    "a) Procedimiento penal de adultos.",
+    "b) Medidas de protección y atención social, no penales.",
+    "c) Expulsión del país si es extranjero.",
+    "d) Pena de prisión con reducción de años."
+  ],
+  correcta: "b) Medidas de protección y atención social, no penales.",
+  justificacion: "Los menores de 14 años no son responsables penalmente."
+},
+{
+  pregunta: "El principio de flexibilidad en las medidas de menores permite:",
+  opciones: [
+    "a) Imponer sanciones sin juicio.",
+    "b) Adaptar la medida a la evolución del menor.",
+    "c) Aplicar medidas colectivas según grupos de edad.",
+    "d) Privar automáticamente de derechos al menor."
+  ],
+  correcta: "b) Adaptar la medida a la evolución del menor.",
+  justificacion: "Busca ajustar la respuesta penal conforme se evalúa la situación del menor."
+},
+{
+  pregunta: "Según la Ley 5/2000, las medidas tienen como prioridad:",
+  opciones: [
+    "a) La venganza pública.",
+    "b) El cumplimiento de la pena prevista en el Código Penal.",
+    "c) La reinserción social desde un enfoque educativo.",
+    "d) La compensación económica estatal."
+  ],
+  correcta: "c) La reinserción social desde un enfoque educativo.",
+  justificacion: "El objetivo principal es reformar y reeducar al menor."
+},
+{
+  pregunta: "La reparación del daño es una medida que tiene naturaleza:",
+  opciones: [
+    "a) Exclusivamente sancionadora.",
+    "b) Restaurativa y educativa.",
+    "c) Privativa de libertad.",
+    "d) De control policial."
+  ],
+  correcta: "b) Restaurativa y educativa.",
+  justificacion: "Busca reconocer la responsabilidad y reparar el daño provocado, con finalidad pedagógica."
+},
+{
+  pregunta: "¿Quién puede solicitar la revisión de una medida impuesta al menor?",
+  opciones: [
+    "a) El juez de menores únicamente.",
+    "b) El menor, su representante legal o el Ministerio Fiscal.",
+    "c) Solo el equipo técnico.",
+    "d) Únicamente la víctima."
+  ],
+  correcta: "b) El menor, su representante legal o el Ministerio Fiscal.",
+  justificacion: "La revisión está prevista para adaptarse a los cambios en la situación del menor."
+},
+{
+  pregunta: "La privación del permiso de conducir puede imponerse como medida cuando:",
+  opciones: [
+    "a) El menor tiene más de 16 años y se ha relacionado el delito con la seguridad vial.",
+    "b) El menor posee moto sin seguro.",
+    "c) El menor participa en una carrera escolar.",
+    "d) El menor comete delitos económicos."
+  ],
+  correcta: "a) El menor tiene más de 16 años y se ha relacionado el delito con la seguridad vial.",
+  justificacion: "La medida está vinculada a delitos del tráfico independientemente de si tiene carné o no."
+},
+{
+  pregunta: "La medida de permanencia de fin de semana consiste en:",
+  opciones: [
+    "a) Encerrar al menor los fines de semana en su domicilio o centro habilitado.",
+    "b) Aplicar un arresto domiciliario durante toda la semana.",
+    "c) Permitir al menor asistir solo a actividades religiosas.",
+    "d) Realizar trabajos comunitarios nocturnos."
+  ],
+  correcta: "a) Encerrar al menor los fines de semana en su domicilio o centro habilitado.",
+  justificacion: "La medida restringe la libertad del menor durante los fines de semana sin internamiento total."
+},
+{
+  pregunta: "En la Ley 5/2000, el equipo técnico está formado por:",
+  opciones: [
+    "a) Psicólogos, educadores y trabajadores sociales.",
+    "b) Médico forense y abogado penalista.",
+    "c) Guardia civil, psicólogo y traductor.",
+    "d) Fiscal, juez y orientador laboral."
+  ],
+  correcta: "a) Psicólogos, educadores y trabajadores sociales.",
+  justificacion: "El equipo técnico evalúa la situación del menor para orientar al juez."
+},
+{
+  pregunta: "El límite máximo de internamiento para menores de 14 años es:",
+  opciones: [
+    "a) Seis meses prorrogables.",
+    "b) No existe internamiento para menores de 14 años.",
+    "c) Dos años según gravedad.",
+    "d) Cinco años sin prórroga."
+  ],
+  correcta: "b) No existe internamiento para menores de 14 años.",
+  justificacion: "Los menores de 14 años no son responsables penalmente."
+},
+{
+  pregunta: "¿Qué medida se considera privativa de libertad?",
+  opciones: [
+    "a) Amonestación.",
+    "b) Libertad vigilada.",
+    "c) Internamiento semiabierto.",
+    "d) Prestación en beneficio de la comunidad."
+  ],
+  correcta: "c) Internamiento semiabierto.",
+  justificacion: "El internamiento, sea cual sea su régimen, implica privación de libertad."
+},
+{
+  pregunta: "La medida de reparación del daño se aplica cuando:",
+  opciones: [
+    "a) Existe un daño material o moral a la víctima.",
+    "b) El menor es reincidente.",
+    "c) El delito es de naturaleza imprudente exclusivamente.",
+    "d) El menor tiene más de 17 años."
+  ],
+  correcta: "a) Existe un daño material o moral a la víctima.",
+  justificacion: "Esta medida tiene como objetivo resarcir a la víctima y concienciar al menor."
+},
+{
+  pregunta: "El internamiento terapéutico se justifica cuando el menor:",
+  opciones: [
+    "a) Presenta incapacidad económica.",
+    "b) Tiene problemas de salud mental o drogodependencia.",
+    "c) Ha cometido infracciones administrativas.",
+    "d) Tiene problemas de aprendizaje escolar."
+  ],
+  correcta: "b) Tiene problemas de salud mental o drogodependencia.",
+  justificacion: "El internamiento terapéutico se destina a menores con trastornos que requieren atención clínica."
+},
+{
+  pregunta: "El principio de intervención mínima significa que:",
+  opciones: [
+    "a) Las medidas más severas deben aplicarse siempre en primer lugar.",
+    "b) Se deben aplicar medidas en última instancia y con carácter excepcional.",
+    "c) El Estado evita intervenir en la responsabilidad penal de menores.",
+    "d) Las medidas deben ser aplicadas sin supervisión judicial."
+  ],
+  correcta: "b) Se deben aplicar medidas en última instancia y con carácter excepcional.",
+  justificacion: "Este principio prioriza soluciones educativas y no judiciales cuando sea posible."
+},
+{
+  pregunta: "¿Qué órgano resuelve los recursos contra las resoluciones dictadas por el juez de menores?",
+  opciones: [
+    "a) Tribunal Supremo.",
+    "b) Audiencia Provincial.",
+    "c) Consejo General del Poder Judicial.",
+    "d) Tribunal Constitucional."
+  ],
+  correcta: "b) Audiencia Provincial.",
+  justificacion: "La Audiencia Provincial es competente para conocer los recursos en este ámbito."
+},
+{
+  pregunta: "La medida de internamiento en régimen cerrado se cumplirá en:",
+  opciones: [
+    "a) Un centro penitenciario ordinario.",
+    "b) Un centro específico para menores con medidas de seguridad.",
+    "c) El domicilio del menor con vigilancia policial.",
+    "d) Una casa tutelada por servicios sociales."
+  ],
+  correcta: "b) Un centro específico para menores con medidas de seguridad.",
+  justificacion: "Los internamientos se realizan en centros adaptados para el cumplimiento de medidas judiciales."
+},
+{
+  pregunta: "La reparación del daño puede consistir en:",
+  opciones: [
+    "a) Pagar una multa al tribunal.",
+    "b) Realizar actividades educativas de refuerzo.",
+    "c) Disculpa formal o reparación económica del perjuicio.",
+    "d) Ser trasladado a otra Comunidad Autónoma."
+  ],
+  correcta: "c) Disculpa formal o reparación económica del perjuicio.",
+  justificacion: "La finalidad es restaurativa para reparar la relación afectada con la víctima."
+},
+{
+  pregunta: "La mayor parte de las medidas del sistema de justicia juvenil tienen carácter:",
+  opciones: [
+    "a) Preventivo y reeducativo.",
+    "b) Exclusivamente punitivo.",
+    "c) Privado y sancionador.",
+    "d) Legalista y estrictamente disciplinario."
+  ],
+  correcta: "a) Preventivo y reeducativo.",
+  justificacion: "Se busca prevenir la reincidencia y promover la reinserción social."
+},
+{
+  pregunta: "¿Cuál de los siguientes es un ejemplo de medida no privativa de libertad?",
+  opciones: [
+    "a) Internamiento cerrado.",
+    "b) Convivencia con otra persona o familia.",
+    "c) Internamiento terapéutico.",
+    "d) Internamiento en régimen semiabierto."
+  ],
+  correcta: "b) Convivencia con otra persona o familia.",
+  justificacion: "No implica internamiento y se usa como alternativa educativa al contexto familiar negativo."
+},
+{
+  pregunta: "Las medidas aplicadas a menores tienen como principal función:",
+  opciones: [
+    "a) El castigo ejemplarizante.",
+    "b) La prevención de delitos futuros y educación del menor.",
+    "c) Satisfacer únicamente a la víctima.",
+    "d) Suspender automáticamente derechos civiles."
+  ],
+  correcta: "b) La prevención de delitos futuros y educación del menor.",
+  justificacion: "Todas las medidas buscan la reinserción y evitar la reincidencia."
+},
+{
+  pregunta: "La medida de internamiento abierto se caracteriza por:",
+  opciones: [
+    "a) No permitir ninguna salida del centro.",
+    "b) Permitir al menor salir para actividades formativas o laborales.",
+    "c) Ser un arresto domiciliario en el hogar del menor.",
+    "d) Utilizar instalaciones militares adaptadas."
+  ],
+  correcta: "b) Permitir al menor salir para actividades formativas o laborales.",
+  justificacion: "Es el modo menos restrictivo dentro de los internamientos, favoreciendo el contacto con el entorno."
+},
+{
+  pregunta: "El artículo 1 de la Ley 5/2000 hace referencia a:",
+  opciones: [
+    "a) La ejecución de sentencias firmes por delitos de adultos.",
+    "b) El régimen jurídico de la responsabilidad penal de menores.",
+    "c) La responsabilidad civil de los padres ante delitos graves.",
+    "d) La inhabilitación de representantes legales del menor."
+  ],
+  correcta: "b) El régimen jurídico de la responsabilidad penal de menores.",
+  justificacion: "Este artículo introduce el contenido y finalidad de la ley destinada a menores infractores."
+},
+{
+  pregunta: "En el procedimiento de menores, la fase de audiencia es:",
+  opciones: [
+    "a) Obligatoria y esencial para la defensa del menor.",
+    "b) Opcional según la decisión del juez.",
+    "c) Sustituible por informe escrito del psicólogo.",
+    "d) Exclusiva para la declaración de los testigos."
+  ],
+  correcta: "a) Obligatoria y esencial para la defensa del menor.",
+  justificacion: "Garantiza el derecho del menor a ser escuchado durante el procedimiento."
+},
+{
+  pregunta: "Los menores entre 14 y 18 años son responsables penalmente:",
+  opciones: [
+    "a) Según la Ley Orgánica del Poder Judicial.",
+    "b) Según la Ley Orgánica 5/2000 reguladora de la responsabilidad penal del menor.",
+    "c) Según el Código Penal ordinario.",
+    "d) Según el Estatuto de Autonomía de su Comunidad Autónoma."
+  ],
+  correcta: "b) Según la Ley Orgánica 5/2000 reguladora de la responsabilidad penal del menor.",
+  justificacion: "Esta ley establece el marco para la responsabilidad penal de los menores de 14 a 18 años."
+},
+{
+  pregunta: "La competencia de los Juzgados de Menores se determina por:",
+  opciones: [
+    "a) La gravedad del delito únicamente.",
+    "b) La edad del menor en el momento del hecho.",
+    "c) El tipo de víctima afectada.",
+    "d) El lugar de residencia del tutor legal."
+  ],
+  correcta: "b) La edad del menor en el momento del hecho.",
+  justificacion: "La jurisdicción se fija atendiendo a la edad en que se cometió el delito."
+},
+{
+  pregunta: "El principio de publicidad restringida en el proceso penal de menores significa que:",
+  opciones: [
+    "a) Las sentencias se publican en medios oficiales sin anonimizar.",
+    "b) El acceso al proceso está limitado para proteger la intimidad del menor.",
+    "c) La prensa puede asistir a las vistas si obtiene permiso.",
+    "d) El expediente puede divulgarse si lo aprueba el fiscal."
+  ],
+  correcta: "b) El acceso al proceso está limitado para proteger la intimidad del menor.",
+  justificacion: "Este principio protege al menor del impacto social negativo de su proceso penal."
+},
+{
+  pregunta: "Una causa de extinción de la responsabilidad penal del menor es:",
+  opciones: [
+    "a) El incumplimiento de la medida.",
+    "b) La prescripción del delito o medida conforme a la ley.",
+    "c) La oposición del representante legal.",
+    "d) La mayoría de edad sin sentenciar."
+  ],
+  correcta: "b) La prescripción del delito o medida conforme a la ley.",
+  justificacion: "La prescripción elimina la posibilidad de ejecutar la medida y extingue la responsabilidad."
+},{
+  pregunta: "¿Qué medida puede aplicarse como sustitución del internamiento en casos de delitos leves?",
+  opciones: [
+    "a) Internamiento terapéutico.",
+    "b) Reparación del daño.",
+    "c) Privación del permiso de conducir.",
+    "d) Prisión preventiva."
+  ],
+  correcta: "b) Reparación del daño.",
+  justificacion: "En delitos leves se priorizan medidas restaurativas como la reparación del perjuicio causado."
+},
+{
+  pregunta: "La medida de internamiento abierto tiene una duración máxima de:",
+  opciones: [
+    "a) 1 año.",
+    "b) 3 años.",
+    "c) 5 años.",
+    "d) 2 años."
+  ],
+  correcta: "c) 5 años.",
+  justificacion: "Las medidas privativas de libertad tienen un límite general de cinco años, incluido el internamiento abierto."
+},
+{
+  pregunta: "La ejecución de las medidas de menores corresponde a:",
+  opciones: [
+    "a) El Ministerio del Interior.",
+    "b) Las Comunidades Autónomas.",
+    "c) El Defensor del Menor.",
+    "d) La Fiscalía General del Estado."
+  ],
+  correcta: "b) Las Comunidades Autónomas.",
+  justificacion: "Son las encargadas de ejecutar las medidas a través de sus servicios educativos y sociales."
+},
+{
+  pregunta: "El procedimiento de mediación en el ámbito penal juvenil busca:",
+  opciones: [
+    "a) Aumentar el número de condenas.",
+    "b) La reconciliación entre el menor y la víctima.",
+    "c) La sustitución del equipo técnico.",
+    "d) La imposición de multas económicas obligatorias."
+  ],
+  correcta: "b) La reconciliación entre el menor y la víctima.",
+  justificacion: "La mediación es un mecanismo restaurativo para responsabilizar al menor y reparar el daño."
+},
+{
+  pregunta: "¿Qué documento registra las resoluciones y medidas firmes impuestas a menores?",
+  opciones: [
+    "a) Registro Central de Penados.",
+    "b) Registro de Responsabilidad Penal Juvenil.",
+    "c) Registro Nacional de Menores Infractores.",
+    "d) Archivo Judicial Provincial."
+  ],
+  correcta: "b) Registro de Responsabilidad Penal Juvenil.",
+  justificacion: "Este registro está dedicado exclusivamente a las medidas impuestas a menores."
+},
+{
+  pregunta: "Para imponer la medida de prestación en beneficio de la comunidad se requiere:",
+  opciones: [
+    "a) La aprobación del Ministerio Fiscal.",
+    "b) La voluntad del menor y su representante legal.",
+    "c) El pago previo de una multa.",
+    "d) Disponer de certificado de estudios."
+  ],
+  correcta: "b) La voluntad del menor y su representante legal.",
+  justificacion: "Es una medida de carácter voluntario que requiere consentimiento."
+},
+{
+  pregunta: "La medida de privación del permiso de conducir procede cuando:",
+  opciones: [
+    "a) El menor participa en carreras escolares sin autorización.",
+    "b) La infracción está relacionada con la seguridad vial.",
+    "c) Los padres desean prohibirle conducir.",
+    "d) El juez lo impone por falta de asistencia escolar."
+  ],
+  correcta: "b) La infracción está relacionada con la seguridad vial.",
+  justificacion: "Se aplica en casos de delitos o infracciones relacionados con el tráfico."
+},
+{
+  pregunta: "El principio de flexibilidad en el sistema de menores permite:",
+  opciones: [
+    "a) Cambiar las medidas según la evolución del menor.",
+    "b) Modificar la ley sin intervención Parlamentaria.",
+    "c) Levantar la medida sin verificar su cumplimiento.",
+    "d) Delegar la responsabilidad judicial a la familia."
+  ],
+  correcta: "a) Cambiar las medidas según la evolución del menor.",
+  justificacion: "El juez puede adaptar las medidas si cambian las circunstancias del menor."
+},
+{
+  pregunta: "La medida de internamiento terapéutico se adapta a menores con:",
+  opciones: [
+    "a) Necesidades de escolarización básica.",
+    "b) Trastornos mentales o drogodependencias.",
+    "c) Problemas de conducta leves.",
+    "d) Habilidades especiales."
+  ],
+  correcta: "b) Trastornos mentales o drogodependencias.",
+  justificacion: "La medida está diseñada para tratar al menor en un entorno clínico especializado."
+},
+{
+  pregunta: "La competencia para conocer sobre delitos cometidos por personas entre 14 y 18 años corresponde a:",
+  opciones: [
+    "a) Juzgados de Paz.",
+    "b) Audiencia Provincial.",
+    "c) Juzgados de Menores.",
+    "d) Tribunal de Garantías Penales."
+  ],
+  correcta: "c) Juzgados de Menores.",
+  justificacion: "Esta jurisdicción específica se ocupa de los delitos cometidos por menores según la ley."
+},
+{
+  pregunta: "La medida de libertad vigilada implica:",
+  opciones: [
+    "a) Supervisión del menor bajo condiciones fijadas por el juez.",
+    "b) Confinamiento total del menor en régimen abierto.",
+    "c) Obligación del menor de cambiar de domicilio.",
+    "d) Coordinación exclusiva con la Fiscalía."
+  ],
+  correcta: "a) Supervisión del menor bajo condiciones fijadas por el juez.",
+  justificacion: "Incluye seguimiento y control de actividades para favorecer su reinserción."
+},
+{
+  pregunta: "El artículo 19 de la Ley 5/2000 trata sobre:",
+  opciones: [
+    "a) El régimen económico de los centros educativos.",
+    "b) Las medidas cautelares aplicables en fase de instrucción.",
+    "c) Los derechos de las víctimas durante el proceso.",
+    "d) La organización de los equipos técnicos."
+  ],
+  correcta: "b) Las medidas cautelares aplicables en fase de instrucción.",
+  justificacion: "Regula la adopción de medidas preventivas para garantizar el proceso."
+},
+{
+  pregunta: "Un menor entre 16 y 18 años que comete un delito de homicidio puede recibir una medida máxima de:",
+  opciones: [
+    "a) 1 año de libertad vigilada.",
+    "b) 2 años de internamiento abierto.",
+    "c) 5 años de internamiento cerrado.",
+    "d) 10 años de prisión."
+  ],
+  correcta: "c) 5 años de internamiento cerrado.",
+  justificacion: "En delitos graves, la medida máxima de internamiento para menores es de cinco años."
+},
+{
+  pregunta: "El plazo para la prescripción de las medidas educativas impuestas a menores depende de:",
+  opciones: [
+    "a) La edad del menor al finalizar el juicio.",
+    "b) El tipo de medida y delito cometido.",
+    "c) El criterio del familiar responsable.",
+    "d) La disponibilidad del centro de internamiento."
+  ],
+  correcta: "b) El tipo de medida y delito cometido.",
+  justificacion: "La prescripción está relacionada con la gravedad del delito y duración de la medida."
+},
+{
+  pregunta: "La medida de convivencia con otra persona o familia busca:",
+  opciones: [
+    "a) Castigar al menor en un entorno desconocido.",
+    "b) Ofrecer un entorno favorable para la reeducación.",
+    "c) Reducir el coste de internamiento.",
+    "d) Aumentar el aislamiento social."
+  ],
+  correcta: "b) Ofrecer un entorno favorable para la reeducación.",
+  justificacion: "Se aplica cuando el entorno familiar es inadecuado para el desarrollo del menor."
+},
+{
+  pregunta: "Según la Ley 5/2000, el menor que no comparece a juicio:",
+  opciones: [
+    "a) Puede ser enjuiciado en ausencia obligatoriamente.",
+    "b) Puede suspender el procedimiento sin consecuencias.",
+    "c) Puede ser conducido mediante orden judicial.",
+    "d) Será absuelto automáticamente."
+  ],
+  correcta: "c) Puede ser conducido mediante orden judicial.",
+  justificacion: "El juez puede disponer la conducción forzosa para garantizar su presencia."
+},
+{
+  pregunta: "La responsabilidad civil derivada del delito cometido por el menor recae:",
+  opciones: [
+    "a) Exclusivamente en el menor.",
+    "b) En los padres, tutores o guardadores legales.",
+    "c) En el Ministerio Fiscal.",
+    "d) En el centro educativo del menor."
+  ],
+  correcta: "b) En los padres, tutores o guardadores legales.",
+  justificacion: "Así se establece para resarcir los daños ocasionados por el menor."
+},
+{
+  pregunta: "El principio de confidencialidad implica que:",
+  opciones: [
+    "a) El juicio siempre será a puerta abierta.",
+    "b) Los datos personales del menor no pueden divulgarse.",
+    "c) Solo se ocultan los datos del Ministerio Fiscal.",
+    "d) Las sentencias se publican íntegramente en boletines oficiales."
+  ],
+  correcta: "b) Los datos personales del menor no pueden divulgarse.",
+  justificacion: "Se protege el derecho a la intimidad y el desarrollo futuro del menor."
+},
+{
+  pregunta: "La medida de internamiento en régimen cerrado se reserva para:",
+  opciones: [
+    "a) Delitos leves con reincidencia.",
+    "b) Delitos graves y situación de peligro.",
+    "c) Incumplimientos escolares reiterados.",
+    "d) Conflictos familiares internos."
+  ],
+  correcta: "b) Delitos graves y situación de peligro.",
+  justificacion: "Es la medida más coercitiva y se reserva para casos de gravedad."
+},
+{
+  pregunta: "¿Cuál es el objetivo final del proceso penal de menores según la Ley?",
+  opciones: [
+    "a) Conectar al menor con la justicia ordinaria.",
+    "b) Promover la reeducación y reinserción social.",
+    "c) Generar un historial público de conductas delictivas.",
+    "d) Desincentivar cualquier contacto con su familia."
+  ],
+  correcta: "b) Promover la reeducación y reinserción social.",
+  justificacion: "El fin principal es garantizar el desarrollo social del menor y prevenir la reincidencia."
+},
+];
+
+let totalPreguntasRenderizadas = 0;
+
+function barajar(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+}
+
+function setProgress(current, total) {
+  const bar = document.getElementById('progressBar');
+  const pct = total > 0 ? Math.round((current / total) * 100) : 0;
+  bar.style.width = pct + '%';
+  bar.title = pct + '%';
+}
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+// Carga el test con preguntas y respuestas aleatorias
+function cargarTest() {
+  const numPreguntas = parseInt(document.getElementById('numPreguntas').value);
+  const testForm = document.getElementById('testForm');
+  const progressBar = document.getElementById('progressBar');
+  const testResult = document.getElementById('testResult');
+
+  testForm.innerHTML = '';
+  testResult.innerHTML = '';
+  progressBar.style.width = '0%';
+
+  if (!preguntasBanco || preguntasBanco.length === 0) {
+    testForm.innerHTML = '<p style="color:red;font-weight:bold;">⚠️ No hay preguntas en el banco.</p>';
+    return;
+  }
+
+  const letras = ['a)', 'b)', 'c)', 'd)', 'e)', 'f)']; // por si hay más de 4 opciones
+  const preguntasSeleccionadas = shuffle([...preguntasBanco]).slice(0, numPreguntas);
+
+  preguntasSeleccionadas.forEach((preguntaObj, index) => {
+    // Mezclamos las opciones (pero vamos a limpiar su prefijo "a) " si lo llevan)
+    const opcionesMezcladas = shuffle([...preguntaObj.opciones]);
+
+    // Convertimos cada opción en un objeto { texto, esCorrecta }
+    const opcionesObj = opcionesMezcladas.map(opcion => {
+      // Limpiar prefijos como "a) ", "b) " si existen
+      const textoLimpio = opcion.replace(/^[A-Za-z]\)\s*/, '').trim();
+      const esCorrecta = opcion === preguntaObj.correcta || textoLimpio === preguntaObj.correcta.replace(/^[A-Za-z]\)\s*/, '').trim();
+      return { texto: textoLimpio, esCorrecta };
+    });
+
+    // Renderizamos las opciones asignando letras según la posición (letras fijas)
+    const opcionesHTML = opcionesObj.map((opt, optIndex) => {
+      const marcaCorrecta = opt.esCorrecta ? 'true' : 'false';
+      const letra = letras[optIndex] || `${optIndex + 1})`; // fallback si hay >6 opciones
+      // No incluimos la letra dentro del texto de la opción; la mostramos separada
+      return `
+        <label class="option">
+          <input type="radio" name="pregunta${index}" value="${opt.texto.replace(/"/g, '&quot;')}" data-correct="${marcaCorrecta}">
+          <span style="font-weight:700; margin-right:10px; color:var(--muted)">${letra}</span>
+          ${opt.texto}
+        </label>
+      `;
+    }).join('');
+
+    const preguntaHTML = `
+      <div class="question">
+        <div class="q-head">
+          <span class="q-num">${index + 1}.</span>
+          <p class="q-text">${preguntaObj.pregunta}</p>
+        </div>
+        <div class="options">
+          ${opcionesHTML}
+        </div>
+        <div class="justification muted" style="display:none;">
+          <span class="correct">✔ ${preguntaObj.correcta.replace(/^[A-Za-z]\)\s*/, '')}</span><br>
+          ${preguntaObj.justificacion}
+        </div>
+      </div>
+    `;
+    testForm.insertAdjacentHTML('beforeend', preguntaHTML);
+  });
+
+  // Añadir botón corregir (evitar duplicados)
+  const botonCorregirExistente = Array.from(testForm.getElementsByTagName('button')).find(b => b.textContent === 'Corregir');
+  if (!botonCorregirExistente) {
+    const botonCorregir = document.createElement('button');
+    botonCorregir.type = 'button';
+    botonCorregir.className = 'btn success';
+    botonCorregir.textContent = 'Corregir';
+    botonCorregir.onclick = () => corregirTest();
+    testForm.appendChild(botonCorregir);
+  }
+}
+
+
+function corregirTest() {
+  const preguntas = document.querySelectorAll('.question');
+  let aciertos = 0;
+
+  preguntas.forEach((pregunta) => {
+    const radios = pregunta.querySelectorAll('input[type="radio"]');
+    const labels = pregunta.querySelectorAll('.option');
+    const justificacion = pregunta.querySelector('.justification');
+    let seleccionCorrecta = false;
+
+    // Limpiar clases anteriores
+    labels.forEach(l => {
+      l.classList.remove('correct-option', 'wrong-option');
+      const checkmark = l.querySelector('.checkmark');
+      if (checkmark) checkmark.remove();
+    });
+
+    radios.forEach(radio => {
+      const label = radio.closest('.option');
+      if (radio.checked && radio.dataset.correct === 'true') {
+        seleccionCorrecta = true;
+      }
+    });
+
+    radios.forEach(radio => {
+      const label = radio.closest('.option');
+
+      if (radio.dataset.correct === 'true') {
+        // Mostrar check verde en la opción correcta
+        label.classList.add('correct-option');
+        label.insertAdjacentHTML('afterbegin', `<span class="checkmark" style="color:#059669;font-weight:700;">✔</span>`);
+      }
+
+      if (radio.checked && radio.dataset.correct !== 'true') {
+        // Mostrar X roja en la opción elegida incorrecta
+        label.classList.add('wrong-option');
+        label.insertAdjacentHTML('afterbegin', `<span class="checkmark" style="color:#dc2626;font-weight:700;">✘</span>`);
+      }
+    });
+
+    // Mostrar la justificación al final
+    if (justificacion) {
+      justificacion.style.display = 'block';
+      justificacion.innerHTML = `
+        ${seleccionCorrecta 
+          ? `<span class="correct">✔ ${pregunta.querySelector('input[data-correct="true"]').value}</span><br>` 
+          : `<span class="incorrect">✘ ${pregunta.querySelector('input[data-correct="true"]').value}</span><br>`
+        }
+        ${pregunta.querySelector('.justification').textContent || ''}
+      `;
+    }
+
+    if (seleccionCorrecta) aciertos++;
+  });
+
+  // Mostrar resultado final
+  const total = preguntas.length;
+  const porcentaje = Math.round((aciertos / total) * 100);
+  const testResult = document.getElementById('testResult');
+  testResult.innerHTML = `
+    <div class="result-card">
+      <p class="score">Has acertado ${aciertos} de ${total} preguntas (${porcentaje}%).</p>
+      <p class="muted">${porcentaje >= 70 ? "✅ ¡Buen trabajo!" : "❌ Puedes mejorar."}</p>
+    </div>
+  `;
+  document.getElementById('progressBar').style.width = '100%';
+}
+
+
+function reiniciarTest() {
+  document.getElementById('testForm').innerHTML = '';
+  document.getElementById('testResult').innerHTML = '';
+  setProgress(0, 0);
+}
+  // ==========================
+// 🔹 TEMPORIZADOR CONFIGURABLE
+// ==========================
+
+// Variables del temporizador
+let tiempoTotal = 0;
+let tiempoRestante = 0;
+let temporizadorInterval;
+
+// Crear selector de tiempo en el panel de controles
+const selectTiempo = document.createElement('select');
+selectTiempo.id = 'tiempoSeleccionado';
+selectTiempo.innerHTML = `
+  <option value="0">Sin límite</option>
+  <option value="5">5 minutos</option>
+  <option value="10" selected>10 minutos</option>
+  <option value="15">15 minutos</option>
+  <option value="20">20 minutos</option>
+  <option value="30">30 minutos</option>
+  <option value="40">40 minutos</option>
+  <option value="50">50 minutos</option>
+  <option value="60">60 minutos</option>
+`;
+const labelTiempo = document.createElement('label');
+labelTiempo.htmlFor = 'tiempoSeleccionado';
+labelTiempo.textContent = 'Tiempo límite:';
+const controlsDiv = document.querySelector('.controls');
+controlsDiv.insertBefore(labelTiempo, controlsDiv.children[2]);
+controlsDiv.insertBefore(selectTiempo, controlsDiv.children[3]);
+
+// Crear elemento visual del temporizador
+const temporizadorDiv = document.createElement('div');
+temporizadorDiv.id = 'temporizador';
+temporizadorDiv.style.textAlign = 'center';
+temporizadorDiv.style.fontSize = '18px';
+temporizadorDiv.style.fontWeight = '700';
+temporizadorDiv.style.color = '#2563eb';
+temporizadorDiv.style.marginTop = '12px';
+controlsDiv.appendChild(temporizadorDiv);
+
+// Mostrar tiempo en formato mm:ss
+function mostrarTiempo() {
+  let min = Math.floor(tiempoRestante / 60);
+  let seg = tiempoRestante % 60;
+  temporizadorDiv.textContent = `⏳ Tiempo restante: ${min}:${seg.toString().padStart(2, '0')}`;
+}
+
+// Iniciar temporizador
+function iniciarTemporizador() {
+  const minutosSeleccionados = parseInt(document.getElementById('tiempoSeleccionado').value);
+  if (minutosSeleccionados === 0) {
+    temporizadorDiv.textContent = '⏳ Sin límite de tiempo';
+    return;
+  }
+
+  tiempoTotal = minutosSeleccionados * 60;
+  tiempoRestante = tiempoTotal;
+  mostrarTiempo();
+
+  temporizadorInterval = setInterval(() => {
+    tiempoRestante--;
+    mostrarTiempo();
+    if (tiempoRestante <= 0) {
+      clearInterval(temporizadorInterval);
+      temporizadorDiv.textContent = '⏰ ¡Tiempo agotado!';
+      finalizarTestPorTiempo();
+    }
+  }, 1000);
+}
+
+// Detener temporizador
+function detenerTemporizador() {
+  clearInterval(temporizadorInterval);
+}
+
+// Modificar función cargarTest para que inicie el temporizador
+const originalCargarTest = cargarTest;
+cargarTest = function() {
+  originalCargarTest();
+  detenerTemporizador(); // Por si se reinicia
+  iniciarTemporizador();
+};
+
+// Al finalizar el test manualmente (botón Enviar)
+const originalEvaluarTest = evaluarTest;
+evaluarTest = function() {
+  detenerTemporizador(); // Detiene el contador al pulsar Enviar
+  originalEvaluarTest();
+};
+
+// Cuando el tiempo se agota automáticamente
+function finalizarTestPorTiempo() {
+  // Evita ejecuciones dobles
+  if (window.__finalizadoPorTiempo__) return;
+  window.__finalizadoPorTiempo__ = true;
+
+  detenerTemporizador();
+  if (temporizadorDiv) temporizadorDiv.textContent = '⏰ ¡Tiempo agotado! Pulsa "Enviar" para corregir.';
+
+  // 🔒 Bloquear todas las respuestas
+  document.querySelectorAll('input[type="radio"]').forEach(r => {
+    r.disabled = true;
+    const opt = r.closest('.option');
+    if (opt) {
+      opt.style.opacity = '0.6';
+      opt.style.pointerEvents = 'none';
+    }
+  });
+
+  // ✅ Dejar el botón "Enviar" activo y hacerlo destacar en verde
+  const btnEnviar = document.querySelector('button.btn.success, button[type="submit"]');
+  if (btnEnviar) {
+    btnEnviar.disabled = false;
+    btnEnviar.style.opacity = '1';
+    btnEnviar.style.cursor = 'pointer';
+
+    // 💚 Efecto parpadeo verde suave
+    btnEnviar.style.animation = 'blinkGreen 1.2s infinite';
+    btnEnviar.style.transition = 'background-color 0.3s ease';
+    btnEnviar.style.backgroundColor = '#22c55e'; // verde suave (Tailwind: green-500)
+    btnEnviar.style.color = 'white';
+
+    // Inyectar animación CSS si no existe
+    if (!document.getElementById('blinkGreen-style')) {
+      const style = document.createElement('style');
+      style.id = 'blinkGreen-style';
+      style.textContent = `
+        @keyframes blinkGreen {
+          0%, 100% { background-color: #22c55e; }
+          50% { background-color: #86efac; } /* verde claro (green-300) */
+        }
+      `;
+      document.head.appendChild(style);
+    }
+  }
+
+  // 🔄 Mantener botón "Reiniciar" activo
+  const btnReiniciar = document.querySelector('button.btn.secondary');
+  if (btnReiniciar) {
+    btnReiniciar.disabled = false;
+  }
+}
+</script>
+</body>
+</html>
