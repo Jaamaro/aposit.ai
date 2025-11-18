@@ -1,0 +1,3780 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test de Violencia de Género</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --card: #ffffff;
+      --text: #111827;
+      --muted: #6b7280;
+      --primary: #2563eb;
+      --primary-dark: #1e40af;
+      --success: #059669;
+      --danger: #dc2626;
+      --ring: rgba(37, 99, 235, 0.25);
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: 'Roboto', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      padding: 24px;
+    }
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+    header.hero {
+      text-align: center;
+      margin-bottom: 16px;
+    }
+    .title {
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--primary-dark);
+      margin: 0 0 8px;
+    }
+    .subtitle {
+      color: var(--muted);
+      margin: 0;
+    }
+    .controls {
+      background: var(--card);
+      border-radius: 14px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.06);
+      padding: 16px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      justify-content: center;
+      position: sticky;
+      top: 12px;
+      z-index: 5;
+    }
+    .controls label { font-weight: 500; }
+    select {
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid #e5e7eb;
+      background: #fff;
+      outline: none;
+      transition: box-shadow .2s, border-color .2s;
+    }
+    select:focus { border-color: var(--primary); box-shadow: 0 0 0 4px var(--ring); }
+
+    .btn {
+      cursor: pointer;
+      border: none;
+      border-radius: 10px;
+      padding: 12px 18px;
+      font-weight: 700;
+      transition: transform .15s, background .2s, box-shadow .2s;
+      color: #fff;
+      background: var(--primary);
+      box-shadow: 0 6px 14px rgba(37,99,235,.2);
+    }
+    .btn:hover { transform: translateY(-1px); background: var(--primary-dark); }
+    .btn.secondary { background: #6b7280; }
+    .btn.secondary:hover { background: #374151; }
+    .btn.success { background: var(--success); }
+    .btn.success:hover { background: #047857; }
+    .btn.danger { background: var(--danger); }
+    .btn.danger:hover { background: #b91c1c; }
+
+    .progress {
+      width: 100%;
+      height: 10px;
+      background: #e5e7eb;
+      border-radius: 999px;
+      overflow: hidden;
+      margin-top: 8px;
+    }
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--primary), #60a5fa);
+      transition: width .3s ease;
+    }
+
+    .question {
+      margin: 14px 0;
+      padding: 18px;
+      background: var(--card);
+      border-radius: 14px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.06);
+    }
+    .q-head {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+    }
+    .q-num {
+      font-weight: 800;
+      color: var(--primary-dark);
+    }
+    .q-text { margin: 0; }
+
+    .options { margin-top: 10px; display: grid; gap: 8px; }
+    .option {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid #e5e7eb;
+      background: #fff;
+      transition: background .15s, border-color .15s, box-shadow .15s;
+      cursor: pointer;
+    }
+    .option input { transform: scale(1.2); }
+    .option:hover { background: #f9fafb; border-color: #d1d5db; }
+    .option.is-selected { box-shadow: 0 0 0 4px var(--ring); border-color: var(--primary); }
+
+    .justification {
+      margin-top: 10px; color: var(--muted);
+    }
+    .correct { color: var(--success); font-weight: 700; }
+    .incorrect { color: var(--danger); font-weight: 700; }
+
+    .option.correct-option {
+      border-color: rgba(5,150,105,.4);
+      background: #ecfdf5;
+    }
+    .option.wrong-option {
+      border-color: rgba(220,38,38,.4);
+      background: #fef2f2;
+    }
+
+    .result-card {
+      margin: 18px 0;
+      padding: 16px;
+      background: var(--card);
+      border-radius: 14px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.06);
+      text-align: center;
+    }
+    .score {
+      font-size: 22px;
+      font-weight: 800;
+      margin: 8px 0;
+    }
+    .muted { color: var(--muted); }
+    footer { text-align: center; margin-top: 24px; color: var(--muted); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="hero">
+      <h1 class="title">Test de Violencia de Género</h1>
+      <p class="subtitle">Selecciona cuántas preguntas quieres y pulsa <strong>Comenzar</strong>.</p>
+    </header>
+
+    <div class="controls">
+      <label for="numPreguntas">Número de preguntas:</label>
+      <select id="numPreguntas">
+        <option value="10">10</option>
+        <option value="20">20</option>
+        <option value="30">30</option>
+        <option value="40">40</option>
+        <option value="50" selected>50</option>
+      </select>
+      <button class="btn" type="button" onclick="cargarTest()">Comenzar</button>
+      <button class="btn secondary" type="button" onclick="reiniciarTest()">Reiniciar</button>
+      <div class="progress" style="flex-basis: 100%;">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+    </div>
+
+    <form id="testForm"></form>
+
+    <div id="testResult"></div>
+    <footer>© Test de práctica — Violencia de Género</footer>
+  </div>
+
+<script>
+const preguntasBanco = [
+{
+  pregunta: "Según la Ley Orgánica 1/2004, la violencia de género se define como:",
+  opciones: [
+    "a) La violencia ejercida por hombres y mujeres en el ámbito familiar.",
+    "b) La violencia física o psicológica entre personas del mismo sexo.",
+    "c) La violencia ejercida contra las mujeres por parte de quienes sean o hayan sido sus cónyuges o estén ligados por relaciones similares de afectividad.",
+    "d) Toda conducta violenta ejercida exclusivamente en espacios públicos."
+  ],
+  correcta: "c) La violencia ejercida contra las mujeres por parte de quienes sean o hayan sido sus cónyuges o estén ligados por relaciones similares de afectividad.",
+  justificacion: "La LO 1/2004 define la violencia de género como una violencia específica hacia las mujeres en el ámbito de la pareja o expareja."
+},
+{
+  pregunta: "La Ley Orgánica 1/2004 tiene como objeto:",
+  opciones: [
+    "a) Regular conductas de violencia en el ámbito laboral exclusivamente.",
+    "b) Establecer medidas para la prevención, sanción y erradicación de la violencia de género.",
+    "c) Garantizar la igualdad entre hombres y mujeres solo en el ámbito electoral.",
+    "d) Crear un sistema de atención exclusivo para víctimas menores de edad."
+  ],
+  correcta: "b) Establecer medidas para la prevención, sanción y erradicación de la violencia de género.",
+  justificacion: "La ley tiene un enfoque integral que abarca prevención, protección y sanción."
+},
+{
+  pregunta: "¿En qué artículo de la Constitución se fundamenta la prohibición de discriminar por razón de sexo?",
+  opciones: [
+    "a) Artículo 1.",
+    "b) Artículo 9.2.",
+    "c) Artículo 14.",
+    "d) Artículo 24."
+  ],
+  correcta: "c) Artículo 14.",
+  justificacion: "El artículo 14 CE prohíbe expresamente la discriminación por razón de sexo."
+},
+{
+  pregunta: "El ámbito de aplicación de la Ley Orgánica 1/2004 abarca:",
+  opciones: [
+    "a) Únicamente la violencia en el ámbito de pareja o expareja.",
+    "b) Toda violencia que se produzca en el entorno laboral.",
+    "c) Violencia intrafamiliar de cualquier tipo.",
+    "d) Violencia escolar con perspectiva de género."
+  ],
+  correcta: "a) Únicamente la violencia en el ámbito de pareja o expareja.",
+  justificacion: "La ley se aplica específicamente a la violencia de género dentro de la pareja."
+},
+{
+  pregunta: "La violencia psicológica según la LO 1/2004 se entiende como:",
+  opciones: [
+    "a) Cualquier insulto leve sin repercusión emocional.",
+    "b) La violencia permanente realizada mediante amenazas, humillación o coacción.",
+    "c) La violencia ejercida solo a través de medios telemáticos.",
+    "d) El acoso laboral ejercido por superiores."
+  ],
+  correcta: "b) La violencia permanente realizada mediante amenazas, humillación o coacción.",
+  justificacion: "Incluye daño emocional sostenido y vulneración de la libertad personal."
+},
+{
+  pregunta: "¿Qué órgano garantiza la cooperación entre las Administraciones Públicas en materia de violencia de género?",
+  opciones: [
+    "a) El Consejo General del Poder Judicial.",
+    "b) El Observatorio Estatal de Violencia sobre la Mujer.",
+    "c) El Tribunal Constitucional.",
+    "d) El Centro Nacional de Inteligencia."
+  ],
+  correcta: "b) El Observatorio Estatal de Violencia sobre la Mujer.",
+  justificacion: "Este órgano impulsa acciones coordinadas y el seguimiento de la aplicación de la ley."
+},
+{
+  pregunta: "El artículo 1.3 de la LO 1/2004 dispone que:",
+  opciones: [
+    "a) Se aplicará exclusivamente a casos de violencia sexual.",
+    "b) Reconoce derechos laborales para las víctimas.",
+    "c) Reconoce la violencia de género como una manifestación de la discriminación por razón de sexo.",
+    "d) Establece normas de conducta familiar en casos de custodia."
+  ],
+  correcta: "c) Reconoce la violencia de género como una manifestación de la discriminación por razón de sexo.",
+  justificacion: "Este artículo conceptualiza el fundamento de la violencia de género según la ley."
+},
+{
+  pregunta: "La Ley 1/2004 contempla como objetivo principal:",
+  opciones: [
+    "a) Sancionar únicamente a los agresores.",
+    "b) Proteger los derechos fundamentales de las víctimas de violencia de género.",
+    "c) Regular matrimonios forzados.",
+    "d) Promover la igualdad económica exclusivamente."
+  ],
+  correcta: "b) Proteger los derechos fundamentales de las víctimas de violencia de género.",
+  justificacion: "Abarca protección, prevención y sensibilización social."
+},
+{
+  pregunta: "Según el artículo 15 de la LO 1/2004, las Administraciones Públicas:",
+  opciones: [
+    "a) Deben colaborar exclusivamente en la creación de juzgados específicos.",
+    "b) Deben desarrollar campañas de sensibilización y prevención.",
+    "c) No tienen responsabilidades en la materia.",
+    "d) Solo actúan en el ámbito laboral."
+  ],
+  correcta: "b) Deben desarrollar campañas de sensibilización y prevención.",
+  justificacion: "Una de sus obligaciones es promover actividades de concienciación."
+},
+{
+  pregunta: "El artículo 20 de la LO 1/2004 establece medidas en materia de:",
+  opciones: [
+    "a) Derechos políticos.",
+    "b) Derechos económicos.",
+    "c) Derechos laborales y seguridad social.",
+    "d) Derechos penales."
+  ],
+  correcta: "c) Derechos laborales y seguridad social.",
+  justificacion: "Regula el ámbito de protección laboral para las víctimas."
+},
+{
+  pregunta: "La Ley 1/2004 reconoce como derecho procesal específico de las víctimas el derecho a:",
+  opciones: [
+    "a) Ser oídas únicamente en juicio oral.",
+    "b) La asistencia jurídica gratuita inmediata.",
+    "c) La apelación automática de todas las resoluciones judiciales.",
+    "d) La comparecencia directa ante el Tribunal Supremo."
+  ],
+  correcta: "b) La asistencia jurídica gratuita inmediata.",
+  justificacion: "El artículo 20 prevé este derecho para garantizar su defensa desde el inicio."
+},
+{
+  pregunta: "Las medidas de protección social incluyen:",
+  opciones: [
+    "a) Exclusivamente la vigilancia policial permanente.",
+    "b) Ayudas económicas, apoyo psicológico y asistencia social.",
+    "c) La intervención militar en casos de riesgo extremo.",
+    "d) La reparación pública del honor de la agresora."
+  ],
+  correcta: "b) Ayudas económicas, apoyo psicológico y asistencia social.",
+  justificacion: "La protección social debe ser integral para atender a la víctima."
+},
+{
+  pregunta: "La LO 1/2004 establece medidas educativas para:",
+  opciones: [
+    "a) Modificar el currículo escolar e introducir contenidos de igualdad.",
+    "b) Promover asignaturas opcionales sobre igualdad.",
+    "c) Incluir a los agresores en programas universitarios.",
+    "d) Exigir la titulación superior a las víctimas."
+  ],
+  correcta: "a) Modificar el currículo escolar e introducir contenidos de igualdad.",
+  justificacion: "La ley establece educación para la igualdad desde las etapas iniciales."
+},
+{
+  pregunta: "¿En qué artículo se establece la tutela institucional contra la violencia de género?",
+  opciones: [
+    "a) Artículo 16.",
+    "b) Artículo 19.",
+    "c) Artículo 25.",
+    "d) Artículo 8."
+  ],
+  correcta: "a) Artículo 16.",
+  justificacion: "El artículo 16 regula la acción institucional contra la violencia de género."
+},
+{
+  pregunta: "La LO 1/2004 incorpora una especialización en materia judicial mediante:",
+  opciones: [
+    "a) Juzgados de Paz específicos.",
+    "b) Juzgados de Violencia sobre la Mujer.",
+    "c) Tribunales Constitucionales regionales.",
+    "d) Audiencias Provinciales autónomas."
+  ],
+  correcta: "b) Juzgados de Violencia sobre la Mujer.",
+  justificacion: "Introducidos para garantizar una especialización judicial en la materia."
+},
+{
+  pregunta: "El artículo 32 de la LO 1/2004 trata sobre:",
+  opciones: [
+    "a) Los derechos de los agresores.",
+    "b) La intervención policial en casos de violencia doméstica.",
+    "c) La formación especializada del personal sanitario para atender casos de violencia de género.",
+    "d) El acceso a vivienda pública de forma preferente."
+  ],
+  correcta: "c) La formación especializada del personal sanitario para atender casos de violencia de género.",
+  justificacion: "Se incluye la atención sanitaria como parte de la respuesta integral."
+},
+{
+  pregunta: "Uno de los principios rectores de la LO 1/2004 es:",
+  opciones: [
+    "a) La neutralidad del Estado en cuestiones de género.",
+    "b) La prevención, sanción y erradicación de la violencia de género.",
+    "c) La promoción de medidas exclusivamente penales.",
+    "d) La despenalización del delito de violencia familiar."
+  ],
+  correcta: "b) La prevención, sanción y erradicación de la violencia de género.",
+  justificacion: "Este es el fin esencial de la ley."
+},
+{
+  pregunta: "El artículo 25 de la Ley 1/2004 obliga a los medios de comunicación a:",
+  opciones: [
+    "a) Mantener la imparcialidad política.",
+    "b) Fomentar el respeto a la dignidad de las víctimas y evitar estereotipos.",
+    "c) Colaborar en campañas políticas.",
+    "d) Ced er espacios privados para anuncios oficiales."
+  ],
+  correcta: "b) Fomentar el respeto a la dignidad de las víctimas y evitar estereotipos.",
+  justificacion: "Los medios son llamados a ser agentes activos en la lucha contra la violencia de género."
+},
+{
+  pregunta: "La ley regula medidas en el ámbito penal a través de:",
+  opciones: [
+    "a) La imposición de multas administrativas exclusivamente.",
+    "b) La creación de tipos penales específicos y agravantes.",
+    "c) La eliminación de penas privativas de libertad.",
+    "d) La reforma del Código Civil."
+  ],
+  correcta: "b) La creación de tipos penales específicos y agravantes.",
+  justificacion: "La ley incluye modificaciones en el Código Penal para sancionar la violencia de género."
+},
+{
+  pregunta: "La LO 1/2004 dedica el Capítulo II del Título II a:",
+  opciones: [
+    "a) Medidas civiles y penales.",
+    "b) Derechos de las víctimas de violencia de género.",
+    "c) Procedimientos disciplinarios laborales.",
+    "d) Salvaguarda del patrimonio familiar."
+  ],
+  correcta: "b) Derechos de las víctimas de violencia de género.",
+  justificacion: "Este capítulo recoge medidas para garantizar la protección de las víctimas."
+},
+{
+  pregunta: "La protección integral contra la violencia de género incluye medidas de:",
+  opciones: [
+    "a) Prevención, protección y reparación.",
+    "b) Exclusivamente asistencia médica.",
+    "c) Control de la libertad de expresión.",
+    "d) Revisión de la normativa electoral."
+  ],
+  correcta: "a) Prevención, protección y reparación.",
+  justificacion: "La ley aborda la violencia desde un enfoque integral."
+},
+{
+  pregunta: "Según la LO 1/2004, una víctima de violencia de género tiene derecho a:",
+  opciones: [
+    "a) Elegir al juez que llevará su caso.",
+    "b) Recibir asistencia jurídica gratuita desde el inicio del proceso.",
+    "c) Declarar y no someterse a evaluación médica.",
+    "d) Decidir si el proceso penal continúa o no."
+  ],
+  correcta: "b) Recibir asistencia jurídica gratuita desde el inicio del proceso.",
+  justificacion: "La LO 1/2004 garantiza la asistencia jurídica de manera inmediata a las víctimas."
+},
+{
+  pregunta: "El artículo 19 de la LO 1/2004 regula:",
+  opciones: [
+    "a) La tutela institucional de las víctimas.",
+    "b) El régimen de formación de jueces y fiscales.",
+    "c) La suspensión del régimen de visitas en caso de violencia.",
+    "d) Los derechos procesales de las víctimas."
+  ],
+  correcta: "d) Los derechos procesales de las víctimas.",
+  justificacion: "El artículo 19 recoge los derechos de las víctimas en el marco del proceso penal."
+},
+{
+  pregunta: "La violencia física, según la Ley 1/2004, se refiere a:",
+  opciones: [
+    "a) Insultos y amenazas verbales.",
+    "b) Daños o agresiones físicas directas.",
+    "c) Privación de recursos económicos.",
+    "d) Control psicológico exclusivamente."
+  ],
+  correcta: "b) Daños o agresiones físicas directas.",
+  justificacion: "La violencia física consiste en daños o lesiones corporales infligidas a la mujer."
+},
+{
+  pregunta: "¿Qué instrumento clave para la protección judicial de la víctima se menciona en el artículo 64 de la LO 1/2004?",
+  opciones: [
+    "a) La orden de alejamiento.",
+    "b) El indulto provisional.",
+    "c) La prohibición de testificación.",
+    "d) El habeas corpus automático."
+  ],
+  correcta: "a) La orden de alejamiento.",
+  justificacion: "La orden de protección permite medidas de restricción para proteger a la víctima."
+},
+{
+  pregunta: "Según la LO 1/2004, el Observatorio Estatal de Violencia sobre la Mujer depende de:",
+  opciones: [
+    "a) El Ministerio de Igualdad.",
+    "b) El Ministerio de Justicia.",
+    "c) El Instituto de la Mujer.",
+    "d) El Consejo General del Poder Judicial."
+  ],
+  correcta: "a) El Ministerio de Igualdad.",
+  justificacion: "El Observatorio Estatal está adscrito a este Ministerio para el seguimiento de la ley."
+},
+{
+  pregunta: "El artículo 18 de la LO 1/2004 prevé medidas en materia de:",
+  opciones: [
+    "a) Educación en valores.",
+    "b) Empleo de las víctimas.",
+    "c) Asistencia jurídica gratuita.",
+    "d) Protección policial directa."
+  ],
+  correcta: "b) Empleo de las víctimas.",
+  justificacion: "El artículo 18 establece medidas para favorecer el acceso al empleo."
+},
+{
+  pregunta: "En caso de condena por violencia de género, el agresor no podrá:",
+  opciones: [
+    "a) Acudir a procesos de mediación civil.",
+    "b) Tener acceso a permisos penitenciarios.",
+    "c) Estar en contacto con la víctima por cualquier medio.",
+    "d) Apelar la sentencia."
+  ],
+  correcta: "c) Estar en contacto con la víctima por cualquier medio.",
+  justificacion: "Se imponen restricciones de comunicación como parte de la protección."
+},
+{
+  pregunta: "Según el artículo 27 de la LO 1/2004, las Administraciones deben promover:",
+  opciones: [
+    "a) Reformas del sistema electoral.",
+    "b) Estudios y estadísticas sobre violencia de género.",
+    "c) La reducción de subvenciones al sector educativo.",
+    "d) La presencia mínima de mujeres en medios políticos."
+  ],
+  correcta: "b) Estudios y estadísticas sobre violencia de género.",
+  justificacion: "El artículo 27 recoge la obligación de obtener datos para mejorar las políticas públicas."
+},
+{
+  pregunta: "La LO 1/2004 se estructura en:",
+  opciones: [
+    "a) Cuatro capítulos y un anexo.",
+    "b) Título Preliminar y cinco títulos.",
+    "c) Una exposición de motivos únicamente.",
+    "d) Dos disposiciones sin artículos."
+  ],
+  correcta: "b) Título Preliminar y cinco títulos.",
+  justificacion: "La ley se organiza así para abordar todas las medidas integrales."
+},
+{
+  pregunta: "La violencia económica, en el contexto de la Ley 1/2004, consiste en:",
+  opciones: [
+    "a) Privación intencionada y control abusivo de recursos económicos.",
+    "b) Abuso de información contable empresarial.",
+    "c) Reducción de salario por parte del empleador.",
+    "d) Imposición de multas injustificadas."
+  ],
+  correcta: "a) Privación intencionada y control abusivo de recursos económicos.",
+  justificacion: "Impide la autonomía financiera de la víctima."
+},
+{
+  pregunta: "El artículo 28 de la LO 1/2004 se refiere a:",
+  opciones: [
+    "a) Formación para el acceso de las víctimas al mercado laboral.",
+    "b) Atención sanitaria de urgencia.",
+    "c) Prohibición de colocar cámaras en el hogar.",
+    "d) Planes de igualdad en el ámbito universitario."
+  ],
+  correcta: "a) Formación para el acceso de las víctimas al mercado laboral.",
+  justificacion: "Este artículo promueve la integración laboral de las víctimas."
+},
+{
+  pregunta: "La ley incluye medidas específicas para mujeres víctimas de violencia de género que sean:",
+  opciones: [
+    "a) Funcionarias públicas.",
+    "b) Menores de edad.",
+    "c) Inmigrantes en situación irregular.",
+    "d) Víctimas de acoso empresarial."
+  ],
+  correcta: "c) Inmigrantes en situación irregular.",
+  justificacion: "Se reconoce la especial vulnerabilidad y protección de las inmigrantes."
+},
+{
+  pregunta: "La LO 1/2004 establece que el Estado debe cooperar con:",
+  opciones: [
+    "a) Toda asociación política feminista.",
+    "b) Organizaciones internacionales como la ONU.",
+    "c) Los partidos políticos.",
+    "d) Empresas privadas con fines sociales."
+  ],
+  correcta: "b) Organizaciones internacionales como la ONU.",
+  justificacion: "La ley subraya la cooperación con organismos internacionales en materia de igualdad."
+},
+{
+  pregunta: "En el ámbito sanitario, la LO 1/2004 promueve:",
+  opciones: [
+    "a) La privatización de seguros médicos.",
+    "b) La formación de profesionales sanitarios para detectar casos de violencia de género.",
+    "c) La apertura de hospitales específicos para víctimas.",
+    "d) La exclusión de las víctimas del sistema público."
+  ],
+  correcta: "b) La formación de profesionales sanitarios para detectar casos de violencia de género.",
+  justificacion: "El artículo 32 establece la formación específica en el ámbito sanitario."
+},
+{
+  pregunta: "El artículo 65 de la LO 1/2004 regula:",
+  opciones: [
+    "a) La custodia compartida obligatoria.",
+    "b) La asistencia jurídica gratuita.",
+    "c) Las medidas penales específicas en caso de sentencia condenatoria.",
+    "d) La suspensión de la patria potestad."
+  ],
+  correcta: "c) Las medidas penales específicas en caso de sentencia condenatoria.",
+  justificacion: "Incluye agravantes y medidas específicas según el Código Penal."
+},
+{
+  pregunta: "La ley contempla la incorporación de la violencia de género como materia de estudio en:",
+  opciones: [
+    "a) Educación Primaria y Secundaria.",
+    "b) Solo en Facultades de Derecho.",
+    "c) Exclusivamente en cursos de seguridad.",
+    "d) Educación superior únicamente."
+  ],
+  correcta: "a) Educación Primaria y Secundaria.",
+  justificacion: "La ley promueve la educación en igualdad desde los primeros niveles educativos."
+},
+{
+  pregunta: "El artículo 64 de la LO 1/2004 habilita al juez para:",
+  opciones: [
+    "a) Aplicar de oficio medidas penales sin juicio.",
+    "b) Dictar órdenes de alejamiento inmediatas como protección.",
+    "c) Permitir la mediación entre víctima y agresor.",
+    "d) Suspender el proceso por mutuo acuerdo."
+  ],
+  correcta: "b) Dictar órdenes de alejamiento inmediatas como protección.",
+  justificacion: "El artículo 64 regula medidas judiciales cautelares como la orden de protección."
+},
+{
+  pregunta: "Las campañas de sensibilización se consideran un instrumento de:",
+  opciones: [
+    "a) Prevención primaria.",
+    "b) Educación exclusiva para adultos.",
+    "c) Represión penal.",
+    "d) Publicidad institucional obligatoria."
+  ],
+  correcta: "a) Prevención primaria.",
+  justificacion: "Estas campañas buscan evitar la violencia mediante cambios en las actitudes sociales."
+},
+{
+  pregunta: "La LO 1/2004 pretende garantizar a las víctimas de violencia de género:",
+  opciones: [
+    "a) El acceso preferente a universidades públicas.",
+    "b) La igualdad real y efectiva en todos los ámbitos sociales.",
+    "c) Una compensación económica mínima obligatoria.",
+    "d) Una atención psicológica solo en casos aislados."
+  ],
+  correcta: "b) La igualdad real y efectiva en todos los ámbitos sociales.",
+  justificacion: "La ley actúa sobre factores sociales, educativos, económicos y penales para lograr ese objetivo."
+},
+{
+  pregunta: "Las medidas de sensibilización en medios de comunicación buscan:",
+  opciones: [
+    "a) Aumentar el rating televisivo.",
+    "b) Evitar estereotipos que fomentan la violencia de género.",
+    "c) Censurar contenido político.",
+    "d) Incluir entrevistas obligatorias a agresores."
+  ],
+  correcta: "b) Evitar estereotipos que fomentan la violencia de género.",
+  justificacion: "Los medios juegan un papel educativo al promover la igualdad y condenar la violencia."
+},
+{
+  pregunta: "La Ley Orgánica 1/2004 establece la obligación de incorporar en los planes de estudio contenidos que fomenten:",
+  opciones: [
+    "a) El desarrollo tecnológico y digital.",
+    "b) El respeto hacia la igualdad entre hombres y mujeres.",
+    "c) El aprendizaje de lenguas cooficiales.",
+    "d) La educación militar y de defensa."
+  ],
+  correcta: "b) El respeto hacia la igualdad entre hombres y mujeres.",
+  justificacion: "Se busca desde la escuela promover valores de igualdad y prevención de la violencia."
+},
+{
+  pregunta: "¿Quién puede solicitar la orden de protección prevista en el artículo 544 ter de la Ley de Enjuiciamiento Criminal en relación con la LO 1/2004?",
+  opciones: [
+    "a) Únicamente la víctima.",
+    "b) El Ministerio Fiscal.",
+    "c) El juez de oficio.",
+    "d) Cualquier persona que tenga conocimiento de la situación de violencia."
+  ],
+  correcta: "d) Cualquier persona que tenga conocimiento de la situación de violencia.",
+  justificacion: "La LO 1/2004 permite que cualquier persona pueda solicitar la orden de protección para la víctima."
+},
+{
+  pregunta: "Los Juzgados de Violencia sobre la Mujer tienen competencia exclusiva en:",
+  opciones: [
+    "a) Delitos contra la libertad sexual entre desconocidos.",
+    "b) Delitos cometidos contra mujeres por quienes hayan sido sus parejas sentimentales.",
+    "c) Delitos económicos cometidos por mujeres.",
+    "d) Delitos leves de convivencia vecinal."
+  ],
+  correcta: "b) Delitos cometidos contra mujeres por quienes hayan sido sus parejas sentimentales.",
+  justificacion: "La jurisdicción está limitada a violencia en el ámbito de la pareja o expareja."
+},
+{
+  pregunta: "La LO 1/2004 incluye medidas específicas en el ámbito laboral para:",
+  opciones: [
+    "a) Reducir el salario de la persona agresora.",
+    "b) Facilitar la movilidad geográfica de la víctima.",
+    "c) Aumentar la jornada laboral de las víctimas.",
+    "d) Promover empleo exclusivo para mujeres víctimas."
+  ],
+  correcta: "b) Facilitar la movilidad geográfica de la víctima.",
+  justificacion: "La ley establece medidas laborales como la movilidad para alejarse del agresor."
+},
+{
+  pregunta: "En relación con las medidas civiles, la LO 1/2004 autoriza al juez a:",
+  opciones: [
+    "a) Dictar medidas de internamiento del agresor en centro penitenciario.",
+    "b) Suspender el régimen de visitas a los hijos si es necesario para su protección.",
+    "c) Modificar unilateralmente las condiciones laborales del agresor.",
+    "d) Exigir tratamiento psicológico obligatorio para la víctima."
+  ],
+  correcta: "b) Suspender el régimen de visitas a los hijos si es necesario para su protección.",
+  justificacion: "El juez puede tomar medidas civiles para proteger a los menores implicados."
+},
+{
+  pregunta: "La LO 1/2004 contiene medidas específicas de protección para las víctimas en situación de:",
+  opciones: [
+    "a) Ingreso en prisión preventiva.",
+    "b) Embarazo y maternidad.",
+    "c) Acceso universitario."
+    ,
+    "d) Cambio de nacionalidad."
+  ],
+  correcta: "b) Embarazo y maternidad.",
+  justificacion: "La ley contempla medidas de protección específicas para estas situaciones."
+},
+{
+  pregunta: "Según el artículo 20 de la LO 1/2004, la víctima puede solicitar:",
+  opciones: [
+    "a) Su traslado a un destino militar.",
+    "b) La suspensión de su contrato de trabajo con reserva de puesto.",
+    "c) Una indemnización estatal automática.",
+    "d) Causalidad laboral a la Seguridad Social."
+  ],
+  correcta: "b) La suspensión de su contrato de trabajo con reserva de puesto.",
+  justificacion: "La ley prevé medidas laborales para facilitar la protección y recuperación de la víctima."
+},
+{
+  pregunta: "La LO 1/2004 considera violencia de género a la violencia ejercida por:",
+  opciones: [
+    "a) Cualquier familiar directo.",
+    "b) Cualquier persona sobre una mujer en el ámbito público.",
+    "c) Las personas que son o han sido cónyuges o parejas sentimentales de la víctima.",
+    "d) Exclusivamente personas no relacionadas con la víctima."
+  ],
+  correcta: "c) Las personas que son o han sido cónyuges o parejas sentimentales de la víctima.",
+  justificacion: "La ley limita su aplicación al ámbito de la pareja o expareja."
+},
+{
+  pregunta: "El artículo 24 de la LO 1/2004 se refiere a:",
+  opciones: [
+    "a) La prevención en el ámbito educativo.",
+    "b) Medidas de seguridad laboral para víctimas.",
+    "c) Las campañas de sensibilización en medios de comunicación.",
+    "d) La formación de jueces y fiscales."
+  ],
+  correcta: "a) La prevención en el ámbito educativo.",
+  justificacion: "El artículo 24 recoge la necesidad de actuar en la educación temprana para prevenir la violencia."
+},
+{
+  pregunta: "Las campañas de información sobre violencia de género son responsabilidad de:",
+  opciones: [
+    "a) El Ministerio de Defensa.",
+    "b) Las Administraciones Públicas en colaboración con los medios.",
+    "c) Las asociaciones privadas exclusivamente.",
+    "d) El Ministerio de Asuntos Exteriores."
+  ],
+  correcta: "b) Las Administraciones Públicas en colaboración con los medios.",
+  justificacion: "El artículo 14 y siguientes atribuyen esta responsabilidad a las Administraciones."
+},
+{
+  pregunta: "El artículo 31 de la LO 1/2004 trata sobre:",
+  opciones: [
+    "a) Formación especial del personal sociosanitario.",
+    "b) Protección de menores víctimas de violencia machista.",
+    "c) Creación de hogares de acogida para agresores.",
+    "d) Leyes de cooperación internacional."
+  ],
+  correcta: "a) Formación especial del personal sociosanitario.",
+  justificacion: "Este artículo se refiere a la formación específica en servicios de salud."
+},
+{
+  pregunta: "La LO 1/2004 supone la modificación de la Ley de Enjuiciamiento Criminal en materia de:",
+  opciones: [
+    "a) Recurso de casación.",
+    "b) Dilación improcedente.",
+    "c) Orden de protección para las víctimas.",
+    "d) Prescripción de delitos leves."
+  ],
+  correcta: "c) Orden de protección para las víctimas.",
+  justificacion: "En la LECrim se regula la orden de protección en el artículo 544 ter."
+},
+{
+  pregunta: "Las medidas de sensibilización previstas en la LO 1/2004 incluyen:",
+  opciones: [
+    "a) Exclusivamente campañas audiovisuales.",
+    "b) Formación y participación en programas de intervención.",
+    "c) Restricciones a la libertad de prensa.",
+    "d) Multas a medios que no hablen de violencia de género."
+  ],
+  correcta: "b) Formación y participación en programas de intervención.",
+  justificacion: "La sensibilización incluye campañas formativas y programas dirigidos al público."
+},
+{
+  pregunta: "El Observatorio Estatal de Violencia sobre la Mujer es un órgano encargado de:",
+  opciones: [
+    "a) Imponer condenas por violencia de género.",
+    "b) Coordinar políticas, recopilar datos y asesorar en materia de violencia de género.",
+    "c) Regular el derecho a la libertad religiosa.",
+    "d) Controlar la actuación de las Fuerzas Armadas."
+  ],
+  correcta: "b) Coordinar políticas, recopilar datos y asesorar en materia de violencia de género.",
+  justificacion: "Este organismo se encarga de la planificación y seguimiento de medidas contra la violencia."
+},
+{
+  pregunta: "En virtud de la LO 1/2004, la víctima tiene derecho a:",
+  opciones: [
+    "a) Votar de manera anticipada.",
+    "b) Recibir información sobre su caso y la situación procesal del agresor.",
+    "c) Elegir el tipo de pena que se impondrá al agresor.",
+    "d) Emitir sentencias sin presencia judicial."
+  ],
+  correcta: "b) Recibir información sobre su caso y la situación procesal del agresor.",
+  justificacion: "La información constante es un derecho reconocido a las víctimas."
+},
+{
+  pregunta: "Una de las medidas específicas de protección económica para las víctimas de violencia de género consiste en:",
+  opciones: [
+    "a) Acceso preferente a viviendas públicas.",
+    "b) Crédito sin intereses para el emprendimiento.",
+    "c) Exención total de pago de impuestos.",
+    "d) Pensión vitalicia automática."
+  ],
+  correcta: "a) Acceso preferente a viviendas públicas.",
+  justificacion: "La ley contempla medidas para facilitar el acceso a recursos básicos como la vivienda."
+},
+{
+  pregunta: "La LO 1/2004 introduce la creación de un sistema de seguimiento de:",
+  opciones: [
+    "a) Prevención del terrorismo interior.",
+    "b) Medidas judiciales y civiles aplicadas a los agresores.",
+    "c) Investigaciones científicas universitarias.",
+    "d) Radiofrecuencias de información pública."
+  ],
+  correcta: "b) Medidas judiciales y civiles aplicadas a los agresores.",
+  justificacion: "Es necesario garantizar el cumplimiento efectivo de las resoluciones judiciales."
+},
+{
+  pregunta: "Según el artículo 30 de la LO 1/2004, el sistema sanitario debe:",
+  opciones: [
+    "a) Rechazar el ingreso de agresores sin orden judicial.",
+    "b) Adaptar sus protocolos a la detección de violencia de género.",
+    "c) Atender solo agresiones físicas evidentes.",
+    "d) Delegar en la víctima el diagnóstico de la violencia."
+  ],
+  correcta: "b) Adaptar sus protocolos a la detección de violencia de género.",
+  justificacion: "El sistema sanitario es clave para detectar y asistir a las víctimas."
+},
+{
+  pregunta: "La LO 1/2004 establece que el agresor debe someterse a:",
+  opciones: [
+    "a) Tratamientos psicológicos obligatorios si así lo determina el juez.",
+    "b) Actividades comunitarias de carácter voluntario.",
+    "c) Tratamiento médico en centros penitenciarios privados.",
+    "d) Charlas educativas en centros escolares."
+  ],
+  correcta: "a) Tratamientos psicológicos obligatorios si así lo determina el juez.",
+  justificacion: "El tratamiento del agresor forma parte de la estrategia de prevención de reincidencias."
+},
+{
+  pregunta: "En el ámbito de los medios de comunicación, la ley obliga a:",
+  opciones: [
+    "a) Prohibir referencias a noticias de violencia.",
+    "b) Fomentar la difusión de valores de igualdad y no discriminación.",
+    "c) Emitir programas de control policial obligatorio.",
+    "d) Publicar estadísticas anuales no verificadas."
+  ],
+  correcta: "b) Fomentar la difusión de valores de igualdad y no discriminación.",
+  justificacion: "Se pretende generar una cultura de respeto y rechazo a la violencia de género."
+},
+{
+  pregunta: "¿Cuál es uno de los principios rectores de la LO 1/2004 en materia de igualdad?",
+  opciones: [
+    "a) La igualdad entre las víctimas según su edad.",
+    "b) La igualdad real y efectiva entre hombres y mujeres.",
+    "c) La igualdad en la distribución de bienes patrimoniales.",
+    "d) La igualdad exclusivamente en el ámbito laboral."
+  ],
+  correcta: "b) La igualdad real y efectiva entre hombres y mujeres.",
+  justificacion: "La ley busca corregir desigualdades estructurales para garantizar la igualdad efectiva."
+},
+{
+  pregunta: "La Ley 1/2004 contempla una especial protección para menores:",
+  opciones: [
+    "a) Vinculados a la víctima que hayan presenciado la violencia.",
+    "b) Que cometan delitos contra su madre.",
+    "c) Que estén en centros de menores infractores.",
+    "d) Que mantengan una relación de amistad con la víctima."
+  ],
+  correcta: "a) Vinculados a la víctima que hayan presenciado la violencia.",
+  justificacion: "Se extiende la protección a los menores afectados por la violencia ejercida contra sus madres o tutoras."
+},
+{
+  pregunta: "En el ámbito laboral, la LO 1/2004 prevé:",
+  opciones: [
+    "a) Permisos retribuidos para asistir a juicios y procesos.",
+    "b) La exoneración total de todas las sanciones laborales.",
+    "c) El despido automático del agresor.",
+    "d) La obligación de cambiar de empresa."
+  ],
+  correcta: "a) Permisos retribuidos para asistir a juicios y procesos.",
+  justificacion: "Las víctimas tienen derecho a ausentarse del trabajo para cumplir responsabilidades judiciales."
+},
+{
+  pregunta: "La LO 1/2004 reforma el Código Penal para incluir:",
+  opciones: [
+    "a) Delitos específicos de violencia de género.",
+    "b) Reglas especiales para la competencia territorial.",
+    "c) Obligaciones fiscales para los condenados.",
+    "d) Régimen de libertad vigilada automática."
+  ],
+  correcta: "a) Delitos específicos de violencia de género.",
+  justificacion: "Se introducen tipos penales específicos y agravantes para proteger a las víctimas."
+},
+{
+  pregunta: "Una de las medidas complementarias previstas en la LO 1/2004 consiste en:",
+  opciones: [
+    "a) Sustituir la pena de prisión por indemnización.",
+    "b) Regular programas de reeducación para agresores.",
+    "c) Eliminar toda pena privativa de libertad en violencia de género.",
+    "d) Obligar a la víctima a someterse a formación."
+  ],
+  correcta: "b) Regular programas de reeducación para agresores.",
+  justificacion: "Los programas buscan reducir la reincidencia y modificar conductas violentas."
+},
+{
+  pregunta: "El artículo 5 de la LO 1/2004 se refiere a:",
+  opciones: [
+    "a) La adopción de medidas judiciales inmediatas.",
+    "b) La igualdad en la aplicación de la norma laboral.",
+    "c) La elaboración de campañas de sensibilización.",
+    "d) La tutela judicial efectiva."
+  ],
+  correcta: "d) La tutela judicial efectiva.",
+  justificacion: "Este artículo garantiza la protección de los derechos de las víctimas ante la justicia."
+},
+{
+  pregunta: "El artículo 18 de la LO 1/2004 contempla como medida:",
+  opciones: [
+    "a) La asistencia psicológica al agresor.",
+    "b) La suspensión de la relación laboral con derecho a reingreso.",
+    "c) La facilitación de becas para los hijos de la víctima.",
+    "d) La creación de juzgados especializados en asuntos laborales."
+  ],
+  correcta: "b) La suspensión de la relación laboral con derecho a reingreso.",
+  justificacion: "Esta medida busca proteger a las víctimas sin perder su puesto de trabajo."
+},
+{
+  pregunta: "La LO 1/2004 plantea la creación de:",
+  opciones: [
+    "a) Ministerios especializados de Violencia de Género.",
+    "b) Un sistema de coordinación interinstitucional.",
+    "c) Casas de acogida privadas con financiación estatal.",
+    "d) Un sistema de becas para agresores reinsertados."
+  ],
+  correcta: "b) Un sistema de coordinación interinstitucional.",
+  justificacion: "La ley obliga a que las diferentes Administraciones cooperen en la erradicación de la violencia."
+},
+{
+  pregunta: "Según la LO 1/2004, la orden de protección para las víctimas incluye:",
+  opciones: [
+    "a) Únicamente medidas penales.",
+    "b) Posibilidad de detención preventiva obligatoria.",
+    "c) Medidas penales y civiles simultáneamente.",
+    "d) Garantía de indemnización automática."
+  ],
+  correcta: "c) Medidas penales y civiles simultáneamente.",
+  justificacion: "La orden de protección puede incluir medidas de alejamiento y cambios en régimen de visitas o uso de vivienda."
+},
+{
+  pregunta: "El artículo 8 de la LO 1/2004 establece como principio rector:",
+  opciones: [
+    "a) La neutralidad del Estado en materia de igualdad.",
+    "b) La sensibilización y educación para la igualdad.",
+    "c) La penalización automática de todos los agresores.",
+    "d) La participación exclusiva de profesionales médicos."
+  ],
+  correcta: "b) La sensibilización y educación para la igualdad.",
+  justificacion: "Se considera un reto social y cultural la lucha contra la violencia de género."
+},
+{
+  pregunta: "Las unidades de coordinación contra la violencia sobre la mujer dependen de:",
+  opciones: [
+    "a) Delegaciones y Subdelegaciones del Gobierno.",
+    "b) El Ministerio de Sanidad.",
+    "c) Consejo General del Poder Judicial.",
+    "d) Asociaciones privadas de mujeres."
+  ],
+  correcta: "a) Delegaciones y Subdelegaciones del Gobierno.",
+  justificacion: "Estas unidades garantizan la coordinación territorial de las políticas contra la violencia sobre la mujer."
+},
+{
+  pregunta: "La ley incorpora una medida protectora en materia de seguridad social consistente en:",
+  opciones: [
+    "a) Prioridad en el acceso a ayudas por desempleo.",
+    "b) Flexibilización de cotizaciones a la Seguridad Social.",
+    "c) Subvención directa para vivienda privada.",
+    "d) Jubilación anticipada automática."
+  ],
+  correcta: "b) Flexibilización de cotizaciones a la Seguridad Social.",
+  justificacion: "La ley incluye medidas adaptadas a las necesidades laborales y de seguridad de las víctimas."
+},
+{
+  pregunta: "¿Cuál de las siguientes NO es una de las medidas previstas en la LO 1/2004?",
+  opciones: [
+    "a) Medidas de sensibilización.",
+    "b) Medidas educativas.",
+    "c) Medidas jurídicas de reconciliación.",
+    "d) Medidas de asistencia social."
+  ],
+  correcta: "c) Medidas jurídicas de reconciliación.",
+  justificacion: "La ley se centra en la erradicación de la violencia, no en reconciliar a la víctima con el agresor."
+},
+{
+  pregunta: "Una víctima de violencia de género tiene derecho a recibir información sobre:",
+  opciones: [
+    "a) Los recursos de asistencia disponibles.",
+    "b) El proceso de reinserción del agresor.",
+    "c) Los ingresos económicos del agresor.",
+    "d) La aplicabilidad de las leyes internacionales."
+  ],
+  correcta: "a) Los recursos de asistencia disponibles.",
+  justificacion: "La víctima debe tener pleno conocimiento de las opciones de ayuda disponibles."
+},
+{
+  pregunta: "Para garantizar la efectividad de las medidas de protección, la LO 1/2004 obliga a:",
+  opciones: [
+    "a) Centros sanitarios a disponer de equipos armados.",
+    "b) Las Administraciones a colaborar entre sí.",
+    "c) Las víctimas a ocultar su identidad.",
+    "d) Los agresores a cumplir pena mínima de dos años."
+  ],
+  correcta: "b) Las Administraciones a colaborar entre sí.",
+  justificacion: "La participación coordinada de todas las Administraciones es clave para la efectividad de las medidas."
+},
+{
+  pregunta: "El artículo 17 de la LO 1/2004 se refiere a:",
+  opciones: [
+    "a) La tutela judicial efectiva.",
+    "b) Las medidas de protección social integral para las víctimas.",
+    "c) El castigo a los agresores reincidentes.",
+    "d) Las prestaciones del Estado a los hijos menores de la víctima."
+  ],
+  correcta: "b) Las medidas de protección social integral para las víctimas.",
+  justificacion: "El artículo 17 introduce un marco de atención integral más allá del ámbito penal."
+},
+{
+  pregunta: "La LO 1/2004 dedica el artículo 31 a la formación de:",
+  opciones: [
+    "a) Personal sanitario especializado.",
+    "b) Profesorado universitario.",
+    "c) Abogados penalistas en materia de menores.",
+    "d) Fuerzas Armadas para casos de agresión."
+  ],
+  correcta: "a) Personal sanitario especializado.",
+  justificacion: "Este artículo obliga a la formación específica para detectar y atender casos de violencia."
+},
+{
+  pregunta: "El artículo 40 de la LO 1/2004 regula:",
+  opciones: [
+    "a) El papel de la Fiscalía General del Estado.",
+    "b) El régimen de sanciones por incumplimiento de medidas de protección.",
+    "c) La obtención de datos estadísticos sobre violencia de género.",
+    "d) La cooperación internacional con países de la UE."
+  ],
+  correcta: "c) La obtención de datos estadísticos sobre violencia de género.",
+  justificacion: "El artículo 40 establece un seguimiento estadístico como herramienta de control y mejora de las políticas públicas."
+},
+{
+  pregunta: "La LO 1/2004 promueve la formación de los medios de comunicación para:",
+  opciones: [
+    "a) Mejorar la calidad de la transmisión televisiva.",
+    "b) Evitar la difusión de estereotipos y fomentar una imagen igualitaria.",
+    "c) Incluir segmentos de humor relacionados con la violencia.",
+    "d) Crear programas educativos obligatorios."
+  ],
+  correcta: "b) Evitar la difusión de estereotipos y fomentar una imagen igualitaria.",
+  justificacion: "La ley dirige a los medios a ser agentes de cambio social contra la violencia."
+},
+{
+  pregunta: "El artículo 21 de la LO 1/2004 regula:",
+  opciones: [
+    "a) El reconocimiento de derechos económicos de los agresores.",
+    "b) El derecho de las víctimas a interponer denuncias a través de servicios sociales.",
+    "c) La apertura de refugios temporales para víctimas.",
+    "d) El seguimiento obligatorio del agresor."
+  ],
+  correcta: "b) El derecho de las víctimas a interponer denuncias a través de servicios sociales.",
+  justificacion: "Se garantiza el acceso al proceso penal desde diversos servicios de atención."
+},
+{
+  pregunta: "Según la LO 1/2004, la violencia de género constituye:",
+  opciones: [
+    "a) Un problema exclusivo del ámbito privado.",
+    "b) Un problema social y estructural que afecta a toda la sociedad.",
+    "c) Un conflicto de carácter meramente familiar.",
+    "d) Una conducta sancionada solo administrativamente."
+  ],
+  correcta: "b) Un problema social y estructural que afecta a toda la sociedad.",
+  justificacion: "La exposición de motivos de la ley define la violencia de género como un problema social y estructural."
+},
+{
+  pregunta: "La coordinación territorial de las políticas contra la violencia de género corresponde a:",
+  opciones: [
+    "a) Las entidades locales exclusivamente.",
+    "b) El Poder Judicial.",
+    "c) La Delegación del Gobierno para la Violencia de Género.",
+    "d) El Ministerio de Defensa."
+  ],
+  correcta: "c) La Delegación del Gobierno para la Violencia de Género.",
+  justificacion: "La Delegación coordina las acciones en todo el territorio nacional."
+},
+{
+  pregunta: "Uno de los objetivos del Título II de la LO 1/2004 es:",
+  opciones: [
+    "a) Regular la acción de los medios de comunicación.",
+    "b) Garantizar derechos laborales y económicos a las víctimas.",
+    "c) Crear tribunales militares especializados.",
+    "d) Establecer el régimen sancionador en vía administrativa."
+  ],
+  correcta: "b) Garantizar derechos laborales y económicos a las víctimas.",
+  justificacion: "El Título II regula los derechos de las víctimas, incluida su protección socioeconómica."
+},
+{
+  pregunta: "La LO 1/2004 obliga a los poderes públicos a promover:",
+  opciones: [
+    "a) Medidas de reinserción laboral para agresores.",
+    "b) Políticas activas que favorezcan la igualdad de género.",
+    "c) La mediación obligatoria entre víctima y agresor.",
+    "d) Programas penitenciarios privados."
+  ],
+  correcta: "b) Políticas activas que favorezcan la igualdad de género.",
+  justificacion: "La ley busca prevenir la violencia a través de políticas sociales igualitarias."
+},
+{
+  pregunta: "La ley establece que la víctima puede solicitar cambio de domicilio:",
+  opciones: [
+    "a) Solo si el agresor ha sido condenado.",
+    "b) Siempre que exista riesgo acreditado para su seguridad.",
+    "c) Únicamente si hay menores implicados.",
+    "d) Nunca, porque el agresor podría reclamarlo."
+  ],
+  correcta: "b) Siempre que exista riesgo acreditado para su seguridad.",
+  justificacion: "La protección incluye medidas logísticas como el cambio de residencia."
+},
+{
+  pregunta: "La protección integral prevista en la LO 1/2004 implica:",
+  opciones: [
+    "a) Medidas policiales exclusivamente.",
+    "b) Medidas preventivas, educativas, sociales, penales y judiciales.",
+    "c) Eliminación de la responsabilidad penal del agresor.",
+    "d) Prestaciones económicas automáticas para toda víctima."
+  ],
+  correcta: "b) Medidas preventivas, educativas, sociales, penales y judiciales.",
+  justificacion: "El enfoque integral de la ley abarca múltiples ámbitos de intervención."
+},
+{
+  pregunta: "El artículo 44 de la LO 1/2004 modifica:",
+  opciones: [
+    "a) El Código Civil.",
+    "b) El Código Penal.",
+    "c) El Código de Comercio.",
+    "d) La Ley de Régimen Local."
+  ],
+  correcta: "b) El Código Penal.",
+  justificacion: "Introduce agravantes específicas y nuevos tipos relacionados con la violencia de género."
+},
+{
+  pregunta: "La ley configura la violencia de género como:",
+  opciones: [
+    "a) Un delito contra la integridad territorial.",
+    "b) Una manifestación de desigualdad entre hombres y mujeres.",
+    "c) Una falta administrativa leve.",
+    "d) Un conflicto interno del núcleo familiar."
+  ],
+  correcta: "b) Una manifestación de desigualdad entre hombres y mujeres.",
+  justificacion: "La definición de la ley señala que deriva de relaciones de poder y subordinación."
+},
+{
+  pregunta: "Según la LO 1/2004, la violencia de género se produce:",
+  opciones: [
+    "a) Entre cualquier miembro de la unidad familiar.",
+    "b) Dentro de las relaciones de pareja o expareja heterosexuales.",
+    "c) Únicamente durante el matrimonio civil.",
+    "d) Solo si la convivencia está vigente."
+  ],
+  correcta: "b) Dentro de las relaciones de pareja o expareja heterosexuales.",
+  justificacion: "La ley se limita a violencia ejercida por quienes sean o hayan sido pareja de la víctima."
+},
+{
+  pregunta: "En materia educativa, la LO 1/2004 dispone que:",
+  opciones: [
+    "a) Se impartan asignaturas obligatorias sobre igualdad y prevención.",
+    "b) Los centros privados quedan exentos de prevención educativa.",
+    "c) Solo se sensibilice en niveles universitarios.",
+    "d) La educación en igualdad queda a criterio de cada centro."
+  ],
+  correcta: "a) Se impartan asignaturas obligatorias sobre igualdad y prevención.",
+  justificacion: "La ley exige incluir contenidos en todos los ciclos educativos para prevenir la violencia."
+},
+{
+  pregunta: "El artículo 27 LO 1/2004 obliga a elaborar:",
+  opciones: [
+    "a) Documentales en centros escolares.",
+    "b) Estudios y estadísticas sobre violencia de género.",
+    "c) Un reglamento disciplinario para agresores.",
+    "d) Informes de custodia sobre menores implicados."
+  ],
+  correcta: "b) Estudios y estadísticas sobre violencia de género.",
+  justificacion: "El Estado debe producir y actualizar datos que permitan evaluar la efectividad de la ley."
+},
+{
+  pregunta: "La LO 1/2004 establece que las actuaciones judiciales en casos de violencia de género serán:",
+  opciones: [
+    "a) Públicas sin restricciones.",
+    "b) Gratuitas para la víctima si así lo solicita.",
+    "c) Prioritarias y con tramitación preferente.",
+    "d) Secretas incluso para la víctima."
+  ],
+  correcta: "c) Prioritarias y con tramitación preferente.",
+  justificacion: "Las víctimas requieren protección rápida y eficaz."
+},
+{
+  pregunta: "Uno de los objetivos de la ley es:",
+  opciones: [
+    "a) Garantizar la pena mínima en todos los delitos de violencia.",
+    "b) Visibilizar la violencia de género como un problema público.",
+    "c) Limitar la información pública sobre las agresiones.",
+    "d) Restringir la actuación de los servicios sociales."
+  ],
+  correcta: "b) Visibilizar la violencia de género como un problema público.",
+  justificacion: "La LO 1/2004 busca la implicación activa de la sociedad en la solución."
+},
+{
+  pregunta: "El artículo 15 establece medidas en el ámbito de:",
+  opciones: [
+    "a) Prevención sanitaria.",
+    "b) Medios de comunicación.",
+    "c) Educación infantil.",
+    "d) Funcionamiento judicial."
+  ],
+  correcta: "b) Medios de comunicación.",
+  justificacion: "Este artículo establece obligaciones para los medios en la lucha contra la violencia."
+},
+{
+  pregunta: "La LO 1/2004 incorpora medidas en materia sanitaria como:",
+  opciones: [
+    "a) La obligación de ingresar a la víctima tras cualquier agresión.",
+    "b) La detección precoz de violencia desde atención primaria.",
+    "c) La apertura de hospitales exclusivos para mujeres víctimas.",
+    "d) El traslado obligatorio de la víctima a otra comunidad."
+  ],
+  correcta: "b) La detección precoz de violencia desde atención primaria.",
+  justificacion: "El sistema sanitario es clave para identificar y asistir víctimas."
+},
+{
+  pregunta: "La competencia de los Juzgados de Violencia sobre la Mujer incluye:",
+  opciones: [
+    "a) Procedimientos penales y civiles relacionados con la violencia de género.",
+    "b) Solo procedimientos penales.",
+    "c) Solo procedimientos civiles de divorcio.",
+    "d) Exclusivamente juicios rápidos."
+  ],
+  correcta: "a) Procedimientos penales y civiles relacionados con la violencia de género.",
+  justificacion: "Su competencia es integral para evitar duplicidad de procesos."
+},
+{
+  pregunta: "La ley considera víctimas de violencia de género a:",
+  opciones: [
+    "a) Únicamente mujeres casadas.",
+    "b) Mujeres con o sin convivencia que hayan sufrido violencia por expareja.",
+    "c) Mujeres en relaciones de hecho únicamente.",
+    "d) Solo mujeres con sentencia firme a su favor."
+  ],
+  correcta: "b) Mujeres con o sin convivencia que hayan sufrido violencia por expareja.",
+  justificacion: "No es necesario convivir ni estar casada para ser considerada víctima."
+},
+{
+  pregunta: "Los poderes públicos deben garantizar a las víctimas:",
+  opciones: [
+    "a) El acceso a vivienda protegida en todo caso.",
+    "b) Un sistema de información permanente sobre recursos disponibles.",
+    "c) Un ingreso mínimo vital automático por ser víctima.",
+    "d) La exención de impuestos estatales."
+  ],
+  correcta: "b) Un sistema de información permanente sobre recursos disponibles.",
+  justificacion: "La ley garantiza acceso a información y asistencia."
+},
+{
+  pregunta: "La formación en igualdad que exige la LO 1/2004 afecta a:",
+  opciones: [
+    "a) Exclusivamente jueces y fiscales.",
+    "b) Personal sanitario, educativo, judicial, policial y social.",
+    "c) Solo trabajadores sociales.",
+    "d) Únicamente funcionarios estatales."
+  ],
+  correcta: "b) Personal sanitario, educativo, judicial, policial y social.",
+  justificacion: "La ley exige formación integral de todos los colectivos implicados."
+},
+{
+  pregunta: "Una finalidad esencial de la ley es:",
+  opciones: [
+    "a) Aumentar las penas de todos los delitos.",
+    "b) Eliminar la reincidencia de los agresores mediante prevención y reeducación.",
+    "c) Sancionar económicamente a todas las instituciones públicas.",
+    "d) Despenalizar la violencia leve dentro de la pareja."
+  ],
+  correcta: "b) Eliminar la reincidencia de los agresores mediante prevención y reeducación.",
+  justificacion: "La ley no solo sanciona, sino que prevé programas de reeducación obligatorios."
+},
+{
+  pregunta: "La LO 1/2004 establece que los medios de comunicación deben:",
+  opciones: [
+    "a) Ajustar su programación a fines exclusivamente comerciales.",
+    "b) Promover la igualdad entre hombres y mujeres y evitar estereotipos sexistas.",
+    "c) Abstenerse de publicar noticias relacionadas con violencia doméstica.",
+    "d) Entrevistar a las víctimas para reforzar el proceso judicial."
+  ],
+  correcta: "b) Promover la igualdad entre hombres y mujeres y evitar estereotipos sexistas.",
+  justificacion: "La ley recoge la obligación de los medios como agentes de cambio cultural."
+},
+{
+  pregunta: "La Ley indica que el Estado colaborará con organismos internacionales en materia de violencia de género, especialmente:",
+  opciones: [
+    "a) La OTAN.",
+    "b) La ONU y la Unión Europea.",
+    "c) La Interpol.",
+    "d) La UNESCO únicamente."
+  ],
+  correcta: "b) La ONU y la Unión Europea.",
+  justificacion: "La ley prevé la cooperación internacional con organismos que trabajan por la igualdad y los derechos humanos."
+},
+{
+  pregunta: "Entre las medidas de protección social se incluye:",
+  opciones: [
+    "a) La facilitación de becas al agresor para su reinserción.",
+    "b) Asistencia psicológica y social a las víctimas y sus hijos.",
+    "c) Reducción de la jornada laboral del agresor.",
+    "d) Obligación de la víctima de cambiar de municipio."
+  ],
+  correcta: "b) Asistencia psicológica y social a las víctimas y sus hijos.",
+  justificacion: "La asistencia integral incluye apoyo psicológico y social."
+},
+{
+  pregunta: "La LO 1/2004 promueve la creación de:",
+  opciones: [
+    "a) Centros sanitarios exclusivos para víctimas supervivientes.",
+    "b) Un sistema de información y seguimiento sobre agresores.",
+    "c) Equipos militares especializados en violencia de género.",
+    "d) Escuelas de formación para víctimas."
+  ],
+  correcta: "b) Un sistema de información y seguimiento sobre agresores.",
+  justificacion: "Se establece el seguimiento del cumplimiento de medidas judiciales por parte de los agresores."
+},
+{
+  pregunta: "El artículo 32 de la LO 1/2004 afecta directamente al sector:",
+  opciones: [
+    "a) Educativo.",
+    "b) Sanitario.",
+    "c) Judicial.",
+    "d) Empresarial."
+  ],
+  correcta: "b) Sanitario.",
+  justificacion: "El artículo 32 establece la formación del personal sanitario para la detección adecuada de la violencia."
+},
+{
+  pregunta: "El ámbito de la Ley Orgánica 1/2004 comprende:",
+  opciones: [
+    "a) La violencia machista en el ámbito familiar y laboral.",
+    "b) Solo violencia ejercida en relaciones de pareja o expareja.",
+    "c) Violencia entre cualquier miembro de la familia.",
+    "d) Exclusivamente violencia ejercida por desconocidos."
+  ],
+  correcta: "b) Solo violencia ejercida en relaciones de pareja o expareja.",
+  justificacion: "La LO 1/2004 se aplica solo cuando existe o ha existido relación afectiva."
+},
+{
+  pregunta: "La LO 1/2004 reforma la Ley General de la Seguridad Social para:",
+  opciones: [
+    "a) Eliminar cotizaciones a víctimas.",
+    "b) Establecer prestaciones específicas para víctimas de violencia de género.",
+    "c) Reducir el número de pensiones contributivas.",
+    "d) Exentar del pago médico a los agresores."
+  ],
+  correcta: "b) Establecer prestaciones específicas para víctimas de violencia de género.",
+  justificacion: "La ley promueve la protección económica y laboral de las víctimas."
+},
+{
+  pregunta: "La competencia de los Juzgados de Violencia sobre la Mujer incluye:",
+  opciones: [
+    "a) Delitos contra la vida, integridad física o libertad de la mujer cometidos por pareja o expareja.",
+    "b) Solo delitos contra la libertad sexual entre desconocidos.",
+    "c) Procesos civiles de divorcio sin violencia.",
+    "d) Delitos cometidos por la víctima contra el agresor."
+  ],
+  correcta: "a) Delitos contra la vida, integridad física o libertad de la mujer cometidos por pareja o expareja.",
+  justificacion: "La jurisdicción está limitada a casos de violencia de género según la ley."
+},
+{
+  pregunta: "La Ley garantiza el acceso de la víctima a:",
+  opciones: [
+    "a) Asistencia jurídica gratuita desde el momento en que formule denuncia.",
+    "b) Servicios médicos privados financiados por el Estado.",
+    "c) Programas obligatorios de inserción social.",
+    "d) La anulación de cualquier sentencia civil previa."
+  ],
+  correcta: "a) Asistencia jurídica gratuita desde el momento en que formule denuncia.",
+  justificacion: "Una de las medidas clave es el acceso a defensa jurídica inmediata."
+},
+{
+  pregunta: "Según el artículo 8 de la LO 1/2004, la educación fomentará:",
+  opciones: [
+    "a) La competencia individual en materia científica.",
+    "b) La prevención de la violencia de género y la igualdad entre hombres y mujeres.",
+    "c) El rechazo a la intervención judicial en conflictos familiares.",
+    "d) La creación de programas específicos en centros privados."
+  ],
+  correcta: "b) La prevención de la violencia de género y la igualdad entre hombres y mujeres.",
+  justificacion: "La ley establece que la educación debe promover valores de igualdad."
+},
+{
+  pregunta: "¿Qué organismo elabora informes sobre la evolución de la violencia de género?",
+  opciones: [
+    "a) Tribunal Supremo.",
+    "b) Observatorio Estatal de Violencia sobre la Mujer.",
+    "c) Fiscalía General del Estado.",
+    "d) Consejo Escolar del Estado."
+  ],
+  correcta: "b) Observatorio Estatal de Violencia sobre la Mujer.",
+  justificacion: "Este organismo recopila datos e informes que ayudan a la evaluación de la ley."
+},
+{
+  pregunta: "El artículo 19.3 de la Ley 1/2004 establece que la víctima tiene derecho a:",
+  opciones: [
+    "a) Solicitar que el agresor se traslade a otra provincia.",
+    "b) Ser informada del estado del procedimiento y la situación procesal del agresor.",
+    "c) Renunciar al procedimiento sin necesidad de ratificación.",
+    "d) Ejercer la acusación por sí misma en solitario."
+  ],
+  correcta: "b) Ser informada del estado del procedimiento y la situación procesal del agresor.",
+  justificacion: "La información es un derecho clave que preserva la seguridad de la víctima."
+},
+{
+  pregunta: "Una medida prevista en la LO 1/2004 para facilitar la independencia económica de la víctima es:",
+  opciones: [
+    "a) El acceso prioritario a ayudas para el alquiler de vivienda.",
+    "b) La obligación de contratar a la víctima en empresas públicas.",
+    "c) La exención fiscal absoluta durante cinco años.",
+    "d) La imposición de multas al agresor para financiarla."
+  ],
+  correcta: "a) El acceso prioritario a ayudas para el alquiler de vivienda.",
+  justificacion: "La ley prevé facilitar la salida del entorno de riesgo mediante recursos económicos."
+},
+{
+  pregunta: "Los programas de intervención para agresores previstos en la ley tienen como fin:",
+  opciones: [
+    "a) Aumentar su tiempo en prisión.",
+    "b) Reducir la reincidencia y fomentar la responsabilidad de sus acciones.",
+    "c) Obligarles a ocupar puestos de trabajo públicos.",
+    "d) Reemplazar la responsabilidad penal."
+  ],
+  correcta: "b) Reducir la reincidencia y fomentar la responsabilidad de sus acciones.",
+  justificacion: "El objetivo es modificar pautas de conducta violentas para evitar nuevas agresiones."
+},
+{
+  pregunta: "Una víctima puede solicitar una orden de protección:",
+  opciones: [
+    "a) Solo si el agresor ha sido condenado previamente.",
+    "b) Aunque no exista denuncia formal previa, en situación de riesgo.",
+    "c) Únicamente si es víctima de delitos sexuales.",
+    "d) En procesos penales únicamente."
+  ],
+  correcta: "b) Aunque no exista denuncia formal previa, en situación de riesgo.",
+  justificacion: "La orden de protección se concede ante la evidencia de riesgo."
+},
+{
+  pregunta: "La LO 1/2004 establece que la publicidad que utilice la imagen de las mujeres con carácter denigrante:",
+  opciones: [
+    "a) Será perseguida como delito tipificado en el Código Penal.",
+    "b) Sería sancionada administrativamente según la ley de publicidad ilícita.",
+    "c) Será permitida en horario de madrugada.",
+    "d) Debe ser aprobada por el Observatorio Estatal."
+  ],
+  correcta: "b) Sería sancionada administrativamente según la ley de publicidad ilícita.",
+  justificacion: "Las campañas denigrantes pueden ser sancionadas por organismos competentes."
+},
+{
+  pregunta: "La LO 1/2004 contempla como infracción la divulgación de datos personales de las víctimas en:",
+  opciones: [
+    "a) Medios de comunicación en el contexto de juicios públicos.",
+    "b) Redes sociales privadas únicamente.",
+    "c) Documentales educativos con aval institucional.",
+    "d) Las sentencias judiciales publicadas por el BOE."
+  ],
+  correcta: "a) Medios de comunicación en el contexto de juicios públicos.",
+  justificacion: "Se prohíbe la divulgación de datos que vulneren la intimidad de las víctimas."
+},
+{
+  pregunta: "Una víctima de violencia tiene derecho a ser protegida:",
+  opciones: [
+    "a) Solo en centros sanitarios públicos.",
+    "b) A través de servicios sociales, policiales, judiciales y sanitarios coordinados.",
+    "c) Exclusivamente mediante asistencia psicológica privada.",
+    "d) Solo si presenta denuncia en el juzgado."
+  ],
+  correcta: "b) A través de servicios sociales, policiales, judiciales y sanitarios coordinados.",
+  justificacion: "La ley ordena coordinar todos los recursos institucionales para una protección eficaz."
+},
+{
+  pregunta: "¿Qué figura jurídica ha sido modificada por la LO 1/2004 para incluir delitos de violencia de género?",
+  opciones: [
+    "a) El Código Penal y la Ley de Enjuiciamiento Criminal.",
+    "b) La Ley General Tributaria únicamente.",
+    "c) La Ley de Propiedad Horizontal.",
+    "d) El Estatuto de los Trabajadores solamente."
+  ],
+  correcta: "a) El Código Penal y la Ley de Enjuiciamiento Criminal.",
+  justificacion: "La ley introduce cambios en ambas para adecuar el marco jurídico contra la violencia de género."
+},
+{
+  pregunta: "Según la LO 1/2004, los poderes públicos deben garantizar:",
+  opciones: [
+    "a) Únicamente la asistencia psicológica a menores víctimas.",
+    "b) La igualdad entre hombres y mujeres y la erradicación de la violencia contra la mujer.",
+    "c) La protección de las víctimas solo en casos de agresión física.",
+    "d) La libertad de acción del agresor bajo control judicial."
+  ],
+  correcta: "b) La igualdad entre hombres y mujeres y la erradicación de la violencia contra la mujer.",
+  justificacion: "La ley tiene como objetivo principal garantizar la igualdad y eliminar la violencia basada en el género."
+},
+{
+  pregunta: "La LO 1/2004 define la violencia de género como:",
+  opciones: [
+    "a) Cualquier tipo de violencia contra mujeres ejercida por conocidos.",
+    "b) La violencia física, psicológica o sexual ejercida por quienes sean o hayan sido sus cónyuges o estén ligados por relaciones afectivas.",
+    "c) Exclusivamente el maltrato físico en el ámbito doméstico.",
+    "d) El acoso laboral entre superiores y subordinados."
+  ],
+  correcta: "b) La violencia física, psicológica o sexual ejercida por quienes sean o hayan sido sus cónyuges o estén ligados por relaciones afectivas.",
+  justificacion: "El artículo 1 de la ley especifica este tipo de violencia doméstica en el contexto de relaciones afectivas."
+},
+{
+  pregunta: "Las medidas de sensibilización y prevención incluyen:",
+  opciones: [
+    "a) La promoción de talleres exclusivamente para personal sanitario.",
+    "b) La introducción de contenidos en el sistema educativo y campañas informativas en medios.",
+    "c) Sanciones económicas a los medios de comunicación.",
+    "d) Formación obligatoria solo para jueces y fiscales."
+  ],
+  correcta: "b) La introducción de contenidos en el sistema educativo y campañas informativas en medios.",
+  justificacion: "La ley promueve la sensibilización y prevención desde la educación y los medios."
+},
+{
+  pregunta: "Según la ley, los programas específicos de reinserción social están dirigidos a:",
+  opciones: [
+    "a) Víctimas mayores de 65 años.",
+    "b) Agresores con antecedentes penales por otros delitos.",
+    "c) Mujeres víctimas de violencia de género en situación de exclusión social.",
+    "d) Familiares del agresor."
+  ],
+  correcta: "c) Mujeres víctimas de violencia de género en situación de exclusión social.",
+  justificacion: "La reinserción social es parte de las medidas de apoyo social integral a las víctimas."
+},
+{
+  pregunta: "¿Cuál de los siguientes es un derecho procesal garantizado por la LO 1/2004 a las víctimas?",
+  opciones: [
+    "a) Decidir sobre la condena del agresor.",
+    "b) Acompañamiento por un profesional desde el primer contacto con la justicia.",
+    "c) Imponer sanciones económicas al agresor.",
+    "d) Exigir el traslado forzoso del juez instructor."
+  ],
+  correcta: "b) Acompañamiento por un profesional desde el primer contacto con la justicia.",
+  justificacion: "La ley prevé que la víctima esté acompañada por profesionales desde el inicio del proceso."
+},
+{
+  pregunta: "La LO 1/2004 obliga a las empresas a:",
+  opciones: [
+    "a) Indemnizar a cualquier víctima empleada por motivos de violencia de género.",
+    "b) Adoptar medidas de movilidad geográfica para proteger a las trabajadoras víctimas.",
+    "c) Contratar un mínimo de mujeres víctimas por año.",
+    "d) Publicar un informe anual sobre casos de violencia."
+  ],
+  correcta: "b) Adoptar medidas de movilidad geográfica para proteger a las trabajadoras víctimas.",
+  justificacion: "El artículo 21 recoge la posibilidad de movilidad para garantizar seguridad sin perder derechos laborales."
+},
+{
+  pregunta: "Una de las finalidades principales del Observatorio Estatal de Violencia sobre la Mujer es:",
+  opciones: [
+    "a) Elaborar directrices sobre condenas penales.",
+    "b) Recoger información estadística y evaluar la efectividad de las medidas de la ley.",
+    "c) Investigar casos individuales y acusar directamente al agresor.",
+    "d) Crear programas de formación obligatoria para los agresores."
+  ],
+  correcta: "b) Recoger información estadística y evaluar la efectividad de las medidas de la ley.",
+  justificacion: "Este organismo proporciona datos que permiten actualizar y mejorar las políticas públicas."
+},
+{
+  pregunta: "Las medidas judiciales de protección pueden incluir:",
+  opciones: [
+    "a) La retención económica del salario del agresor.",
+    "b) La suspensión del régimen de visitas cuando exista riesgo para los menores.",
+    "c) La retirada de pasaporte a la víctima.",
+    "d) La prohibición de salida del país para la víctima."
+  ],
+  correcta: "b) La suspensión del régimen de visitas cuando exista riesgo para los menores.",
+  justificacion: "En los casos de violencia de género, el juez puede suspender visitas para proteger a los menores."
+},
+{
+  pregunta: "La LO 1/2004 incluye medidas en materia civil, como:",
+  opciones: [
+    "a) La suspensión de la patria potestad automáticamente.",
+    "b) Determinar el uso de la vivienda familiar a favor de la víctima.",
+    "c) Declarar automáticamente la nulidad del matrimonio.",
+    "d) Modificar el régimen económico matrimonial de forma judicial."
+  ],
+  correcta: "b) Determinar el uso de la vivienda familiar a favor de la víctima.",
+  justificacion: "Entre las medidas civiles se encuentra la atribución del uso de la vivienda en favor de la víctima."
+},
+{
+  pregunta: "Cuándo se activa la orden de protección según la LO 1/2004:",
+  opciones: [
+    "a) Una vez confirmada la sentencia firme.",
+    "b) En cuanto exista una situación objetiva de riesgo para la víctima.",
+    "c) Tras un periodo mínimo de tres meses.",
+    "d) Solo si el agresor acepta medidas alternativas."
+  ],
+  correcta: "b) En cuanto exista una situación objetiva de riesgo para la víctima.",
+  justificacion: "La orden de protección puede dictarse de forma urgente ante el riesgo."
+},
+{
+  pregunta: "¿Qué instituciones pueden interponer denuncias en lugar de la víctima según la ley?",
+  opciones: [
+    "a) Solo la policía y la Guardia Civil.",
+    "b) Cualquier persona que conozca la situación de violencia.",
+    "c) El Ministerio Fiscal y determinados servicios sociales.",
+    "d) Únicamente un familiar directo."
+  ],
+  correcta: "c) El Ministerio Fiscal y determinados servicios sociales.",
+  justificacion: "La ley prevé que instituciones públicas participen en la protección, incluso sin denuncia de la víctima."
+},
+{
+  pregunta: "La LO 1/2004 promueve la formación de:",
+  opciones: [
+    "a) Profesionales de áreas sanitarias, educativas, judiciales y de servicios sociales.",
+    "b) Únicamente personal del Ministerio del Interior.",
+    "c) Exclusivamente equipos de atención psicológica privada.",
+    "d) Solo voluntarios de ONGs."
+  ],
+  correcta: "a) Profesionales de áreas sanitarias, educativas, judiciales y de servicios sociales.",
+  justificacion: "La formación intersectorial es clave para la detección y prevención eficaz de la violencia."
+},
+{
+  pregunta: "La ley contempla mecanismos para impedir que el agresor:",
+  opciones: [
+    "a) Realice actividades de ocio durante el fin de semana.",
+    "b) Pase por determinados lugares donde esté la víctima.",
+    "c) Tenga acceso a clases gratuitas financiadas por el Estado.",
+    "d) Solicite el indulto durante el proceso penal."
+  ],
+  correcta: "b) Pase por determinados lugares donde esté la víctima.",
+  justificacion: "Se imponen medidas de alejamiento para proteger a la víctima."
+},
+{
+  pregunta: "La LO 1/2004 establece un protocolo de intervención sanitaria que debe:",
+  opciones: [
+    "a) Ser aplicado exclusivamente en casos de violencia sexual.",
+    "b) Implantarse en centros de salud y hospitales para detectar casos de violencia de género.",
+    "c) Derivarse exclusivamente a clínicas privadas.",
+    "d) Aplicarse solo cuando la víctima lo solicite expresamente."
+  ],
+  correcta: "b) Implantarse en centros de salud y hospitales para detectar casos de violencia de género.",
+  justificacion: "La intervención sanitaria es fundamental para la detección precoz."
+},
+{
+  pregunta: "En materia de empleo público, la LO 1/2004 establece que las mujeres víctimas pueden:",
+  opciones: [
+    "a) Ser trasladadas sin pérdida de derechos económicos o antigüedad.",
+    "b) Exigir la dimisión del superior responsable de su seguridad.",
+    "c) Ser ascendidas automáticamente en su puesto.",
+    "d) Exentar a su unidad o departamento de seguridad laboral."
+  ],
+  correcta: "a) Ser trasladadas sin pérdida de derechos económicos o antigüedad.",
+  justificacion: "La ley prevé medidas para proteger a las víctimas que trabajan en el sector público."
+},
+{
+  pregunta: "La LO 1/2004 distingue entre:",
+  opciones: [
+    "a) Violencia de género y violencia doméstica.",
+    "b) Violencia común y violencia penal.",
+    "c) Violencia activa y pasiva.",
+    "d) Violencia civil y violencia fiscal."
+  ],
+  correcta: "a) Violencia de género y violencia doméstica.",
+  justificacion: "La violencia de género tiene un carácter específico dentro de las relaciones de pareja o expareja."
+},
+{
+  pregunta: "La ley incorpora medidas en el ámbito educativo para:",
+  opciones: [
+    "a) Crear escuelas públicas exclusivas para mujeres.",
+    "b) Incluir contenidos curriculares sobre igualdad y prevención de la violencia en todos los niveles educativos.",
+    "c) Reformar exclusivamente la educación universitaria.",
+    "d) Suscribir convenios con centros educativos extranjeros."
+  ],
+  correcta: "b) Incluir contenidos curriculares sobre igualdad y prevención de la violencia en todos los niveles educativos.",
+  justificacion: "La educación en igualdad es un pilar central para la prevención."
+},
+{
+  pregunta: "Según la LO 1/2004, la publicidad ilícita será sancionada cuando:",
+  opciones: [
+    "a) Muestre mujeres en cualquier contexto comercial.",
+    "b) Utilice la imagen de las mujeres de forma denigrante o discriminatoria.",
+    "c) Sea emitida fuera de los horarios de protección infantil.",
+    "d) Se emita en medios internacionales."
+  ],
+  correcta: "b) Utilice la imagen de las mujeres de forma denigrante o discriminatoria.",
+  justificacion: "La ley prohíbe y sanciona la publicidad sexista o degradante."
+},
+{
+  pregunta: "Las Fuerzas y Cuerpos de Seguridad del Estado tienen entre sus funciones:",
+  opciones: [
+    "a) Solo detener al agresor.",
+    "b) Prevenir, detectar y actuar de forma coordinada en casos de violencia de género.",
+    "c) Establecer sentencias penales.",
+    "d) Acompañar a la víctima únicamente en juicios."
+  ],
+  correcta: "b) Prevenir, detectar y actuar de forma coordinada en casos de violencia de género.",
+  justificacion: "La intervención policial es preventiva, protectora y operativa."
+},
+{
+  pregunta: "Dentro del marco de actuación de la LO 1/2004, las Administraciones Públicas deben:",
+  opciones: [
+    "a) Competir entre sí por la asignación de recursos.",
+    "b) Coordinarse entre sí para garantizar la efectividad de las medidas de protección.",
+    "c) Delegar sus funciones en ONG privadas.",
+    "d) Trasladar todo tipo de procedimientos al ámbito privado."
+  ],
+  correcta: "b) Coordinarse entre sí para garantizar la efectividad de las medidas de protección.",
+  justificacion: "La coordinación institucional es esencial para la protección integral de las víctimas."
+},
+{
+  pregunta: "Según la LO 1/2004, la violencia de género comprende:",
+  opciones: [
+    "a) Solo agresiones físicas.",
+    "b) Violencia física, psicológica, sexual y económica.",
+    "c) Únicamente violencia psicológica.",
+    "d) Exclusivamente la violencia sexual."
+  ],
+  correcta: "b) Violencia física, psicológica, sexual y económica.",
+  justificacion: "La ley reconoce todas estas formas de violencia en el contexto de las relaciones afectivas."
+},
+{
+  pregunta: "La LO 1/2004 establece como principio fundamental:",
+  opciones: [
+    "a) La neutralidad judicial ante las agresiones.",
+    "b) El rechazo absoluto a cualquier forma de violencia de género.",
+    "c) El derecho del agresor a declarar en privado.",
+    "d) La protección exclusiva a víctimas menores de edad."
+  ],
+  correcta: "b) El rechazo absoluto a cualquier forma de violencia de género.",
+  justificacion: "La Ley se fundamenta en la erradicación total de la violencia contra las mujeres."
+},
+{
+  pregunta: "En relación con el uso de la vivienda familiar, la ley prevé que:",
+  opciones: [
+    "a) Se atribuya automáticamente a la víctima sin necesidad de procedimiento judicial.",
+    "b) Se atribuya a la víctima de forma temporal como medida de protección.",
+    "c) Se subaste para compensar a ambas partes.",
+    "d) Se entregue al agresor si lo solicita."
+  ],
+  correcta: "b) Se atribuya a la víctima de forma temporal como medida de protección.",
+  justificacion: "Es una de las medidas civiles previstas para proteger a la víctima."
+},
+{
+  pregunta: "Según la LO 1/2004, los servicios de asistencia social incluyen:",
+  opciones: [
+    "a) Exclusivamente asesoramiento legal.",
+    "b) Información, orientación y apoyo social integral.",
+    "c) Recursos penitenciarios para agresores.",
+    "d) Obligación de mediación entre víctima y agresor."
+  ],
+  correcta: "b) Información, orientación y apoyo social integral.",
+  justificacion: "Se garantiza un servicio de apoyo más allá de la asistencia jurídica."
+},
+{
+  pregunta: "¿Qué tipo de medidas pueden adoptar los jueces para evitar el contacto entre agresor y víctima?",
+  opciones: [
+    "a) Prohibición de salida del país para la víctima.",
+    "b) Prohibición de aproximación y comunicación con la víctima.",
+    "c) Obligación de convivencia temporal supervisada.",
+    "d) Readmisión laboral obligatoria de la víctima."
+  ],
+  correcta: "b) Prohibición de aproximación y comunicación con la víctima.",
+  justificacion: "Las medidas de alejamiento son clave para la protección efectiva."
+},
+{
+  pregunta: "La LO 1/2004 modifica la Ley de Enjuiciamiento Criminal para introducir:",
+  opciones: [
+    "a) La obligación de mediación preprocesal.",
+    "b) La figura de la orden de protección.",
+    "c) La pena de cadena perpetua revisable.",
+    "d) La posibilidad de juicio sin presencia de la víctima."
+  ],
+  correcta: "b) La figura de la orden de protección.",
+  justificacion: "Se incorpora el artículo 544 ter en la LECrim como parte de esta ley."
+},
+{
+  pregunta: "El artículo 30 de la LO 1/2004 se refiere a la actuación de:",
+  opciones: [
+    "a) Servicios educativos especializados.",
+    "b) El sistema sanitario frente a la violencia de género.",
+    "c) Medios de comunicación escritos.",
+    "d) Áreas de protección de datos personales."
+  ],
+  correcta: "b) El sistema sanitario frente a la violencia de género.",
+  justificacion: "Este artículo establece medidas y protocolos para la detección y asistencia sanitaria."
+},
+{
+  pregunta: "La ley prevé que los menores expuestos a violencia de género:",
+  opciones: [
+    "a) Solo son protegidos si sufren daño físico directo.",
+    "b) Son considerados víctimas también de violencia de género.",
+    "c) Deben permanecer con el progenitor agresor para mantener el vínculo familiar.",
+    "d) No tienen acceso a medidas de protección social."
+  ],
+  correcta: "b) Son considerados víctimas también de violencia de género.",
+  justificacion: "La ley reconoce el impacto en menores y les otorga protección específica."
+},
+{
+  pregunta: "El artículo 26 de la LO 1/2004 establece medidas en materia de:",
+  opciones: [
+    "a) Formación universitaria exclusivamente.",
+    "b) Planes de acción social para mujeres inmigrantes víctimas.",
+    "c) Evaluación de los agresores para reducir sus penas.",
+    "d) Representación parlamentaria femenina obligatoria."
+  ],
+  correcta: "b) Planes de acción social para mujeres inmigrantes víctimas.",
+  justificacion: "Se presta especial atención a las mujeres inmigrantes por su situación de vulnerabilidad."
+},
+{
+  pregunta: "En materia laboral, la ley garantiza a las víctimas:",
+  opciones: [
+    "a) Acceso preferente a puestos de funcionario.",
+    "b) Reducción de la jornada con mantenimiento de derechos.",
+    "c) Cambio obligatorio a trabajo remoto.",
+    "d) Pensión estatal vitalicia."
+  ],
+  correcta: "b) Reducción de la jornada con mantenimiento de derechos.",
+  justificacion: "La ley permite adaptar condiciones laborales para la protección de la víctima."
+},
+{
+  pregunta: "Según la LO 1/2004, la publicidad que utilice a la mujer con carácter vejatorio o discriminatorio será:",
+  opciones: [
+    "a) Justificada si es para fines educativos.",
+    "b) Sancionada como publicidad ilícita.",
+    "c) Permitida en horario especial.",
+    "d) Avalada por los observatorios de comunicación."
+  ],
+  correcta: "b) Sancionada como publicidad ilícita.",
+  justificacion: "La ley protege a la mujer de representaciones denigrantes en medios públicos."
+},
+{
+  pregunta: "La tutela judicial efectiva de las víctimas incluye:",
+  opciones: [
+    "a) El derecho a establecer la pena del agresor.",
+    "b) Ser oídas antes y durante el proceso judicial.",
+    "c) La posibilidad de rechazar toda protección.",
+    "d) La obligación de asistir a todas las diligencias."
+  ],
+  correcta: "b) Ser oídas antes y durante el proceso judicial.",
+  justificacion: "La ley garantiza la participación activa de la víctima en el proceso."
+},
+{
+  pregunta: "Los programas de intervención en centros penitenciarios para agresores tienen como objetivo:",
+  opciones: [
+    "a) Castigar duramente a los agresores en prisión.",
+    "b) Reeducar y eliminar el comportamiento violento.",
+    "c) Separarlos de la sociedad durante largos periodos.",
+    "d) Facilitar su libertad condicional sin juicio."
+  ],
+  correcta: "b) Reeducar y eliminar el comportamiento violento.",
+  justificacion: "La ley promueve la reeducación como parte de la lucha contra la reincidencia."
+},
+{
+  pregunta: "¿Qué artículo de la Ley Orgánica 1/2004 define el concepto de violencia de género?",
+  opciones: [
+    "a) Artículo 5.",
+    "b) Artículo 1.",
+    "c) Artículo 10.",
+    "d) Disposición adicional primera."
+  ],
+  correcta: "b) Artículo 1.",
+  justificacion: "El artículo 1 define la violencia de género y su ámbito de aplicación."
+},
+{
+  pregunta: "Las campañas institucionales de sensibilización promovidas por la Ley se orientan a:",
+  opciones: [
+    "a) Reducir el papel de las fuerzas policiales.",
+    "b) Crear conciencia social y promover un cambio cultural.",
+    "c) Garantizar el derecho de audiencia del agresor.",
+    "d) Intervenir solo en sectores rurales."
+  ],
+  correcta: "b) Crear conciencia social y promover un cambio cultural.",
+  justificacion: "La sensibilización y educación son parte clave en la prevención."
+},
+{
+  pregunta: "Según la LO 1/2004, ¿quién puede iniciar la tramitación de una orden de protección?",
+  opciones: [
+    "a) Solo el abogado de la víctima.",
+    "b) La víctima, sus representantes legales, el Ministerio Fiscal o cualquier persona con conocimiento de los hechos.",
+    "c) Exclusivamente el juez penal.",
+    "d) Nadie sin sentencia firme."
+  ],
+  correcta: "b) La víctima, sus representantes legales, el Ministerio Fiscal o cualquier persona con conocimiento de los hechos.",
+  justificacion: "La ley permite la participación activa de terceros para proteger a la víctima."
+},
+{
+  pregunta: "El artículo 48 de la LO 1/2004 introduce modificaciones en:",
+  opciones: [
+    "a) La Ley Orgánica del Poder Judicial.",
+    "b) El Código Penal respecto a penas por violencia de género.",
+    "c) La Ley sobre infracciones y sanciones en el orden social.",
+    "d) El Estatuto Básico del Empleado Público."
+  ],
+  correcta: "b) El Código Penal respecto a penas por violencia de género.",
+  justificacion: "Este artículo introduce cambios en el CP para endurecer las penas relacionadas."
+},
+{
+  pregunta: "La LO 1/2004 considera como una medida de apoyo económico:",
+  opciones: [
+    "a) La cancelación de deudas bancarias para la víctima.",
+    "b) Subsidios y prestaciones específicas para el sostenimiento económico.",
+    "c) La entrega de vivienda gratuita sin requisitos.",
+    "d) Una compensación millonaria automática del Estado."
+  ],
+  correcta: "b) Subsidios y prestaciones específicas para el sostenimiento económico.",
+  justificacion: "El objetivo es dar soporte económico inmediato a víctimas en riesgo."
+},
+{
+  pregunta: "La formación obligatoria para el personal sanitario incluye:",
+  opciones: [
+    "a) Temas avanzados de cirugía estética.",
+    "b) Contenidos para la identificación de señales de violencia de género.",
+    "c) Métodos de investigación criminal profunda.",
+    "d) Prácticas de derecho penal a nivel médico."
+  ],
+  correcta: "b) Contenidos para la identificación de señales de violencia de género.",
+  justificacion: "El personal sanitario es clave para detectar tanto síntomas físicos como psicológicos."
+},
+{
+  pregunta: "Según la LO 1/2004, ¿qué permite el artículo 544 ter de la LECrim?",
+  opciones: [
+    "a) Aplazar el juicio a solicitud del agresor.",
+    "b) Adoptar una orden de protección urgente a favor de la víctima.",
+    "c) Suspender el procedimiento penal en periodo de conciliación.",
+    "d) Transferir la causa a un tribunal extranjero."
+  ],
+  correcta: "b) Adoptar una orden de protección urgente a favor de la víctima.",
+  justificacion: "El artículo 544 ter es el instrumento clave para la protección inmediata."
+},
+{
+  pregunta: "Una de las finalidades de la LO 1/2004 en materia judicial es:",
+  opciones: [
+    "a) Garantizar que todos los juicios sean públicos.",
+    "b) Asegurar la tutela judicial efectiva de la víctima.",
+    "c) Suspender cualquier medida penal con intervención de la víctima.",
+    "d) Permitir acuerdos de mediación entre agresor y víctima."
+  ],
+  correcta: "b) Asegurar la tutela judicial efectiva de la víctima.",
+  justificacion: "La ley contempla diferentes mecanismos para garantizar la protección jurídica."
+},
+{
+  pregunta: "La LO 1/2004 establece que la formación en igualdad debe dirigirse específicamente a:",
+  opciones: [
+    "a) Los alumnos de educación infantil.",
+    "b) Personal educativo, sanitario, judicial, policial y social.",
+    "c) Exclusivamente a las fuerzas policiales especializadas.",
+    "d) Profesionales de medios audiovisuales únicamente."
+  ],
+  correcta: "b) Personal educativo, sanitario, judicial, policial y social.",
+  justificacion: "La formación transversal es uno de los pilares de la ley."
+},
+{
+  pregunta: "¿Qué artículo de la LO 1/2004 regula el principio de transversalidad en la igualdad de género?",
+  opciones: [
+    "a) Artículo 2.",
+    "b) Artículo 5.",
+    "c) Artículo 9.",
+    "d) Artículo 12."
+  ],
+  correcta: "c) Artículo 9.",
+  justificacion: "El principio de transversalidad se recoge para que todas las políticas públicas integren la perspectiva de género."
+},
+{
+  pregunta: "La medida de alejamiento entre agresor y víctima puede incluir:",
+  opciones: [
+    "a) Prohibición de permanecer en el domicilio familiar.",
+    "b) Obligación de convivencia con supervisión judicial.",
+    "c) Reducción de pena si se pacta sin abogado.",
+    "d) Traslado forzoso de la víctima a otro país."
+  ],
+  correcta: "a) Prohibición de permanecer en el domicilio familiar.",
+  justificacion: "Las medidas de protección incluyen la expulsión del agresor de la vivienda."
+},
+{
+  pregunta: "En caso de violencia de género, la patria potestad sobre los hijos menores puede:",
+  opciones: [
+    "a) Ser suspendida o limitada en función del interés del menor.",
+    "b) Ser irrevocablemente cedida al agresor.",
+    "c) Ser eliminada sin proceso judicial.",
+    "d) Ser compartida obligatoriamente para fomentar la rehabilitación familiar."
+  ],
+  correcta: "a) Ser suspendida o limitada en función del interés del menor.",
+  justificacion: "El juez puede adoptar medidas civiles para proteger a los menores expuestos a violencia."
+},
+{
+  pregunta: "La LO 1/2004 fomenta la participación de los medios de comunicación en:",
+  opciones: [
+    "a) La difusión de valores de igualdad entre mujeres y hombres.",
+    "b) El juicio público de agresores sin intervención judicial.",
+    "c) La difusión obligatoria de imágenes de víctimas.",
+    "d) La creación de contenidos solo para adultos."
+  ],
+  correcta: "a) La difusión de valores de igualdad entre mujeres y hombres.",
+  justificacion: "Los medios desempeñan un papel clave en la sensibilización."
+},
+{
+  pregunta: "Entre las medidas policiales previstas en la LO 1/2004 está la de:",
+  opciones: [
+    "a) Vigilar exclusivamente al agresor sin participación del juez.",
+    "b) Realizar seguimientos preventivos a las víctimas en situación de riesgo.",
+    "c) Detener a la víctima si ésta se niega a denunciar.",
+    "d) Crear unidades mixtas con personal militar."
+  ],
+  correcta: "b) Realizar seguimientos preventivos a las víctimas en situación de riesgo.",
+  justificacion: "Se implementan mecanismos policiales para prevención y protección."
+},
+{
+  pregunta: "La LO 1/2004 garantiza a las víctimas inmigrantes en situación irregular que:",
+  opciones: [
+    "a) Serán expulsadas tras el juicio.",
+    "b) Pueden obtener la autorización de residencia por circunstancias excepcionales.",
+    "c) No podrán acceder a servicios sociales básicos.",
+    "d) Necesitan un trabajo fijo para poder denunciar."
+  ],
+  correcta: "b) Pueden obtener la autorización de residencia por circunstancias excepcionales.",
+  justificacion: "La ley garantiza protección y derechos, incluso en situación irregular."
+},
+{
+  pregunta: "La ley obliga a las Administraciones públicas a intervenir en casos de violencia de género:",
+  opciones: [
+    "a) Únicamente a petición de la víctima.",
+    "b) De oficio o a solicitud de la víctima o terceros.",
+    "c) Solo si hay una denuncia penal previa.",
+    "d) Únicamente cuando haya lesiones graves."
+  ],
+  correcta: "b) De oficio o a solicitud de la víctima o terceros.",
+  justificacion: "La intervención institucional es inmediata y prioritaria."
+},
+{
+  pregunta: "En el proceso penal por violencia de género, la LO 1/2004 establece que la víctima:",
+  opciones: [
+    "a) Puede renunciar a la protección judicial en cualquier momento.",
+    "b) Tendrá derecho a conocer el estado del proceso y la situación del agresor.",
+    "c) Debe declarar públicamente en todos los casos.",
+    "d) Está obligada a acudir a terapia psicológica obligatoria."
+  ],
+  correcta: "b) Tendrá derecho a conocer el estado del proceso y la situación del agresor.",
+  justificacion: "La información procesal es un derecho fundamental para proteger a la víctima."
+},
+{
+  pregunta: "Según la LO 1/2004, las víctimas de violencia de género que tengan hijos menores pueden:",
+  opciones: [
+    "a) Tener acceso preferente a becas educativas para sus hijos.",
+    "b) Acceder automáticamente a la patria potestad exclusiva.",
+    "c) Solicitar la suspensión de visitas del agresor a los menores.",
+    "d) Declarar sin presencia del agresor ante cualquier juez."
+  ],
+  correcta: "c) Solicitar la suspensión de visitas del agresor a los menores.",
+  justificacion: "El juez puede adoptar esta medida para la protección de los menores."
+},
+{
+  pregunta: "La LO 1/2004 prevé que la víctima pueda acceder al empleo público mediante:",
+  opciones: [
+    "a) Un cupo especial de acceso directo.",
+    "b) Movilidad interadministrativa con reserva de puesto.",
+    "c) Exención del proceso de oposición.",
+    "d) Nombramiento automático como personal laboral."
+  ],
+  correcta: "b) Movilidad interadministrativa con reserva de puesto.",
+  justificacion: "Se facilita el traslado sin pérdida de empleo para proteger a la víctima."
+},
+{
+  pregunta: "La Ley Orgánica 1/2004 recoge que el agresor condenado por violencia de género debe:",
+  opciones: [
+    "a) Cumplir penas alternativas a la cárcel si así lo decide la víctima.",
+    "b) Participar en programas de reeducación y tratamiento psicológico si así lo determina el juez.",
+    "c) Trabajar obligatoriamente en centros sociales de mujeres.",
+    "d) Renunciar a su derecho a recursos judiciales."
+  ],
+  correcta: "b) Participar en programas de reeducación y tratamiento psicológico si así lo determina el juez.",
+  justificacion: "El tratamiento psicológico forma parte de las medidas para evitar la reincidencia."
+},
+{
+  pregunta: "¿Qué acción contempla la ley para el seguimiento de las medidas cautelares?",
+  opciones: [
+    "a) Creación de un registro de víctimas a nivel nacional.",
+    "b) Imposición de pulseras electrónicas o sistemas de geolocalización para el agresor.",
+    "c) Videovigilancia doméstica obligatoria.",
+    "d) Incorporación de agentes encubiertos en el domicilio."
+  ],
+  correcta: "b) Imposición de pulseras electrónicas o sistemas de geolocalización para el agresor.",
+  justificacion: "Estas medidas se utilizan para garantizar el cumplimiento de las órdenes de alejamiento."
+},
+{
+  pregunta: "La LO 1/2004 promueve la creación de:",
+  opciones: [
+    "a) Fiscalías especializadas en violencia de género.",
+    "b) Centros de internamiento especiales para mujeres agresoras.",
+    "c) Un código secreto para la comunicación entre víctima y policía.",
+    "d) Organismos internacionales de investigación privada."
+  ],
+  correcta: "a) Fiscalías especializadas en violencia de género.",
+  justificacion: "Se crean órganos judiciales y fiscales especializados para garantizar un tratamiento adecuado."
+},
+{
+  pregunta: "Una de las medidas de protección social para la víctima de violencia de género es:",
+  opciones: [
+    "a) Acceso a crédito financiero sin aval.",
+    "b) Prestación económica específica para mujeres sin recursos.",
+    "c) Ayuda legal para el agresor.",
+    "d) Servicio exclusivo de protección en domicilios privados."
+  ],
+  correcta: "b) Prestación económica específica para mujeres sin recursos.",
+  justificacion: "La ley contempla medidas económicas para asegurar la independencia de la víctima."
+},
+{
+  pregunta: "Según la LO 1/2004, el sistema educativo debe:",
+  opciones: [
+    "a) Incluir educación en igualdad en todos los niveles educativos.",
+    "b) Formar docentes exclusivamente en disciplina penal.",
+    "c) Homogeneizar las políticas educativas internacionales.",
+    "d) Crear centros especializados para víctimas menores."
+  ],
+  correcta: "a) Incluir educación en igualdad en todos los niveles educativos.",
+  justificacion: "La educación en igualdad es clave para prevenir la violencia desde etapas tempranas."
+},
+{
+  pregunta: "Las disposiciones de la LO 1/2004 afectan a:",
+  opciones: [
+    "a) Únicamente al estado civil de las personas.",
+    "b) Todos los ámbitos de actuación: sanitario, educativo, social, penal y judicial.",
+    "c) Solo a la administración pública central.",
+    "d) La política exterior únicamente."
+  ],
+  correcta: "b) Todos los ámbitos de actuación: sanitario, educativo, social, penal y judicial.",
+  justificacion: "La protección integral exige actuación en múltiples ámbitos."
+},
+{
+  pregunta: "Una de las principales innovaciones de la LO 1/2004 es:",
+  opciones: [
+    "a) La despenalización de las faltas por agresión leve.",
+    "b) La creación de juzgados exclusivos de violencia sobre la mujer.",
+    "c) La eliminación de la figura del Ministerio Fiscal.",
+    "d) La supresión del derecho a la defensa del agresor."
+  ],
+  correcta: "b) La creación de juzgados exclusivos de violencia sobre la mujer.",
+  justificacion: "Estos juzgados especializados garantizan una atención específica y profesionalizada."
+},
+{
+  pregunta: "Según el artículo 19 de la LO 1/2004, las víctimas de violencia de género tienen derecho a:",
+  opciones: [
+    "a) Solicitar asistencia letrada solo después de la sentencia.",
+    "b) Ser informadas de forma verbal y escrita sobre sus derechos y recursos disponibles.",
+    "c) Acceder a un abogado privado obligatoriamente.",
+    "d) Renunciar a toda intervención judicial desde el primer momento."
+  ],
+  correcta: "b) Ser informadas de forma verbal y escrita sobre sus derechos y recursos disponibles.",
+  justificacion: "El artículo 19 garantiza el derecho a la información clara y accesible desde el inicio del proceso."
+},
+{
+  pregunta: "La orden de protección puede incluir medidas de naturaleza:",
+  opciones: [
+    "a) Únicamente penal.",
+    "b) Penal, civil y social.",
+    "c) Administrativa exclusivamente.",
+    "d) Penal y económica exclusivamente."
+  ],
+  correcta: "b) Penal, civil y social.",
+  justificacion: "La orden de protección contempla medidas integrales para la protección de la víctima."
+},
+{
+  pregunta: "La formación obligatoria prevista por la LO 1/2004 para profesionales del ámbito judicial tiene como objetivo:",
+  opciones: [
+    "a) Garantizar la presencia de mujeres en todos los órganos judiciales.",
+    "b) Dotar de herramientas a los operadores jurídicos para comprender y atender la violencia de género.",
+    "c) Exigir la especialización de los jueces únicamente.",
+    "d) Reforzar la vía penal frente a la civil."
+  ],
+  correcta: "b) Dotar de herramientas a los operadores jurídicos para comprender y atender la violencia de género.",
+  justificacion: "La formación busca mejorar la respuesta institucional desde una perspectiva de género."
+},
+{
+  pregunta: "La protección integral prevista en la LO 1/2004 implica intervención en:",
+  opciones: [
+    "a) Ámbitos penal, civil, laboral, de servicios sociales y sanitario.",
+    "b) Exclusivamente en materia penal.",
+    "c) Únicamente en servicios sociales y educativos.",
+    "d) Solo en el ámbito local."
+  ],
+  correcta: "a) Ámbitos penal, civil, laboral, de servicios sociales y sanitario.",
+  justificacion: "Todas estas áreas están contempladas en la estrategia de protección integral."
+},
+{
+  pregunta: "Las víctimas de violencia de género tienen acceso preferente a:",
+  opciones: [
+    "a) Subvenciones agrarias.",
+    "b) Viviendas protegidas del parque público.",
+    "c) Becas universitarias obligatorias.",
+    "d) Puestos fijos en la Administración General del Estado."
+  ],
+  correcta: "b) Viviendas protegidas del parque público.",
+  justificacion: "La ley contempla facilitar el acceso a vivienda segura como medida de protección."
+},
+{
+  pregunta: "El artículo 20 de la LO 1/2004 establece medidas de protección en materia de:",
+  opciones: [
+    "a) Seguridad social y régimen estadístico.",
+    "b) Derechos laborales y empleo.",
+    "c) Derechos de propiedad industrial.",
+    "d) Exención fiscal para las víctimas."
+  ],
+  correcta: "b) Derechos laborales y empleo.",
+  justificacion: "El artículo 20 introduce cambios en el Estatuto de los Trabajadores y otras normas laborales."
+},
+{
+  pregunta: "Según la LO 1/2004, el agresor condenado por violencia de género puede recibir una pena agravada si:",
+  opciones: [
+    "a) La víctima lo solicita expresamente.",
+    "b) Reincide o ha cometido el delito en presencia de menores.",
+    "c) El delito se comete en el extranjero.",
+    "d) Está en proceso de separación legal."
+  ],
+  correcta: "b) Reincide o ha cometido el delito en presencia de menores.",
+  justificacion: "Estas circunstancias agravan la pena según las reformas del Código Penal."
+},
+{
+  pregunta: "El artículo 27 de la LO 1/2004 obliga a los poderes públicos a:",
+  opciones: [
+    "a) Reducir el número de organismos dedicados a igualdad.",
+    "b) Elaborar estadísticas y estudios periódicos sobre la violencia de género.",
+    "c) Crear institutos privados de investigación judicial.",
+    "d) Subvencionar únicamente a entidades religiosas."
+  ],
+  correcta: "b) Elaborar estadísticas y estudios periódicos sobre la violencia de género.",
+  justificacion: "Para mejorar las políticas públicas, la ley obliga a recopilar datos fiables."
+},
+{
+  pregunta: "La LO 1/2004 establece que las campañas institucionales deben tener como fin:",
+  opciones: [
+    "a) Captar fondos para organizaciones feministas.",
+    "b) Sensibilizar a la sociedad y promover valores de igualdad de género.",
+    "c) Difundir información judicial sobre el agresor.",
+    "d) Denunciar a medios que no hablan de violencia de género."
+  ],
+  correcta: "b) Sensibilizar a la sociedad y promover valores de igualdad de género.",
+  justificacion: "La sensibilización social es clave para prevenir nuevos casos de violencia."
+},
+{
+  pregunta: "En el ámbito judicial, la LO 1/2004 ha introducido:",
+  opciones: [
+    "a) La obligatoriedad de resolver todos los casos en menos de cinco días.",
+    "b) La especialización de órganos judiciales en violencia sobre la mujer.",
+    "c) La eliminación de la figura del Ministerio Fiscal.",
+    "d) El traslado de competencias al Tribunal Constitucional."
+  ],
+  correcta: "b) La especialización de órganos judiciales en violencia sobre la mujer.",
+  justificacion: "Uno de los aportes clave de la ley fue crear juzgados y fiscalías especializadas."
+},
+{
+  pregunta: "¿Qué artículo regula el derecho a la asistencia social integral de las víctimas?",
+  opciones: [
+    "a) Artículo 17.",
+    "b) Artículo 30.",
+    "c) Artículo 44.",
+    "d) Artículo 5."
+  ],
+  correcta: "a) Artículo 17.",
+  justificacion: "Este artículo garantiza el acceso a servicios básicos de apoyo para las víctimas."
+},
+{
+  pregunta: "En casos de violencia de género, la LO 1/2004 permite solicitar:",
+  opciones: [
+    "a) Pensiones vitalicias automáticas y permanentes.",
+    "b) Una orden de protección que incluya medidas penales y civiles.",
+    "c) El cambio obligatorio de domicilio del agresor sin proceso judicial.",
+    "d) El derecho a custodia automática de los hijos sin valoración judicial."
+  ],
+  correcta: "b) Una orden de protección que incluya medidas penales y civiles.",
+  justificacion: "La orden de protección es una herramienta integral que incluye varias medidas simultáneas."
+},
+{
+  pregunta: "La formación recogida en la LO 1/2004 para agentes de seguridad persigue:",
+  opciones: [
+    "a) Aumentar el número de detenciones y cacheos.",
+    "b) Capacitar en detección, atención y acompañamiento de víctimas de violencia de género.",
+    "c) Habilitar a los agentes para actuar como abogados.",
+    "d) Formar solo a personal militar y peritos judiciales."
+  ],
+  correcta: "b) Capacitar en detección, atención y acompañamiento de víctimas de violencia de género.",
+  justificacion: "La capacitación del personal policial es clave para la protección efectiva."
+},
+{
+  pregunta: "El objetivo principal del Título III de la LO 1/2004 es:",
+  opciones: [
+    "a) Establecer medidas penales contra el agresor.",
+    "b) Reconocer derechos laborales y de seguridad social a las víctimas.",
+    "c) Regular la organización de la sociedad civil.",
+    "d) Establecer el procedimiento para la denuncia anónima."
+  ],
+  correcta: "b) Reconocer derechos laborales y de seguridad social a las víctimas.",
+  justificacion: "El Título III regula las medidas de protección socioeconómica."
+},
+{
+  pregunta: "La LO 1/2004 introduce reformas legislativas en:",
+  opciones: [
+    "a) El Código Penal, la LECrim y la Ley General de la Seguridad Social.",
+    "b) Únicamente en el Código Civil.",
+    "c) La Ley de Seguridad Ciudadana exclusivamente.",
+    "d) La Constitución Española."
+  ],
+  correcta: "a) El Código Penal, la LECrim y la Ley General de la Seguridad Social.",
+  justificacion: "La LO 1/2004 modifica varias leyes para adaptar el ordenamiento a la protección integral."
+},
+{
+  pregunta: "Según la LO 1/2004, las campañas en medios deben evitar:",
+  opciones: [
+    "a) Emitir información crítica sobre el gobierno.",
+    "b) La difusión de estereotipos de subordinación de las mujeres a los hombres.",
+    "c) Mostrar estadísticas de agresores reincidentes.",
+    "d) Reproducir informaciones sobre sentencias judiciales en curso."
+  ],
+  correcta: "b) La difusión de estereotipos de subordinación de las mujeres a los hombres.",
+  justificacion: "Los medios deben fomentar la igualdad de género."
+},
+{
+  pregunta: "Una de las reformas penales de la LO 1/2004 introduce:",
+  opciones: [
+    "a) La supresión del delito de amenazas en el ámbito doméstico.",
+    "b) Una agravante por violencia contra la mujer en el Código Penal.",
+    "c) La eliminación de penas menores en caso de reincidencia.",
+    "d) La reducción del tiempo máximo de prisión para agresores."
+  ],
+  correcta: "b) Una agravante por violencia contra la mujer en el Código Penal.",
+  justificacion: "Se han endurecido penas para este tipo de violencia."
+},
+{
+  pregunta: "¿Cuál de los siguientes colectivos recibe protección específica según la LO 1/2004?",
+  opciones: [
+    "a) Mujeres inmigrantes en situación irregular.",
+    "b) Varones víctimas de violencia doméstica.",
+    "c) Personas mayores de 60 años involucradas en litigios civiles.",
+    "d) Hijos varones de agresores."
+  ],
+  correcta: "a) Mujeres inmigrantes en situación irregular.",
+  justificacion: "Se reconoce su especial vulnerabilidad y se prevén medidas específicas para su protección."
+},
+{
+  pregunta: "En el ámbito de la publicidad en medios, la LO 1/2004 exige:",
+  opciones: [
+    "a) Eliminar todo contenido relacionado con violencia.",
+    "b) No usar la imagen de la mujer con carácter discriminatorio o vejatorio.",
+    "c) Que las campañas educativas sean exclusivamente estatales.",
+    "d) Que toda publicidad pase por una comisión judicial."
+  ],
+  correcta: "b) No usar la imagen de la mujer con carácter discriminatorio o vejatorio.",
+  justificacion: "Para evitar la perpetuación de estereotipos sexistas en medios públicos o privados."
+},
+{
+  pregunta: "La Ley 1/2004 prevé que, en caso de sentencia condenatoria por violencia de género:",
+  opciones: [
+    "a) Se prive automáticamente al agresor de todos los derechos civiles.",
+    "b) Se puedan adoptar medidas en el ámbito civil como la suspensión de la patria potestad.",
+    "c) Se exonere a la víctima de declarar en juicio.",
+    "d) Se multe a la víctima si decide retirar la denuncia."
+  ],
+  correcta: "b) Se puedan adoptar medidas en el ámbito civil como la suspensión de la patria potestad.",
+  justificacion: "La ley permite adoptar medidas civiles paralelas a la condena penal para proteger a los menores."
+},
+{
+  pregunta: "El artículo 3 de la LO 1/2004 establece el derecho de las mujeres a:",
+  opciones: [
+    "a) Cotizar doblemente a la Seguridad Social.",
+    "b) Vivir en igualdad, seguridad y libertad.",
+    "c) Cobrar una paga vitalicia por violencia de género.",
+    "d) Sufragar gastos judiciales a través de subvenciones privadas."
+  ],
+  correcta: "b) Vivir en igualdad, seguridad y libertad.",
+  justificacion: "El artículo 3 reconoce el derecho fundamental a vivir libres de violencia."
+},
+{
+  pregunta: "La LO 1/2004 obliga a los poderes públicos a garantizar:",
+  opciones: [
+    "a) La protección a las víctimas únicamente en ciudades grandes.",
+    "b) La atención y recuperación integral de las víctimas.",
+    "c) Una defensa legal a cargo de los colegios de abogados privados.",
+    "d) La tramitación de casos solo a través de ONGs acreditadas."
+  ],
+  correcta: "b) La atención y recuperación integral de las víctimas.",
+  justificacion: "La ley estipula una protección integral que va más allá de lo penal."
+},
+{
+  pregunta: "En el apartado sanitario, la LO 1/2004 promueve:",
+  opciones: [
+    "a) La especialización hospitalaria en ginecología y pediatría.",
+    "b) La detección precoz y asistencia sanitaria especializada en violencia de género.",
+    "c) La privatización del seguimiento médico.",
+    "d) La desaparición de los informes médicos para las denuncias."
+  ],
+  correcta: "b) La detección precoz y asistencia sanitaria especializada en violencia de género.",
+  justificacion: "La formación del personal sanitario es clave en la detección temprana."
+},
+{
+  pregunta: "¿Qué papel tienen los medios de comunicación según la LO 1/2004?",
+  opciones: [
+    "a) Pueden publicar entrevistas con víctimas sin autorización.",
+    "b) Deben promover la igualdad y evitar la difusión de contenidos estereotipados.",
+    "c) Deben emitir imágenes explícitas de casos reales para sensibilizar.",
+    "d) Únicamente deben colaborar en campañas del Ministerio del Interior."
+  ],
+  correcta: "b) Deben promover la igualdad y evitar la difusión de contenidos estereotipados.",
+  justificacion: "Los medios son agentes clave en la transformación social."
+},
+{
+  pregunta: "El artículo 15 de la LO 1/2004 se refiere a:",
+  opciones: [
+    "a) La asistencia letrada gratuita.",
+    "b) Los derechos de los menores expuestos a violencia de género.",
+    "c) La atención sanitaria a mujeres embarazadas víctimas.",
+    "d) La posibilidad de renunciar a la protección judicial."
+  ],
+  correcta: "b) Los derechos de los menores expuestos a violencia de género.",
+  justificacion: "El artículo 15 establece medidas de protección y asistencia para los menores."
+},
+{
+  pregunta: "La LO 1/2004 incluye medidas de carácter preventivo en el ámbito:",
+  opciones: [
+    "a) Judicial únicamente.",
+    "b) Educativo, sensibilizador y cultural.",
+    "c) Administrativo de gestión tributaria.",
+    "d) Militar en zonas de conflicto."
+  ],
+  correcta: "b) Educativo, sensibilizador y cultural.",
+  justificacion: "La prevención es uno de los pilares fundamentales de esta ley integral."
+},
+{
+  pregunta: "El artículo 33 de la Ley 1/2004 se ocupa de:",
+  opciones: [
+    "a) La suspensión del juicio a solicitud de la víctima.",
+    "b) La intervención de servicios sociales especializados.",
+    "c) La retirada de patria potestad en casos graves.",
+    "d) La consulta obligatoria de antecedentes policiales por parte de la víctima."
+  ],
+  correcta: "b) La intervención de servicios sociales especializados.",
+  justificacion: "Este artículo regula el apoyo social necesario para las víctimas."
+},
+{
+  pregunta: "Dentro de las medidas de protección social, la ley prevé:",
+  opciones: [
+    "a) La anulabilidad de contratos matrimoniales.",
+    "b) Ayudas económicas para facilitar la autonomía de la víctima.",
+    "c) La concesión de trabajos protegidos en la empresa del agresor.",
+    "d) La expropiación de bienes del agresor sin proceso judicial."
+  ],
+  correcta: "b) Ayudas económicas para facilitar la autonomía de la víctima.",
+  justificacion: "Las medidas económicas buscan evitar la dependencia de la víctima respecto al agresor."
+},
+{
+  pregunta: "La LO 1/2004 recoge la obligación de los operadores jurídicos de:",
+  opciones: [
+    "a) Tener formación específica en violencia de género.",
+    "b) Prescindir de la víctima si esta no acepta las medidas.",
+    "c) Redactar sentencias sin intervención del Ministerio Fiscal.",
+    "d) Permitir la intermediación privada en procesos judiciales."
+  ],
+  correcta: "a) Tener formación específica en violencia de género.",
+  justificacion: "La formación es básica para un tratamiento adecuado del fenómeno."
+},
+{
+  pregunta: "Los Juzgados de Violencia sobre la Mujer tienen competencia exclusiva en:",
+  opciones: [
+    "a) Delitos sexuales entre menores.",
+    "b) Delitos cometidos contra la mujer por pareja o expareja.",
+    "c) Violencia en todos los ámbitos familiares.",
+    "d) Disputas de herencia entre familiares directos."
+  ],
+  correcta: "b) Delitos cometidos contra la mujer por pareja o expareja.",
+  justificacion: "Estos juzgados se centran en delitos relacionados con la violencia de género."
+},
+{
+  pregunta: "¿Cuál de las siguientes afirmaciones es correcta según la LO 1/2004?",
+  opciones: [
+    "a) La víctima puede solicitar la nulidad de la condena si se reconcilia con el agresor.",
+    "b) Los menores expuestos a la violencia se consideran víctimas directas.",
+    "c) Las víctimas solo tienen derecho a asistencia si presentan daños físicos graves.",
+    "d) La ley solo se aplica en caso de agresión física demostrada."
+  ],
+  correcta: "b) Los menores expuestos a la violencia se consideran víctimas directas.",
+  justificacion: "La ley protege a todos los afectados por la violencia de género."
+},
+{
+  pregunta: "El artículo 36 de la LO 1/2004 trata sobre:",
+  opciones: [
+    "a) La creación de unidades de vigilancia privada.",
+    "b) La cooperación internacional en la lucha contra la violencia de género.",
+    "c) La autorización de portar armas a víctimas.",
+    "d) La exención de responsabilidad civil para los agresores."
+  ],
+  correcta: "b) La cooperación internacional en la lucha contra la violencia de género.",
+  justificacion: "Se fomenta la colaboración con organismos internacionales para combatir la violencia."
+},
+{
+  pregunta: "En el ámbito laboral, la LO 1/2004 contempla que las víctimas pueden solicitar:",
+  opciones: [
+    "a) Una excedencia sin reserva del puesto.",
+    "b) La suspensión de la relación laboral con reserva de puesto.",
+    "c) La jubilación anticipada como medida de protección.",
+    "d) El despido del agresor sin indemnización."
+  ],
+  correcta: "b) La suspensión de la relación laboral con reserva de puesto.",
+  justificacion: "Esto permite que la víctima se proteja sin perder su empleo."
+},
+{
+  pregunta: "¿Cuál de las siguientes es una medida educativa prevista en la LO 1/2004?",
+  opciones: [
+    "a) Integrar contenidos de igualdad entre sexos en todos los niveles educativos.",
+    "b) Crear escuelas especializadas para agresores que quieran reformarse.",
+    "c) Sancionar a centros que no tengan mayoría femenina.",
+    "d) Exigir que las mujeres estudien únicamente carreras sociales."
+  ],
+  correcta: "a) Integrar contenidos de igualdad entre sexos en todos los niveles educativos.",
+  justificacion: "La ley promueve la educación en valores de igualdad para prevenir conductas violentas."
+},
+{
+  pregunta: "Las víctimas tienen derecho a asistencia jurídica gratuita:",
+  opciones: [
+    "a) Solo si tienen ingresos inferiores al SMI.",
+    "b) Desde el momento en que interponen denuncia o solicitan orden de protección.",
+    "c) Únicamente si el agresor lo permite.",
+    "d) Después de la sentencia firme."
+  ],
+  correcta: "b) Desde el momento en que interponen denuncia o solicitan orden de protección.",
+  justificacion: "Se garantiza el derecho a la defensa desde el primer instante."
+},
+{
+  pregunta: "La LO 1/2004 incorpora una modificación en el Código Penal para:",
+  opciones: [
+    "a) Derogar la pena de alejamiento.",
+    "b) Tipificar como delito los malos tratos psicológicos.",
+    "c) Suprimir las penas privativas de libertad.",
+    "d) Eliminar el delito de coacciones."
+  ],
+  correcta: "b) Tipificar como delito los malos tratos psicológicos.",
+  justificacion: "Esto se contempla como una forma de violencia de género y se sanciona penalmente."
+},
+{
+  pregunta: "La intervención policial en casos de violencia de género incluye:",
+  opciones: [
+    "a) Asegurar únicamente la integridad física del agresor.",
+    "b) Informar a la víctima sobre recursos disponibles y cómo denunciar.",
+    "c) Mantener la confidencialidad del agresor en todo momento.",
+    "d) Solo intervenir si hay denuncia por parte de un familiar."
+  ],
+  correcta: "b) Informar a la víctima sobre recursos disponibles y cómo denunciar.",
+  justificacion: "La actuación policial debe ser informativa y de acompañamiento."
+},
+{
+  pregunta: "Según la LO 1/2004, ¿qué organismo elabora informes periódicos sobre la evolución de la violencia de género?",
+  opciones: [
+    "a) El Consejo Superior de Investigaciones Científicas.",
+    "b) El Observatorio Estatal de Violencia sobre la Mujer.",
+    "c) El Tribunal de Cuentas.",
+    "d) El Instituto Nacional de Estadística."
+  ],
+  correcta: "b) El Observatorio Estatal de Violencia sobre la Mujer.",
+  justificacion: "Este organismo evalúa el impacto de la ley y la evolución de la violencia de género."
+},
+{
+  pregunta: "Una medida civil que puede adoptar el juez en el marco de la orden de protección es:",
+  opciones: [
+    "a) Prohibición de declarar a la víctima como testigo.",
+    "b) Atribución del uso y disfrute de la vivienda familiar.",
+    "c) Prisión preventiva automática para el agresor.",
+    "d) Retirada de la nacionalidad española del agresor."
+  ],
+  correcta: "b) Atribución del uso y disfrute de la vivienda familiar.",
+  justificacion: "Esta medida protege a la víctima y sus hijos en su hogar."
+},
+{
+  pregunta: "En el ámbito sanitario, la LO 1/2004 obliga a las administraciones a:",
+  opciones: [
+    "a) Crear hospitales exclusivos para víctimas de género.",
+    "b) Establecer protocolos y programas de asistencia sanitaria especializada en violencia de género.",
+    "c) Expedir certificados médicos sin intervención facultativa.",
+    "d) Intervenir únicamente en casos de violencia sexual."
+  ],
+  correcta: "b) Establecer protocolos y programas de asistencia sanitaria especializada en violencia de género.",
+  justificacion: "El personal sanitario debe estar capacitado e integrado en la detección y tratamiento."
+},
+{
+  pregunta: "Una de las modificaciones que introduce la LO 1/2004 en el Código Penal es:",
+  opciones: [
+    "a) La supresión del delito de lesiones.",
+    "b) La tipificación de la violencia habitual en el ámbito doméstico como delito autónomo.",
+    "c) La eliminación del delito de amenazas leves.",
+    "d) La rebaja de penas para agresores primarios."
+  ],
+  correcta: "b) La tipificación de la violencia habitual en el ámbito doméstico como delito autónomo.",
+  justificacion: "El Código Penal se reforma para incluir esta figura específica."
+},
+{
+  pregunta: "¿Cuál de las siguientes funciones corresponde al Observatorio Estatal de Violencia sobre la Mujer?",
+  opciones: [
+    "a) Impartir justicia en casos de violencia de género.",
+    "b) Recoger y analizar datos sobre la violencia de género y proponer medidas de mejora.",
+    "c) Financiar directamente casas de acogida.",
+    "d) Realizar campañas internacionales para promover el turismo."
+  ],
+  correcta: "b) Recoger y analizar datos sobre la violencia de género y proponer medidas de mejora.",
+  justificacion: "Este organismo realiza estudios e informes para mejorar la respuesta institucional."
+},
+{
+  pregunta: "El artículo 22 de la LO 1/2004 establece que:",
+  opciones: [
+    "a) La víctima puede exigir el traslado geográfico del agresor a otra comunidad.",
+    "b) La formación en violencia de género es obligatoria para el personal sanitario, educativo, policial y judicial.",
+    "c) Las víctimas deben acudir a servicios privados para atención psicológica.",
+    "d) La formación es optativa y sujeta a la disponibilidad de recursos."
+  ],
+  correcta: "b) La formación en violencia de género es obligatoria para el personal sanitario, educativo, policial y judicial.",
+  justificacion: "La formación transversal es considerada clave en la ley."
+},
+{
+  pregunta: "Dentro de la protección social, la LO 1/2004 prevé:",
+  opciones: [
+    "a) La emigración forzada de la víctima como medida de seguridad.",
+    "b) El acceso a servicios sociales especializados y ayudas económicas.",
+    "c) El traslado de la patria potestad al Estado.",
+    "d) La ocultación de información sobre casos de violencia."
+  ],
+  correcta: "b) El acceso a servicios sociales especializados y ayudas económicas.",
+  justificacion: "Las víctimas tienen derecho a apoyo económico y social para su recuperación."
+},
+{
+  pregunta: "Según la LO 1/2004, el Ministerio Fiscal tiene la obligación de:",
+  opciones: [
+    "a) Investigar de oficio posibles casos de violencia de género aunque no exista denuncia.",
+    "b) Defender únicamente los intereses del Estado.",
+    "c) Solicitar siempre la pena máxima en estos delitos.",
+    "d) Negociar con el agresor condiciones de libertad."
+  ],
+  correcta: "a) Investigar de oficio posibles casos de violencia de género aunque no exista denuncia.",
+  justificacion: "La intervención del Ministerio Fiscal puede iniciarse sin denuncia directa de la víctima."
+},
+{
+  pregunta: "La LO 1/2004 considera como víctimas directas:",
+  opciones: [
+    "a) Solo a mujeres mayores de edad.",
+    "b) A las mujeres y a los menores bajo su guarda o custodia.",
+    "c) A los hombres que sufran agresión por otras razones.",
+    "d) A los familiares del agresor."
+  ],
+  correcta: "b) A las mujeres y a los menores bajo su guarda o custodia.",
+  justificacion: "La ley protege directamente a las mujeres y a los menores expuestos a violencia."
+},
+{
+  pregunta: "Una de las medidas previstas en el ámbito laboral es:",
+  opciones: [
+    "a) La jubilación anticipada de la víctima sin requisitos.",
+    "b) La movilidad geográfica y el cambio temporal de puesto de trabajo.",
+    "c) La exención de realizar horas extraordinarias al agresor.",
+    "d) La obligación de la víctima de trabajar en su municipio de residencia."
+  ],
+  correcta: "b) La movilidad geográfica y el cambio temporal de puesto de trabajo.",
+  justificacion: "Estas medidas están destinadas a garantizar la seguridad laboral de la víctima."
+},
+{
+  pregunta: "El acceso a la renta activa de inserción (RAI) está previsto para:",
+  opciones: [
+    "a) Mujeres víctimas de violencia de género sin recursos económicos.",
+    "b) Todas las mujeres mayores de 45 años.",
+    "c) Víctimas exclusivamente de violencia sexual.",
+    "d) Personas en paro de larga duración sin hijos."
+  ],
+  correcta: "a) Mujeres víctimas de violencia de género sin recursos económicos.",
+  justificacion: "La RAI es una ayuda económica para favorecer la autonomía y reinserción."
+},
+{
+  pregunta: "El artículo 27 de la LO 1/2004 menciona específicamente:",
+  opciones: [
+    "a) La necesidad de reforzar la educación universitaria exclusivamente.",
+    "b) La elaboración de estadísticas completas y fiables sobre violencia de género.",
+    "c) La entrega de compensaciones económicas a los agresores arrepentidos.",
+    "d) La exoneración de responsabilidad civil en caso de reconciliación."
+  ],
+  correcta: "b) La elaboración de estadísticas completas y fiables sobre violencia de género.",
+  justificacion: "Las estadísticas permiten evaluar las políticas públicas."
+},
+{
+  pregunta: "La LO 1/2004 establece medidas especiales para mujeres extranjeras víctimas de violencia:",
+  opciones: [
+    "a) Las obliga a abandonar el territorio español como parte del proceso.",
+    "b) Les permite solicitar autorización de residencia temporal por circunstancias excepcionales.",
+    "c) Suspenden su permiso de residencia hasta que denuncien.",
+    "d) Les exigen tener empleo para acceder a la protección."
+  ],
+  correcta: "b) Les permite solicitar autorización de residencia temporal por circunstancias excepcionales.",
+  justificacion: "Se reconoce su especial situación de vulnerabilidad."
+},
+{
+  pregunta: "La orden de protección se regula en la Ley de Enjuiciamiento Criminal a través del artículo:",
+  opciones: [
+    "a) 544 ter.",
+    "b) 520 bis.",
+    "c) 147.1.",
+    "d) 572 quater."
+  ],
+  correcta: "a) 544 ter.",
+  justificacion: "Este artículo regula detalladamente la orden de protección."
+},
+{
+  pregunta: "Una víctima de violencia de género tiene derecho a:",
+  opciones: [
+    "a) Asistencia social integral y gratuita.",
+    "b) Exigir la condena a cadena perpetua del agresor.",
+    "c) Acceder a prisión preventiva voluntaria.",
+    "d) Renunciar a toda intervención de servicios sociales."
+  ],
+  correcta: "a) Asistencia social integral y gratuita.",
+  justificacion: "La asistencia social incluye orientación, apoyo psicológico y recursos materiales."
+},
+{
+  pregunta: "¿Qué órgano es responsable de elaborar propuestas de mejora de la Ley 1/2004?",
+  opciones: [
+    "a) El Consejo General del Poder Judicial.",
+    "b) El Observatorio Estatal de Violencia sobre la Mujer.",
+    "c) El Tribunal Constitucional.",
+    "d) El Colegio Nacional de Abogados."
+  ],
+  correcta: "b) El Observatorio Estatal de Violencia sobre la Mujer.",
+  justificacion: "Este organismo tiene entre sus funciones evaluar y proponer mejoras en las medidas de protección."
+},
+{
+  pregunta: "¿Qué medida se contempla para el agresor dentro de los programas de intervención?",
+  opciones: [
+    "a) Privación de derechos civiles sin juicio.",
+    "b) Participación obligatoria en programas de reeducación y tratamiento psicológico.",
+    "c) Traslado a prisión sin posibilidad de recurso.",
+    "d) Pérdida automática de la patria potestad."
+  ],
+  correcta: "b) Participación obligatoria en programas de reeducación y tratamiento psicológico.",
+  justificacion: "Esto busca evitar la reincidencia y reeducar al agresor en valores de igualdad."
+},
+{
+  pregunta: "La LO 1/2004 se aplica a la violencia ejercida:",
+  opciones: [
+    "a) En cualquier contexto donde exista desigualdad de género.",
+    "b) Exclusivamente en el ámbito de la pareja o expareja.",
+    "c) Entre familiares sin relación afectiva.",
+    "d) Entre empleados de la misma empresa."
+  ],
+  correcta: "b) Exclusivamente en el ámbito de la pareja o expareja.",
+  justificacion: "La ley se centra en la violencia de género en el contexto de relaciones afectivas."
+},
+{
+  pregunta: "En el ámbito educativo, la LO 1/2004 promueve:",
+  opciones: [
+    "a) La eliminación de la educación sexual en los centros escolares.",
+    "b) La integración de la igualdad de género y prevención de violencia en el currículo.",
+    "c) La imposición de sanciones a los centros mixtos.",
+    "d) La educación segregada según género."
+  ],
+  correcta: "b) La integración de la igualdad de género y prevención de violencia en el currículo.",
+  justificacion: "La educación es clave para prevenir la perpetuación de desigualdades."
+},
+{
+  pregunta: "La LO 1/2004 introduce la figura de:",
+  opciones: [
+    "a) La denuncia obligatoria por parte de todos los profesionales.",
+    "b) Las Unidades de Coordinación contra la Violencia sobre la Mujer en cada delegación del Gobierno.",
+    "c) El defensor penal de la víctima con competencias judiciales.",
+    "d) La libertad condicional automática en casos de primera agresión."
+  ],
+  correcta: "b) Las Unidades de Coordinación contra la Violencia sobre la Mujer en cada delegación del Gobierno.",
+  justificacion: "Estas unidades coordinan la actuación institucional en casos de violencia."
+},
+{
+  pregunta: "La ampliación de la formación obligatoria a todo el personal de la Administración se orienta a:",
+  opciones: [
+    "a) Ofrecer herramientas legales para apoyo exclusivo al agresor.",
+    "b) Garantizar una respuesta institucional eficaz y con perspectiva de género.",
+    "c) Facilitar una disminución de denuncias.",
+    "d) Crear dependencia de la víctima respecto a los servicios sociales."
+  ],
+  correcta: "b) Garantizar una respuesta institucional eficaz y con perspectiva de género.",
+  justificacion: "La formación permite una intervención más adecuada y coordinada."
+},
+{
+  pregunta: "La participación en programas sociales específicos es una medida contemplada para:",
+  opciones: [
+    "a) Mujeres víctimas de violencia en situación de exclusión.",
+    "b) Agresores sin antecedentes penales.",
+    "c) Menores acusados de vandalismo.",
+    "d) Trabajadores en empresas familiares."
+  ],
+  correcta: "a) Mujeres víctimas de violencia en situación de exclusión.",
+  justificacion: "Se ofrece apoyo especializado a las víctimas más vulnerables."
+},
+{
+  pregunta: "La LO 1/2004 establece que la publicidad que denigre a la mujer será:",
+  opciones: [
+    "a) Sancionada administrativamente por infringir la Ley General de Publicidad.",
+    "b) Permitida si no hay participación de menores.",
+    "c) Revisada únicamente por asociaciones de consumidores.",
+    "d) Legal si aparece en medios internacionales."
+  ],
+  correcta: "a) Sancionada administrativamente por infringir la Ley General de Publicidad.",
+  justificacion: "La ley prohíbe el uso vejatorio o discriminatorio de la imagen de la mujer."
+},
+{
+  pregunta: "Una de las medidas previstas en el Código Penal tras la reforma de la LO 1/2004 es:",
+  opciones: [
+    "a) El aumento de las penas por amenazas leves cuando el agresor sea pareja o expareja.",
+    "b) La reducción automática de pena si se solicita perdón a la víctima.",
+    "c) La no obligación de comparecer en juicio para el agresor.",
+    "d) La eliminación del delito de coacciones en el ámbito doméstico."
+  ],
+  correcta: "a) El aumento de las penas por amenazas leves cuando el agresor sea pareja o expareja.",
+  justificacion: "Se agravaron las penas por este tipo de conducta en el contexto de la violencia de género."
+},
+{
+  pregunta: "Según la LO 1/2004, la víctima puede solicitar la suspensión temporal de la relación laboral con:",
+  opciones: [
+    "a) Reserva de puesto de trabajo y reconocimiento del tiempo a efectos de antigüedad.",
+    "b) Pérdida total de antigüedad.",
+    "c) Suspensión de pago de salario sin derecho a indemnización.",
+    "d) Traslado automático a otra empresa sin salario."
+  ],
+  correcta: "a) Reserva de puesto de trabajo y reconocimiento del tiempo a efectos de antigüedad.",
+  justificacion: "La ley protege el empleo de las víctimas mientras garantiza su seguridad."
+},
+{
+  pregunta: "La protección prevista por la LO 1/2004 para las víctimas de violencia de género se extiende al ámbito:",
+  opciones: [
+    "a) Penal exclusivamente.",
+    "b) Penal, civil, laboral, sanitario y de servicios sociales.",
+    "c) Militar exclusivamente.",
+    "d) Económico únicamente."
+  ],
+  correcta: "b) Penal, civil, laboral, sanitario y de servicios sociales.",
+  justificacion: "La ley establece una protección de carácter integral."
+},
+{
+  pregunta: "En las medidas de sensibilización, la LO 1/2004 promueve:",
+  opciones: [
+    "a) Exclusivamente campañas internas en la policía.",
+    "b) Campañas informativas periódicas en colaboración con los medios de comunicación.",
+    "c) La sustitución de medios de comunicación tradicionales por redes sociales.",
+    "d) La creación de programas de televisión exclusivamente estatales."
+  ],
+  correcta: "b) Campañas informativas periódicas en colaboración con los medios de comunicación.",
+  justificacion: "Las campañas buscan crear conciencia social sobre la igualdad y la violencia de género."
+},
+{
+  pregunta: "Una de las medidas civiles relacionadas con los hijos menores es:",
+  opciones: [
+    "a) La custodia automática por parte del agresor.",
+    "b) La posibilidad de suspender el régimen de visitas si existe riesgo.",
+    "c) La adopción conjunta obligatoria en caso de divorcio.",
+    "d) La prohibición de considerar a los menores como víctimas."
+  ],
+  correcta: "b) La posibilidad de suspender el régimen de visitas si existe riesgo.",
+  justificacion: "La ley contempla medidas civiles para proteger a los menores."
+},
+{
+  pregunta: "La LO 1/2004 reconoce un derecho específico de formación laboral para:",
+  opciones: [
+    "a) Profesionales de medios de comunicación.",
+    "b) Víctimas de violencia de género.",
+    "c) Agresores reincidentes.",
+    "d) Usuarios de servicios públicos."
+  ],
+  correcta: "b) Víctimas de violencia de género.",
+  justificacion: "La autonomía económica es importante para la recuperación de la víctima."
+},
+{
+  pregunta: "Uno de los principios rectores de la LO 1/2004 es:",
+  opciones: [
+    "a) La rehabilitación del agresor como prioridad.",
+    "b) La valoración social de la mujer en todos los ámbitos.",
+    "c) La potenciación de roles tradicionales femeninos.",
+    "d) El refuerzo de las penas de prisión sin medidas sociales."
+  ],
+  correcta: "b) La valoración social de la mujer en todos los ámbitos.",
+  justificacion: "La ley establece la igualdad y la valoración de la mujer como pilar para erradicar la violencia."
+},
+{
+  pregunta: "La LO 1/2004 obliga a los medios de comunicación a:",
+  opciones: [
+    "a) Restringir la difusión de contenidos sobre violencia de género.",
+    "b) Promover la igualdad sin difundir contenidos discriminatorios contra la mujer.",
+    "c) Emitir campañas pagadas contra la violencia únicamente en cadenas privadas.",
+    "d) No mencionar a la víctima en ningún contexto mediático."
+  ],
+  correcta: "b) Promover la igualdad sin difundir contenidos discriminatorios contra la mujer.",
+  justificacion: "La labor de los medios debe ser responsable y educadora."
+},
+{
+  pregunta: "La LO 1/2004 considera como finalidad del sistema educativo:",
+  opciones: [
+    "a) La eliminación de asignaturas que fomenten estudios sociales.",
+    "b) La transmisión de valores de respeto a los derechos fundamentales y libertades.",
+    "c) La neutralidad ante problemas sociales contemporáneos.",
+    "d) El desarrollo de una formación exclusivamente técnica."
+  ],
+  correcta: "b) La transmisión de valores de respeto a los derechos fundamentales y libertades.",
+  justificacion: "La educación en valores es esencial en la prevención de la violencia."
+},
+{
+  pregunta: "Según la LO 1/2004, los derechos sociales de las víctimas incluyen:",
+  opciones: [
+    "a) Asistencia social, psicológica, jurídica y formación laboral.",
+    "b) Únicamente asistencia jurídica.",
+    "c) Exclusivamente ayuda económica sin servicios sociales.",
+    "d) Atención social solo si la víctima está en paro."
+  ],
+  correcta: "a) Asistencia social, psicológica, jurídica y formación laboral.",
+  justificacion: "La asistencia integral incluye múltiples recursos para la víctima."
+},
+{
+  pregunta: "El artículo 14 de la LO 1/2004 regula:",
+  opciones: [
+    "a) La exoneración de responsabilidad penal para menores agresores.",
+    "b) La asistencia jurídica gratuita a las víctimas de violencia de género.",
+    "c) La custodia exclusiva de los hijos a favor del agresor.",
+    "d) La anulación automática del matrimonio tras la denuncia."
+  ],
+  correcta: "b) La asistencia jurídica gratuita a las víctimas de violencia de género.",
+  justificacion: "El derecho a defensa se garantiza desde el inicio de la causa."
+},
+{
+  pregunta: "La LO 1/2004 impone un deber específico de comunicación a los profesionales de la salud:",
+  opciones: [
+    "a) En todos los casos de infección.",
+    "b) En aquellos casos en los que exista sospecha de violencia de género.",
+    "c) Solo si la víctima lo autoriza por escrito.",
+    "d) Únicamente en lesiones graves con armas."
+  ],
+  correcta: "b) En aquellos casos en los que exista sospecha de violencia de género.",
+  justificacion: "Los profesionales sanitarios deben informar para permitir la actuación de la justicia."
+},
+{
+  pregunta: "La LO 1/2004 promueve la inclusión obligatoria de la perspectiva de género en:",
+  opciones: [
+    "a) La publicidad electoral.",
+    "b) Todas las políticas públicas.",
+    "c) La legislación sobre tránsito y tráfico.",
+    "d) Los planes de vivienda rural."
+  ],
+  correcta: "b) Todas las políticas públicas.",
+  justificacion: "La transversalidad de género es un principio clave de la ley."
+},
+{
+  pregunta: "Una medida educativa prevista en la LO 1/2004 es:",
+  opciones: [
+    "a) El fomento del deporte exclusivamente femenino.",
+    "b) La inclusión de contenidos sobre igualdad de género en los libros de texto.",
+    "c) La prohibición de la coeducación.",
+    "d) La instauración de educación religiosa obligatoria."
+  ],
+  correcta: "b) La inclusión de contenidos sobre igualdad de género en los libros de texto.",
+  justificacion: "La educación busca prevenir desigualdades desde edades tempranas."
+},
+{
+  pregunta: "La LO 1/2004 establece un protocolo de actuación sanitaria para:",
+  opciones: [
+    "a) Garantizar la atención inmediata a víctimas y la detección precoz de violencia de género.",
+    "b) Promover tratamientos estéticos gratuitos para las víctimas.",
+    "c) Orientar exclusivamente al agresor sobre sus responsabilidades.",
+    "d) Facilitar la medicación a la víctima sin receta médica."
+  ],
+  correcta: "a) Garantizar la atención inmediata a víctimas y la detección precoz de violencia de género.",
+  justificacion: "El sistema sanitario desempeña un papel en la detección y asistencia."
+},
+{
+  pregunta: "La LO 1/2004 incorpora medidas para la inserción social de las víctimas como:",
+  opciones: [
+    "a) Acceso inmediato a subvenciones para estudios en el extranjero.",
+    "b) Programas específicos de formación y empleo.",
+    "c) Retención de bienes del agresor sin sentencia.",
+    "d) Acceso vitalicio a ayudas automáticas del Estado."
+  ],
+  correcta: "b) Programas específicos de formación y empleo.",
+  justificacion: "Estos programas buscan apoyar la independencia económica y social."
+},
+{
+  pregunta: "Una víctima de violencia de género tiene derecho a ser protegida por:",
+  opciones: [
+    "a) Cualquier ciudadano con formación en derecho penal.",
+    "b) Los servicios policiales, sanitarios, sociales y judiciales de manera coordinada.",
+    "c) Solo por sufamiliares o amigos cercanos.",
+    "d) La policía municipal sin intervención de los juzgados."
+  ],
+  correcta: "b) Los servicios policiales, sanitarios, sociales y judiciales de manera coordinada.",
+  justificacion: "La coordinación institucional es esencial para una protección efectiva."
+},
+{
+  pregunta: "El objetivo de las campañas de sensibilización es:",
+  opciones: [
+    "a) Penalizar a los medios que no promocionen valores de igualdad.",
+    "b) Crear conciencia social para prevenir y rechazar la violencia de género.",
+    "c) Reducir la intervención de organizaciones de apoyo a víctimas.",
+    "d) Garantizar la neutralidad de los medios ante casos graves."
+  ],
+  correcta: "b) Crear conciencia social para prevenir y rechazar la violencia de género.",
+  justificacion: "La sensibilización es clave para cambiar patrones culturales."
+},
+{
+  pregunta: "La LO 1/2004 fue aprobada con el objetivo de:",
+  opciones: [
+    "a) Promover la igualdad formal exclusivamente.",
+    "b) Desarrollar un sistema integral de protección contra la violencia de género.",
+    "c) Regular el trabajo voluntario en asociaciones feministas.",
+    "d) Suprimir los delitos de amenazas en el ámbito familiar."
+  ],
+  correcta: "b) Desarrollar un sistema integral de protección contra la violencia de género.",
+  justificacion: "Es una ley integral que abarca aspectos educativos, sociales, judiciales y sanitarios."
+},
+{
+  pregunta: "Una de las obligaciones de las Administraciones Públicas según la LO 1/2004 es:",
+  opciones: [
+    "a) Garantizar el acceso gratuito a servicios odontológicos para las víctimas.",
+    "b) Garantizar la disponibilidad de recursos sociales suficientes para la atención integral de las víctimas.",
+    "c) Contratar personal sin formación para servicios sociales.",
+    "d) Derivar todas las víctimas a clínicas privadas."
+  ],
+  correcta: "b) Garantizar la disponibilidad de recursos sociales suficientes para la atención integral de las víctimas.",
+  justificacion: "El artículo 19 y otros establecen la obligación de proporcionar recursos sociales adecuados."
+},
+{
+  pregunta: "Una medida específica para mejorar la protección de las víctimas es:",
+  opciones: [
+    "a) La obligación de la víctima de permanecer en su domicilio mientras dure el juicio.",
+    "b) La implantación de dispositivos electrónicos de localización para el agresor.",
+    "c) La posibilidad de imponer multas económicas al agresor sin juicio.",
+    "d) Obligar a la víctima a usar aparatos de comunicación estatal."
+  ],
+  correcta: "b) La implantación de dispositivos electrónicos de localización para el agresor.",
+  justificacion: "Estos dispositivos ayudan a garantizar el cumplimiento de medidas de alejamiento."
+},
+{
+  pregunta: "En el ámbito de la seguridad social, la LO 1/2004 reconoce el derecho de las víctimas a:",
+  opciones: [
+    "a) Ver reducida su pensión contributiva.",
+    "b) Acceder a prestaciones de pago único en determinados supuestos.",
+    "c) Solicitar ayuda económica exclusivamente si están desempleadas.",
+    "d) Acceder a pensión solo después de sentencia firme."
+  ],
+  correcta: "b) Acceder a prestaciones de pago único en determinados supuestos.",
+  justificacion: "Las prestaciones económicas están destinadas a garantizar la independencia de la víctima."
+},
+{
+  pregunta: "Las campañas de sensibilización en medios se caracterizan por:",
+  opciones: [
+    "a) Ser obligatorias solo en radio pública.",
+    "b) Estar orientadas a formar valores de igualdad y rechazo a la violencia de género.",
+    "c) Promover el uso de imágenes impactantes de la violencia.",
+    "d) Reproducir declaraciones del agresor para enseñar el perdón."
+  ],
+  correcta: "b) Estar orientadas a formar valores de igualdad y rechazo a la violencia de género.",
+  justificacion: "Las campañas pretenden cambiar actitudes sociales arraigadas."
+},
+{
+  pregunta: "La LO 1/2004 introduce la obligación de la formación en igualdad en:",
+  opciones: [
+    "a) Universidades privadas exclusivamente.",
+    "b) Todos los niveles educativos, desde infantil hasta superior.",
+    "c) Escuelas militares únicamente.",
+    "d) Centros educativos no reglados."
+  ],
+  correcta: "b) Todos los niveles educativos, desde infantil hasta superior.",
+  justificacion: "La educación es clave para prevenir y erradicar la violencia de género."
+},
+{
+  pregunta: "La participación de los medios de comunicación en la lucha contra la violencia de género incluye:",
+  opciones: [
+    "a) Emitir juicios paralelos al proceso penal.",
+    "b) Evitar la reproducción de mensajes discriminatorios o estereotipados.",
+    "c) Entrevistar al agresor tras cada sentencia.",
+    "d) Reservar espacio obligatorio en la prensa escrita."
+  ],
+  correcta: "b) Evitar la reproducción de mensajes discriminatorios o estereotipados.",
+  justificacion: "La ley señala el papel de los medios en el cambio cultural."
+},
+{
+  pregunta: "Según la LO 1/2004, la víctima de violencia de género tiene derecho a:",
+  opciones: [
+    "a) Solicitar que se le juzgue bajo jurisdicción militar.",
+    "b) Ser informada del estado del procedimiento y la situación penitenciaria del agresor.",
+    "c) Decidir sobre la condena del agresor en audiencia pública.",
+    "d) Solicitar prisión preventiva sin juez."
+  ],
+  correcta: "b) Ser informada del estado del procedimiento y la situación penitenciaria del agresor.",
+  justificacion: "Este derecho busca garantizar su seguridad y tranquilidad durante el proceso."
+},
+{
+  pregunta: "Las medidas de protección en el ámbito civil se adoptan:",
+  opciones: [
+    "a) En procedimientos penales exclusivamente.",
+    "b) En el marco de la orden de protección por el juez de guardia.",
+    "c) Solo una vez emitida la sentencia condenatoria.",
+    "d) Tras un proceso de mediación obligatorio."
+  ],
+  correcta: "b) En el marco de la orden de protección por el juez de guardia.",
+  justificacion: "Se pueden adoptar de manera urgente con la orden de protección."
+},
+{
+  pregunta: "Una de las reformas introducidas por la LO 1/2004 en la Ley General de la Seguridad Social es:",
+  opciones: [
+    "a) La equiparación entre víctima y agresor a efectos de prestaciones sociales.",
+    "b) La creación de una prestación específica para mujeres víctimas sin recursos.",
+    "c) La eliminación de la cotización durante el periodo de baja.",
+    "d) La suspensión de la pensión contributiva si la víctima cambia de domicilio."
+  ],
+  correcta: "b) La creación de una prestación específica para mujeres víctimas sin recursos.",
+  justificacion: "Esta medida facilita la salida de la situación de violencia."
+},
+{
+  pregunta: "Los menores expuestos a violencia de género según la LO 1/2004:",
+  opciones: [
+    "a) Son considerados víctimas directas y pueden recibir asistencia específica.",
+    "b) No tienen derecho a asistencia si no han sido agredidos directamente.",
+    "c) Deben quedarse con el progenitor agresor hasta la sentencia.",
+    "d) Solo son protegidos si hay denuncia en el ámbito escolar."
+  ],
+  correcta: "a) Son considerados víctimas directas y pueden recibir asistencia específica.",
+  justificacion: "La ley protege a los menores expuestos al impacto de la violencia de género."
+},
+{
+  pregunta: "Una medida judicial en los casos de violencia de género puede ser:",
+  opciones: [
+    "a) La concesión de permisos laborales al agresor.",
+    "b) La exclusión del agresor del domicilio familiar.",
+    "c) La prohibición de que la víctima cambie de domicilio.",
+    "d) El traslado del juicio a otro país."
+  ],
+  correcta: "b) La exclusión del agresor del domicilio familiar.",
+  justificacion: "El juez puede tomar esta medida como parte de la orden de protección."
+},
+{
+  pregunta: "El principio de transversalidad definido en la LO 1/2004 implica que:",
+  opciones: [
+    "a) Todos los departamentos de la Administración deben incorporar la perspectiva de género en sus políticas.",
+    "b) Solo el Ministerio de Igualdad debe aplicar medidas de igualdad.",
+    "c) Las empresas privadas deben reformular sus modelos de negocio.",
+    "d) Las políticas de igualdad son optativas para los municipios pequeños."
+  ],
+  correcta: "a) Todos los departamentos de la Administración deben incorporar la perspectiva de género en sus políticas.",
+  justificacion: "La transversalidad garantiza la igualdad en todas las políticas públicas."
+},
+{
+  pregunta: "En cuanto a la intervención educativa, la LO 1/2004 propone:",
+  opciones: [
+    "a) La expulsión inmediata de alumnos agresores sin expediente.",
+    "b) La promoción de la igualdad en todos los niveles educativos a través de contenidos específicos.",
+    "c) La educación separada por sexos en áreas rurales.",
+    "d) El cierre de centros educativos mixtos."
+  ],
+  correcta: "b) La promoción de la igualdad en todos los niveles educativos a través de contenidos específicos.",
+  justificacion: "La educación preventiva es esencial para evitar la violencia de género."
+},
+{
+  pregunta: "Una medida de apoyo al empleo de víctimas de violencia de género es:",
+  opciones: [
+    "a) La obligación de ser contratadas como funcionarias.",
+    "b) El acceso prioritario a cursos de formación y recolocación.",
+    "c) La reducción del salario con el fin de fomentar el empleo público.",
+    "d) El aumento de jornada sin penalización."
+  ],
+  correcta: "b) El acceso prioritario a cursos de formación y recolocación.",
+  justificacion: "Esto busca facilitar la reinserción laboral de las víctimas."
+},
+{
+  pregunta: "¿Cuál de los siguientes derechos está garantizado para las víctimas según la LO 1/2004?",
+  opciones: [
+    "a) Protección judicial gratuita únicamente si pierde el juicio.",
+    "b) Derecho a información sobre su proceso penal y medidas adoptadas.",
+    "c) Exoneración del deber de declarar en cualquier juicio.",
+    "d) Prisión preventiva automática para el agresor."
+  ],
+  correcta: "b) Derecho a información sobre su proceso penal y medidas adoptadas.",
+  justificacion: "La víctima tiene derecho a ser informada para garantizar su seguridad y tranquilidad."
+},
+{
+  pregunta: "La prevención de la violencia de género desde el ámbito sanitario implica:",
+  opciones: [
+    "a) Atender solo a víctimas de lesiones graves.",
+    "b) Incluir protocolos de detección temprana y derivación en centros de salud.",
+    "c) Realizar campañas exclusivas para profesionales de cirugía.",
+    "d) No intervenir si no hay orden judicial."
+  ],
+  correcta: "b) Incluir protocolos de detección temprana y derivación en centros de salud.",
+  justificacion: "El sistema sanitario es clave en la detección de situaciones de violencia."
+},
+{
+  pregunta: "La LO 1/2004 introduce cambios procesales como:",
+  opciones: [
+    "a) La suspensión del juicio si la víctima no comparece.",
+    "b) La implantación de la orden de protección con carácter urgente.",
+    "c) La obligatoriedad de juicio oral en todos los casos de violencia.",
+    "d) La suspensión del proceso civil hasta terminar el penal."
+  ],
+  correcta: "b) La implantación de la orden de protección con carácter urgente.",
+  justificacion: "La orden de protección se regula para actuar de forma inmediata y proteger a la víctima."
+},
+{
+  pregunta: "Una de las medidas laborales introducidas por la LO 1/2004 es:",
+  opciones: [
+    "a) El derecho de la víctima a reducir su jornada laboral con protección frente al despido.",
+    "b) La obligación de cambiar de puesto si lo decide el agresor.",
+    "c) La restricción del uso de recursos laborales para casos de violencia.",
+    "d) La eliminación de permisos laborales por juicio."
+  ],
+  correcta: "a) El derecho de la víctima a reducir su jornada laboral con protección frente al despido.",
+  justificacion: "Esto facilita la conciliación y protección laboral de la víctima."
+},
+{
+  pregunta: "La LO 1/2004 incluye dentro de su ámbito de aplicación:",
+  opciones: [
+    "a) Cualquier forma de violencia en el ámbito privado, aunque no exista relación afectiva.",
+    "b) Exclusivamente la violencia ejercida por la pareja o expareja de la mujer.",
+    "c) Solo agresiones físicas entre miembros de distinta nacionalidad.",
+    "d) Únicamente los actos de violencia ocurridos en el trabajo."
+  ],
+  correcta: "b) Exclusivamente la violencia ejercida por la pareja o expareja de la mujer.",
+  justificacion: "La ley está orientada a combatir la violencia de género en el ámbito de la pareja o expareja."
+},
+{
+  pregunta: "La intervención policial en casos de violencia de género debe realizarse con:",
+  opciones: [
+    "a) Neutralidad, informando a la víctima de sus derechos y recursos disponibles.",
+    "b) Un enfoque exclusivamente punitivo hacia el agresor.",
+    "c) Acompañamiento obligado sin necesidad de denuncia.",
+    "d) Solo si el agresor lo solicita."
+  ],
+  correcta: "a) Neutralidad, informando a la víctima de sus derechos y recursos disponibles.",
+  justificacion: "Los agentes deben garantizar información y protección a la víctima."
+},
+{
+  pregunta: "El artículo 27 de la LO 1/2004 establece que los datos estadísticos sobre violencia de género deben:",
+  opciones: [
+    "a) Ser elaborados cada 10 años.",
+    "b) Permitir el análisis de la evolución del fenómeno.",
+    "c) Ser confidenciales y no públicos.",
+    "d) Ser recopilados solo por entidades privadas."
+  ],
+  correcta: "b) Permitir el análisis de la evolución del fenómeno.",
+  justificacion: "El análisis estadístico permite evaluar la eficacia de las medidas."
+},
+{
+  pregunta: "El acceso al servicio de asistencia jurídica gratuita según la LO 1/2004:",
+  opciones: [
+    "a) Está condicionado a la renta de la víctima.",
+    "b) Se garantiza desde la solicitud de la orden de protección.",
+    "c) Se limita a la sentencia condenatoria.",
+    "d) No está disponible en procedimientos urgentes."
+  ],
+  correcta: "b) Se garantiza desde la solicitud de la orden de protección.",
+  justificacion: "La víctima puede acceder a asistencia jurídica gratuita desde el comienzo del proceso."
+},
+{
+  pregunta: "La Ley 1/2004 prevé que los menores expuestos a violencia de género:",
+  opciones: [
+    "a) No son considerados víctimas si no hay agresión directa.",
+    "b) Son considerados víctimas directas y tienen medidas específicas de protección.",
+    "c) Pueden testificar sin la presencia de un perito.",
+    "d) Solo serán protegidos si el agresor es condenado."
+  ],
+  correcta: "b) Son considerados víctimas directas y tienen medidas específicas de protección.",
+  justificacion: "La ley da protección a los menores expuestos a la violencia en el hogar."
+},
+{
+  pregunta: "Las campañas informativas impulsadas por la LO 1/2004 deben:",
+  opciones: [
+    "a) Ser financiadas exclusivamente por el sector privado.",
+    "b) Promover valores de igualdad entre hombres y mujeres.",
+    "c) Utilizar solo testimonios reales de víctimas.",
+    "d) Emitirse obligatoriamente en horario de máxima audiencia."
+  ],
+  correcta: "b) Promover valores de igualdad entre hombres y mujeres.",
+  justificacion: "Las campañas buscan cambiar hábitos culturales y sociales."
+},
+{
+  pregunta: "La Ley Integral contra la Violencia de Género establece la creación de:",
+  opciones: [
+    "a) Juzgados exclusivos para delitos civiles.",
+    "b) Juzgados de Violencia sobre la Mujer.",
+    "c) Tribunales Militares de Igualdad.",
+    "d) Delegaciones internacionales de intervención."
+  ],
+  correcta: "b) Juzgados de Violencia sobre la Mujer.",
+  justificacion: "Estos juzgados tienen competencias penales y civiles relacionadas con la violencia de género."
+},
+{
+  pregunta: "¿Cuál de las siguientes medidas pueden adoptar los jueces en el ámbito civil según la LO 1/2004?",
+  opciones: [
+    "a) La destrucción de bienes del agresor.",
+    "b) La suspensión del régimen de visitas del agresor a sus hijos.",
+    "c) La prohibición de que el agresor tenga acceso a medios públicos.",
+    "d) El traslado obligado del agresor al extranjero."
+  ],
+  correcta: "b) La suspensión del régimen de visitas del agresor a sus hijos.",
+  justificacion: "La ley prevé medidas de protección para menores expuestos a riesgo."
+},
+{
+  pregunta: "Las unidades de coordinación interinstitucional previstas en la LO 1/2004 funcionan para:",
+  opciones: [
+    "a) Permitir denuncias anónimas sin prueba.",
+    "b) Coordinar la acción de organismos sanitarios, sociales, policiales y judiciales.",
+    "c) Gestionar las ayudas económicas directamente en comisarías.",
+    "d) Controlar los medios de comunicación de forma permanente."
+  ],
+  correcta: "b) Coordinar la acción de organismos sanitarios, sociales, policiales y judiciales.",
+  justificacion: "La coordinación institucional es clave en la protección integral."
+},
+{
+  pregunta: "Dentro del ámbito educativo, la LO 1/2004 establece que:",
+  opciones: [
+    "a) Solo las universidades deben incorporar educación en igualdad.",
+    "b) El sistema educativo debe incluir formación sobre igualdad y prevención de violencia desde etapas iniciales.",
+    "c) Los centros privados pueden optar por no aplicar medidas de igualdad.",
+    "d) Las escuelas deben identificar a los alumnos con riesgo de violencia y separarlos."
+  ],
+  correcta: "b) El sistema educativo debe incluir formación sobre igualdad y prevención de violencia desde etapas iniciales.",
+  justificacion: "La educación preventiva es esencial para erradicar la violencia de género."
+},
+{
+  pregunta: "Una de las reformas introducidas por la LO 1/2004 en el Estatuto de los Trabajadores permite a la víctima:",
+  opciones: [
+    "a) País y empresa a elección del agresor.",
+    "b) Reducción de jornada con disminución proporcional del salario.",
+    "c) Suspensión del contrato de trabajo con reserva de puesto.",
+    "d) Indemnización automática por extinción del contrato."
+  ],
+  correcta: "c) Suspensión del contrato de trabajo con reserva de puesto.",
+  justificacion: "La ley prevé medidas laborales que protegen a la víctima sin perder su empleo."
+},
+{
+  pregunta: "Uno de los principios rectores de la LO 1/2004 es:",
+  opciones: [
+    "a) La igualdad real y efectiva entre mujeres y hombres.",
+    "b) La prioridad en la actuación penal sobre la protección social.",
+    "c) La protección del honor del agresor durante el proceso.",
+    "d) La eliminación de derechos civiles en caso de denuncia falsa."
+  ],
+  correcta: "a) La igualdad real y efectiva entre mujeres y hombres.",
+  justificacion: "La igualdad efectiva es un pilar fundamental de la ley."
+},
+{
+  pregunta: "Una de las medidas procesales previstas en la LO 1/2004 es:",
+  opciones: [
+    "a) La posibilidad de imponer prisión provisional al agresor en caso de riesgo grave.",
+    "b) La eliminación de la necesidad de presentar pruebas por parte de la víctima.",
+    "c) La no intervención del Ministerio Fiscal.",
+    "d) La obligatoriedad de que la víctima declare sin acompañamiento."
+  ],
+  correcta: "a) La posibilidad de imponer prisión provisional al agresor en caso de riesgo grave.",
+  justificacion: "La protección de la víctima es prioritaria cuando existe riesgo evidente."
+},
+{
+  pregunta: "El diseño de políticas públicas con perspectiva de género exige:",
+  opciones: [
+    "a) Intervenir solo en el ámbito penal.",
+    "b) Que todas las administraciones incorporen la igualdad en sus actuaciones.",
+    "c) Que se destinen todos los recursos al Ministerio de Justicia.",
+    "d) Que las empresas privadas financien íntegramente estas políticas."
+  ],
+  correcta: "b) Que todas las administraciones incorporen la igualdad en sus actuaciones.",
+  justificacion: "La transversalidad de género obliga a incluir esta perspectiva en todas las políticas públicas."
+},
+{
+  pregunta: "La LO 1/2004 considera la violencia de género como:",
+  opciones: [
+    "a) Un fenómeno individual desvinculado de estructuras sociales.",
+    "b) Una manifestación de discriminación, desigualdad y relaciones de poder.",
+    "c) Un acto exclusivamente económico o patrimonial.",
+    "d) Una situación provocada por desajustes emocionales de la víctima."
+  ],
+  correcta: "b) Una manifestación de discriminación, desigualdad y relaciones de poder.",
+  justificacion: "Así lo señala el artículo 1 de la ley."
+},
+{
+  pregunta: "¿Cuál es el objetivo principal del Título I de la LO 1/2004?",
+  opciones: [
+    "a) Establecer medidas penales para agresores reincidentes.",
+    "b) Regular los derechos de las mujeres víctimas y su protección integral.",
+    "c) Crear un cuerpo específico de jueces de paz.",
+    "d) Controlar las redes sociales donde se produzca acoso."
+  ],
+  correcta: "b) Regular los derechos de las mujeres víctimas y su protección integral.",
+  justificacion: "El Título I establece el marco general de derechos y protección."
+},
+{
+  pregunta: "La LO 1/2004 contempla que las campañas públicas deben incluir:",
+  opciones: [
+    "a) Testimonios obligatorios de todas las víctimas del país.",
+    "b) Medidas educativas que promuevan la igualdad y eviten la publicidad sexista.",
+    "c) Exclusivamente información sobre procedimientos judiciales.",
+    "d) Entrevistas al agresor para fomentar el perdón."
+  ],
+  correcta: "b) Medidas educativas que promuevan la igualdad y eviten la publicidad sexista.",
+  justificacion: "Las campañas deben ser educativas y transformadoras."
+},
+{
+  pregunta: "La protección judicial de la víctima de violencia de género se extiende a:",
+  opciones: [
+    "a) Medidas civiles y penales a corto y largo plazo.",
+    "b) Únicamente protección física sin medidas legales.",
+    "c) Medidas penales solo tras la condena.",
+    "d) La expropiación de bienes del agresor."
+  ],
+  correcta: "a) Medidas civiles y penales a corto y largo plazo.",
+  justificacion: "La ley prevé mecanismos urgentes y medidas más duraderas para la víctima."
+},
+{
+  pregunta: "La LO 1/2004 establece que la publicidad que presente a la mujer de forma vejatoria será:",
+  opciones: [
+    "a) Permitida si no es explícita.",
+    "b) Sancionada conforme a la Ley General de Publicidad.",
+    "c) Regulada exclusivamente por organismos privados.",
+    "d) Permitida únicamente en televisión privada."
+  ],
+  correcta: "b) Sancionada conforme a la Ley General de Publicidad.",
+  justificacion: "La ley protege a la mujer frente a representaciones discriminatorias."
+},
+{
+  pregunta: "La prevención de la violencia de género requiere, según la LO 1/2004:",
+  opciones: [
+    "a) Medidas exclusivamente policiales.",
+    "b) Un compromiso transversal de todos los poderes públicos y la sociedad.",
+    "c) Que la víctima cambie de domicilio de forma obligatoria.",
+    "d) Que las penas se cumplan siempre en régimen cerrado."
+  ],
+  correcta: "b) Un compromiso transversal de todos los poderes públicos y la sociedad.",
+  justificacion: "La prevención es una tarea conjunta que involucra a múltiples actores."
+},
+];
+
+let totalPreguntasRenderizadas = 0;
+
+function barajar(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+}
+
+function setProgress(current, total) {
+  const bar = document.getElementById('progressBar');
+  const pct = total > 0 ? Math.round((current / total) * 100) : 0;
+  bar.style.width = pct + '%';
+  bar.title = pct + '%';
+}
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+// Carga el test con preguntas y respuestas aleatorias
+function cargarTest() {
+  const numPreguntas = parseInt(document.getElementById('numPreguntas').value);
+  const testForm = document.getElementById('testForm');
+  const progressBar = document.getElementById('progressBar');
+  const testResult = document.getElementById('testResult');
+
+  testForm.innerHTML = '';
+  testResult.innerHTML = '';
+  progressBar.style.width = '0%';
+
+  if (!preguntasBanco || preguntasBanco.length === 0) {
+    testForm.innerHTML = '<p style="color:red;font-weight:bold;">⚠️ No hay preguntas en el banco.</p>';
+    return;
+  }
+
+  const letras = ['a)', 'b)', 'c)', 'd)', 'e)', 'f)']; // por si hay más de 4 opciones
+  const preguntasSeleccionadas = shuffle([...preguntasBanco]).slice(0, numPreguntas);
+
+  preguntasSeleccionadas.forEach((preguntaObj, index) => {
+    // Mezclamos las opciones (pero vamos a limpiar su prefijo "a) " si lo llevan)
+    const opcionesMezcladas = shuffle([...preguntaObj.opciones]);
+
+    // Convertimos cada opción en un objeto { texto, esCorrecta }
+    const opcionesObj = opcionesMezcladas.map(opcion => {
+      // Limpiar prefijos como "a) ", "b) " si existen
+      const textoLimpio = opcion.replace(/^[A-Za-z]\)\s*/, '').trim();
+      const esCorrecta = opcion === preguntaObj.correcta || textoLimpio === preguntaObj.correcta.replace(/^[A-Za-z]\)\s*/, '').trim();
+      return { texto: textoLimpio, esCorrecta };
+    });
+
+    // Renderizamos las opciones asignando letras según la posición (letras fijas)
+    const opcionesHTML = opcionesObj.map((opt, optIndex) => {
+      const marcaCorrecta = opt.esCorrecta ? 'true' : 'false';
+      const letra = letras[optIndex] || `${optIndex + 1})`; // fallback si hay >6 opciones
+      // No incluimos la letra dentro del texto de la opción; la mostramos separada
+      return `
+        <label class="option">
+          <input type="radio" name="pregunta${index}" value="${opt.texto.replace(/"/g, '&quot;')}" data-correct="${marcaCorrecta}">
+          <span style="font-weight:700; margin-right:10px; color:var(--muted)">${letra}</span>
+          ${opt.texto}
+        </label>
+      `;
+    }).join('');
+
+    const preguntaHTML = `
+      <div class="question">
+        <div class="q-head">
+          <span class="q-num">${index + 1}.</span>
+          <p class="q-text">${preguntaObj.pregunta}</p>
+        </div>
+        <div class="options">
+          ${opcionesHTML}
+        </div>
+        <div class="justification muted" style="display:none;">
+          <span class="correct">✔ ${preguntaObj.correcta.replace(/^[A-Za-z]\)\s*/, '')}</span><br>
+          ${preguntaObj.justificacion}
+        </div>
+      </div>
+    `;
+    testForm.insertAdjacentHTML('beforeend', preguntaHTML);
+  });
+
+  // Añadir botón corregir (evitar duplicados)
+  const botonCorregirExistente = Array.from(testForm.getElementsByTagName('button')).find(b => b.textContent === 'Corregir');
+  if (!botonCorregirExistente) {
+    const botonCorregir = document.createElement('button');
+    botonCorregir.type = 'button';
+    botonCorregir.className = 'btn success';
+    botonCorregir.textContent = 'Corregir';
+    botonCorregir.onclick = () => corregirTest();
+    testForm.appendChild(botonCorregir);
+  }
+}
+
+
+function corregirTest() {
+  const preguntas = document.querySelectorAll('.question');
+  let aciertos = 0;
+
+  preguntas.forEach((pregunta) => {
+    const radios = pregunta.querySelectorAll('input[type="radio"]');
+    const labels = pregunta.querySelectorAll('.option');
+    const justificacion = pregunta.querySelector('.justification');
+    let seleccionCorrecta = false;
+
+    // Limpiar clases anteriores
+    labels.forEach(l => {
+      l.classList.remove('correct-option', 'wrong-option');
+      const checkmark = l.querySelector('.checkmark');
+      if (checkmark) checkmark.remove();
+    });
+
+    radios.forEach(radio => {
+      const label = radio.closest('.option');
+      if (radio.checked && radio.dataset.correct === 'true') {
+        seleccionCorrecta = true;
+      }
+    });
+
+    radios.forEach(radio => {
+      const label = radio.closest('.option');
+
+      if (radio.dataset.correct === 'true') {
+        // Mostrar check verde en la opción correcta
+        label.classList.add('correct-option');
+        label.insertAdjacentHTML('afterbegin', `<span class="checkmark" style="color:#059669;font-weight:700;">✔</span>`);
+      }
+
+      if (radio.checked && radio.dataset.correct !== 'true') {
+        // Mostrar X roja en la opción elegida incorrecta
+        label.classList.add('wrong-option');
+        label.insertAdjacentHTML('afterbegin', `<span class="checkmark" style="color:#dc2626;font-weight:700;">✘</span>`);
+      }
+    });
+
+    // Mostrar la justificación al final
+    if (justificacion) {
+      justificacion.style.display = 'block';
+      justificacion.innerHTML = `
+        ${seleccionCorrecta 
+          ? `<span class="correct">✔ ${pregunta.querySelector('input[data-correct="true"]').value}</span><br>` 
+          : `<span class="incorrect">✘ ${pregunta.querySelector('input[data-correct="true"]').value}</span><br>`
+        }
+        ${pregunta.querySelector('.justification').textContent || ''}
+      `;
+    }
+
+    if (seleccionCorrecta) aciertos++;
+  });
+
+  // Mostrar resultado final
+  const total = preguntas.length;
+  const porcentaje = Math.round((aciertos / total) * 100);
+  const testResult = document.getElementById('testResult');
+  testResult.innerHTML = `
+    <div class="result-card">
+      <p class="score">Has acertado ${aciertos} de ${total} preguntas (${porcentaje}%).</p>
+      <p class="muted">${porcentaje >= 70 ? "✅ ¡Buen trabajo!" : "❌ Puedes mejorar."}</p>
+    </div>
+  `;
+  document.getElementById('progressBar').style.width = '100%';
+}
+
+
+function reiniciarTest() {
+  document.getElementById('testForm').innerHTML = '';
+  document.getElementById('testResult').innerHTML = '';
+  setProgress(0, 0);
+}
+  // ==========================
+// 🔹 TEMPORIZADOR CONFIGURABLE
+// ==========================
+
+// Variables del temporizador
+let tiempoTotal = 0;
+let tiempoRestante = 0;
+let temporizadorInterval;
+
+// Crear selector de tiempo en el panel de controles
+const selectTiempo = document.createElement('select');
+selectTiempo.id = 'tiempoSeleccionado';
+selectTiempo.innerHTML = `
+  <option value="0">Sin límite</option>
+  <option value="5">5 minutos</option>
+  <option value="10" selected>10 minutos</option>
+  <option value="15">15 minutos</option>
+  <option value="20">20 minutos</option>
+  <option value="30">30 minutos</option>
+  <option value="40">40 minutos</option>
+  <option value="50">50 minutos</option>
+  <option value="60">60 minutos</option>
+`;
+const labelTiempo = document.createElement('label');
+labelTiempo.htmlFor = 'tiempoSeleccionado';
+labelTiempo.textContent = 'Tiempo límite:';
+const controlsDiv = document.querySelector('.controls');
+controlsDiv.insertBefore(labelTiempo, controlsDiv.children[2]);
+controlsDiv.insertBefore(selectTiempo, controlsDiv.children[3]);
+
+// Crear elemento visual del temporizador
+const temporizadorDiv = document.createElement('div');
+temporizadorDiv.id = 'temporizador';
+temporizadorDiv.style.textAlign = 'center';
+temporizadorDiv.style.fontSize = '18px';
+temporizadorDiv.style.fontWeight = '700';
+temporizadorDiv.style.color = '#2563eb';
+temporizadorDiv.style.marginTop = '12px';
+controlsDiv.appendChild(temporizadorDiv);
+
+// Mostrar tiempo en formato mm:ss
+function mostrarTiempo() {
+  let min = Math.floor(tiempoRestante / 60);
+  let seg = tiempoRestante % 60;
+  temporizadorDiv.textContent = `⏳ Tiempo restante: ${min}:${seg.toString().padStart(2, '0')}`;
+}
+
+// Iniciar temporizador
+function iniciarTemporizador() {
+  const minutosSeleccionados = parseInt(document.getElementById('tiempoSeleccionado').value);
+  if (minutosSeleccionados === 0) {
+    temporizadorDiv.textContent = '⏳ Sin límite de tiempo';
+    return;
+  }
+
+  tiempoTotal = minutosSeleccionados * 60;
+  tiempoRestante = tiempoTotal;
+  mostrarTiempo();
+
+  temporizadorInterval = setInterval(() => {
+    tiempoRestante--;
+    mostrarTiempo();
+    if (tiempoRestante <= 0) {
+      clearInterval(temporizadorInterval);
+      temporizadorDiv.textContent = '⏰ ¡Tiempo agotado!';
+      finalizarTestPorTiempo();
+    }
+  }, 1000);
+}
+
+// Detener temporizador
+function detenerTemporizador() {
+  clearInterval(temporizadorInterval);
+}
+
+// Modificar función cargarTest para que inicie el temporizador
+const originalCargarTest = cargarTest;
+cargarTest = function() {
+  originalCargarTest();
+  detenerTemporizador(); // Por si se reinicia
+  iniciarTemporizador();
+};
+
+// Al finalizar el test manualmente (botón Enviar)
+const originalEvaluarTest = evaluarTest;
+evaluarTest = function() {
+  detenerTemporizador(); // Detiene el contador al pulsar Enviar
+  originalEvaluarTest();
+};
+
+// Cuando el tiempo se agota automáticamente
+function finalizarTestPorTiempo() {
+  // Evita ejecuciones dobles
+  if (window.__finalizadoPorTiempo__) return;
+  window.__finalizadoPorTiempo__ = true;
+
+  detenerTemporizador();
+  if (temporizadorDiv) temporizadorDiv.textContent = '⏰ ¡Tiempo agotado! Pulsa "Enviar" para corregir.';
+
+  // 🔒 Bloquear todas las respuestas
+  document.querySelectorAll('input[type="radio"]').forEach(r => {
+    r.disabled = true;
+    const opt = r.closest('.option');
+    if (opt) {
+      opt.style.opacity = '0.6';
+      opt.style.pointerEvents = 'none';
+    }
+  });
+
+  // ✅ Dejar el botón "Enviar" activo y hacerlo destacar en verde
+  const btnEnviar = document.querySelector('button.btn.success, button[type="submit"]');
+  if (btnEnviar) {
+    btnEnviar.disabled = false;
+    btnEnviar.style.opacity = '1';
+    btnEnviar.style.cursor = 'pointer';
+
+    // 💚 Efecto parpadeo verde suave
+    btnEnviar.style.animation = 'blinkGreen 1.2s infinite';
+    btnEnviar.style.transition = 'background-color 0.3s ease';
+    btnEnviar.style.backgroundColor = '#22c55e'; // verde suave (Tailwind: green-500)
+    btnEnviar.style.color = 'white';
+
+    // Inyectar animación CSS si no existe
+    if (!document.getElementById('blinkGreen-style')) {
+      const style = document.createElement('style');
+      style.id = 'blinkGreen-style';
+      style.textContent = `
+        @keyframes blinkGreen {
+          0%, 100% { background-color: #22c55e; }
+          50% { background-color: #86efac; } /* verde claro (green-300) */
+        }
+      `;
+      document.head.appendChild(style);
+    }
+  }
+
+  // 🔄 Mantener botón "Reiniciar" activo
+  const btnReiniciar = document.querySelector('button.btn.secondary');
+  if (btnReiniciar) {
+    btnReiniciar.disabled = false;
+  }
+}
+</script>
+</body>
+</html>
