@@ -1,0 +1,3779 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test de Derecho Fiscal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --card: #ffffff;
+      --text: #111827;
+      --muted: #6b7280;
+      --primary: #2563eb;
+      --primary-dark: #1e40af;
+      --success: #059669;
+      --danger: #dc2626;
+      --ring: rgba(37, 99, 235, 0.25);
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: 'Roboto', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      padding: 24px;
+    }
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+    header.hero {
+      text-align: center;
+      margin-bottom: 16px;
+    }
+    .title {
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--primary-dark);
+      margin: 0 0 8px;
+    }
+    .subtitle {
+      color: var(--muted);
+      margin: 0;
+    }
+    .controls {
+      background: var(--card);
+      border-radius: 14px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.06);
+      padding: 16px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      justify-content: center;
+      position: sticky;
+      top: 12px;
+      z-index: 5;
+    }
+    .controls label { font-weight: 500; }
+    select {
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid #e5e7eb;
+      background: #fff;
+      outline: none;
+      transition: box-shadow .2s, border-color .2s;
+    }
+    select:focus { border-color: var(--primary); box-shadow: 0 0 0 4px var(--ring); }
+
+    .btn {
+      cursor: pointer;
+      border: none;
+      border-radius: 10px;
+      padding: 12px 18px;
+      font-weight: 700;
+      transition: transform .15s, background .2s, box-shadow .2s;
+      color: #fff;
+      background: var(--primary);
+      box-shadow: 0 6px 14px rgba(37,99,235,.2);
+    }
+    .btn:hover { transform: translateY(-1px); background: var(--primary-dark); }
+    .btn.secondary { background: #6b7280; }
+    .btn.secondary:hover { background: #374151; }
+    .btn.success { background: var(--success); }
+    .btn.success:hover { background: #047857; }
+    .btn.danger { background: var(--danger); }
+    .btn.danger:hover { background: #b91c1c; }
+
+    .progress {
+      width: 100%;
+      height: 10px;
+      background: #e5e7eb;
+      border-radius: 999px;
+      overflow: hidden;
+      margin-top: 8px;
+    }
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--primary), #60a5fa);
+      transition: width .3s ease;
+    }
+
+    .question {
+      margin: 14px 0;
+      padding: 18px;
+      background: var(--card);
+      border-radius: 14px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.06);
+    }
+    .q-head {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+    }
+    .q-num {
+      font-weight: 800;
+      color: var(--primary-dark);
+    }
+    .q-text { margin: 0; }
+
+    .options { margin-top: 10px; display: grid; gap: 8px; }
+    .option {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid #e5e7eb;
+      background: #fff;
+      transition: background .15s, border-color .15s, box-shadow .15s;
+      cursor: pointer;
+    }
+    .option input { transform: scale(1.2); }
+    .option:hover { background: #f9fafb; border-color: #d1d5db; }
+    .option.is-selected { box-shadow: 0 0 0 4px var(--ring); border-color: var(--primary); }
+
+    .justification {
+      margin-top: 10px; color: var(--muted);
+    }
+    .correct { color: var(--success); font-weight: 700; }
+    .incorrect { color: var(--danger); font-weight: 700; }
+
+    .option.correct-option {
+      border-color: rgba(5,150,105,.4);
+      background: #ecfdf5;
+    }
+    .option.wrong-option {
+      border-color: rgba(220,38,38,.4);
+      background: #fef2f2;
+    }
+
+    .result-card {
+      margin: 18px 0;
+      padding: 16px;
+      background: var(--card);
+      border-radius: 14px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.06);
+      text-align: center;
+    }
+    .score {
+      font-size: 22px;
+      font-weight: 800;
+      margin: 8px 0;
+    }
+    .muted { color: var(--muted); }
+    footer { text-align: center; margin-top: 24px; color: var(--muted); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="hero">
+      <h1 class="title">Test de Derecho Fiscal</h1>
+      <p class="subtitle">Selecciona cuántas preguntas quieres y pulsa <strong>Comenzar</strong>.</p>
+    </header>
+
+    <div class="controls">
+      <label for="numPreguntas">Número de preguntas:</label>
+      <select id="numPreguntas">
+        <option value="10">10</option>
+        <option value="20">20</option>
+        <option value="30">30</option>
+        <option value="40">40</option>
+        <option value="50" selected>50</option>
+      </select>
+      <button class="btn" type="button" onclick="cargarTest()">Comenzar</button>
+      <button class="btn secondary" type="button" onclick="reiniciarTest()">Reiniciar</button>
+      <div class="progress" style="flex-basis: 100%;">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+    </div>
+
+    <form id="testForm"></form>
+
+    <div id="testResult"></div>
+    <footer>© Test de práctica — Derecho Fiscal</footer>
+  </div>
+
+<script>
+const preguntasBanco = [
+{
+  pregunta: "Según el artículo 1 de la Ley Orgánica 12/1995, de represión del contrabando, la finalidad principal de la Ley es:",
+  opciones: [
+    "a) Regular exclusivamente los impuestos especiales.",
+    "b) Tipificar como delito o infracción determinadas conductas en materia de tráfico de bienes.",
+    "c) Establecer el régimen disciplinario de los funcionarios de aduanas.",
+    "d) Configurar el marco general de la política fiscal del Estado."
+  ],
+  correcta: "b) Tipificar como delito o infracción determinadas conductas en materia de tráfico de bienes.",
+  justificacion: "El Título preliminar de la LO 12/1995 establece el concepto y ámbito de represión del contrabando, tipificando conductas como delito o infracción administrativa. "
+},
+{
+  pregunta: "A efectos de la Ley Orgánica 12/1995, se entenderá por género o efecto:",
+  opciones: [
+    "a) Únicamente las mercancías sometidas a arancel aduanero.",
+    "b) Cualquier bien, mercancía o producto cuya circulación esté limitada o condicionada.",
+    "c) Solo los productos sujetos a impuestos especiales (alcohol, tabaco, hidrocarburos).",
+    "d) Únicamente mercancías no comunitarias en tránsito."
+  ],
+  correcta: "b) Cualquier bien, mercancía o producto cuya circulación esté limitada o condicionada.",
+  justificacion: "El artículo 1 incluye, entre sus definiciones, bienes, mercancías, géneros o efectos como productos cuya circulación está sujeta a control o limitación. :contentReference[oaicite:1]{index=1}"
+},
+{
+  pregunta: "Con carácter general, el delito de contrabando se configura cuando el valor de los bienes o efectos objeto de la conducta es igual o superior a:",
+  opciones: [
+    "a) 37.500 euros.",
+    "b) 112.500 euros.",
+    "c) 150.000 euros.",
+    "d) 50.000 euros."
+  ],
+  correcta: "c) 150.000 euros.",
+  justificacion: "El artículo 2 LO 12/1995 establece, con carácter general, el umbral de 150.000 euros para la existencia de delito de contrabando, salvo supuestos especiales. :contentReference[oaicite:2]{index=2}"
+},
+{
+  pregunta: "Tratándose de bienes incluidos en el artículo 2.2 de la LO 12/1995 (bienes especialmente protegidos), el umbral económico para el delito de contrabando se sitúa, con carácter general, en:",
+  opciones: [
+    "a) 15.000 euros.",
+    "b) 37.500 euros.",
+    "c) 50.000 euros.",
+    "d) 112.500 euros."
+  ],
+  correcta: "c) 50.000 euros.",
+  justificacion: "El artículo 2 distingue límites de 150.000, 50.000 y 15.000 euros según el tipo de bienes, reservando 50.000 para los del art. 2.2. :contentReference[oaicite:3]{index=3}"
+},
+{
+  pregunta: "Cuando se trate de labores de tabaco, el delito de contrabando se comete cuando el valor de dichas labores alcanza al menos:",
+  opciones: [
+    "a) 6.000 euros.",
+    "b) 15.000 euros.",
+    "c) 18.000 euros.",
+    "d) 37.500 euros."
+  ],
+  correcta: "b) 15.000 euros.",
+  justificacion: "El artículo 2.3.b) LO 12/1995 establece un umbral específico de 15.000 euros para labores de tabaco. :contentReference[oaicite:4]{index=4}"
+},
+{
+  pregunta: "Según el artículo 2 LO 12/1995, también existe delito de contrabando aunque no se alcancen los umbrales económicos cuando:",
+  opciones: [
+    "a) Se trate de mercancías comunitarias.",
+    "b) El contrabando se realice mediante empresa unipersonal.",
+    "c) El contrabando se lleve a cabo a través de una organización o versando sobre bienes cuya tenencia ya constituye delito.",
+    "d) La conducta se cometa por imprudencia leve."
+  ],
+  correcta: "c) El contrabando se lleve a cabo a través de una organización o versando sobre bienes cuya tenencia ya constituye delito.",
+  justificacion: "El art. 2.3.a) declara punible el contrabando con independencia del valor cuando recaiga sobre drogas, armas, explosivos, etc., o intervenga organización. :contentReference[oaicite:5]{index=5}"
+},
+{
+  pregunta: "De acuerdo con el artículo 3 de la LO 12/1995, la pena principal del delito de contrabando es:",
+  opciones: [
+    "a) Prisión e inhabilitación especial para profesión.",
+    "b) Prisión y multa proporcional al valor de los bienes.",
+    "c) Multa proporcional al valor de los bienes, sin prisión.",
+    "d) Multa fija más clausura del establecimiento."
+  ],
+  correcta: "b) Prisión y multa proporcional al valor de los bienes.",
+  justificacion: "El Título I, artículo 3, establece cárcel y multa proporcional como penalidad básica del delito de contrabando. "
+},
+{
+  pregunta: "En el delito de contrabando, la pena de multa se calcula:",
+  opciones: [
+    "a) Como un porcentaje fijo del 100% del valor de los bienes.",
+    "b) Entre un mínimo del 100% y un máximo del 600% del valor de los bienes.",
+    "c) En proporción al valor de los bienes, conforme a los márgenes que fija la Ley.",
+    "d) Únicamente en función del salario mínimo interprofesional."
+  ],
+  correcta: "c) En proporción al valor de los bienes, conforme a los márgenes que fija la Ley.",
+  justificacion: "La LO 12/1995 fija una multa proporcional dentro de unos límites, en función del valor de los bienes o efectos objeto del delito. :contentReference[oaicite:7]{index=7}"
+},
+{
+  pregunta: "El artículo 5 de la LO 12/1995 establece que el comiso en el delito de contrabando:",
+  opciones: [
+    "a) Es potestativo del juez, en función de la gravedad.",
+    "b) Es obligatorio respecto de bienes, efectos e instrumentos del delito.",
+    "c) Solo puede acordarse sobre las mercancías, nunca sobre instrumentos.",
+    "d) Únicamente procede para bienes de tabaco y alcohol."
+  ],
+  correcta: "b) Es obligatorio respecto de bienes, efectos e instrumentos del delito.",
+  justificacion: "El comiso de los bienes, géneros, efectos e instrumentos del contrabando viene impuesto imperativamente por el artículo 5 LO 12/1995. "
+},
+{
+  pregunta: "Según la LO 12/1995, la responsabilidad civil derivada del delito de contrabando:",
+  opciones: [
+    "a) Solo cubre el daño efectivo al Erario público.",
+    "b) Se rige por el Código Penal con las especialidades de la propia Ley.",
+    "c) No se aplica en materia de contrabando.",
+    "d) Se limita al valor de los bienes decomisados."
+  ],
+  correcta: "b) Se rige por el Código Penal con las especialidades de la propia Ley.",
+  justificacion: "El artículo 4 LO 12/1995 remite al régimen general del CP, con especialidades en el ámbito tributario y aduanero. :contentReference[oaicite:9]{index=9}"
+},
+{
+  pregunta: "En el supuesto de pluralidad de actos de contrabando de menor entidad, el artículo 2.4 de la LO 12/1995 dispone que:",
+  opciones: [
+    "a) Nunca podrán acumularse los valores.",
+    "b) Podrán considerarse infracciones administrativas independientes.",
+    "c) Se acumularán los valores para apreciar delito cuando superen conjuntamente los umbrales legales.",
+    "d) Solo el último acto puede ser considerado delito."
+  ],
+  correcta: "c) Se acumularán los valores para apreciar delito cuando superen conjuntamente los umbrales legales.",
+  justificacion: "La Ley prevé la suma de varias operaciones cuando responden a un plan preconcebido o idéntica ocasión y superan las cuantías de 150.000, 50.000 o 15.000 euros. :contentReference[oaicite:10]{index=10}"
+},
+{
+  pregunta: "Respecto a la tipificación de las infracciones administrativas de contrabando, el artículo 11 LO 12/1995 establece que:",
+  opciones: [
+    "a) Solo pueden ser autores las personas físicas.",
+    "b) Pueden ser autores personas físicas, jurídicas y entidades del art. 35.4 de la LGT.",
+    "c) Únicamente pueden responder las personas jurídicas.",
+    "d) Las entidades sin personalidad jurídica quedan excluidas."
+  ],
+  correcta: "b) Pueden ser autores personas físicas, jurídicas y entidades del art. 35.4 de la LGT.",
+  justificacion: "El art. 11.1 menciona expresamente a personas físicas, jurídicas y entidades del art. 35.4 LGT como posibles responsables de infracción administrativa de contrabando. "
+},
+{
+  pregunta: "Las infracciones administrativas de contrabando se clasifican, según el artículo 11.2 LO 12/1995, en:",
+  opciones: [
+    "a) Leves, menos graves, graves y muy graves.",
+    "b) Solo leves y graves.",
+    "c) Leves, graves y muy graves.",
+    "d) Simples, cualificadas y agravadas."
+  ],
+  correcta: "c) Leves, graves y muy graves.",
+  justificacion: "El artículo 11.2 clasifica las infracciones en leves, graves y muy graves según el valor de los bienes y los bienes del art. 2.2. "
+},
+{
+  pregunta: "Con carácter general, se consideran infracciones administrativas leves de contrabando cuando el valor de los bienes es:",
+  opciones: [
+    "a) Inferior a 37.500 euros.",
+    "b) Inferior a 6.000 euros en todos los casos.",
+    "c) Entre 37.500 y 112.500 euros.",
+    "d) Siempre que no se cause perjuicio tributario."
+  ],
+  correcta: "a) Inferior a 37.500 euros.",
+  justificacion: "El artículo 11.2 A) fija el límite de 37.500 euros como frontera para infracción leve, salvo especialidades del art. 2.2 y tabaco. :contentReference[oaicite:13]{index=13}"
+},
+{
+  pregunta: "Para bienes comprendidos en el artículo 2.2 LO 12/1995 (salvo tabaco), se consideran infracciones leves cuando el valor es:",
+  opciones: [
+    "a) Inferior a 1.000 euros.",
+    "b) Inferior a 6.000 euros.",
+    "c) Inferior a 18.000 euros.",
+    "d) Inferior a 37.500 euros."
+  ],
+  correcta: "b) Inferior a 6.000 euros.",
+  justificacion: "El artículo 11.2 A) precisa que para supuestos del art. 2.2 la infracción es leve si el valor es inferior a 6.000 euros (con umbral especial para tabaco). :contentReference[oaicite:14]{index=14}"
+},
+{
+  pregunta: "Tratándose de labores de tabaco, serán infracciones administrativas leves de contrabando cuando el valor de las mismas sea:",
+  opciones: [
+    "a) Inferior a 1.000 euros.",
+    "b) Inferior a 6.000 euros.",
+    "c) Inferior a 15.000 euros.",
+    "d) Siempre que no superen los 500 euros."
+  ],
+  correcta: "a) Inferior a 1.000 euros.",
+  justificacion: "Para labores de tabaco, el artículo 11.2 A) establece un umbral más bajo: valor inferior a 1.000 euros para infracción leve. :contentReference[oaicite:15]{index=15}"
+},
+{
+  pregunta: "En general, se consideran infracciones graves de contrabando cuando el valor de los bienes está comprendido entre:",
+  opciones: [
+    "a) 37.500 y 112.500 euros, ambos incluidos.",
+    "b) 6.000 y 18.000 euros.",
+    "c) 1.000 y 6.000 euros.",
+    "d) 112.500 y 150.000 euros."
+  ],
+  correcta: "a) 37.500 y 112.500 euros, ambos incluidos.",
+  justificacion: "El artículo 11.2 B) LO 12/1995 fija el intervalo de 37.500 a 112.500 euros como infracción grave, con reglas específicas para el art. 2.2 y tabaco. :contentReference[oaicite:16]{index=16}"
+},
+{
+  pregunta: "Las infracciones administrativas de contrabando muy graves, conforme al artículo 11.2 LO 12/1995, lo son cuando el valor de los bienes es:",
+  opciones: [
+    "a) Superior a 37.500 euros.",
+    "b) Superior a 112.500 euros (o a 18.000 euros en bienes del art. 2.2, salvo tabaco).",
+    "c) Superior a 6.000 euros en todos los casos.",
+    "d) Superior a 150.000 euros."
+  ],
+  correcta: "b) Superior a 112.500 euros (o a 18.000 euros en bienes del art. 2.2, salvo tabaco).",
+  justificacion: "El artículo 11.2 C) concreta estos umbrales para la calificación de muy grave, con matices según el tipo de bienes. :contentReference[oaicite:17]{index=17}"
+},
+{
+  pregunta: "Según el artículo 12 LO 12/1995, la sanción básica para las infracciones administrativas de contrabando es:",
+  opciones: [
+    "a) Multa fija y clausura obligatoria.",
+    "b) Multa proporcional al valor de los bienes.",
+    "c) Amonestación pública y pérdida de puntos.",
+    "d) Inhabilitación profesional automática."
+  ],
+  correcta: "b) Multa proporcional al valor de los bienes.",
+  justificacion: "El art. 12.1 establece la multa pecuniaria proporcional al valor de los bienes como sanción principal para las infracciones administrativas. :contentReference[oaicite:18]{index=18}"
+},
+{
+  pregunta: "En las infracciones administrativas de contrabando (no art. 2.2), el porcentaje de la multa para infracciones leves se sitúa entre:",
+  opciones: [
+    "a) El 50% y el 100% del valor.",
+    "b) El 100% y el 150% del valor.",
+    "c) El 150% y el 250% del valor.",
+    "d) El 250% y el 350% del valor."
+  ],
+  correcta: "b) El 100% y el 150% del valor.",
+  justificacion: "El artículo 12.1 fija los tramos: leves 100–150%, graves 150–250%, muy graves 250–350%, con mínimo general de 500 euros. :contentReference[oaicite:19]{index=19}"
+},
+{
+  pregunta: "Según el artículo 12 LO 12/1995, el porcentaje de multa para infracciones graves (no bienes del art. 2.2) es:",
+  opciones: [
+    "a) Entre el 50% y el 100% del valor de los bienes.",
+    "b) Entre el 100% y el 150% del valor de los bienes.",
+    "c) Entre el 150% y el 250% del valor de los bienes.",
+    "d) Entre el 250% y el 350% del valor de los bienes."
+  ],
+  correcta: "c) Entre el 150% y el 250% del valor de los bienes.",
+  justificacion: "El artículo 12.1 establece ese tramo para infracciones graves. :contentReference[oaicite:0]{index=0}"
+},
+{
+  pregunta: "Para infracciones administrativas muy graves (art. 11.2), la multa se sitúa entre:",
+  opciones: [
+    "a) 50%–100% del valor.",
+    "b) 100%–150% del valor.",
+    "c) 150%–250% del valor.",
+    "d) 250%–350% del valor."
+  ],
+  correcta: "d) 250%–350% del valor.",
+  justificacion: "Art. 12.1 LO 12/1995 fija 250–350% como tramo sancionador de muy graves. :contentReference[oaicite:1]{index=1}"
+},
+{
+  pregunta: "La sanción mínima aplicable en infracciones administrativas de contrabando es:",
+  opciones: [
+    "a) 100 euros.",
+    "b) 300 euros.",
+    "c) 500 euros.",
+    "d) 1.000 euros."
+  ],
+  correcta: "c) 500 euros.",
+  justificacion: "La Ley establece un mínimo general de 500 € para cualquier sanción administrativa (art. 12.1). :contentReference[oaicite:2]{index=2}"
+},
+{
+  pregunta: "En las infracciones administrativas, el comiso de bienes:",
+  opciones: [
+    "a) Es potestativo para la administración.",
+    "b) Solo puede aplicarse a bienes prohibidos.",
+    "c) Es una sanción accesoria obligatoria.",
+    "d) Solo se aplica si supera 37.500 euros."
+  ],
+  correcta: "c) Es una sanción accesoria obligatoria.",
+  justificacion: "El artículo 12.4 establece el comiso obligatorio de bienes, géneros y efectos. :contentReference[oaicite:3]{index=3}"
+},
+{
+  pregunta: "El artículo 14 LO 12/1995 establece que la competencia sancionadora corresponde a:",
+  opciones: [
+    "a) La Agencia Tributaria exclusivamente.",
+    "b) El Ministerio de Economía.",
+    "c) El Departamento de Aduanas e Impuestos Especiales de la AEAT.",
+    "d) El órgano instructor del expediente."
+  ],
+  correcta: "c) El Departamento de Aduanas e Impuestos Especiales de la AEAT.",
+  justificacion: "La LO 12/1995 atribuye a dicho Departamento la resolución de expedientes sancionadores. :contentReference[oaicite:4]{index=4}"
+},
+{
+  pregunta: "El procedimiento sancionador en materia de contrabando se rige por:",
+  opciones: [
+    "a) El Reglamento de Procedimiento Administrativo Común exclusivamente.",
+    "b) La LO 12/1995 y su normativa de desarrollo.",
+    "c) Solo por la Ley General Tributaria.",
+    "d) El Código Aduanero de la Unión."
+  ],
+  correcta: "b) La LO 12/1995 y su normativa de desarrollo.",
+  justificacion: "El régimen sancionador se establece en la Ley y se desarrolla por RD 1649/1998. "
+},
+{
+  pregunta: "El Real Decreto 1649/1998 regula:",
+  opciones: [
+    "a) El régimen jurídico de la deuda aduanera.",
+    "b) El procedimiento para sancionar las infracciones de contrabando.",
+    "c) Las normas de aforo en aduanas.",
+    "d) La política comercial común."
+  ],
+  correcta: "b) El procedimiento para sancionar las infracciones de contrabando.",
+  justificacion: "El RD 1649/1998 desarrolla el título de infracciones administrativas de la LO 12/1995. :contentReference[oaicite:6]{index=6}"
+},
+{
+  pregunta: "Según el RD 1649/1998, el acta de infracción debe contener:",
+  opciones: [
+    "a) Solo el valor estimado de la mercancía.",
+    "b) La relación de hechos, bienes intervenidos y preceptos aplicables.",
+    "c) Exclusivamente la valoración numérica de la sanción.",
+    "d) Los datos del transportista sin más información."
+  ],
+  correcta: "b) La relación de hechos, bienes intervenidos y preceptos aplicables.",
+  justificacion: "El contenido mínimo del acta aparece en los artículos iniciales del RD 1649/1998. :contentReference[oaicite:7]{index=7}"
+},
+{
+  pregunta: "El plazo para presentar alegaciones tras un acta de infracción de contrabando es de:",
+  opciones: [
+    "a) 3 días.",
+    "b) 10 días.",
+    "c) 15 días.",
+    "d) 30 días."
+  ],
+  correcta: "b) 10 días.",
+  justificacion: "El RD 1649/1998 concede un plazo de 10 días para efectuar alegaciones al acta. :contentReference[oaicite:8]{index=8}"
+},
+{
+  pregunta: "Según el RD 1649/1998, la valoración de los bienes para sancionar se realizará:",
+  opciones: [
+    "a) Siempre por el perito judicial.",
+    "b) Conforme a los criterios establecidos por el Departamento de Aduanas.",
+    "c) Según el precio declarado por el interesado.",
+    "d) Según los precios medios de mercado publicados mensualmente."
+  ],
+  correcta: "b) Conforme a los criterios establecidos por el Departamento de Aduanas.",
+  justificacion: "La normativa atribuye la valoración a los órganos de Aduanas bajo criterios oficiales. :contentReference[oaicite:9]{index=9}"
+},
+{
+  pregunta: "El Reglamento (UE) 952/2013, Código Aduanero de la Unión, tiene como finalidad:",
+  opciones: [
+    "a) Recaudar impuestos sobre el transporte internacional.",
+    "b) Establecer el marco jurídico aduanero uniforme en la Unión Europea.",
+    "c) Regular exclusivamente mercancías peligrosas.",
+    "d) Fijar los tipos arancelarios del comercio mundial."
+  ],
+  correcta: "b) Establecer el marco jurídico aduanero uniforme en la Unión Europea.",
+  justificacion: "El artículo 1 del CAU fija su objeto: normas y procedimientos aduaneros aplicables en la UE. "
+},
+{
+  pregunta: "El CAU define “mercancías de la Unión” como aquellas:",
+  opciones: [
+    "a) Procedentes de países miembros con destino a terceros países.",
+    "b) Totalmente obtenidas en el territorio de la Unión o despachadas a libre práctica.",
+    "c) Cuyos aranceles sean inferiores al 5%.",
+    "d) Procedentes de terceros países con factura europea."
+  ],
+  correcta: "b) Totalmente obtenidas en el territorio de la Unión o despachadas a libre práctica.",
+  justificacion: "El artículo 5 del CAU define específicamente mercancías de la Unión. "
+},
+{
+  pregunta: "La “deuda aduanera” según el CAU consiste en:",
+  opciones: [
+    "a) La obligación del Estado de devolver aranceles.",
+    "b) La obligación de una persona de pagar los derechos de importación o exportación.",
+    "c) Un crédito fiscal a favor del operador económico.",
+    "d) Un beneficio arancelario temporal."
+  ],
+  correcta: "b) La obligación de una persona de pagar los derechos de importación o exportación.",
+  justificacion: "El artículo 5.18 CAU define deuda aduanera en esos términos. "
+},
+{
+  pregunta: "Según el Código Aduanero de la Unión, nace una deuda aduanera de importación cuando:",
+  opciones: [
+    "a) Se realiza el pago de un arancel preferencial.",
+    "b) Las mercancías son introducidas irregularmente en el territorio aduanero.",
+    "c) Las mercancías entran en depósito temporal.",
+    "d) Se presenta tránsito externo."
+  ],
+  correcta: "b) Las mercancías son introducidas irregularmente en el territorio aduanero.",
+  justificacion: "El artículo 79 CAU prevé deuda aduanera por introducción irregular de mercancías. "
+},
+{
+  pregunta: "El artículo 85 CAU establece que la deuda aduanera deberá pagarse:",
+  opciones: [
+    "a) Dentro de un plazo fijado por la autoridad aduanera.",
+    "b) En el mismo momento de la entrada física de las mercancías.",
+    "c) Solo después de tres meses.",
+    "d) Únicamente al finalizar el año fiscal."
+  ],
+  correcta: "a) Dentro de un plazo fijado por la autoridad aduanera.",
+  justificacion: "El CAU fija que la autoridad establece el plazo de pago de la deuda aduanera. "
+},
+{
+  pregunta: "El régimen aduanero de despacho a libre práctica tiene como efecto principal:",
+  opciones: [
+    "a) Que las mercancías pasen a considerarse mercancías de la Unión.",
+    "b) La prohibición inmediata de su comercialización.",
+    "c) La exigencia de licencia especial para su venta.",
+    "d) La obligación de destruirlas tras su despacho."
+  ],
+  correcta: "a) Que las mercancías pasen a considerarse mercancías de la Unión.",
+  justificacion: "El CAU establece el despacho a libre práctica para incorporar mercancías al mercado interior. "
+},
+{
+  pregunta: "Los regímenes especiales del CAU incluyen, entre otros:",
+  opciones: [
+    "a) Libre práctica y tránsito interno.",
+    "b) Perfeccionamiento activo, depósito aduanero y destino especial.",
+    "c) Venta minorista y depósito fiscal.",
+    "d) Exportación simplificada y comercio remoto."
+  ],
+  correcta: "b) Perfeccionamiento activo, depósito aduanero y destino especial.",
+  justificacion: "Los títulos VI y VII del CAU regulan estos regímenes especiales. "
+},
+{
+  pregunta: "La salida de mercancías del territorio aduanero de la UE requiere:",
+  opciones: [
+    "a) Declaración de exportación.",
+    "b) Presentación de documento CMR exclusivamente.",
+    "c) Autorización del Estado miembro de origen.",
+    "d) Firma del transportista internacional."
+  ],
+  correcta: "a) Declaración de exportación.",
+  justificacion: "El CAU regula la salida mediante declaración de exportación y controles asociados. "
+},
+{
+  pregunta: "El responsable del pago de la deuda aduanera suele ser:",
+  opciones: [
+    "a) La aduana de destino.",
+    "b) La persona que declara las mercancías o quien deba cumplir la obligación aduanera.",
+    "c) El transportista.",
+    "d) El fabricante extranjero."
+  ],
+  correcta: "b) La persona que declara las mercancías o quien deba cumplir la obligación aduanera.",
+  justificacion: "El CAU asigna responsabilidad a los declarantes u obligados aduaneros. "
+},
+{
+  pregunta: "Según el Código Aduanero de la Unión, el ‘declarante’ es:",
+  opciones: [
+    "a) La persona que transporta físicamente las mercancías.",
+    "b) La persona en cuyo nombre se hace la declaración aduanera o quien la firma.",
+    "c) El titular del régimen aduanero con independencia de quién declare.",
+    "d) El representante aduanero autorizado exclusivamente."
+  ],
+  correcta: "b) La persona en cuyo nombre se hace la declaración aduanera o quien la firma.",
+  justificacion: "El artículo 5 CAU define declarante como la persona que hace la declaración o en cuyo nombre se efectúa. "
+},
+{
+  pregunta: "El ‘representante aduanero’ según el CAU puede actuar:",
+  opciones: [
+    "a) Solo de forma directa.",
+    "b) Solo de forma indirecta.",
+    "c) De forma directa o indirecta, según autorización.",
+    "d) Únicamente en operaciones de importación."
+  ],
+  correcta: "c) De forma directa o indirecta, según autorización.",
+  justificacion: "El CAU permite representación directa e indirecta en operaciones aduaneras. "
+},
+{
+  pregunta: "La “garantía aduanera” prevista en el CAU tiene como finalidad principal:",
+  opciones: [
+    "a) Cubrir sanciones administrativas futuras.",
+    "b) Asegurar el pago de la deuda aduanera y otros posibles gravámenes.",
+    "c) Acreditar la identidad del importador.",
+    "d) Evitar el despacho a libre práctica."
+  ],
+  correcta: "b) Asegurar el pago de la deuda aduanera y otros posibles gravámenes.",
+  justificacion: "El artículo 89 CAU establece que la garantía cubre obligaciones de derechos e impuestos. "
+},
+{
+  pregunta: "Según el CAU, la garantía puede ser:",
+  opciones: [
+    "a) Únicamente individual.",
+    "b) Individual o global.",
+    "c) Obligatoriamente colectiva.",
+    "d) Exigida solo a operadores no comunitarios."
+  ],
+  correcta: "b) Individual o global.",
+  justificacion: "El artículo 89 CAU reconoce garantía individual o global según operaciones cubiertas. "
+},
+{
+  pregunta: "El estatuto de Operador Económico Autorizado (OEA) concede:",
+  opciones: [
+    "a) Arancel cero en todas las importaciones.",
+    "b) Ventajas en simplificaciones aduaneras y controles.",
+    "c) Exención total de la deuda aduanera.",
+    "d) Eliminación de inspecciones de seguridad."
+  ],
+  correcta: "b) Ventajas en simplificaciones aduaneras y controles.",
+  justificacion: "El CAU reconoce al OEA beneficios en seguridad y simplificaciones. "
+},
+{
+  pregunta: "El régimen de tránsito (interno o externo) tiene como finalidad:",
+  opciones: [
+    "a) Despachar a libre práctica las mercancías.",
+    "b) Permitir la circulación de mercancías bajo control aduanero sin pago inmediato de derechos.",
+    "c) Evitar controles sobre mercancías comunitarias.",
+    "d) Sustituir la declaración aduanera."
+  ],
+  correcta: "b) Permitir la circulación de mercancías bajo control aduanero sin pago inmediato de derechos.",
+  justificacion: "Los regímenes de tránsito permiten el desplazamiento sin liquidar derechos hasta destino. "
+},
+{
+  pregunta: "El depósito aduanero permite:",
+  opciones: [
+    "a) Introducir mercancías no comunitarias sin pago de derechos durante su permanencia.",
+    "b) Despacharlas automáticamente a libre práctica.",
+    "c) Vender mercancías con exención de IVA.",
+    "d) Realizar cualquier proceso industrial."
+  ],
+  correcta: "a) Introducir mercancías no comunitarias sin pago de derechos durante su permanencia.",
+  justificacion: "El régimen especial de depósito aduanero aplaza pagos arancelarios. "
+},
+{
+  pregunta: "El régimen de perfeccionamiento activo permite:",
+  opciones: [
+    "a) Exportar mercancías sin declaración.",
+    "b) Importar temporalmente mercancías no comunitarias para ser transformadas sin pagar derechos.",
+    "c) Vender bienes con arancel reducido.",
+    "d) Destruir mercancías prohibidas."
+  ],
+  correcta: "b) Importar temporalmente mercancías no comunitarias para ser transformadas sin pagar derechos.",
+  justificacion: "El perfeccionamiento activo permite operaciones de transformación sin liquidar derechos. "
+},
+{
+  pregunta: "En el caso del régimen de destino especial, las mercancías:",
+  opciones: [
+    "a) Pueden circular libremente tras entrar en la UE.",
+    "b) Se despachan a libre práctica con un destino predefinido sujeto a control.",
+    "c) Quedan exentas de inspección aduanera.",
+    "d) Están exentas de cualquier arancel."
+  ],
+  correcta: "b) Se despachan a libre práctica con un destino predefinido sujeto a control.",
+  justificacion: "El destino especial implica libre práctica condicionada a un uso o destino concreto. "
+},
+{
+  pregunta: "El régimen de exportación requiere:",
+  opciones: [
+    "a) Únicamente el albarán de transporte.",
+    "b) Declaración aduanera previa y control de salida.",
+    "c) Autorización del país de destino.",
+    "d) Inspección sanitaria obligatoria."
+  ],
+  correcta: "b) Declaración aduanera previa y control de salida.",
+  justificacion: "El CAU regula la exportación exigiendo declaración y control de aduana. "
+},
+{
+  pregunta: "El incumplimiento de las obligaciones derivadas de los regímenes especiales puede provocar:",
+  opciones: [
+    "a) La conversión automática en mercancía comunitaria.",
+    "b) El nacimiento de deuda aduanera.",
+    "c) La extinción de la deuda aduanera.",
+    "d) La importación automática sin arancel."
+  ],
+  correcta: "b) El nacimiento de deuda aduanera.",
+  justificacion: "El CAU establece que cualquier incumplimiento genera deuda aduanera (art. 79 y ss.). "
+},
+{
+  pregunta: "Según el RD 1649/1998, la intervención de las mercancías debe:",
+  opciones: [
+    "a) Dejarse constancia detallada en el acta.",
+    "b) Realizarse siempre sin presencia del interesado.",
+    "c) Realizarse únicamente por orden judicial.",
+    "d) Realizarse solo si las mercancías superan 37.500 euros."
+  ],
+  correcta: "a) Dejarse constancia detallada en el acta.",
+  justificacion: "La intervención siempre debe constar por escrito con descripción exhaustiva. :contentReference[oaicite:11]{index=11}"
+},
+{
+  pregunta: "Durante el procedimiento sancionador en materia de contrabando, el instructor:",
+  opciones: [
+    "a) Dicta la resolución final.",
+    "b) Formula la propuesta de resolución.",
+    "c) No puede practicar pruebas.",
+    "d) Se limita a custodiar los bienes aprehendidos."
+  ],
+  correcta: "b) Formula la propuesta de resolución.",
+  justificacion: "El RD 1649/1998 distingue entre instructor y órgano competente para resolver. :contentReference[oaicite:12]{index=12}"
+},
+{
+  pregunta: "La resolución sancionadora en materia de contrabando debe incluir:",
+  opciones: [
+    "a) Solo la cuantía de la multa.",
+    "b) Hechos probados, tipificación y sanción.",
+    "c) Únicamente la referencia al acta inicial.",
+    "d) Recomendación de actuación futura."
+  ],
+  correcta: "b) Hechos probados, tipificación y sanción.",
+  justificacion: "La resolución debe ser motivada e identificar hechos, normas y sanciones. :contentReference[oaicite:13]{index=13}"
+},
+{
+  pregunta: "Las mercancías decomisadas en infracciones administrativas de contrabando:",
+  opciones: [
+    "a) Siempre se destruyen.",
+    "b) Pueden adjudicarse, venderse o destruirse según proceda.",
+    "c) Se devuelven automáticamente al interesado tras pagar la multa.",
+    "d) Se destinan siempre a entidades sociales."
+  ],
+  correcta: "b) Pueden adjudicarse, venderse o destruirse según proceda.",
+  justificacion: "La LO 12/1995 y el RD regulan diferentes destinos según naturaleza y valor. :contentReference[oaicite:14]{index=14}"
+},
+{
+  pregunta: "El valor de los bienes a efectos sancionadores se calcula:",
+  opciones: [
+    "a) Según factura del importador exclusivamente.",
+    "b) Según criterios técnicos establecidos por Aduanas.",
+    "c) Según el valor que declare la persona aprehendida.",
+    "d) Mediante tasación judicial obligatoria."
+  ],
+  correcta: "b) Según criterios técnicos establecidos por Aduanas.",
+  justificacion: "La Aduana aplica criterios uniformes para tasación conforme al RD 1649/1998. :contentReference[oaicite:15]{index=15}"
+},
+{
+  pregunta: "El Código Aduanero de la Unión establece que la autorización de regímenes especiales corresponde:",
+  opciones: [
+    "a) A la autoridad aduanera competente del Estado miembro.",
+    "b) A la Comisión Europea directamente.",
+    "c) Al Consejo de la UE.",
+    "d) Al Parlamento Europeo."
+  ],
+  correcta: "a) A la autoridad aduanera competente del Estado miembro.",
+  justificacion: "El CAU atribuye estas autorizaciones a las aduanas nacionales. "
+},
+{
+  pregunta: "La entrada de mercancías en depósito temporal implica:",
+  opciones: [
+    "a) Pago inmediato de aranceles.",
+    "b) Permanencia de mercancías bajo control aduanero hasta asignación de régimen.",
+    "c) Libre circulación automática.",
+    "d) Exención total de controles."
+  ],
+  correcta: "b) Permanencia de mercancías bajo control aduanero hasta asignación de régimen.",
+  justificacion: "El depósito temporal sirve de situación previa a la declaración aduanera. "
+},
+{
+  pregunta: "La salida de mercancías del territorio aduanero se considera efectuada cuando:",
+  opciones: [
+    "a) Se emite la factura de exportación.",
+    "b) La aduana confirma la salida física.",
+    "c) El transportista firma el albarán.",
+    "d) El comprador paga."
+  ],
+  correcta: "b) La aduana confirma la salida física.",
+  justificacion: "El control de salida corresponde a la aduana y es obligatorio en exportaciones. "
+},
+{
+  pregunta: "Según el CAU, las mercancías declaradas para un régimen aduanero deben:",
+  opciones: [
+    "a) Permanecer en depósito temporal hasta su exportación.",
+    "b) Someterse inmediatamente a control físico por la autoridad aduanera.",
+    "c) Ser presentadas y puestas a disposición de la aduana para control.",
+    "d) Ser trasladadas automáticamente a libre práctica."
+  ],
+  correcta: "c) Ser presentadas y puestas a disposición de la aduana para control.",
+  justificacion: "El CAU exige la presentación y disponibilidad de las mercancías para control aduanero. "
+},
+{
+  pregunta: "En el régimen de perfeccionamiento pasivo, las mercancías:",
+  opciones: [
+    "a) Se introducen en la UE para ser transformadas.",
+    "b) Se exportan temporalmente para su transformación y reimportación.",
+    "c) Se destruyen por orden de la aduana.",
+    "d) Se convierten automáticamente en mercancías de la Unión."
+  ],
+  correcta: "b) Se exportan temporalmente para su transformación y reimportación.",
+  justificacion: "El perfeccionamiento pasivo permite exportación temporal para operaciones de transformación. "
+},
+{
+  pregunta: "El cálculo del valor en aduana se basa fundamentalmente en:",
+  opciones: [
+    "a) El precio de venta al consumidor final en la UE.",
+    "b) El valor de transacción, con ajustes previstos en el CAU.",
+    "c) Una estimación general publicada por Aduanas.",
+    "d) El coste del transporte exclusivamente."
+  ],
+  correcta: "b) El valor de transacción, con ajustes previstos en el CAU.",
+  justificacion: "El sistema principal de valoración aduanera es el valor de transacción según normativa UE. "
+},
+{
+  pregunta: "La modificación o anulación de una declaración aduanera puede realizarse:",
+  opciones: [
+    "a) Solo mediante orden judicial.",
+    "b) A solicitud del declarante y bajo aprobación de la aduana.",
+    "c) Solo si el valor es inferior a 1.000 euros.",
+    "d) Cuando el transportista así lo determine."
+  ],
+  correcta: "b) A solicitud del declarante y bajo aprobación de la aduana.",
+  justificacion: "El CAU permite modificar o anular declaraciones bajo autorización aduanera."
+},
+{
+  pregunta: "El RD 1649/1998 establece que la valoración de los bienes intervenidos:",
+  opciones: [
+    "a) Siempre debe realizarla un perito judicial.",
+    "b) Se hará conforme a los criterios establecidos por Aduanas.",
+    "c) Dependerá únicamente del precio declarado por el infractor.",
+    "d) Será fijada por el instructor sin criterios técnicos."
+  ],
+  correcta: "b) Se hará conforme a los criterios establecidos por Aduanas.",
+  justificacion: "El RD asigna a Aduanas la valoración bajo criterios técnicos oficiales. :contentReference[oaicite:3]{index=3}"
+},
+{
+  pregunta: "La interrupción del procedimiento sancionador por contrabando puede darse cuando:",
+  opciones: [
+    "a) El infractor paga voluntariamente la mitad de la sanción.",
+    "b) Existen actuaciones judiciales por delito de contrabando.",
+    "c) La mercancía es destruida.",
+    "d) El infractor solicita una rebaja voluntaria."
+  ],
+  correcta: "b) Existen actuaciones judiciales por delito de contrabando.",
+  justificacion: "La existencia de indicios de delito paraliza el procedimiento administrativo."
+},
+{
+  pregunta: "Según la LO 12/1995, la reincidencia en infracciones administrativas:",
+  opciones: [
+    "a) No tiene efectos sobre la sanción.",
+    "b) Implica automáticamente delito.",
+    "c) Incrementa la sanción dentro de los límites establecidos.",
+    "d) Conlleva la pérdida de la condición de importador."
+  ],
+  correcta: "c) Incrementa la sanción dentro de los límites establecidos.",
+  justificacion: "La reincidencia actúa como agravante administrativa en la LO 12/1995."
+},
+{
+  pregunta: "De acuerdo con el CAU, las mercancías 'no declaradas' tras su presentación a la aduana:",
+  opciones: [
+    "a) Se consideran automáticamente abandonadas.",
+    "b) Pueden ser puestas en depósito temporal.",
+    "c) No pueden ser intervenidas.",
+    "d) Se consideran de libre circulación."
+  ],
+  correcta: "b) Pueden ser puestas en depósito temporal.",
+  justificacion: "La falta de declaración conduce a la situación de depósito temporal bajo control. "
+},
+{
+  pregunta: "La declaración sumaria de entrada sirve para:",
+  opciones: [
+    "a) Registrar la venta de mercancías.",
+    "b) Informar a la aduana de la llegada de mercancías antes de su descarga.",
+    "c) Despachar a libre práctica automáticamente.",
+    "d) Cancelar una declaración aduanera previa."
+  ],
+  correcta: "b) Informar a la aduana de la llegada de mercancías antes de su descarga.",
+  justificacion: "El CAU exige una declaración sumaria previa para control y riesgos. "
+},
+{
+  pregunta: "La declaración sumaria de salida tiene como finalidad:",
+  opciones: [
+    "a) Cobrar impuestos sobre mercancías de exportación.",
+    "b) Informar del abandono físico del territorio aduanero antes de la salida.",
+    "c) Registrar el valor en aduana.",
+    "d) Obtener el certificado sanitario obligatorio."
+  ],
+  correcta: "b) Informar del abandono físico del territorio aduanero antes de la salida.",
+  justificacion: "El CAU establece controles tanto de entrada como de salida. "
+},
+{
+  pregunta: "El CAU exige que las mercancías declaradas para un régimen sean controladas mediante:",
+  opciones: [
+    "a) Exclusivamente inspección documental.",
+    "b) Inspección documental, física o ambas.",
+    "c) Inspección física obligatoria.",
+    "d) Inspección visual del transportista."
+  ],
+  correcta: "b) Inspección documental, física o ambas.",
+  justificacion: "El control aduanero puede tener dos niveles: documental y físico. "
+},
+{
+  pregunta: "El levante de las mercancías supone:",
+  opciones: [
+    "a) La autorización para disponer de ellas conforme al régimen declarado.",
+    "b) Su despacho automático a libre práctica.",
+    "c) La destrucción inmediata por la aduana.",
+    "d) La devolución de aranceles."
+  ],
+  correcta: "a) La autorización para disponer de ellas conforme al régimen declarado.",
+  justificacion: "El CAU define el levante como la autorización para disponer según régimen. "
+},
+{
+  pregunta: "Una deuda aduanera puede extinguirse, entre otros motivos:",
+  opciones: [
+    "a) Por voluntad del declarante.",
+    "b) Por renuncia del acreedor aduanero.",
+    "c) Por condonación legal o error de la autoridad.",
+    "d) Por destrucción accidental de la mercancía."
+  ],
+  correcta: "c) Por condonación legal o error de la autoridad.",
+  justificacion: "El CAU recoge causas de extinción como condonación o rectificación de errores. "
+},
+{
+  pregunta: "Según el CAU, el lugar donde se efectúa la declaración aduanera es:",
+  opciones: [
+    "a) Cualquiera dentro del territorio de la UE.",
+    "b) La aduana competente para el régimen solicitado.",
+    "c) Una oficina fiscal del Estado miembro.",
+    "d) La sede del transportista."
+  ],
+  correcta: "b) La aduana competente para el régimen solicitado.",
+  justificacion: "Cada régimen tiene aduanas competentes según normativa comunitaria. "
+},
+{
+  pregunta: "En el RD 1649/1998, la renuncia a formular alegaciones:",
+  opciones: [
+    "a) Impide continuar el procedimiento.",
+    "b) Se interpreta como conformidad con el acta.",
+    "c) Exige aprobación judicial.",
+    "d) Debe constar exclusivamente de forma verbal."
+  ],
+  correcta: "b) Se interpreta como conformidad con el acta.",
+  justificacion: "El RD considera que la falta de alegaciones implica conformidad con la infracción. :contentReference[oaicite:11]{index=11}"
+},
+{
+  pregunta: "La resolución del procedimiento sancionador debe notificarse al interesado:",
+  opciones: [
+    "a) Sin necesidad de plazo.",
+    "b) En el plazo máximo fijado por el RD 1649/1998.",
+    "c) Solo cuando la aduana lo estime conveniente.",
+    "d) A través del transportista."
+  ],
+  correcta: "b) En el plazo máximo fijado por el RD 1649/1998.",
+  justificacion: "El RD regula plazos concretos para concluir y notificar la resolución. :contentReference[oaicite:12]{index=12}"
+},
+{
+  pregunta: "El Código Aduanero de la Unión exige que los operadores con autorización OEA:",
+  opciones: [
+    "a) Disfruten de exención total de controles.",
+    "b) Cumplan criterios estrictos de solvencia y cumplimiento normativo.",
+    "c) Sean empresas públicas.",
+    "d) Pertenecen obligatoriamente a un registro internacional."
+  ],
+  correcta: "b) Cumplan criterios estrictos de solvencia y cumplimiento normativo.",
+  justificacion: "El OEA exige solvencia, historial de cumplimiento y controles de seguridad. "
+},
+{
+  pregunta: "En el procedimiento sancionador, la ejecución del comiso:",
+  opciones: [
+    "a) Debe esperar a la firmeza de la resolución.",
+    "b) Se ejecuta inmediatamente tras el acta.",
+    "c) No requiere resolución.",
+    "d) Se realiza solo si el importe supera 10.000 euros."
+  ],
+  correcta: "a) Debe esperar a la firmeza de la resolución.",
+  justificacion: "El comiso como sanción accesoria requiere resolución firme."
+},
+{
+  pregunta: "Según la LO 12/1995, las personas jurídicas:",
+  opciones: [
+    "a) No pueden cometer infracciones de contrabando.",
+    "b) Pueden ser responsables de infracciones administrativas.",
+    "c) Son responsables solo si existe imputación penal.",
+    "d) Solo responden por hechos de sus administradores."
+  ],
+  correcta: "b) Pueden ser responsables de infracciones administrativas.",
+  justificacion: "La LO 12/1995 incluye personas jurídicas y entidades del art. 35.4 LGT como sujetos infractores. :contentReference[oaicite:14]{index=14}"
+},
+{
+  pregunta: "El CAU establece que las declaraciones aduaneras pueden presentarse:",
+  opciones: [
+    "a) Solo de forma telemática.",
+    "b) Por escrito, verbalmente o mediante acto que implique la voluntad del declarante.",
+    "c) Únicamente por escrito ante el funcionario competente.",
+    "d) Solo mediante representación indirecta."
+  ],
+  correcta: "b) Por escrito, verbalmente o mediante acto que implique la voluntad del declarante.",
+  justificacion: "El CAU permite diversas formas de declaración, incluida la verbal y la manifestación tácita. "
+},
+{
+  pregunta: "Una mercancía se considera 'presentada en aduana' cuando:",
+  opciones: [
+    "a) Se comunica su llegada y queda a disposición de la autoridad aduanera.",
+    "b) Es inspeccionada físicamente.",
+    "c) El transportista la descarga del vehículo.",
+    "d) Se emite la factura comercial."
+  ],
+  correcta: "a) Se comunica su llegada y queda a disposición de la autoridad aduanera.",
+  justificacion: "La presentación implica notificación y disponibilidad para control. "
+},
+{
+  pregunta: "En el CAU, el levante puede denegarse cuando:",
+  opciones: [
+    "a) La mercancía tenga bajo valor.",
+    "b) Existan sospechas de infracción aduanera.",
+    "c) El destinatario no sea ciudadano de la UE.",
+    "d) El transportista no firme el recibo."
+  ],
+  correcta: "b) Existan sospechas de infracción aduanera.",
+  justificacion: "La aduana puede retener el levante hasta realizar controles necesarios. "
+},
+{
+  pregunta: "El depósito temporal tiene una duración máxima de:",
+  opciones: [
+    "a) 30 días.",
+    "b) 90 días.",
+    "c) 120 días.",
+    "d) 180 días."
+  ],
+  correcta: "b) 90 días.",
+  justificacion: "El CAU fija un máximo general de 90 días para depósito temporal. "
+},
+{
+  pregunta: "El incumplimiento del plazo de depósito temporal provoca:",
+  opciones: [
+    "a) Extinción automática de derechos arancelarios.",
+    "b) Nacimiento de deuda aduanera.",
+    "c) Conversión en mercancía de la Unión.",
+    "d) Levante automático."
+  ],
+  correcta: "b) Nacimiento de deuda aduanera.",
+  justificacion: "El CAU establece deuda en caso de incumplimiento de tiempos o condiciones. "
+},
+{
+  pregunta: "Las mercancías de la Unión pierden su condición cuando:",
+  opciones: [
+    "a) Se transportan dentro del mismo Estado miembro.",
+    "b) Se exportan temporalmente sin cumplir requisitos.",
+    "c) Se someten a regímenes especiales sin autorización.",
+    "d) Se almacenan en depósito aduanero."
+  ],
+  correcta: "b) Se exportan temporalmente sin cumplir requisitos.",
+  justificacion: "El CAU prevé pérdida de condición cuando no se cumplen requisitos de exportación temporal."
+},
+{
+  pregunta: "El CAU permite la declaración 'simplificada' cuando:",
+  opciones: [
+    "a) La mercancía sea peligrosa.",
+    "b) El operador económico esté autorizado y cumpla requisitos.",
+    "c) El valor sea inferior a 500 euros.",
+    "d) Siempre que el transportista lo solicite."
+  ],
+  correcta: "b) El operador económico esté autorizado y cumpla requisitos.",
+  justificacion: "El CAU regula declaraciones simplificadas para operadores autorizados. "
+},
+{
+  pregunta: "La liquidación de una deuda aduanera se notifica:",
+  opciones: [
+    "a) Solo verbalmente al transportista.",
+    "b) Únicamente mediante anuncio público.",
+    "c) Mediante notificación al obligado al pago.",
+    "d) Con la factura del proveedor."
+  ],
+  correcta: "c) Mediante notificación al obligado al pago.",
+  justificacion: "El CAU exige notificación formal al responsable de la deuda. "
+},
+{
+  pregunta: "Puede suspenderse el pago de la deuda aduanera cuando:",
+  opciones: [
+    "a) El interesado lo solicite sin más.",
+    "b) Se presente garantía adecuada.",
+    "c) El valor sea inferior a 1.000 euros.",
+    "d) Se exporten mercancías antes del pago."
+  ],
+  correcta: "b) Se presente garantía adecuada.",
+  justificacion: "El CAU prevé suspensión mediante garantías cuando procede. "
+},
+{
+  pregunta: "La garantía global cubre:",
+  opciones: [
+    "a) Solo una operación concreta.",
+    "b) Varias operaciones o regímenes, hasta un importe máximo autorizado.",
+    "c) La totalidad del tráfico comercial del operador.",
+    "d) Solo operaciones de exportación."
+  ],
+  correcta: "b) Varias operaciones o regímenes, hasta un importe máximo autorizado.",
+  justificacion: "La garantía global cubre múltiples operaciones hasta un límite. "
+},
+{
+  pregunta: "El régimen de importación temporal permite:",
+  opciones: [
+    "a) La entrada de mercancías para uso específico con exención total o parcial de derechos.",
+    "b) La transformación ilimitada de mercancías.",
+    "c) La exportación obligatoria después de 90 días.",
+    "d) Vender libremente mercancías importadas."
+  ],
+  correcta: "a) La entrada de mercancías para uso específico con exención total o parcial de derechos.",
+  justificacion: "El CAU define importación temporal con exenciones arancelarias. "
+},
+{
+  pregunta: "El Código Aduanero establece que la aduana puede realizar controles:",
+  opciones: [
+    "a) Únicamente aleatoriamente.",
+    "b) En cualquier momento, basándose en análisis de riesgo.",
+    "c) Solo cuando haya denuncia de un operador.",
+    "d) Únicamente a solicitud del declarante."
+  ],
+  correcta: "b) En cualquier momento, basándose en análisis de riesgo.",
+  justificacion: "El CAU autoriza controles continuos según criterios de riesgo. "
+},
+{
+  pregunta: "Las decisiones aduaneras deben cumplir el principio de:",
+  opciones: [
+    "a) Prioridad del transportista.",
+    "b) Proporcionalidad.",
+    "c) Silencio administrativo positivo.",
+    "d) Gratuidad."
+  ],
+  correcta: "b) Proporcionalidad.",
+  justificacion: "El CAU recoge proporcionalidad y motivación como principios clave. "
+},
+{
+  pregunta: "El RD 1649/1998 establece que la intervención de mercancías incluirá:",
+  opciones: [
+    "a) Su destrucción inmediata.",
+    "b) Su depósito bajo responsabilidad de la Administración.",
+    "c) La devolución inmediata al infractor.",
+    "d) Su asignación a entidad benéfica."
+  ],
+  correcta: "b) Su depósito bajo responsabilidad de la Administración.",
+  justificacion: "La intervención implica depósito y custodia hasta resolución. :contentReference[oaicite:12]{index=12}"
+},
+{
+  pregunta: "La Administración podrá decretar la venta de mercancías intervenidas cuando:",
+  opciones: [
+    "a) Sean perecederas o peligre su conservación.",
+    "b) El infractor no comparezca.",
+    "c) Tengan valor inferior a 10.000 euros.",
+    "d) Lo solicite el transportista."
+  ],
+  correcta: "a) Sean perecederas o peligre su conservación.",
+  justificacion: "RD 1649/1998 prevé enajenación anticipada en estos casos. :contentReference[oaicite:13]{index=13}"
+},
+{
+  pregunta: "Según el RD 1649/1998, el interesado tiene derecho a:",
+  opciones: [
+    "a) Presentar pruebas en cualquier fase del procedimiento.",
+    "b) No ser oído en el trámite de resolución.",
+    "c) Presentar alegaciones solo al final.",
+    "d) Exigir la destrucción de los bienes."
+  ],
+  correcta: "a) Presentar pruebas en cualquier fase del procedimiento.",
+  justificacion: "El RD reconoce derechos de prueba y audiencia al infractor. :contentReference[oaicite:14]{index=14}"
+},
+{
+  pregunta: "La resolución sancionadora debe expresar:",
+  opciones: [
+    "a) Exclusivamente la multa.",
+    "b) Hechos probados, fundamentos y sanciones.",
+    "c) Solo los artículos infringidos.",
+    "d) Únicamente el valor de los bienes."
+  ],
+  correcta: "b) Hechos probados, fundamentos y sanciones.",
+  justificacion: "La motivación completa es obligatoria en resoluciones sancionadoras. :contentReference[oaicite:15]{index=15}"
+},
+{
+  pregunta: "El régimen de tránsito interno se aplica a:",
+  opciones: [
+    "a) Mercancías de terceros países.",
+    "b) Mercancías de la Unión que circulan entre diferentes partes del territorio aduanero.",
+    "c) Mercancías destinadas a destrucción.",
+    "d) Mercancías despachadas a libre práctica."
+  ],
+  correcta: "b) Mercancías de la Unión que circulan entre diferentes partes del territorio aduanero.",
+  justificacion: "El tránsito interno regula movimientos dentro del territorio aduanero. "
+},
+{
+  pregunta: "En el régimen de tránsito externo:",
+  opciones: [
+    "a) Las mercancías están en libre circulación.",
+    "b) Las mercancías no tienen estatuto de la Unión y circulan sin pagar derechos.",
+    "c) Deben pagar derechos antes de salir.",
+    "d) Solo se aplica a mercancías peligrosas."
+  ],
+  correcta: "b) Las mercancías no tienen estatuto de la Unión y circulan sin pagar derechos.",
+  justificacion: "El tránsito externo permite circulación controlada sin pago. "
+},
+{
+  pregunta: "Las mercancías que permanecen en depósito aduanero pueden:",
+  opciones: [
+    "a) Comercializarse libremente en el territorio aduanero.",
+    "b) Mantenerse sin límite temporal alguno.",
+    "c) Permanecer sin pago de derechos mientras no se despachen a libre práctica.",
+    "d) Utilizarse para producción industrial sin autorización."
+  ],
+  correcta: "c) Permanecer sin pago de derechos mientras no se despachen a libre práctica.",
+  justificacion: "El depósito aduanero suspende derechos hasta su despacho o destino autorizado."
+},
+{
+  pregunta: "Las decisiones aduaneras pueden ser revocadas cuando:",
+  opciones: [
+    "a) El interesado así lo solicite sin justificación.",
+    "b) Se compruebe que ya no se cumplen los requisitos exigidos.",
+    "c) Pasen más de tres meses desde su concesión.",
+    "d) La aduana considere que la operación no es rentable."
+  ],
+  correcta: "b) Se compruebe que ya no se cumplen los requisitos exigidos.",
+  justificacion: "El CAU permite revocación cuando desaparecen las condiciones iniciales."
+},
+{
+  pregunta: "En el CAU, la figura del 'titular del régimen' se refiere a:",
+  opciones: [
+    "a) El transportista internacional.",
+    "b) La persona responsable del cumplimiento de las obligaciones del régimen aduanero solicitado.",
+    "c) El expedidor de las mercancías.",
+    "d) El almacén donde quede depositada la mercancía."
+  ],
+  correcta: "b) La persona responsable del cumplimiento de las obligaciones del régimen aduanero solicitado.",
+  justificacion: "El CAU diferencia entre declarante y titular del régimen."
+},
+{
+  pregunta: "Las mercancías presentadas a la aduana deben ser declaradas:",
+  opciones: [
+    "a) En un plazo máximo de 24 horas.",
+    "b) Antes de finalizar su depósito temporal.",
+    "c) En el momento que establezca el declarante.",
+    "d) Solo si se destinan a libre práctica."
+  ],
+  correcta: "b) Antes de finalizar su depósito temporal.",
+  justificacion: "El CAU obliga a declarar dentro del plazo máximo del depósito temporal (90 días)."
+},
+{
+  pregunta: "En una declaración aduanera, los documentos justificativos:",
+  opciones: [
+    "a) No son necesarios si el declarante es OEA.",
+    "b) Deben aportarse o estar disponibles para la aduana.",
+    "c) Solo se aportan cuando se trate de mercancías peligrosas.",
+    "d) Únicamente se exigen en exportaciones."
+  ],
+  correcta: "b) Deben aportarse o estar disponibles para la aduana.",
+  justificacion: "El CAU exige disponibilidad de documentos que acrediten la información declarada."
+},
+{
+  pregunta: "La aduana puede ordenar la inspección física de mercancías:",
+  opciones: [
+    "a) Solo cuando exista delito.",
+    "b) En cualquier momento según análisis de riesgo.",
+    "c) Únicamente para mercancías de terceros países.",
+    "d) Siempre después del levante."
+  ],
+  correcta: "b) En cualquier momento según análisis de riesgo.",
+  justificacion: "El CAU permite inspecciones físicas selectivas o aleatorias basadas en riesgo."
+},
+{
+  pregunta: "El abandono de mercancías en favor del Estado supone:",
+  opciones: [
+    "a) Extinción de la deuda aduanera si la normativa lo permite.",
+    "b) La obligación de pagar igualmente todos los derechos.",
+    "c) Su exportación forzosa.",
+    "d) La cesión automática al propietario del almacén."
+  ],
+  correcta: "a) Extinción de la deuda aduanera si la normativa lo permite.",
+  justificacion: "El CAU regula el abandono voluntario como forma de extinción de deuda en ciertos casos."
+},
+{
+  pregunta: "La declaración 'incompleta' puede utilizarse cuando:",
+  opciones: [
+    "a) La mercancía no disponga de factura comercial.",
+    "b) El operador económico autorizado no tiene datos suficientes en el momento del despacho.",
+    "c) El valor sea menor de 500 euros.",
+    "d) Lo solicite el transportista por agilizar la descarga."
+  ],
+  correcta: "b) El operador económico autorizado no tiene datos suficientes en el momento del despacho.",
+  justificacion: "El CAU contempla declaraciones incompletas bajo autorización específica."
+},
+{
+  pregunta: "El levante puede otorgarse antes de la liquidación de derechos cuando:",
+  opciones: [
+    "a) Lo solicite el transportista.",
+    "b) Exista una garantía constituida.",
+    "c) El declarante no sea residente en la UE.",
+    "d) El valor sea inferior a 1.000 euros."
+  ],
+  correcta: "b) Exista una garantía constituida.",
+  justificacion: "Con garantía, la mercancía puede ser levantada antes del pago."
+},
+{
+  pregunta: "La responsabilidad solidaria en el pago de la deuda aduanera puede recaer en:",
+  opciones: [
+    "a) El fabricante extranjero de la mercancía.",
+    "b) Cualquier persona que participe en la operación con conocimiento de irregularidades.",
+    "c) Cualquier persona que transporte las mercancías.",
+    "d) Únicamente el declarante."
+  ],
+  correcta: "b) Cualquier persona que participe en la operación con conocimiento de irregularidades.",
+  justificacion: "El CAU prevé responsabilidad solidaria para partícipes directos en irregularidades."
+},
+{
+  pregunta: "En el RD 1649/1998, el instructor debe:",
+  opciones: [
+    "a) Realizar solo funciones de custodia.",
+    "b) Practicar pruebas, analizar hechos y formular propuesta de resolución.",
+    "c) Dictar la resolución final.",
+    "d) Determinar el valor definitivo de las mercancías."
+  ],
+  correcta: "b) Practicar pruebas, analizar hechos y formular propuesta de resolución.",
+  justificacion: "El RD distingue claramente la función instructora de la resolutoria."
+},
+{
+  pregunta: "El acta de infracción debe notificarse:",
+  opciones: [
+    "a) En el mismo momento de la intervención siempre.",
+    "b) En el plazo legal establecido y con información completa para defensa.",
+    "c) Desde la web de la agencia tributaria únicamente.",
+    "d) Solo si la sanción supera 1.000 euros."
+  ],
+  correcta: "b) En el plazo legal establecido y con información completa para defensa.",
+  justificacion: "El RD garantiza derecho de información y plazos adecuados."
+},
+{
+  pregunta: "Para determinar la sanción en infracciones administrativas, el valor de los bienes:",
+  opciones: [
+    "a) Lo determina el infractor.",
+    "b) Lo fija obligatoriamente un perito judicial.",
+    "c) Se determina según los criterios del Departamento de Aduanas.",
+    "d) Siempre es el valor declarado en factura."
+  ],
+  correcta: "c) Se determina según los criterios del Departamento de Aduanas.",
+  justificacion: "La valoración oficial corresponde a Aduanas y se basa en criterios técnicos."
+},
+{
+  pregunta: "Las mercancías intervenidas pueden ser destruidas cuando:",
+  opciones: [
+    "a) Lo solicite el declarante.",
+    "b) Su conservación resulte peligrosa o antieconómica.",
+    "c) Su valor sea inferior a 500 euros.",
+    "d) El transportista no las reclame."
+  ],
+  correcta: "b) Su conservación resulte peligrosa o antieconómica.",
+  justificacion: "El RD 1649/1998 permite destrucción anticipada en casos justificados."
+},
+{
+  pregunta: "La resolución sancionadora debe notificarse:",
+  opciones: [
+    "a) En plazo y forma, e incluir los recursos disponibles.",
+    "b) Solo mediante publicación en el BOE.",
+    "c) Por correo ordinario sin acreditación.",
+    "d) Directamente al transportista."
+  ],
+  correcta: "a) En plazo y forma, e incluir los recursos disponibles.",
+  justificacion: "La notificación debe respetar garantías procedimentales."
+},
+{
+  pregunta: "El régimen de exportación implica que:",
+  opciones: [
+    "a) Las mercancías pasan a ser automáticamente comunitarias.",
+    "b) Las mercancías abandonan el territorio aduanero con la declaración correspondiente.",
+    "c) Se paguen derechos arancelarios por salida.",
+    "d) No existan controles físicos."
+  ],
+  correcta: "b) Las mercancías abandonan el territorio aduanero con la declaración correspondiente.",
+  justificacion: "La exportación implica salida física bajo control aduanero."
+},
+{
+  pregunta: "La declaración verbal puede aplicarse a:",
+  opciones: [
+    "a) Mercancías comerciales de cualquier valor.",
+    "b) Equipajes personales u objetos de carácter no comercial.",
+    "c) Operaciones de tránsito interno.",
+    "d) Exportaciones de gran volumen."
+  ],
+  correcta: "b) Equipajes personales u objetos de carácter no comercial.",
+  justificacion: "El CAU permite declaraciones verbales para bienes no comerciales."
+},
+{
+  pregunta: "El CAU establece que una autorización aduanera será inválida cuando:",
+  opciones: [
+    "a) Se emita fuera de horario laboral.",
+    "b) Contenga errores esenciales o se obtenga mediante información incorrecta.",
+    "c) El operador tenga menos de un año de actividad.",
+    "d) Las mercancías procedan de un país no reconocido."
+  ],
+  correcta: "b) Contenga errores esenciales o se obtenga mediante información incorrecta.",
+  justificacion: "Errores esenciales o falsedad en datos anulan la autorización."
+},
+{
+  pregunta: "La destrucción de mercancías bajo control aduanero produce:",
+  opciones: [
+    "a) Automática libre práctica.",
+    "b) Extinción o no nacimiento de deuda si se cumplen requisitos.",
+    "c) Obligación de pagar derechos igualmente.",
+    "d) Levante inmediato."
+  ],
+  correcta: "b) Extinción o no nacimiento de deuda si se cumplen requisitos.",
+  justificacion: "El CAU contempla el efecto liberatorio de la destrucción controlada."
+},
+{
+  pregunta: "La aduana puede exigir garantía cuando:",
+  opciones: [
+    "a) El declarante sea una persona física.",
+    "b) Exista riesgo de que la deuda no se pague.",
+    "c) Las mercancías provengan de países limítrofes.",
+    "d) El valor de la mercancía sea bajo."
+  ],
+  correcta: "b) Exista riesgo de que la deuda no se pague.",
+  justificacion: "La exigencia de garantía responde al análisis de riesgo financiero."
+},
+{
+  pregunta: "En el CAU, la 'rectificación' de una declaración aduanera puede efectuarse:",
+  opciones: [
+    "a) Únicamente antes de la presentación de la mercancía.",
+    "b) Antes del levante y cuando existan errores no sustanciales.",
+    "c) Solo tras el levante de la mercancía.",
+    "d) Únicamente por orden judicial."
+  ],
+  correcta: "b) Antes del levante y cuando existan errores no sustanciales.",
+  justificacion: "El CAU permite rectificaciones hasta la concesión del levante si el error es admisible."
+},
+{
+  pregunta: "La 'garantía individual' se aplica a:",
+  opciones: [
+    "a) Todas las operaciones del operador en un año.",
+    "b) Una única operación o régimen específico.",
+    "c) Operaciones ilimitadas sin tope.",
+    "d) Mercancías comunitarias exclusivamente."
+  ],
+  correcta: "b) Una única operación o régimen específico.",
+  justificacion: "La garantía individual cubre una operación con obligación potencial."
+},
+{
+  pregunta: "El levantamiento antes de la liquidación definitiva puede concederse cuando:",
+  opciones: [
+    "a) El declarante carezca de documentación.",
+    "b) Exista una garantía suficiente que cubra los derechos.",
+    "c) La mercancía sea de valor ínfimo.",
+    "d) Se trate de un tránsito interno."
+  ],
+  correcta: "b) Exista una garantía suficiente que cubra los derechos.",
+  justificacion: "El CAU prevé esta posibilidad siempre que exista garantía adecuada."
+},
+{
+  pregunta: "Los bienes sometidos a medidas de política comercial requieren:",
+  opciones: [
+    "a) Controles adicionales antes del levante.",
+    "b) Exclusivamente inspección física.",
+    "c) Pago de arancel adicional fijo.",
+    "d) Declaración sumaria en sustitución de la aduanera."
+  ],
+  correcta: "a) Controles adicionales antes del levante.",
+  justificacion: "Las medidas de política comercial implican requisitos y controles previos obligatorios."
+},
+{
+  pregunta: "El incumplimiento de condiciones de un régimen especial origina:",
+  opciones: [
+    "a) Extinción automática del régimen sin consecuencias.",
+    "b) Nacimiento de deuda aduanera.",
+    "c) Levante inmediato.",
+    "d) Exención de responsabilidad."
+  ],
+  correcta: "b) Nacimiento de deuda aduanera.",
+  justificacion: "El CAU establece deuda cuando no se cumplen las condiciones de un régimen."
+},
+{
+  pregunta: "Las mercancías abandonadas voluntariamente a favor del Estado:",
+  opciones: [
+    "a) Pueden reducir sanciones según corresponda.",
+    "b) No afectan nunca a la deuda aduanera.",
+    "c) Son consideradas siempre exportadas.",
+    "d) Se convierten en mercancías de la Unión."
+  ],
+  correcta: "a) Pueden reducir sanciones según corresponda.",
+  justificacion: "El abandono puede influir en la responsabilidad y gestión administrativa."
+},
+{
+  pregunta: "La declaración aduanera debe contener:",
+  opciones: [
+    "a) Solo el valor de la mercancía.",
+    "b) Datos suficientes para identificar y clasificar la mercancía.",
+    "c) Exclusivamente el país de origen.",
+    "d) Un resumen verbal del transportista."
+  ],
+  correcta: "b) Datos suficientes para identificar y clasificar la mercancía.",
+  justificacion: "La declaración requiere información completa y verificable."
+},
+{
+  pregunta: "El tránsito externo permite:",
+  opciones: [
+    "a) La circulación de mercancías no comunitarias sin pagar derechos hasta destino.",
+    "b) Su libre práctica inmediata.",
+    "c) Evitar cualquier control aduanero.",
+    "d) Exportarlas sin declaración."
+  ],
+  correcta: "a) La circulación de mercancías no comunitarias sin pagar derechos hasta destino.",
+  justificacion: "Es la característica esencial del tránsito externo."
+},
+{
+  pregunta: "El tránsito interno se aplica cuando:",
+  opciones: [
+    "a) Mercancías no comunitarias entran a la UE.",
+    "b) Mercancías de la Unión circulan entre partes del territorio aduanero.",
+    "c) Las mercancías salen del territorio UE.",
+    "d) Existen mercancías no clasificadas."
+  ],
+  correcta: "b) Mercancías de la Unión circulan entre partes del territorio aduanero.",
+  justificacion: "Definición del tránsito interno según normativa aduanera."
+},
+{
+  pregunta: "El perfeccionamiento activo supone que:",
+  opciones: [
+    "a) Se pagan derechos antes de la transformación.",
+    "b) La mercancía se importa para ser transformada sin pagar derechos.",
+    "c) La mercancía se exporta sin retorno.",
+    "d) La mercancía queda en libre práctica inmediata."
+  ],
+  correcta: "b) La mercancía se importa para ser transformada sin pagar derechos.",
+  justificacion: "Es el objetivo del régimen de perfeccionamiento activo."
+},
+{
+  pregunta: "En el RD 1649/1998, el acta debe incluir:",
+  opciones: [
+    "a) Solo el valor del género.",
+    "b) Hechos, bienes intervenidos y preceptos legales aplicables.",
+    "c) Un extracto genérico de la actuación.",
+    "d) Únicamente el nombre del titular."
+  ],
+  correcta: "b) Hechos, bienes intervenidos y preceptos legales aplicables.",
+  justificacion: "El RD exige contenido claro y completo en las actas de infracción."
+},
+{
+  pregunta: "El valor de los bienes a efectos sancionadores se calcula:",
+  opciones: [
+    "a) Según factura del importador siempre.",
+    "b) Mediante criterios establecidos por Aduanas.",
+    "c) Con una estimación aproximada del declarante.",
+    "d) Por la policía en el momento de la intervención."
+  ],
+  correcta: "b) Mediante criterios establecidos por Aduanas.",
+  justificacion: "La valoración oficial corresponde a la Aduana."
+},
+{
+  pregunta: "Las mercancías perecederas intervenidas pueden:",
+  opciones: [
+    "a) Guardarse sin límite de tiempo.",
+    "b) Ser vendidas anticipadamente para evitar deterioro.",
+    "c) Ser destruidas siempre sin más trámites.",
+    "d) Quedar automáticamente a libre práctica."
+  ],
+  correcta: "b) Ser vendidas anticipadamente para evitar deterioro.",
+  justificacion: "El RD permite la venta anticipada para evitar pérdidas."
+},
+{
+  pregunta: "La competencia sancionadora en infracciones administrativas de contrabando corresponde a:",
+  opciones: [
+    "a) La policía judicial.",
+    "b) Los Ayuntamientos.",
+    "c) El Departamento de Aduanas e Impuestos Especiales de la AEAT.",
+    "d) El Ministerio del Interior."
+  ],
+  correcta: "c) El Departamento de Aduanas e Impuestos Especiales de la AEAT.",
+  justificacion: "Así lo establece la LO 12/1995."
+},
+{
+  pregunta: "La propuesta de resolución del procedimiento sancionador la formula:",
+  opciones: [
+    "a) El órgano competente para resolver.",
+    "b) El instructor.",
+    "c) El transportista.",
+    "d) El propietario de la mercancía."
+  ],
+  correcta: "b) El instructor.",
+  justificacion: "El RD distingue fase instructora de fase resolutoria."
+},
+{
+  pregunta: "El interesado puede presentar alegaciones:",
+  opciones: [
+    "a) Solo cuando la sanción supera 10.000 euros.",
+    "b) Dentro del plazo legal establecido tras la notificación del acta.",
+    "c) Únicamente si se trata de mercancía perecedera.",
+    "d) Nunca, al ser un procedimiento formal."
+  ],
+  correcta: "b) Dentro del plazo legal establecido tras la notificación del acta.",
+  justificacion: "Es un derecho garantizado por el RD 1649/1998."
+},
+{
+  pregunta: "La resolución sancionadora es ejecutiva:",
+  opciones: [
+    "a) Inmediatamente tras su firma.",
+    "b) Solo cuando sea firme.",
+    "c) A los 3 meses de su emisión.",
+    "d) Cuando el infractor pague la mitad."
+  ],
+  correcta: "b) Solo cuando sea firme.",
+  justificacion: "Debe estar libre de recursos para ser ejecutiva."
+},
+{
+  pregunta: "El comiso administrativo en infracciones de contrabando es:",
+  opciones: [
+    "a) Facultativo.",
+    "b) Obligatorio.",
+    "c) Aplicable solo si el valor supera 37.500 euros.",
+    "d) Excepcional en mercancías no comunitarias."
+  ],
+  correcta: "b) Obligatorio.",
+  justificacion: "La LO 12/1995 establece el comiso como sanción accesoria obligatoria."
+},
+{
+  pregunta: "La interposición de un recurso contra la resolución sancionadora:",
+  opciones: [
+    "a) Suspende automáticamente su ejecución.",
+    "b) No suspende salvo que se aporte garantía.",
+    "c) Obliga a destruir las mercancías.",
+    "d) Anula la deuda aduanera."
+  ],
+  correcta: "b) No suspende salvo que se aporte garantía.",
+  justificacion: "El régimen sancionador sigue los principios generales del procedimiento administrativo."
+},
+{
+  pregunta: "En caso de destrucción de mercancías intervenidas:",
+  opciones: [
+    "a) El infractor recupera la posesión.",
+    "b) Se documenta detalladamente bajo control aduanero.",
+    "c) No se requiere acta.",
+    "d) Se consideran automáticamente de la Unión."
+  ],
+  correcta: "b) Se documenta detalladamente bajo control aduanero.",
+  justificacion: "Toda destrucción debe constar formalmente y bajo supervisión."
+},
+{
+  pregunta: "Una declaración aduanera puede ser anulada cuando:",
+  opciones: [
+    "a) La mercancía tenga un valor inferior a 1.000 euros.",
+    "b) Se demuestre que la declaración se presentó por error y no se ha concedido levante.",
+    "c) El transportista lo solicite sin motivo.",
+    "d) La aduana no haya realizado inspección física."
+  ],
+  correcta: "b) Se demuestre que la declaración se presentó por error y no se ha concedido levante.",
+  justificacion: "El CAU permite la anulación si todavía no se otorgó el levante y se trata de un error válido."
+},
+{
+  pregunta: "En el procedimiento sancionador, la apertura del expediente se produce tras:",
+  opciones: [
+    "a) La valoración de la mercancía.",
+    "b) La comisión de la infracción y redacción del acta.",
+    "c) La firma del transportista.",
+    "d) La presentación del recurso del interesado."
+  ],
+  correcta: "b) La comisión de la infracción y redacción del acta.",
+  justificacion: "El acta de infracción inicia formalmente el procedimiento sancionador."
+},
+{
+  pregunta: "Las mercancías sujetas a medidas de política comercial requieren:",
+  opciones: [
+    "a) Autorizaciones o licencias específicas según el tipo de mercancía.",
+    "b) Solo una declaración verbal.",
+    "c) Exclusivamente control sanitario.",
+    "d) Una inspección visual del transportista."
+  ],
+  correcta: "a) Autorizaciones o licencias específicas según el tipo de mercancía.",
+  justificacion: "Las medidas de política comercial exigen requisitos y permisos previos."
+},
+{
+  pregunta: "La aduana puede exigir 'garantía adicional' cuando:",
+  opciones: [
+    "a) El operador sea OEA.",
+    "b) Exista un riesgo superior al habitual.",
+    "c) Se trate de mercancías comunitarias.",
+    "d) La mercancía sea de bajo valor."
+  ],
+  correcta: "b) Exista un riesgo superior al habitual.",
+  justificacion: "La garantía adicional cubre riesgos específicos detectados por la aduana."
+},
+{
+  pregunta: "El valor en aduana se calcula principalmente a partir de:",
+  opciones: [
+    "a) Los impuestos internos.",
+    "b) El valor de transacción ajustado según normativa.",
+    "c) El valor en destino de la mercancía.",
+    "d) El valor de reventa."
+  ],
+  correcta: "b) El valor de transacción ajustado según normativa.",
+  justificacion: "El sistema principal es el valor de transacción complementado con ajustes legales."
+},
+{
+  pregunta: "La mercancía en depósito temporal debe:",
+  opciones: [
+    "a) Ser reexportada automáticamente.",
+    "b) Declararse para un régimen aduanero antes del plazo límite.",
+    "c) No someterse a ningún control.",
+    "d) Ser trasladada a otro depósito sin autorización."
+  ],
+  correcta: "b) Declararse para un régimen aduanero antes del plazo límite.",
+  justificacion: "El depósito temporal es una situación excepcional que finaliza con la declaración."
+},
+{
+  pregunta: "El CAU considera que las mercancías salen del territorio aduanero cuando:",
+  opciones: [
+    "a) Se genera la factura de exportación.",
+    "b) Se confirma su salida física por la aduana de salida.",
+    "c) El comprador paga.",
+    "d) Se transportan hacia la frontera."
+  ],
+  correcta: "b) Se confirma su salida física por la aduana de salida.",
+  justificacion: "La salida debe verificarse mediante control aduanero."
+},
+{
+  pregunta: "El incumplimiento de los requisitos de una autorización aduanera puede implicar:",
+  opciones: [
+    "a) Su revocación o suspensión.",
+    "b) Su renovación automática.",
+    "c) La conversión en libre práctica.",
+    "d) La exención de sanciones."
+  ],
+  correcta: "a) Su revocación o suspensión.",
+  justificacion: "El CAU permite suspender o revocar autorizaciones cuando se incumplen requisitos."
+},
+{
+  pregunta: "Las mercancías destruidas bajo control aduanero:",
+  opciones: [
+    "a) Generan siempre deuda aduanera.",
+    "b) No generan deuda si se cumplen los requisitos de destrucción autorizada.",
+    "c) Deben exportarse después de destruirse.",
+    "d) Quedan en libre circulación automáticamente."
+  ],
+  correcta: "b) No generan deuda si se cumplen los requisitos de destrucción autorizada.",
+  justificacion: "La destrucción autorizada puede extinguir o evitar el nacimiento de la deuda."
+},
+{
+  pregunta: "La responsabilidad solidaria en aduanas puede extenderse a:",
+  opciones: [
+    "a) Quien participe en la operación con conocimiento de irregularidades.",
+    "b) El consumidor final.",
+    "c) El transportista en todos los casos.",
+    "d) El fabricante extranjero exclusivamente."
+  ],
+  correcta: "a) Quien participe en la operación con conocimiento de irregularidades.",
+  justificacion: "El CAU establece responsabilidad solidaria por participación consciente."
+},
+{
+  pregunta: "El tránsito permite:",
+  opciones: [
+    "a) Evitar toda inspección.",
+    "b) Transportar mercancías bajo control aduanero sin pago inmediato de derechos.",
+    "c) Vender mercancías en territorio aduanero sin declarar.",
+    "d) Convertir mercancías no comunitarias en comunitarias."
+  ],
+  correcta: "b) Transportar mercancías bajo control aduanero sin pago inmediato de derechos.",
+  justificacion: "Es la esencia del régimen de tránsito."
+},
+{
+  pregunta: "Las mercancías pueden considerarse 'abandonadas' cuando:",
+  opciones: [
+    "a) El dueño no comparece o no cumple requisitos durante un tiempo determinado.",
+    "b) El transportista decide dejarlas en aduana.",
+    "c) Están perecederas.",
+    "d) No se valore su contenido."
+  ],
+  correcta: "a) El dueño no comparece o no cumple requisitos durante un tiempo determinado.",
+  justificacion: "El CAU prevé el abandono tácito por inacción del interesado."
+},
+{
+  pregunta: "La declaración sumaria de entrada se utiliza para:",
+  opciones: [
+    "a) Despachar la mercancía.",
+    "b) Informar a la aduana de la llegada antes de la descarga.",
+    "c) Vender la mercancía a terceros.",
+    "d) Obtener la autorización de tránsito."
+  ],
+  correcta: "b) Informar a la aduana de la llegada antes de la descarga.",
+  justificacion: "Permite el análisis de riesgo previo al tratamiento aduanero."
+},
+{
+  pregunta: "Las mercancías en régimen de depósito aduanero:",
+  opciones: [
+    "a) Pagan derechos desde la entrada.",
+    "b) Pueden permanecer sin pago de derechos mientras no se destinen a consumo.",
+    "c) Se consideran automáticamente exportadas.",
+    "d) Pierden su identidad aduanera."
+  ],
+  correcta: "b) Pueden permanecer sin pago de derechos mientras no se destinen a consumo.",
+  justificacion: "El depósito aduanero suspende derechos e impuestos."
+},
+{
+  pregunta: "El procedimiento sancionador exige que el infractor pueda:",
+  opciones: [
+    "a) Reclamar verbalmente durante la intervención.",
+    "b) Conocer los hechos que se le imputan y formular alegaciones.",
+    "c) Aportar nuevas mercancías como garantía.",
+    "d) Renunciar al expediente sin efectos."
+  ],
+  correcta: "b) Conocer los hechos que se le imputan y formular alegaciones.",
+  justificacion: "Es un derecho básico reconocido en el RD 1649/1998."
+},
+{
+  pregunta: "La valoración aduanera incluye:",
+  opciones: [
+    "a) Gastos de transporte y seguros hasta la entrada al territorio aduanero, cuando proceda.",
+    "b) Gastos posteriores a la importación.",
+    "c) Exclusivamente el precio de factura.",
+    "d) La depreciación posterior en almacén."
+  ],
+  correcta: "a) Gastos de transporte y seguros hasta la entrada al territorio aduanero, cuando proceda.",
+  justificacion: "El valor en aduana incluye determinados costes añadidos según normativa."
+},
+{
+  pregunta: "Una autorización aduanera puede ser suspendida cuando:",
+  opciones: [
+    "a) El operador modifique su domicilio fiscal.",
+    "b) No cumpla temporalmente los requisitos exigidos.",
+    "c) El transportista cambie la ruta.",
+    "d) Cambie el país de origen de la mercancía."
+  ],
+  correcta: "b) No cumpla temporalmente los requisitos exigidos.",
+  justificacion: "La suspensión procede cuando el incumplimiento no es definitivo."
+},
+{
+  pregunta: "El abandono voluntario de mercancías en favor del Estado implica:",
+  opciones: [
+    "a) Que el infractor queda exento automáticamente de sanciones.",
+    "b) Que las mercancías pasan a disposición de la autoridad competente.",
+    "c) Que se consideran mercancías comunitarias.",
+    "d) Que deben exportarse automáticamente."
+  ],
+  correcta: "b) Que las mercancías pasan a disposición de la autoridad competente.",
+  justificacion: "El abandono cede la titularidad al Estado para su gestión."
+},
+{
+  pregunta: "En el tránsito interno, las mercancías:",
+  opciones: [
+    "a) Son siempre no comunitarias.",
+    "b) Son mercancías de la Unión que circulan bajo control aduanero.",
+    "c) Pagan derechos cada vez que cruzan una frontera interior.",
+    "d) No requieren declaración."
+  ],
+  correcta: "b) Son mercancías de la Unión que circulan bajo control aduanero.",
+  justificacion: "El tránsito interno regula movimientos dentro del territorio aduanero."
+},
+{
+  pregunta: "La destrucción no autorizada de mercancías sometidas a control aduanero supone:",
+  opciones: [
+    "a) Un error sin relevancia.",
+    "b) Una infracción o incluso delito según su gravedad.",
+    "c) La extinción automática de la deuda.",
+    "d) Su conversión en mercancías comunitarias."
+  ],
+  correcta: "b) Una infracción o incluso delito según su gravedad.",
+  justificacion: "La destrucción sin control vulnera la normativa aduanera y fiscal."
+},
+{
+  pregunta: "El incumplimiento del plazo del depósito temporal provoca:",
+  opciones: [
+    "a) La destrucción automática de la mercancía.",
+    "b) El nacimiento de deuda aduanera por infracción de plazos.",
+    "c) La libre circulación de la mercancía.",
+    "d) La conversión automática en mercancía de la Unión."
+  ],
+  correcta: "b) El nacimiento de deuda aduanera por infracción de plazos.",
+  justificacion: "El CAU establece que el incumplimiento del plazo máximo del depósito temporal genera deuda."
+},
+{
+  pregunta: "La aduana puede exigir inspección física de las mercancías:",
+  opciones: [
+    "a) Solo si son procedentes de terceros países.",
+    "b) En cualquier momento según criterios de riesgo.",
+    "c) Cuando el transportista lo solicite.",
+    "d) Solo cuando el valor supere 10.000 euros."
+  ],
+  correcta: "b) En cualquier momento según criterios de riesgo.",
+  justificacion: "El análisis de riesgo es la base del control físico en el CAU."
+},
+{
+  pregunta: "La declaración sumaria de salida se utiliza para:",
+  opciones: [
+    "a) Controlar la salida física del territorio aduanero.",
+    "b) Despachar mercancías a libre práctica.",
+    "c) Determinar el valor en aduana.",
+    "d) Cancelar regímenes anteriores."
+  ],
+  correcta: "a) Controlar la salida física del territorio aduanero.",
+  justificacion: "La declaración sumaria de salida permite controles previos antes del abandono del territorio."
+},
+{
+  pregunta: "Las mercancías en depósito aduanero:",
+  opciones: [
+    "a) Pueden utilizarse sin autorización.",
+    "b) Están exentas del pago de derechos mientras permanezcan en el depósito.",
+    "c) Son automáticamente exportadas.",
+    "d) Se consideran mercancías de la Unión."
+  ],
+  correcta: "b) Están exentas del pago de derechos mientras permanezcan en el depósito.",
+  justificacion: "El depósito suspende la deuda hasta su destino o despacho definitivo."
+},
+{
+  pregunta: "El tránsito externo permite:",
+  opciones: [
+    "a) El abandono libre de mercancías.",
+    "b) El transporte de mercancías no comunitarias sin pago inmediato de derechos.",
+    "c) La libre comercialización dentro de la UE.",
+    "d) Evitar controles aduaneros."
+  ],
+  correcta: "b) El transporte de mercancías no comunitarias sin pago inmediato de derechos.",
+  justificacion: "Es la finalidad esencial del tránsito externo según el CAU."
+},
+{
+  pregunta: "El tránsito interno se aplica a:",
+  opciones: [
+    "a) Mercancías de terceros países.",
+    "b) Mercancías de la Unión que circulan bajo control aduanero.",
+    "c) Mercancías destinadas a exportación.",
+    "d) Mercancías destruidas bajo control aduanero."
+  ],
+  correcta: "b) Mercancías de la Unión que circulan bajo control aduanero.",
+  justificacion: "El tránsito interno regula el movimiento interno bajo vigilancia aduanera."
+},
+{
+  pregunta: "El perfeccionamiento pasivo consiste en:",
+  opciones: [
+    "a) La entrada temporal de mercancías para transformación.",
+    "b) La exportación temporal para ser transformadas y su posterior reimportación.",
+    "c) La destrucción previa de mercancías.",
+    "d) La libre circulación de mercancías transformadas."
+  ],
+  correcta: "b) La exportación temporal para ser transformadas y su posterior reimportación.",
+  justificacion: "Es el régimen que permite volver a importar con ventajas arancelarias."
+},
+{
+  pregunta: "La destrucción autorizada de mercancías bajo control aduanero puede provocar:",
+  opciones: [
+    "a) El nacimiento automático de deuda.",
+    "b) La extinción o inexistencia de la deuda aduanera.",
+    "c) La obligación de declarar un tránsito.",
+    "d) Su libre circulación."
+  ],
+  correcta: "b) La extinción o inexistencia de la deuda aduanera.",
+  justificacion: "El CAU prevé que la destrucción autorizada evita deuda."
+},
+{
+  pregunta: "Una autorización aduanera puede ser revocada cuando:",
+  opciones: [
+    "a) El operador cambie de domicilio social.",
+    "b) Se obtenga mediante datos incorrectos o falsos.",
+    "c) La mercancía provenga de un país distinto al habitual.",
+    "d) Exista discrepancia en la factura."
+  ],
+  correcta: "b) Se obtenga mediante datos incorrectos o falsos.",
+  justificacion: "La falsedad en la información es causa directa de revocación según el CAU."
+},
+{
+  pregunta: "El valor en aduana incluye, entre otros:",
+  opciones: [
+    "a) Costes de transporte y seguro hasta el lugar de entrada, cuando proceda.",
+    "b) Impuestos interiores posteriores.",
+    "c) Gastos de distribución tras la importación.",
+    "d) El margen comercial del vendedor en la UE."
+  ],
+  correcta: "a) Costes de transporte y seguro hasta el lugar de entrada, cuando proceda.",
+  justificacion: "Estos elementos forman parte del valor en aduana según la normativa."
+},
+{
+  pregunta: "La declaración verbal es válida para:",
+  opciones: [
+    "a) Mercancías comerciales de gran valor.",
+    "b) Equipajes y bienes no comerciales.",
+    "c) Operaciones de depósito aduanero.",
+    "d) Importaciones temporales industriales."
+  ],
+  correcta: "b) Equipajes y bienes no comerciales.",
+  justificacion: "El CAU establece esta modalidad para mercancía no comercial."
+},
+{
+  pregunta: "El CAU exige que las decisiones aduaneras sean:",
+  opciones: [
+    "a) Orales siempre.",
+    "b) Motivadas y proporcionadas.",
+    "c) Secretas para evitar filtraciones.",
+    "d) Dictadas exclusivamente por la Comisión Europea."
+  ],
+  correcta: "b) Motivadas y proporcionadas.",
+  justificacion: "Son principios esenciales en la adopción de decisiones aduaneras."
+},
+{
+  pregunta: "El comiso administrativo en infracciones administrativas de contrabando es:",
+  opciones: [
+    "a) Opcional según el valor.",
+    "b) Obligatorio siempre.",
+    "c) Solo aplicable si hay reincidencia.",
+    "d) Competencia exclusiva judicial."
+  ],
+  correcta: "b) Obligatorio siempre.",
+  justificacion: "La LO 12/1995 lo establece como sanción accesoria obligatoria."
+},
+{
+  pregunta: "En el RD 1649/1998, la venta anticipada de mercancías intervenidas procede cuando:",
+  opciones: [
+    "a) El interesado no comparece en 48 horas.",
+    "b) Las mercancías sean perecederas o peligre su conservación.",
+    "c) Lo solicite el transportista.",
+    "d) El valor sea inferior a 500 euros."
+  ],
+  correcta: "b) Las mercancías sean perecederas o peligre su conservación.",
+  justificacion: "La norma prevé evitar perjuicios económicos del deterioro."
+},
+{
+  pregunta: "El acta de infracción debe contener:",
+  opciones: [
+    "a) Únicamente la identificación del infractor.",
+    "b) Hechos, bienes intervenidos y preceptos infringidos.",
+    "c) Solo el valor estimado de la mercancía.",
+    "d) Una descripción opcional de la intervención."
+  ],
+  correcta: "b) Hechos, bienes intervenidos y preceptos infringidos.",
+  justificacion: "El RD 1649/1998 exige un contenido completo para garantizar la defensa."
+},
+{
+  pregunta: "La resolución sancionadora debe notificarse:",
+  opciones: [
+    "a) Sin necesidad de motivación.",
+    "b) Indicando hechos probados, fundamentos y recursos posibles.",
+    "c) Solo cuando el infractor la solicite.",
+    "d) Con un resumen verbal del expediente."
+  ],
+  correcta: "b) Indicando hechos probados, fundamentos y recursos posibles.",
+  justificacion: "Es un requisito esencial del procedimiento sancionador."
+},
+{
+  pregunta: "El interesado puede aportar pruebas:",
+  opciones: [
+    "a) Solo al inicio del procedimiento.",
+    "b) En cualquier fase del procedimiento administrativo sancionador.",
+    "c) Únicamente si el acta lo permite.",
+    "d) Solo tras la resolución."
+  ],
+  correcta: "b) En cualquier fase del procedimiento administrativo sancionador.",
+  justificacion: "El RD reconoce el derecho a la prueba durante toda la tramitación."
+},
+{
+  pregunta: "El tránsito aduanero requiere:",
+  opciones: [
+    "a) Exclusivamente una factura.",
+    "b) Garantía suficiente cuando lo exija la normativa.",
+    "c) La ausencia total de controles.",
+    "d) El pago inmediato de derechos."
+  ],
+  correcta: "b) Garantía suficiente cuando lo exija la normativa.",
+  justificacion: "La garantía cubre el riesgo de desviación del régimen."
+},
+{
+  pregunta: "El abandono tácito se produce cuando:",
+  opciones: [
+    "a) El interesado destruye las mercancías.",
+    "b) No se retiran o regularizan dentro del plazo legal.",
+    "c) Las mercancías cambian de titular.",
+    "d) Lo solicite el transportista."
+  ],
+  correcta: "b) No se retiran o regularizan dentro del plazo legal.",
+  justificacion: "La ausencia de actuación del interesado permite considerar abandono."
+},
+{
+  pregunta: "La anulación de una declaración aduanera no es posible cuando:",
+  opciones: [
+    "a) No se haya concedido levante.",
+    "b) Ya se haya otorgado el levante de la mercancía.",
+    "c) Exista error en la factura.",
+    "d) Lo solicite el operador autorizado."
+  ],
+  correcta: "b) Ya se haya otorgado el levante de la mercancía.",
+  justificacion: "Tras el levante, la declaración ya produce efectos jurídicos definitivos."
+},
+{
+  pregunta: "El valor en aduana se determina principalmente según:",
+  opciones: [
+    "a) El valor residual de la mercancía.",
+    "b) El valor de transacción más ajustes establecidos legalmente.",
+    "c) El precio estimado por la aduana.",
+    "d) La media de los precios del mercado europeo."
+  ],
+  correcta: "b) El valor de transacción más ajustes establecidos legalmente.",
+  justificacion: "El método principal de valoración es el valor de transacción ajustado conforme a la normativa."
+},
+{
+  pregunta: "La deuda aduanera nace, entre otros casos, cuando:",
+  opciones: [
+    "a) Se modifica el precio de la factura.",
+    "b) Se incumplen las condiciones de un régimen aduanero.",
+    "c) La mercancía es reexportada.",
+    "d) Se presenta una declaración verbal."
+  ],
+  correcta: "b) Se incumplen las condiciones de un régimen aduanero.",
+  justificacion: "El CAU establece que el incumplimiento del régimen genera deuda automática."
+},
+{
+  pregunta: "Una autorización aduanera se suspende cuando:",
+  opciones: [
+    "a) El operador no cumple temporalmente los requisitos.",
+    "b) El valor de la mercancía es bajo.",
+    "c) La aduana tarda más de 30 días en resolver.",
+    "d) Las mercancías cambian de clasificación arancelaria."
+  ],
+  correcta: "a) El operador no cumple temporalmente los requisitos.",
+  justificacion: "La suspensión procede cuando el incumplimiento no es definitivo."
+},
+{
+  pregunta: "El RD 1649/1998 regula:",
+  opciones: [
+    "a) El Código Aduanero de la Unión.",
+    "b) El procedimiento sancionador en materia de contrabando.",
+    "c) La política comercial común.",
+    "d) La fiscalidad de exportaciones."
+  ],
+  correcta: "b) El procedimiento sancionador en materia de contrabando.",
+  justificacion: "El RD desarrolla reglamentariamente la LO 12/1995 en su vertiente sancionadora."
+},
+{
+  pregunta: "El acta de infracción debe ser:",
+  opciones: [
+    "a) Opcional si los hechos están grabados en vídeo.",
+    "b) Redactada por los actuantes y notificada al interesado.",
+    "c) Firmada solo por el infractor.",
+    "d) Emitida exclusivamente por la aduana central."
+  ],
+  correcta: "b) Redactada por los actuantes y notificada al interesado.",
+  justificacion: "El RD 1649/1998 exige notificación formal para garantizar derechos."
+},
+{
+  pregunta: "La propuesta de resolución corresponde:",
+  opciones: [
+    "a) Al instructor del expediente.",
+    "b) Al transportista de las mercancías.",
+    "c) Al declarante.",
+    "d) A la autoridad judicial."
+  ],
+  correcta: "a) Al instructor del expediente.",
+  justificacion: "El instructor analiza pruebas y eleva la propuesta al órgano resolutorio."
+},
+{
+  pregunta: "El órgano competente para resolver en materia de contrabando es:",
+  opciones: [
+    "a) La policía judicial.",
+    "b) El Departamento de Aduanas e Impuestos Especiales.",
+    "c) El Ayuntamiento correspondiente.",
+    "d) El transportista."
+  ],
+  correcta: "b) El Departamento de Aduanas e Impuestos Especiales.",
+  justificacion: "La LO 12/1995 atribuye la competencia sancionadora a dicho departamento."
+},
+{
+  pregunta: "El comiso administrativo es:",
+  opciones: [
+    "a) Opcional según decida el instructor.",
+    "b) Obligatorio en las infracciones administrativas de contrabando.",
+    "c) Solo aplicable si la mercancía es perecedera.",
+    "d) Decisión exclusiva del transportista."
+  ],
+  correcta: "b) Obligatorio en las infracciones administrativas de contrabando.",
+  justificacion: "El comiso es sanción accesoria necesaria según la LO 12/1995."
+},
+{
+  pregunta: "La venta anticipada de mercancías procede cuando:",
+  opciones: [
+    "a) El infractor no comparece en 24 horas.",
+    "b) Las mercancías sean perecederas o peligre su conservación.",
+    "c) El valor sea inferior a 100 euros.",
+    "d) Cualquier interesado lo solicite."
+  ],
+  correcta: "b) Las mercancías sean perecederas o peligre su conservación.",
+  justificacion: "Se evita deterioro y pérdida económica."
+},
+{
+  pregunta: "El interesado puede presentar alegaciones:",
+  opciones: [
+    "a) Solo si la sanción supera 6.000 euros.",
+    "b) Tras la notificación del acta y dentro del plazo legal.",
+    "c) Solo al finalizar el expediente.",
+    "d) Únicamente en presencia de abogado."
+  ],
+  correcta: "b) Tras la notificación del acta y dentro del plazo legal.",
+  justificacion: "Es un derecho básico del procedimiento sancionador."
+},
+{
+  pregunta: "Las mercancías en tránsito aduanero:",
+  opciones: [
+    "a) Pagan derechos en cada aduana intermedia.",
+    "b) Circulan bajo control aduanero sin pago inmediato de derechos.",
+    "c) Se consideran mercancías de la Unión.",
+    "d) No requieren declaración."
+  ],
+  correcta: "b) Circulan bajo control aduanero sin pago inmediato de derechos.",
+  justificacion: "Es la esencia del régimen de tránsito."
+},
+{
+  pregunta: "El tránsito interno se aplica a:",
+  opciones: [
+    "a) Mercancías no comunitarias.",
+    "b) Mercancías de la Unión bajo control aduanero.",
+    "c) Mercancías ilícitas.",
+    "d) Mercancías destruidas."
+  ],
+  correcta: "b) Mercancías de la Unión bajo control aduanero.",
+  justificacion: "Permite su circulación entre partes del territorio aduanero."
+},
+{
+  pregunta: "El depósito aduanero permite:",
+  opciones: [
+    "a) La venta libre sin declarar.",
+    "b) Mantener mercancías sin pago de derechos mientras estén depositadas.",
+    "c) Utilizarlas sin condiciones para producción.",
+    "d) Convertirlas automáticamente en comunitarias."
+  ],
+  correcta: "b) Mantener mercancías sin pago de derechos mientras estén depositadas.",
+  justificacion: "Es un régimen suspensivo de derechos."
+},
+{
+  pregunta: "Las declaraciones incompletas requieren:",
+  opciones: [
+    "a) Autorización previa de la aduana.",
+    "b) Un valor superior a 100.000 euros.",
+    "c) Exclusivamente inspección física.",
+    "d) Ser firmadas por dos operadores."
+  ],
+  correcta: "a) Autorización previa de la aduana.",
+  justificacion: "El CAU permite declaración incompleta solo bajo autorización."
+},
+{
+  pregunta: "La revocación de una autorización se produce cuando:",
+  opciones: [
+    "a) La mercancía cambia de titular.",
+    "b) Se otorgó basándose en información falsa o incorrecta.",
+    "c) El transportista comete un error.",
+    "d) Se modifique el precio de exportación."
+  ],
+  correcta: "b) Se otorgó basándose en información falsa o incorrecta.",
+  justificacion: "El CAU exige veracidad absoluta en las solicitudes."
+},
+{
+  pregunta: "La garantía aduanera se exige cuando:",
+  opciones: [
+    "a) El operador tenga nacionalidad extranjera.",
+    "b) Exista riesgo de impago de la deuda aduanera.",
+    "c) Las mercancías sean de bajo valor.",
+    "d) El transportista cambie la ruta."
+  ],
+  correcta: "b) Exista riesgo de impago de la deuda aduanera.",
+  justificacion: "El análisis de riesgo determina la exigencia de garantías."
+},
+{
+  pregunta: "La destrucción sin autorización de mercancías bajo control aduanero constituye:",
+  opciones: [
+    "a) Un error administrativo sin sanción.",
+    "b) Una infracción o incluso delito.",
+    "c) Una circunstancia eximente.",
+    "d) Un simple abandono tácito."
+  ],
+  correcta: "b) Una infracción o incluso delito.",
+  justificacion: "La destrucción irregular vulnera de forma grave la normativa aduanera."
+},
+{
+  pregunta: "La salida del territorio aduanero se confirma cuando:",
+  opciones: [
+    "a) Se emite la factura.",
+    "b) La aduana de salida verifica la salida física.",
+    "c) El comprador paga.",
+    "d) La mercancía llega al país de destino."
+  ],
+  correcta: "b) La aduana de salida verifica la salida física.",
+  justificacion: "La salida debe ser demostrada por control aduanero."
+},
+{
+  pregunta: "El abandono voluntario implica:",
+  opciones: [
+    "a) La destrucción obligatoria.",
+    "b) La cesión de las mercancías al Estado.",
+    "c) La devolución automática al proveedor.",
+    "d) La exportación forzosa."
+  ],
+  correcta: "b) La cesión de las mercancías al Estado.",
+  justificacion: "El abandono transfiere la propiedad al Estado."
+},
+{
+  pregunta: "La anulación de una declaración no procede cuando:",
+  opciones: [
+    "a) Se haya concedido levante.",
+    "b) Haya un error material.",
+    "c) La mercancía no haya sido presentada.",
+    "d) El operador lo solicite antes del control."
+  ],
+  correcta: "a) Se haya concedido levante.",
+  justificacion: "El levante consolida la declaración, impidiendo su anulación."
+},
+{
+  pregunta: "El depósito temporal tiene un plazo máximo de:",
+  opciones: [
+    "a) 30 días.",
+    "b) 45 días.",
+    "c) 90 días.",
+    "d) 120 días."
+  ],
+  correcta: "c) 90 días.",
+  justificacion: "El CAU fija el límite máximo de permanencia en depósito temporal en 90 días."
+},
+{
+  pregunta: "En el régimen de perfeccionamiento activo, las mercancías:",
+  opciones: [
+    "a) Pagan derechos al entrar.",
+    "b) Se importan para ser transformadas sin pagar derechos.",
+    "c) Se consideran automáticamente mercancías de la Unión.",
+    "d) No requieren declaración."
+  ],
+  correcta: "b) Se importan para ser transformadas sin pagar derechos.",
+  justificacion: "Es la esencia del perfeccionamiento activo como régimen suspensivo."
+},
+{
+  pregunta: "El perfeccionamiento pasivo permite:",
+  opciones: [
+    "a) La destrucción de mercancías no comunitarias.",
+    "b) Exportar mercancías temporalmente para ser transformadas y reimportarlas.",
+    "c) La libre venta interior sin pagar derechos.",
+    "d) El tránsito interno sin controles."
+  ],
+  correcta: "b) Exportar mercancías temporalmente para ser transformadas y reimportarlas.",
+  justificacion: "El perfeccionamiento pasivo busca ventajas arancelarias en la reimportación."
+},
+{
+  pregunta: "La suspensión o revocación de autorizaciones aduaneras procede cuando:",
+  opciones: [
+    "a) Lo solicite el operador sin motivo.",
+    "b) Ya no se cumplen los requisitos exigidos.",
+    "c) La mercancía sea perecedera.",
+    "d) El valor declarado cambie."
+  ],
+  correcta: "b) Ya no se cumplen los requisitos exigidos.",
+  justificacion: "El CAU condiciona la vigencia de autorizaciones al cumplimiento permanente."
+},
+{
+  pregunta: "El nacimiento de deuda aduanera por importación se produce cuando:",
+  opciones: [
+    "a) Se conceda el levante.",
+    "b) Se despache la mercancía a libre práctica.",
+    "c) Se firme el contrato de transporte.",
+    "d) Se emita la factura comercial."
+  ],
+  correcta: "b) Se despache la mercancía a libre práctica.",
+  justificacion: "El despacho a libre práctica origina la deuda aduanera."
+},
+{
+  pregunta: "Una declaración aduanera debe basarse en:",
+  opciones: [
+    "a) Datos completos y documentos justificativos disponibles.",
+    "b) Una factura simplificada siempre.",
+    "c) El valor aproximado según declarante.",
+    "d) Un simple resumen verbal."
+  ],
+  correcta: "a) Datos completos y documentos justificativos disponibles.",
+  justificacion: "El CAU exige la disponibilidad de documentos justificativos."
+},
+{
+  pregunta: "Las mercancías consideradas abandonadas pueden:",
+  opciones: [
+    "a) Entregarse al titular sin formalidades.",
+    "b) Subastarse o destruirse según proceda.",
+    "c) Convertirse automáticamente en comunitarias.",
+    "d) Declararse en tránsito sin autorización."
+  ],
+  correcta: "b) Subastarse o destruirse según proceda.",
+  justificacion: "El CAU regula el destino de mercancías abandonadas."
+},
+{
+  pregunta: "La responsabilidad solidaria en materia aduanera alcanza a:",
+  opciones: [
+    "a) Cualquier transportista siempre.",
+    "b) Quien colabore conscientemente en una infracción.",
+    "c) El consumidor final.",
+    "d) El fabricante extranjero."
+  ],
+  correcta: "b) Quien colabore conscientemente en una infracción.",
+  justificacion: "El CAU impone responsabilidad solidaria a los partícipes conscientes."
+},
+{
+  pregunta: "La declaración sumaria de entrada debe presentarse:",
+  opciones: [
+    "a) Después del despacho.",
+    "b) Antes de la llegada de mercancías.",
+    "c) Solo en exportaciones.",
+    "d) Cuando lo pida el transportista."
+  ],
+  correcta: "b) Antes de la llegada de mercancías.",
+  justificacion: "La declaración sumaria permite controles anticipados."
+},
+{
+  pregunta: "La aduana puede ordenar examen físico de mercancía:",
+  opciones: [
+    "a) Solo en tránsito externo.",
+    "b) Cuando lo exijan los análisis de riesgo.",
+    "c) Únicamente si procede de países vetados.",
+    "d) Solo si supera cierto valor."
+  ],
+  correcta: "b) Cuando lo exijan los análisis de riesgo.",
+  justificacion: "El control se fundamenta en el sistema de riesgo del CAU."
+},
+{
+  pregunta: "La valoración aduanera no incluye:",
+  opciones: [
+    "a) Gastos de transporte hasta el punto de entrada.",
+    "b) Costes de embalaje.",
+    "c) Impuestos internos posteriores a la importación.",
+    "d) Seguros hasta frontera."
+  ],
+  correcta: "c) Impuestos internos posteriores a la importación.",
+  justificacion: "Los impuestos internos no forman parte del valor en aduana."
+},
+{
+  pregunta: "La declaración incompleta debe:",
+  opciones: [
+    "a) Aportarse sin documentación.",
+    "b) Ser completada posteriormente dentro del plazo autorizado.",
+    "c) Convertirse automáticamente en nula.",
+    "d) Tramitarse verbalmente."
+  ],
+  correcta: "b) Ser completada posteriormente dentro del plazo autorizado.",
+  justificacion: "El CAU permite completar posteriormente los datos faltantes."
+},
+{
+  pregunta: "Las mercancías en tránsito deben:",
+  opciones: [
+    "a) Permanecer selladas o bajo medidas de control.",
+    "b) Ser inspeccionadas en cada frontera interior.",
+    "c) Convertirse en comunitarias durante el tránsito.",
+    "d) Pagar derechos antes de completar la operación."
+  ],
+  correcta: "a) Permanecer selladas o bajo medidas de control.",
+  justificacion: "El tránsito exige control para evitar desvíos."
+},
+{
+  pregunta: "Una mercancía se considera 'presentada a aduanas' cuando:",
+  opciones: [
+    "a) El transportista aparca en el muelle.",
+    "b) Se notifica formalmente su llegada a la aduana.",
+    "c) Se firma la factura.",
+    "d) Se paga el transporte."
+  ],
+  correcta: "b) Se notifica formalmente su llegada a la aduana.",
+  justificacion: "La presentación es un acto formal previo a su destino aduanero."
+},
+{
+  pregunta: "El CAU establece que los regímenes especiales:",
+  opciones: [
+    "a) No requieren control.",
+    "b) Permiten suspender derechos e impuestos.",
+    "c) Implican siempre pago de derechos.",
+    "d) Se aplican solo a mercancías nacionales."
+  ],
+  correcta: "b) Permiten suspender derechos e impuestos.",
+  justificacion: "La esencia de los regímenes especiales es la suspensión."
+},
+{
+  pregunta: "Se considera infracción administrativa de contrabando cuando:",
+  opciones: [
+    "a) El valor no supera 150.000 euros.",
+    "b) Excede los 150.000 euros.",
+    "c) La mercancía no tiene factura.",
+    "d) Se trata de mercancía perecedera."
+  ],
+  correcta: "a) El valor no supera 150.000 euros.",
+  justificacion: "Por encima de ese umbral sería delito; por debajo, infracción."
+},
+{
+  pregunta: "El abandono voluntario extingue:",
+  opciones: [
+    "a) Automáticamente todas las sanciones.",
+    "b) La propiedad sobre la mercancía transferida al Estado.",
+    "c) La obligación de declarar.",
+    "d) La deuda aduanera en todos los casos."
+  ],
+  correcta: "b) La propiedad sobre la mercancía transferida al Estado.",
+  justificacion: "El abandono es una cesión completa de la mercancía."
+},
+{
+  pregunta: "El acta debe indicar claramente:",
+  opciones: [
+    "a) Solo la fecha.",
+    "b) Hechos, bienes e infracciones aplicables.",
+    "c) El domicilio del transportista.",
+    "d) El valor final del mercado."
+  ],
+  correcta: "b) Hechos, bienes e infracciones aplicables.",
+  justificacion: "El RD 1649/1998 establece el contenido mínimo obligatorio."
+},
+{
+  pregunta: "La ejecución de la resolución sancionadora procede:",
+  opciones: [
+    "a) Cuando sea firme.",
+    "b) Al día siguiente de su emisión.",
+    "c) Si el infractor paga una señal.",
+    "d) Cuando lo indique el transportista."
+  ],
+  correcta: "a) Cuando sea firme.",
+  justificacion: "Solo una resolución firme es ejecutiva."
+},
+{
+  pregunta: "La destrucción irregular de mercancías bajo control aduanero constituye:",
+  opciones: [
+    "a) Un simple error administrativo.",
+    "b) Una infracción grave o posible delito.",
+    "c) Una causa de extinción de deuda.",
+    "d) Una acción permitida en tránsito."
+  ],
+  correcta: "b) Una infracción grave o posible delito.",
+  justificacion: "La normativa aduanera sanciona fuertemente la destrucción no autorizada."
+},
+{
+  pregunta: "El depósito aduanero permite que las mercancías:",
+  opciones: [
+    "a) Se comercialicen libremente sin declarar.",
+    "b) Permanezcan sin pago de derechos mientras estén depositadas.",
+    "c) Se consideren automáticamente mercancías de la Unión.",
+    "d) Sean exportadas sin control."
+  ],
+  correcta: "b) Permanezcan sin pago de derechos mientras estén depositadas.",
+  justificacion: "El depósito aduanero es un régimen suspensivo que libera temporalmente del pago de derechos."
+},
+{
+  pregunta: "El tránsito aduanero finaliza cuando:",
+  opciones: [
+    "a) El transportista entrega una copia de la factura.",
+    "b) Las mercancías se presentan en la aduana de destino y se verifica su integridad.",
+    "c) Se paga el transporte.",
+    "d) El operador declara verbalmente el fin del tránsito."
+  ],
+  correcta: "b) Las mercancías se presentan en la aduana de destino y se verifica su integridad.",
+  justificacion: "El tránsito concluye con el control final en la aduana de destino."
+},
+{
+  pregunta: "La revocación de una autorización aduanera procede cuando:",
+  opciones: [
+    "a) El operador cambie de almacén.",
+    "b) La decisión se obtuvo mediante datos falsos o incorrectos.",
+    "c) Se altere el domicilio fiscal.",
+    "d) El valor de la mercancía varíe."
+  ],
+  correcta: "b) La decisión se obtuvo mediante datos falsos o incorrectos.",
+  justificacion: "La falsedad en la información constituye causa directa de revocación."
+},
+{
+  pregunta: "La presentación de mercancías a la aduana implica:",
+  opciones: [
+    "a) El pago automático de derechos.",
+    "b) La comunicación formal de su llegada para asignar destino aduanero.",
+    "c) Que la aduana asigne automáticamente libre práctica.",
+    "d) El inicio inmediato de su exportación."
+  ],
+  correcta: "b) La comunicación formal de su llegada para asignar destino aduanero.",
+  justificacion: "La presentación es un acto obligatorio previo al destino aduanero."
+},
+{
+  pregunta: "Una declaración sumaria de salida sirve para:",
+  opciones: [
+    "a) Declarar el valor de la mercancía.",
+    "b) Permitir a la aduana realizar controles previos a la salida.",
+    "c) Obtener la clasificación arancelaria.",
+    "d) Determinar impuestos internos."
+  ],
+  correcta: "b) Permitir a la aduana realizar controles previos a la salida.",
+  justificacion: "La declaración sumaria de salida anticipa la información necesaria para controles aduaneros."
+},
+{
+  pregunta: "La valoración aduanera incluye:",
+  opciones: [
+    "a) Costes de transporte hasta el punto de entrada cuando proceda.",
+    "b) Impuestos posteriores al despacho.",
+    "c) Gastos de distribución dentro de la UE.",
+    "d) Gastos de almacenamiento después de la importación."
+  ],
+  correcta: "a) Costes de transporte hasta el punto de entrada cuando proceda.",
+  justificacion: "Los costes hasta la frontera forman parte del valor en aduana."
+},
+{
+  pregunta: "La destrucción autorizada de mercancías bajo control aduanero:",
+  opciones: [
+    "a) Genera siempre deuda.",
+    "b) Puede evitar el nacimiento de la deuda aduanera.",
+    "c) Conlleva sanción automática.",
+    "d) Exige exportación previa."
+  ],
+  correcta: "b) Puede evitar el nacimiento de la deuda aduanera.",
+  justificacion: "El CAU permite la destrucción autorizada sin generar deuda."
+},
+{
+  pregunta: "En infracciones administrativas de contrabando, el comiso:",
+  opciones: [
+    "a) Es opcional.",
+    "b) Es obligatorio.",
+    "c) Solo se aplica si el valor supera 50.000 euros.",
+    "d) Lo decide el transportista."
+  ],
+  correcta: "b) Es obligatorio.",
+  justificacion: "La LO 12/1995 establece el comiso como sanción accesoria obligatoria."
+},
+{
+  pregunta: "El abandono tácito ocurre cuando:",
+  opciones: [
+    "a) La mercancía se destruye irregularmente.",
+    "b) El interesado no regulariza ni retira la mercancía en plazo.",
+    "c) La aduana lo decide sin comunicación.",
+    "d) Se cede por escrito al Estado."
+  ],
+  correcta: "b) El interesado no regulariza ni retira la mercancía en plazo.",
+  justificacion: "La falta de actuación del titular permite considerar abandono."
+},
+{
+  pregunta: "El CAU establece que el levante permite:",
+  opciones: [
+    "a) La libre disposición de la mercancía por el declarante.",
+    "b) La exención de toda deuda aduanera.",
+    "c) La destrucción inmediata.",
+    "d) Evitar toda inspección posterior."
+  ],
+  correcta: "a) La libre disposición de la mercancía por el declarante.",
+  justificacion: "El levante autoriza la retirada o uso de la mercancía según su destino aduanero."
+},
+{
+  pregunta: "Una declaración incompleta debe:",
+  opciones: [
+    "a) Ser completada posteriormente en el plazo concedido.",
+    "b) Exigir nuevo registro aduanero completo.",
+    "c) Convertirse de inmediato en nula.",
+    "d) Tramitarse sin necesidad de revisión."
+  ],
+  correcta: "a) Ser completada posteriormente en el plazo concedido.",
+  justificacion: "El CAU permite completar la información faltante dentro del plazo autorizado."
+},
+{
+  pregunta: "Las mercancías perecederas intervenidas:",
+  opciones: [
+    "a) Deben conservarse hasta fin de expediente.",
+    "b) Pueden venderse anticipadamente para evitar deterioro.",
+    "c) No pueden destruirse bajo ningún concepto.",
+    "d) Se devuelven siempre al declarante."
+  ],
+  correcta: "b) Pueden venderse anticipadamente para evitar deterioro.",
+  justificacion: "El RD 1649/1998 prevé esta medida para proteger su valor."
+},
+{
+  pregunta: "La resolución del procedimiento sancionador debe:",
+  opciones: [
+    "a) Limitarse a indicar la sanción.",
+    "b) Incluir hechos probados, fundamentos y recursos posibles.",
+    "c) Notificarse sin motivación.",
+    "d) Carecer de firma."
+  ],
+  correcta: "b) Incluir hechos probados, fundamentos y recursos posibles.",
+  justificacion: "Es requisito imprescindible para garantizar los derechos del interesado."
+},
+{
+  pregunta: "La responsabilidad solidaria alcanza a:",
+  opciones: [
+    "a) Cualquier persona vinculada indirectamente.",
+    "b) Quien colabore con conocimiento en la infracción.",
+    "c) Consumidores finales.",
+    "d) Fabricantes extranjeros siempre."
+  ],
+  correcta: "b) Quien colabore con conocimiento en la infracción.",
+  justificacion: "El CAU impone responsabilidad a quienes participan conscientemente en la infracción."
+},
+{
+  pregunta: "El tránsito externo afecta a:",
+  opciones: [
+    "a) Mercancías de la Unión.",
+    "b) Mercancías no comunitarias que circulan sin pago inmediato de derechos.",
+    "c) Mercancías destruidas.",
+    "d) Mercancías abandonadas."
+  ],
+  correcta: "b) Mercancías no comunitarias que circulan sin pago inmediato de derechos.",
+  justificacion: "Es la modalidad típica del tránsito externo."
+},
+{
+  pregunta: "La deuda aduanera se extingue cuando:",
+  opciones: [
+    "a) El declarante solicite su anulación verbalmente.",
+    "b) La mercancía se destruya bajo control aduanero.",
+    "c) La mercancía cambie de titular.",
+    "d) Se modifique el valor en factura."
+  ],
+  correcta: "b) La mercancía se destruya bajo control aduanero.",
+  justificacion: "La destrucción autorizada es causa de extinción de deuda."
+},
+{
+  pregunta: "La declaración verbal puede presentarse en:",
+  opciones: [
+    "a) Importaciones comerciales.",
+    "b) Equipaje personal y mercancías no comerciales.",
+    "c) Despachos industriales complejos.",
+    "d) Operaciones de depósito aduanero."
+  ],
+  correcta: "b) Equipaje personal y mercancías no comerciales.",
+  justificacion: "El CAU permite declaración verbal para mercancías no comerciales."
+},
+{
+  pregunta: "La anulación de una declaración procede cuando:",
+  opciones: [
+    "a) No se haya concedido levante y exista error válido.",
+    "b) Se haya concedido levante.",
+    "c) El declarante lo solicite sin motivo.",
+    "d) El valor sea bajo."
+  ],
+  correcta: "a) No se haya concedido levante y exista error válido.",
+  justificacion: "La anulación no es posible tras el levante."
+},
+{
+  pregunta: "El procedimiento sancionador exige que el interesado pueda:",
+  opciones: [
+    "a) Renunciar sin consecuencias.",
+    "b) Presentar pruebas y alegaciones.",
+    "c) Evitar la intervención policial.",
+    "d) Cambiar la clasificación arancelaria a su criterio."
+  ],
+  correcta: "b) Presentar pruebas y alegaciones.",
+  justificacion: "Es un derecho esencial del procedimiento sancionador."
+},
+{
+  pregunta: "La aduana exige garantía cuando:",
+  opciones: [
+    "a) No exista riesgo de impago.",
+    "b) Detecta riesgo de que la deuda no sea satisfecha.",
+    "c) La mercancía sea comunitaria.",
+    "d) La operación sea de bajo valor."
+  ],
+  correcta: "b) Detecta riesgo de que la deuda no sea satisfecha.",
+  justificacion: "El análisis de riesgo determina la exigencia de garantías."
+},
+{
+  pregunta: "El levante de las mercancías implica que:",
+  opciones: [
+    "a) La mercancía queda automáticamente en libre práctica.",
+    "b) El declarante puede disponer de las mercancías según el régimen solicitado.",
+    "c) No será posible efectuar controles posteriores.",
+    "d) Se extingue toda responsabilidad aduanera."
+  ],
+  correcta: "b) El declarante puede disponer de las mercancías según el régimen solicitado.",
+  justificacion: "El levante autoriza la retirada o uso de la mercancía conforme al destino aduanero declarado."
+},
+{
+  pregunta: "El tránsito interno permite:",
+  opciones: [
+    "a) Transportar mercancías no comunitarias sin pagar derechos.",
+    "b) Transportar mercancías de la Unión bajo control aduanero.",
+    "c) Evitar toda inspección en frontera.",
+    "d) Convertir mercancías no comunitarias en comunitarias."
+  ],
+  correcta: "b) Transportar mercancías de la Unión bajo control aduanero.",
+  justificacion: "El tránsito interno aplica a mercancías de la Unión en circulación controlada."
+},
+{
+  pregunta: "El tránsito externo se caracteriza porque:",
+  opciones: [
+    "a) Se utiliza únicamente en exportaciones.",
+    "b) Permite mover mercancías no comunitarias sin pago inmediato de derechos.",
+    "c) No requiere declaración en aduana.",
+    "d) Se aplica solo en transporte marítimo."
+  ],
+  correcta: "b) Permite mover mercancías no comunitarias sin pago inmediato de derechos.",
+  justificacion: "Es un régimen suspensivo para mercancías no comunitarias."
+},
+{
+  pregunta: "La destrucción autorizada de mercancías bajo control aduanero:",
+  opciones: [
+    "a) Exime de la deuda aduanera si se cumplen las condiciones.",
+    "b) Obliga al pago completo de derechos.",
+    "c) Solo es posible para mercancías perecederas.",
+    "d) Debe ser solicitada por el transportista."
+  ],
+  correcta: "a) Exime de la deuda aduanera si se cumplen las condiciones.",
+  justificacion: "La destrucción autorizada evita el nacimiento de la deuda."
+},
+{
+  pregunta: "La aduana puede realizar controles físicos:",
+  opciones: [
+    "a) Únicamente en mercancías no comunitarias.",
+    "b) Según análisis de riesgo en cualquier momento.",
+    "c) Solo cuando la mercancía supere cierto valor.",
+    "d) Únicamente si hay denuncia previa."
+  ],
+  correcta: "b) Según análisis de riesgo en cualquier momento.",
+  justificacion: "El CAU permite controles selectivos por criterios de riesgo."
+},
+{
+  pregunta: "Las mercancías abandonadas voluntariamente:",
+  opciones: [
+    "a) Se consideran automáticamente comunitarias.",
+    "b) Pasan a disposición del Estado para su destino legal.",
+    "c) Se devuelven al transportista.",
+    "d) Se destruyen sin expediente."
+  ],
+  correcta: "b) Pasan a disposición del Estado para su destino legal.",
+  justificacion: "El abandono voluntario implica cesión total al Estado."
+},
+{
+  pregunta: "La declaración sumaria de entrada se presenta:",
+  opciones: [
+    "a) Solo en exportaciones.",
+    "b) Antes de la llegada de las mercancías.",
+    "c) Después del despacho a libre práctica.",
+    "d) Solo en transporte marítimo."
+  ],
+  correcta: "b) Antes de la llegada de las mercancías.",
+  justificacion: "Es un requisito previo para iniciar el análisis de riesgo."
+},
+{
+  pregunta: "La valoración aduanera se basa principalmente en:",
+  opciones: [
+    "a) El valor estimado por el transportista.",
+    "b) El valor de transacción ajustado conforme a normativa.",
+    "c) El precio nacional de referencia.",
+    "d) El valor de reventa en destino."
+  ],
+  correcta: "b) El valor de transacción ajustado conforme a normativa.",
+  justificacion: "El método principal de valoración es el valor de transacción más ajustes."
+},
+{
+  pregunta: "En el procedimiento sancionador por contrabando, el acta debe incluir:",
+  opciones: [
+    "a) Solo la identificación del declarante.",
+    "b) Hechos, bienes intervenidos y preceptos infringidos.",
+    "c) Exclusivamente el valor de la mercancía.",
+    "d) Solo la firma del instructor."
+  ],
+  correcta: "b) Hechos, bienes intervenidos y preceptos infringidos.",
+  justificacion: "El RD 1649/1998 exige un contenido detallado y completo."
+},
+{
+  pregunta: "La venta anticipada de mercancías intervenidas procede cuando:",
+  opciones: [
+    "a) El infractor no comparece en 24 horas.",
+    "b) Sean perecederas o peligre su conservación.",
+    "c) El transportista la solicite.",
+    "d) Las mercancías tengan más de un año almacenadas."
+  ],
+  correcta: "b) Sean perecederas o peligre su conservación.",
+  justificacion: "La finalidad es evitar deterioro y pérdida económica."
+},
+{
+  pregunta: "La resolución sancionadora debe ser:",
+  opciones: [
+    "a) Sin motivación para evitar extensión innecesaria.",
+    "b) Motivada e indicar los recursos procedentes.",
+    "c) Notificada solo verbalmente.",
+    "d) Dictada por el transportista."
+  ],
+  correcta: "b) Motivada e indicar los recursos procedentes.",
+  justificacion: "Garantiza los derechos del interesado en el procedimiento sancionador."
+},
+{
+  pregunta: "La responsabilidad solidaria se aplica a:",
+  opciones: [
+    "a) Toda persona que haya tenido contacto con la mercancía.",
+    "b) Quien participe conscientemente en la infracción.",
+    "c) El comprador final del producto.",
+    "d) El fabricante extranjero."
+  ],
+  correcta: "b) Quien participe conscientemente en la infracción.",
+  justificacion: "El CAU establece responsabilidad para los partícipes directos y conscientes."
+},
+{
+  pregunta: "La aduana puede exigir una garantía cuando:",
+  opciones: [
+    "a) El operador sea nuevo.",
+    "b) Exista riesgo de impago de la deuda.",
+    "c) La mercancía sea comunitaria.",
+    "d) La operación sea de bajo valor."
+  ],
+  correcta: "b) Exista riesgo de impago de la deuda.",
+  justificacion: "Las garantías se exigen como medida de seguridad financiera."
+},
+{
+  pregunta: "El depósito temporal permite que las mercancías:",
+  opciones: [
+    "a) Permanezcan máximo 90 días antes de asignarse a un régimen.",
+    "b) Sean destruidas sin control.",
+    "c) Se comercialicen libremente.",
+    "d) Queden automáticamente en libre práctica."
+  ],
+  correcta: "a) Permanezcan máximo 90 días antes de asignarse a un régimen.",
+  justificacion: "El depósito temporal es provisional y tiene un límite de 90 días."
+},
+{
+  pregunta: "Una declaración puede ser anulada cuando:",
+  opciones: [
+    "a) No se haya concedido levante.",
+    "b) Se haya concedido levante.",
+    "c) El declarante lo solicite sin motivo.",
+    "d) El valor sea inferior a 1.000 euros."
+  ],
+  correcta: "a) No se haya concedido levante.",
+  justificacion: "Tras el levante la declaración ya produce efectos y no puede anularse."
+},
+{
+  pregunta: "El tránsito requiere que las mercancías:",
+  opciones: [
+    "a) Permanezcan sin controles.",
+    "b) Circulen bajo precintos u otras medidas de control.",
+    "c) Sean automáticamente comunitarias.",
+    "d) Paguen derechos antes de la salida."
+  ],
+  correcta: "b) Circulen bajo precintos u otras medidas de control.",
+  justificacion: "Las mercancías en tránsito deben garantizar su integridad hasta destino."
+},
+{
+  pregunta: "Las mercancías en depósito aduanero:",
+  opciones: [
+    "a) Pagan derechos desde su entrada.",
+    "b) No pagan derechos mientras permanezcan en el depósito.",
+    "c) Se destruyen a los 60 días.",
+    "d) Se consideran comunitarias al tercer mes."
+  ],
+  correcta: "b) No pagan derechos mientras permanezcan en el depósito.",
+  justificacion: "El depósito aduanero es un régimen suspensivo de derechos."
+},
+{
+  pregunta: "El abandono voluntario extingue:",
+  opciones: [
+    "a) Toda responsabilidad administrativa.",
+    "b) La propiedad sobre la mercancía a favor del Estado.",
+    "c) La necesidad de declarar operaciones futuras.",
+    "d) El pago de IVA en todos los casos."
+  ],
+  correcta: "b) La propiedad sobre la mercancía a favor del Estado.",
+  justificacion: "El abandono es una cesión de titularidad."
+},
+{
+  pregunta: "La inspección documental puede realizarse:",
+  opciones: [
+    "a) Solo en exportaciones.",
+    "b) Como parte del control aduanero previo al levante.",
+    "c) Únicamente si hay sospecha de delito.",
+    "d) Cuando la mercancía ya haya salido."
+  ],
+  correcta: "b) Como parte del control aduanero previo al levante.",
+  justificacion: "La inspección documental es un control rutinario previo al levante."
+},
+{
+  pregunta: "El nacimiento de deuda por exportación se produce cuando:",
+  opciones: [
+    "a) Se emite la factura.",
+    "b) Se exportan mercancías sujetas a restituciones.",
+    "c) El comprador paga.",
+    "d) Se presenta la declaración sumaria."
+  ],
+  correcta: "b) Se exportan mercancías sujetas a restituciones.",
+  justificacion: "En exportaciones normales no nace deuda; solo cuando existen restituciones agrícolas."
+},
+{
+  pregunta: "La declaración sumaria de salida debe presentarse:",
+  opciones: [
+    "a) Después de la salida física de la mercancía.",
+    "b) Antes de que las mercancías abandonen el territorio aduanero.",
+    "c) Únicamente para mercancías perecederas.",
+    "d) Solo cuando lo solicite el transportista."
+  ],
+  correcta: "b) Antes de que las mercancías abandonen el territorio aduanero.",
+  justificacion: "La declaración sumaria de salida permite realizar controles previos a la salida."
+},
+{
+  pregunta: "Las mercancías en tránsito externo deben:",
+  opciones: [
+    "a) Ser declaradas en libre práctica.",
+    "b) Circular bajo control aduanero sin pago inmediato de derechos.",
+    "c) Pagar derechos en cada aduana intermedia.",
+    "d) Considerarse mercancías de la Unión."
+  ],
+  correcta: "b) Circular bajo control aduanero sin pago inmediato de derechos.",
+  justificacion: "El tránsito externo suspende el pago de derechos hasta su destino final."
+},
+{
+  pregunta: "El tránsito interno se aplica a mercancías:",
+  opciones: [
+    "a) No comunitarias.",
+    "b) De la Unión bajo control aduanero.",
+    "c) Abandonadas al Estado.",
+    "d) Perecederas únicamente."
+  ],
+  correcta: "b) De la Unión bajo control aduanero.",
+  justificacion: "El tránsito interno regula la circulación dentro del territorio aduanero."
+},
+{
+  pregunta: "Una autorización aduanera puede ser suspendida cuando:",
+  opciones: [
+    "a) El operador cambie de domicilio.",
+    "b) No se cumplan temporalmente los requisitos exigidos.",
+    "c) La mercancía sea perecedera.",
+    "d) El transportista lo solicite."
+  ],
+  correcta: "b) No se cumplan temporalmente los requisitos exigidos.",
+  justificacion: "La suspensión opera cuando el incumplimiento no es definitivo."
+},
+{
+  pregunta: "El valor en aduana no incluye:",
+  opciones: [
+    "a) Costes de transporte hasta frontera.",
+    "b) Seguros hasta frontera.",
+    "c) Impuestos internos posteriores a la importación.",
+    "d) Gastos de embalaje."
+  ],
+  correcta: "c) Impuestos internos posteriores a la importación.",
+  justificacion: "Los impuestos internos no forman parte del valor en aduana."
+},
+{
+  pregunta: "La destrucción irregular de mercancías bajo control aduanero constituye:",
+  opciones: [
+    "a) Una simple irregularidad sin sanción.",
+    "b) Una infracción o incluso delito.",
+    "c) Motivo de exención de deuda.",
+    "d) Un acto permitido sin control."
+  ],
+  correcta: "b) Una infracción o incluso delito.",
+  justificacion: "La destrucción no autorizada vulnera gravemente la normativa aduanera."
+},
+{
+  pregunta: "La declaración incompleta debe:",
+  opciones: [
+    "a) Completarse en el plazo autorizado por la aduana.",
+    "b) Ser eliminada de inmediato.",
+    "c) No requerir presentación de documentación.",
+    "d) Convertirse en declaración verbal."
+  ],
+  correcta: "a) Completarse en el plazo autorizado por la aduana.",
+  justificacion: "El CAU permite completar los datos faltantes posteriormente."
+},
+{
+  pregunta: "El depósito temporal tiene un plazo máximo de:",
+  opciones: [
+    "a) 30 días.",
+    "b) 45 días.",
+    "c) 60 días.",
+    "d) 90 días."
+  ],
+  correcta: "d) 90 días.",
+  justificacion: "El CAU fija un máximo de 90 días para el depósito temporal."
+},
+{
+  pregunta: "La aduana puede exigir garantía cuando:",
+  opciones: [
+    "a) Exista riesgo de impago de la deuda.",
+    "b) La mercancía sea comunitaria.",
+    "c) El valor sea inferior a 100 euros.",
+    "d) Lo solicite el transportista."
+  ],
+  correcta: "a) Exista riesgo de impago de la deuda.",
+  justificacion: "El análisis de riesgo determina la exigencia de garantías."
+},
+{
+  pregunta: "Las mercancías abandonadas tácitamente pueden:",
+  opciones: [
+    "a) Entregarse al declarante sin formalidades.",
+    "b) Ser subastadas, destruidas o destinadas según normativa.",
+    "c) Considerarse automáticamente comunitarias.",
+    "d) Usarse para consumo inmediato."
+  ],
+  correcta: "b) Ser subastadas, destruidas o destinadas según normativa.",
+  justificacion: "La aduana decide su destino conforme al marco legal."
+},
+{
+  pregunta: "El CAU establece que el levante autoriza:",
+  opciones: [
+    "a) El uso o retirada de las mercancías según el régimen solicitado.",
+    "b) La destrucción automática.",
+    "c) La exención de controles posteriores.",
+    "d) La consideración automática como mercancía de la Unión."
+  ],
+  correcta: "a) El uso o retirada de las mercancías según el régimen solicitado.",
+  justificacion: "El levante es la autorización para disponer de la mercancía."
+},
+{
+  pregunta: "El acta de infracción debe contener:",
+  opciones: [
+    "a) Solo la firma del declarante.",
+    "b) Hechos, bienes intervenidos y preceptos aplicables.",
+    "c) Únicamente el valor de los bienes.",
+    "d) Una descripción opcional del contenido."
+  ],
+  correcta: "b) Hechos, bienes intervenidos y preceptos aplicables.",
+  justificacion: "El RD 1649/1998 exige claridad y detalle."
+},
+{
+  pregunta: "La resolución sancionadora es ejecutiva cuando:",
+  opciones: [
+    "a) Se emite el acta.",
+    "b) Se dicta la propuesta de resolución.",
+    "c) La resolución sea firme.",
+    "d) Lo decida el declarante."
+  ],
+  correcta: "c) La resolución sea firme.",
+  justificacion: "Solo una resolución firme puede ejecutarse."
+},
+{
+  pregunta: "La responsabilidad solidaria puede recaer en:",
+  opciones: [
+    "a) Quien colabore conscientemente en la infracción.",
+    "b) El comprador final.",
+    "c) El fabricante extranjero.",
+    "d) El transportista en todos los casos."
+  ],
+  correcta: "a) Quien colabore conscientemente en la infracción.",
+  justificacion: "El CAU extiende responsabilidad a partícipes directos y conscientes."
+},
+{
+  pregunta: "El tránsito requiere que la mercancía:",
+  opciones: [
+    "a) Circule sin controles.",
+    "b) Se mantenga precintada o bajo medidas de control.",
+    "c) Quede en libre práctica.",
+    "d) Se declare verbalmente."
+  ],
+  correcta: "b) Se mantenga precintada o bajo medidas de control.",
+  justificacion: "Las medidas garantizan la integridad del tránsito."
+},
+{
+  pregunta: "El valor en aduana se basa principalmente en:",
+  opciones: [
+    "a) El valor de reventa en el mercado UE.",
+    "b) El valor de transacción ajustado según normativa.",
+    "c) El valor declarado por el transportista.",
+    "d) Un valor estimado por la aduana sin datos."
+  ],
+  correcta: "b) El valor de transacción ajustado según normativa.",
+  justificacion: "Es el primer método del sistema de valoración."
+},
+{
+  pregunta: "Las mercancías en depósito aduanero:",
+  opciones: [
+    "a) Pagan derechos desde su entrada.",
+    "b) No pagan derechos mientras permanezcan en depósito.",
+    "c) Se destruyen automáticamente a los 30 días.",
+    "d) Se consideran comunitarias automáticamente."
+  ],
+  correcta: "b) No pagan derechos mientras permanezcan en depósito.",
+  justificacion: "Es un régimen suspensivo de derechos e impuestos."
+},
+{
+  pregunta: "El abandono voluntario implica que:",
+  opciones: [
+    "a) La mercancía pasa a ser propiedad del Estado.",
+    "b) Se exime siempre de sanciones.",
+    "c) La mercancía queda en libre práctica.",
+    "d) Se destruye sin control."
+  ],
+  correcta: "a) La mercancía pasa a ser propiedad del Estado.",
+  justificacion: "El abandono es una cesión total de la titularidad."
+},
+{
+  pregunta: "La inspección documental se realiza:",
+  opciones: [
+    "a) Solo si hay sospechas graves.",
+    "b) Como control habitual para verificar la declaración.",
+    "c) Exclusivamente en exportaciones.",
+    "d) Únicamente después del levante."
+  ],
+  correcta: "b) Como control habitual para verificar la declaración.",
+  justificacion: "La comprobación documental es parte rutinaria del control aduanero."
+},
+{
+  pregunta: "Una declaración aduanera no puede anularse cuando:",
+  opciones: [
+    "a) No se haya concedido levante.",
+    "b) Se haya concedido levante.",
+    "c) Exista error material subsanable.",
+    "d) El declarante tenga autorización OEA."
+  ],
+  correcta: "b) Se haya concedido levante.",
+  justificacion: "Tras el levante la declaración produce efectos jurídicos definitivos."
+},
+{
+  pregunta: "El nacimiento de la deuda aduanera por importación se produce cuando:",
+  opciones: [
+    "a) Se presenta la declaración sumaria.",
+    "b) Se despacha la mercancía a libre práctica.",
+    "c) Se emite la factura comercial.",
+    "d) El transportista notifica su llegada."
+  ],
+  correcta: "b) Se despacha la mercancía a libre práctica.",
+  justificacion: "El despacho a libre práctica genera la deuda aduanera según el CAU."
+},
+{
+  pregunta: "La deuda aduanera se extingue cuando:",
+  opciones: [
+    "a) Se conceda el levante.",
+    "b) La mercancía se destruya bajo control aduanero.",
+    "c) Se emita la declaración de valor.",
+    "d) Cambie el titular de la mercancía."
+  ],
+  correcta: "b) La mercancía se destruya bajo control aduanero.",
+  justificacion: "La destrucción autorizada evita el nacimiento de deuda o la extingue."
+},
+{
+  pregunta: "El régimen de perfeccionamiento activo permite:",
+  opciones: [
+    "a) Importar mercancías para transformarlas sin pagar derechos.",
+    "b) Exportar mercancías sin declaración previa.",
+    "c) Comercializar mercancías sin etiquetado.",
+    "d) Reimportar mercancías sin control."
+  ],
+  correcta: "a) Importar mercancías para transformarlas sin pagar derechos.",
+  justificacion: "El perfeccionamiento activo es un régimen suspensivo que facilita operaciones industriales."
+},
+{
+  pregunta: "El perfeccionamiento pasivo consiste en:",
+  opciones: [
+    "a) Introducir mercancías de la Unión sin declaración.",
+    "b) Exportar mercancías temporalmente para ser transformadas y reimportarlas.",
+    "c) Reexportar mercancías en tránsito.",
+    "d) Poner mercancías en depósito fiscal."
+  ],
+  correcta: "b) Exportar mercancías temporalmente para ser transformadas y reimportarlas.",
+  justificacion: "El perfeccionamiento pasivo permite beneficiarse de reducciones arancelarias al reimportar."
+},
+{
+  pregunta: "La declaración sumaria de entrada se exige:",
+  opciones: [
+    "a) Antes de la llegada de las mercancías.",
+    "b) Después del levante.",
+    "c) Solo en exportaciones.",
+    "d) Únicamente para mercancías perecederas."
+  ],
+  correcta: "a) Antes de la llegada de las mercancías.",
+  justificacion: "La declaración anticipada sirve para la gestión de riesgos."
+},
+{
+  pregunta: "El abandono tácito ocurre cuando:",
+  opciones: [
+    "a) El interesado solicita formalmente la cesión.",
+    "b) No se retiren o regularicen las mercancías dentro del plazo legal.",
+    "c) La mercancía cambie de titular.",
+    "d) El valor sea inferior a 300 euros."
+  ],
+  correcta: "b) No se retiren o regularicen las mercancías dentro del plazo legal.",
+  justificacion: "La inactividad del interesado permite considerar abandono tácito."
+},
+{
+  pregunta: "La venta anticipada de mercancías intervenidas puede realizarse cuando:",
+  opciones: [
+    "a) El valor sea superior a 50.000 euros.",
+    "b) Las mercancías sean perecederas o peligre su conservación.",
+    "c) El declarante la solicite sin motivo.",
+    "d) Se trate de mercancías comunitarias."
+  ],
+  correcta: "b) Las mercancías sean perecederas o peligre su conservación.",
+  justificacion: "Se realiza para evitar deterioro o pérdida económica."
+},
+{
+  pregunta: "El valor en aduana incluye:",
+  opciones: [
+    "a) Impuestos internos posteriores al despacho.",
+    "b) Costes de transporte hasta el punto de entrada.",
+    "c) Gastos de distribución dentro de la UE.",
+    "d) Costes de almacenamiento tras el levante."
+  ],
+  correcta: "b) Costes de transporte hasta el punto de entrada.",
+  justificacion: "Los costes hasta frontera forman parte del valor en aduana."
+},
+{
+  pregunta: "La responsabilidad solidaria se aplica a quien:",
+  opciones: [
+    "a) Tiene contacto indirecto con la mercancía.",
+    "b) Colabora conscientemente en la infracción.",
+    "c) Es consumidor final.",
+    "d) Sea comprador extranjero."
+  ],
+  correcta: "b) Colabora conscientemente en la infracción.",
+  justificacion: "El CAU extiende responsabilidad a partícipes conscientes."
+},
+{
+  pregunta: "La aduana puede realizar controles físicos:",
+  opciones: [
+    "a) Solo si las mercancías superan cierto valor.",
+    "b) En cualquier momento basándose en análisis de riesgo.",
+    "c) Únicamente en tránsito interno.",
+    "d) Solo mediante muestreo obligatorio."
+  ],
+  correcta: "b) En cualquier momento basándose en análisis de riesgo.",
+  justificacion: "El CAU autoriza controles selectivos o completos."
+},
+{
+  pregunta: "El depósito temporal es una situación en la que las mercancías:",
+  opciones: [
+    "a) Pagan derechos desde el primer día.",
+    "b) Permanecen bajo control aduanero hasta asignarles régimen.",
+    "c) Se consideran automáticamente comunitarias a los 90 días.",
+    "d) No requieren presentación ante la aduana."
+  ],
+  correcta: "b) Permanecen bajo control aduanero hasta asignarles régimen.",
+  justificacion: "Mientras están en depósito temporal no se han despachado."
+},
+{
+  pregunta: "La anulación de una declaración no procede cuando:",
+  opciones: [
+    "a) Se haya concedido el levante.",
+    "b) No se haya concedido el levante.",
+    "c) Exista error material válido.",
+    "d) El operador aporte documentación justificativa."
+  ],
+  correcta: "a) Se haya concedido el levante.",
+  justificacion: "Tras el levante, la declaración despliega efectos jurídicos definitivos."
+},
+{
+  pregunta: "El depósito aduanero permite:",
+  opciones: [
+    "a) Suspender el pago de derechos mientras las mercancías permanezcan en depósito.",
+    "b) Declarar verbalmente la mercancía en cualquier caso.",
+    "c) Comercializar libremente las mercancías sin control.",
+    "d) Considerar comunitarias las mercancías tras 30 días."
+  ],
+  correcta: "a) Suspender el pago de derechos mientras las mercancías permanezcan en depósito.",
+  justificacion: "El depósito aduanero es un régimen suspensivo."
+},
+{
+  pregunta: "La mercancía se considera presentada a aduanas cuando:",
+  opciones: [
+    "a) Se descarga del vehículo.",
+    "b) El transportista notifica formalmente su llegada.",
+    "c) Se emite una factura.",
+    "d) Se realiza declaración sumaria de salida."
+  ],
+  correcta: "b) El transportista notifica formalmente su llegada.",
+  justificacion: "La presentación es un acto formal indispensable."
+},
+{
+  pregunta: "Una declaración aduanera debe basarse en:",
+  opciones: [
+    "a) Datos estimados por el declarante.",
+    "b) Información completa y documentos justificativos disponibles.",
+    "c) Declaración verbal del transportista.",
+    "d) Los precios medios del mercado nacional."
+  ],
+  correcta: "b) Información completa y documentos justificativos disponibles.",
+  justificacion: "El CAU exige disponibilidad documental para declarar."
+},
+{
+  pregunta: "La destrucción autorizada de mercancías puede solicitarse:",
+  opciones: [
+    "a) Solo por empresas OEA.",
+    "b) Por el titular del régimen o responsable de la mercancía.",
+    "c) Únicicamente por el transportista.",
+    "d) Solo en mercancías perecederas."
+  ],
+  correcta: "b) Por el titular del régimen o responsable de la mercancía.",
+  justificacion: "El titular es quien tiene la legitimidad para solicitar la destrucción."
+},
+{
+  pregunta: "El tránsito se considera finalizado cuando:",
+  opciones: [
+    "a) El transportista descarga la mercancía.",
+    "b) Las mercancías se presentan en la aduana de destino y se verifican.",
+    "c) El declarante paga la factura.",
+    "d) Se cumple el plazo de 30 días."
+  ],
+  correcta: "b) Las mercancías se presentan en la aduana de destino y se verifican.",
+  justificacion: "La aduana de destino confirma la integridad del tránsito."
+},
+{
+  pregunta: "El acta de infracción debe notificarse:",
+  opciones: [
+    "a) Solo al transportista.",
+    "b) Al interesado dentro del plazo legal.",
+    "c) Únicamente por correo electrónico.",
+    "d) Solo si la mercancía supera un valor mínimo."
+  ],
+  correcta: "b) Al interesado dentro del plazo legal.",
+  justificacion: "La notificación al interesado es requisito esencial del procedimiento."
+},
+{
+  pregunta: "El procedimiento sancionador garantiza al interesado:",
+  opciones: [
+    "a) Presentar alegaciones y aportar pruebas.",
+    "b) Modificar el valor en aduana a su criterio.",
+    "c) Evitar el control físico si lo desea.",
+    "d) Obtener automáticamente el archivo del expediente."
+  ],
+  correcta: "a) Presentar alegaciones y aportar pruebas.",
+  justificacion: "Es un derecho básico dentro del procedimiento sancionador."
+},
+{
+  pregunta: "El Código Aduanero de la Unión define la deuda aduanera como:",
+  opciones: [
+    "a) Una obligación moral del transportista.",
+    "b) La obligación de una persona de pagar derechos de importación o exportación.",
+    "c) Una deuda tributaria interna.",
+    "d) Una obligación exclusivamente comercial."
+  ],
+  correcta: "b) La obligación de una persona de pagar derechos de importación o exportación.",
+  justificacion: "El CAU recoge esta definición en su articulado."
+},
+];
+
+let totalPreguntasRenderizadas = 0;
+
+function barajar(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+}
+
+function setProgress(current, total) {
+  const bar = document.getElementById('progressBar');
+  const pct = total > 0 ? Math.round((current / total) * 100) : 0;
+  bar.style.width = pct + '%';
+  bar.title = pct + '%';
+}
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+// Carga el test con preguntas y respuestas aleatorias
+function cargarTest() {
+  const numPreguntas = parseInt(document.getElementById('numPreguntas').value);
+  const testForm = document.getElementById('testForm');
+  const progressBar = document.getElementById('progressBar');
+  const testResult = document.getElementById('testResult');
+
+  testForm.innerHTML = '';
+  testResult.innerHTML = '';
+  progressBar.style.width = '0%';
+
+  if (!preguntasBanco || preguntasBanco.length === 0) {
+    testForm.innerHTML = '<p style="color:red;font-weight:bold;">⚠️ No hay preguntas en el banco.</p>';
+    return;
+  }
+
+  const letras = ['a)', 'b)', 'c)', 'd)', 'e)', 'f)']; // por si hay más de 4 opciones
+  const preguntasSeleccionadas = shuffle([...preguntasBanco]).slice(0, numPreguntas);
+
+  preguntasSeleccionadas.forEach((preguntaObj, index) => {
+    // Mezclamos las opciones (pero vamos a limpiar su prefijo "a) " si lo llevan)
+    const opcionesMezcladas = shuffle([...preguntaObj.opciones]);
+
+    // Convertimos cada opción en un objeto { texto, esCorrecta }
+    const opcionesObj = opcionesMezcladas.map(opcion => {
+      // Limpiar prefijos como "a) ", "b) " si existen
+      const textoLimpio = opcion.replace(/^[A-Za-z]\)\s*/, '').trim();
+      const esCorrecta = opcion === preguntaObj.correcta || textoLimpio === preguntaObj.correcta.replace(/^[A-Za-z]\)\s*/, '').trim();
+      return { texto: textoLimpio, esCorrecta };
+    });
+
+    // Renderizamos las opciones asignando letras según la posición (letras fijas)
+    const opcionesHTML = opcionesObj.map((opt, optIndex) => {
+      const marcaCorrecta = opt.esCorrecta ? 'true' : 'false';
+      const letra = letras[optIndex] || `${optIndex + 1})`; // fallback si hay >6 opciones
+      // No incluimos la letra dentro del texto de la opción; la mostramos separada
+      return `
+        <label class="option">
+          <input type="radio" name="pregunta${index}" value="${opt.texto.replace(/"/g, '&quot;')}" data-correct="${marcaCorrecta}">
+          <span style="font-weight:700; margin-right:10px; color:var(--muted)">${letra}</span>
+          ${opt.texto}
+        </label>
+      `;
+    }).join('');
+
+    const preguntaHTML = `
+      <div class="question">
+        <div class="q-head">
+          <span class="q-num">${index + 1}.</span>
+          <p class="q-text">${preguntaObj.pregunta}</p>
+        </div>
+        <div class="options">
+          ${opcionesHTML}
+        </div>
+        <div class="justification muted" style="display:none;">
+          <span class="correct">✔ ${preguntaObj.correcta.replace(/^[A-Za-z]\)\s*/, '')}</span><br>
+          ${preguntaObj.justificacion}
+        </div>
+      </div>
+    `;
+    testForm.insertAdjacentHTML('beforeend', preguntaHTML);
+  });
+
+  // Añadir botón corregir (evitar duplicados)
+  const botonCorregirExistente = Array.from(testForm.getElementsByTagName('button')).find(b => b.textContent === 'Corregir');
+  if (!botonCorregirExistente) {
+    const botonCorregir = document.createElement('button');
+    botonCorregir.type = 'button';
+    botonCorregir.className = 'btn success';
+    botonCorregir.textContent = 'Corregir';
+    botonCorregir.onclick = () => corregirTest();
+    testForm.appendChild(botonCorregir);
+  }
+}
+
+
+function corregirTest() {
+  const preguntas = document.querySelectorAll('.question');
+  let aciertos = 0;
+
+  preguntas.forEach((pregunta) => {
+    const radios = pregunta.querySelectorAll('input[type="radio"]');
+    const labels = pregunta.querySelectorAll('.option');
+    const justificacion = pregunta.querySelector('.justification');
+    let seleccionCorrecta = false;
+
+    // Limpiar clases anteriores
+    labels.forEach(l => {
+      l.classList.remove('correct-option', 'wrong-option');
+      const checkmark = l.querySelector('.checkmark');
+      if (checkmark) checkmark.remove();
+    });
+
+    radios.forEach(radio => {
+      const label = radio.closest('.option');
+      if (radio.checked && radio.dataset.correct === 'true') {
+        seleccionCorrecta = true;
+      }
+    });
+
+    radios.forEach(radio => {
+      const label = radio.closest('.option');
+
+      if (radio.dataset.correct === 'true') {
+        // Mostrar check verde en la opción correcta
+        label.classList.add('correct-option');
+        label.insertAdjacentHTML('afterbegin', `<span class="checkmark" style="color:#059669;font-weight:700;">✔</span>`);
+      }
+
+      if (radio.checked && radio.dataset.correct !== 'true') {
+        // Mostrar X roja en la opción elegida incorrecta
+        label.classList.add('wrong-option');
+        label.insertAdjacentHTML('afterbegin', `<span class="checkmark" style="color:#dc2626;font-weight:700;">✘</span>`);
+      }
+    });
+
+    // Mostrar la justificación al final
+    if (justificacion) {
+      justificacion.style.display = 'block';
+      justificacion.innerHTML = `
+        ${seleccionCorrecta 
+          ? `<span class="correct">✔ ${pregunta.querySelector('input[data-correct="true"]').value}</span><br>` 
+          : `<span class="incorrect">✘ ${pregunta.querySelector('input[data-correct="true"]').value}</span><br>`
+        }
+        ${pregunta.querySelector('.justification').textContent || ''}
+      `;
+    }
+
+    if (seleccionCorrecta) aciertos++;
+  });
+
+  // Mostrar resultado final
+  const total = preguntas.length;
+  const porcentaje = Math.round((aciertos / total) * 100);
+  const testResult = document.getElementById('testResult');
+  testResult.innerHTML = `
+    <div class="result-card">
+      <p class="score">Has acertado ${aciertos} de ${total} preguntas (${porcentaje}%).</p>
+      <p class="muted">${porcentaje >= 70 ? "✅ ¡Buen trabajo!" : "❌ Puedes mejorar."}</p>
+    </div>
+  `;
+  document.getElementById('progressBar').style.width = '100%';
+}
+
+
+function reiniciarTest() {
+  document.getElementById('testForm').innerHTML = '';
+  document.getElementById('testResult').innerHTML = '';
+  setProgress(0, 0);
+}
+  // ==========================
+// 🔹 TEMPORIZADOR CONFIGURABLE
+// ==========================
+
+// Variables del temporizador
+let tiempoTotal = 0;
+let tiempoRestante = 0;
+let temporizadorInterval;
+
+// Crear selector de tiempo en el panel de controles
+const selectTiempo = document.createElement('select');
+selectTiempo.id = 'tiempoSeleccionado';
+selectTiempo.innerHTML = `
+  <option value="0">Sin límite</option>
+  <option value="5">5 minutos</option>
+  <option value="10" selected>10 minutos</option>
+  <option value="15">15 minutos</option>
+  <option value="20">20 minutos</option>
+  <option value="30">30 minutos</option>
+  <option value="40">40 minutos</option>
+  <option value="50">50 minutos</option>
+  <option value="60">60 minutos</option>
+`;
+const labelTiempo = document.createElement('label');
+labelTiempo.htmlFor = 'tiempoSeleccionado';
+labelTiempo.textContent = 'Tiempo límite:';
+const controlsDiv = document.querySelector('.controls');
+controlsDiv.insertBefore(labelTiempo, controlsDiv.children[2]);
+controlsDiv.insertBefore(selectTiempo, controlsDiv.children[3]);
+
+// Crear elemento visual del temporizador
+const temporizadorDiv = document.createElement('div');
+temporizadorDiv.id = 'temporizador';
+temporizadorDiv.style.textAlign = 'center';
+temporizadorDiv.style.fontSize = '18px';
+temporizadorDiv.style.fontWeight = '700';
+temporizadorDiv.style.color = '#2563eb';
+temporizadorDiv.style.marginTop = '12px';
+controlsDiv.appendChild(temporizadorDiv);
+
+// Mostrar tiempo en formato mm:ss
+function mostrarTiempo() {
+  let min = Math.floor(tiempoRestante / 60);
+  let seg = tiempoRestante % 60;
+  temporizadorDiv.textContent = `⏳ Tiempo restante: ${min}:${seg.toString().padStart(2, '0')}`;
+}
+
+// Iniciar temporizador
+function iniciarTemporizador() {
+  const minutosSeleccionados = parseInt(document.getElementById('tiempoSeleccionado').value);
+  if (minutosSeleccionados === 0) {
+    temporizadorDiv.textContent = '⏳ Sin límite de tiempo';
+    return;
+  }
+
+  tiempoTotal = minutosSeleccionados * 60;
+  tiempoRestante = tiempoTotal;
+  mostrarTiempo();
+
+  temporizadorInterval = setInterval(() => {
+    tiempoRestante--;
+    mostrarTiempo();
+    if (tiempoRestante <= 0) {
+      clearInterval(temporizadorInterval);
+      temporizadorDiv.textContent = '⏰ ¡Tiempo agotado!';
+      finalizarTestPorTiempo();
+    }
+  }, 1000);
+}
+
+// Detener temporizador
+function detenerTemporizador() {
+  clearInterval(temporizadorInterval);
+}
+
+// Modificar función cargarTest para que inicie el temporizador
+const originalCargarTest = cargarTest;
+cargarTest = function() {
+  originalCargarTest();
+  detenerTemporizador(); // Por si se reinicia
+  iniciarTemporizador();
+};
+
+// Al finalizar el test manualmente (botón Enviar)
+const originalEvaluarTest = evaluarTest;
+evaluarTest = function() {
+  detenerTemporizador(); // Detiene el contador al pulsar Enviar
+  originalEvaluarTest();
+};
+
+// Cuando el tiempo se agota automáticamente
+function finalizarTestPorTiempo() {
+  // Evita ejecuciones dobles
+  if (window.__finalizadoPorTiempo__) return;
+  window.__finalizadoPorTiempo__ = true;
+
+  detenerTemporizador();
+  if (temporizadorDiv) temporizadorDiv.textContent = '⏰ ¡Tiempo agotado! Pulsa "Enviar" para corregir.';
+
+  // 🔒 Bloquear todas las respuestas
+  document.querySelectorAll('input[type="radio"]').forEach(r => {
+    r.disabled = true;
+    const opt = r.closest('.option');
+    if (opt) {
+      opt.style.opacity = '0.6';
+      opt.style.pointerEvents = 'none';
+    }
+  });
+
+  // ✅ Dejar el botón "Enviar" activo y hacerlo destacar en verde
+  const btnEnviar = document.querySelector('button.btn.success, button[type="submit"]');
+  if (btnEnviar) {
+    btnEnviar.disabled = false;
+    btnEnviar.style.opacity = '1';
+    btnEnviar.style.cursor = 'pointer';
+
+    // 💚 Efecto parpadeo verde suave
+    btnEnviar.style.animation = 'blinkGreen 1.2s infinite';
+    btnEnviar.style.transition = 'background-color 0.3s ease';
+    btnEnviar.style.backgroundColor = '#22c55e'; // verde suave (Tailwind: green-500)
+    btnEnviar.style.color = 'white';
+
+    // Inyectar animación CSS si no existe
+    if (!document.getElementById('blinkGreen-style')) {
+      const style = document.createElement('style');
+      style.id = 'blinkGreen-style';
+      style.textContent = `
+        @keyframes blinkGreen {
+          0%, 100% { background-color: #22c55e; }
+          50% { background-color: #86efac; } /* verde claro (green-300) */
+        }
+      `;
+      document.head.appendChild(style);
+    }
+  }
+
+  // 🔄 Mantener botón "Reiniciar" activo
+  const btnReiniciar = document.querySelector('button.btn.secondary');
+  if (btnReiniciar) {
+    btnReiniciar.disabled = false;
+  }
+}
+</script>
+</body>
+</html>
