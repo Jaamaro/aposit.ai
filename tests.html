@@ -4,11 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Tests | Oposit.ai</title>
-
-  <!-- Estilo global -->
   <link rel="stylesheet" href="style-gc.css" />
 
-  <!-- Estilos específicos para esta página -->
   <style>
     html, body {
       height: 100%;
@@ -18,7 +15,6 @@
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
 
-    /* === Fondo y centrado de la tarjeta === */
     main {
       flex: 1;
       display: flex;
@@ -28,14 +24,13 @@
       padding: 2rem 1rem;
     }
 
-    /* === Tarjeta principal === */
     .card {
       background-color: #ffffff;
       border-radius: 16px;
       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
       padding: 2.5rem;
       text-align: center;
-      max-width: 650px;
+      max-width: 750px;
       width: 100%;
       border: 2px solid #22c55e;
       animation: fadeInUp 0.6s ease-out;
@@ -54,14 +49,17 @@
       margin-bottom: 2rem;
     }
 
-    .button-container.single {
+    .button-container {
       display: flex;
       justify-content: center;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      width: 100%;
     }
 
     .oposit-button.gc {
-      font-size: 1.2rem;
-      padding: 1rem 2rem;
+      font-size: 1.15rem;
+      padding: 1rem 1.8rem;
       border-radius: 12px;
       font-weight: 700;
       color: #ffffff;
@@ -90,56 +88,19 @@
       from { opacity: 0; transform: translateY(30px); }
       to { opacity: 1; transform: translateY(0); }
     }
-
-    /* === Responsive === */
-    @media (max-width: 768px) {
-      .card {
-        padding: 1.5rem;
-        border-radius: 12px;
-        box-shadow: 0 6px 15px rgba(0,0,0,0.2);
-      }
-
-      .card h1 {
-        font-size: 1.6rem;
-      }
-
-      .card p {
-        font-size: 1rem;
-        margin-bottom: 1.5rem;
-      }
-
-      .oposit-button.gc {
-        font-size: 1rem;
-        padding: 0.8rem 1.5rem;
-      }
-
-      footer {
-        font-size: 0.8rem;
-        padding: 0.8rem;
-      }
+  
+    .button-container a {
+      white-space: nowrap;
     }
 
-    @media (max-width: 480px) {
-      main {
-        padding: 1rem;
+    @media (max-width: 600px) {
+      .button-container {
+        flex-direction: column;
+        align-items: center;
       }
-
-      .card {
-        padding: 1.2rem;
-        border-radius: 10px;
-      }
-
-      .card h1 {
-        font-size: 1.4rem;
-      }
-
-      .card p {
-        font-size: 0.95rem;
-      }
-
-      .oposit-button.gc {
-        font-size: 0.95rem;
-        padding: 0.7rem 1.2rem;
+      .button-container a {
+        width: 100%;
+        text-align: center;
       }
     }
   </style>
@@ -153,19 +114,18 @@
     <a href="consejos.html">Consejos</a>
   </nav>
 
-<main>
-<div class="card">
-<h1>Tests de Guardia Civil</h1>
-<p>Elige cómo quieres practicar: selecciona tests por temas específicos o realiza un test global mezclado.</p>
+  <main>
+    <div class="card">
+      <h1>Tests de Guardia Civil</h1>
+      <p>Elige cómo quieres practicar: selecciona tests por temas específicos o realiza un test global mezclado.</p>
 
-
-<div class="button-container">
-<a href="tests/por-temas.html" class="oposit-button gc">📚 Tests por temas</a>
-<a href="tests/seleccionar-varios.html" class="oposit-button gc">🗂️ Seleccionar varios temas</a>
-<a href="tests/test-global.html" class="oposit-button gc">🌐 Test global</a>
-</div>
-</div>
-</main>
+      <div class="button-container">
+        <a href="tests/por-temas.html" class="oposit-button gc">📚 Tests por temas</a>
+        <a href="tests/seleccionar-varios.html" class="oposit-button gc">🗂️ Seleccionar varios temas</a>
+        <a href="tests/test-global.html" class="oposit-button gc">🌐 Test global</a>
+      </div>
+    </div>
+  </main>
 
   <footer>
     © 2025 Oposit.ai — Hecho con 💡 y café para opositores como tú.
