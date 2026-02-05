@@ -133,20 +133,24 @@
     const temasContainer = document.getElementById("temas-container");
     let temasSeleccionados = [];
 
-    temasContainer.addEventListener("click", (e) => {
-      const tema = e.target.closest(".tema");
-      if (!tema) return;
+    // Selección de temas robusta
+temasContainer.querySelectorAll(".tema").forEach(tema => {
+  tema.addEventListener("click", () => {
+    const temaId = tema.dataset.tema;
 
-      const temaId = tema.dataset.tema;
+    if (temasSeleccionados.includes(temaId)) {
+      // Deseleccionar
+      temasSeleccionados = temasSeleccionados.filter(t => t !== temaId);
+      tema.classList.remove("seleccionado");
+    } else {
+      // Seleccionar
+      temasSeleccionados.push(temaId);
+      tema.classList.add("seleccionado");
+    }
 
-      if (temasSeleccionados.includes(temaId)) {
-        temasSeleccionados = temasSeleccionados.filter(t => t !== temaId);
-        tema.classList.remove("seleccionado");
-      } else {
-        temasSeleccionados.push(temaId);
-        tema.classList.add("seleccionado");
-      }
-    });
+    console.log("Temas seleccionados:", temasSeleccionados);
+  });
+});
 
     // =========================
     // 🔹 Combinar preguntas seleccionadas
