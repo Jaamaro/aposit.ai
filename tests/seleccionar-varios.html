@@ -134,8 +134,10 @@
     let temasSeleccionados = [];
 
     // Selección de temas robusta
-temasContainer.querySelectorAll(".tema").forEach(tema => {
-  tema.addEventListener("click", () => {
+document.querySelectorAll(".tema").forEach(tema => {
+  tema.addEventListener("click", (e) => {
+    e.preventDefault(); // ⬅️ esto es lo que faltaba
+
     const temaId = tema.dataset.tema;
 
     if (temasSeleccionados.includes(temaId)) {
